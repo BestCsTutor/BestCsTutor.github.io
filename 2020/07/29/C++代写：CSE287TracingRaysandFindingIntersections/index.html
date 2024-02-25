@@ -1,0 +1,910 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CSE287 Tracing Rays and Finding Intersections, 留学生CS|辅导|代写">
+    <meta name="description" content="代写图像处理作业，练习在场景中渲染光线，并完成光线跟踪器  Ray Tracer
+ 。![RayTracer](https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Recurs">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CSE287 Tracing Rays and Finding Intersections | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CSE287 Tracing Rays and Finding Intersections</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-07-29
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写图像处理作业，练习在场景中渲染光线，并完成光线跟踪器 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ray_tracing_(graphics)" title="Ray Tracing"> Ray Tracer
+</a> 。<br>![Ray<br>Tracer](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Recursive_raytrace_of_a_sphere.png/250px-">https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Recursive_raytrace_of_a_sphere.png/250px-</a><br>Recursive_raytrace_of_a_sphere.png)</p>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>This is the first of up to three labs on ray tracing. In this lab, you will<br>write code to generate rays for each individual pixel. You will then implement<br>code to find intersections between those rays and objects in a scene. In the<br>next lab, you will implement shading calculations to simulate ambient,<br>diffuse, and specular illumination by one or more light sources. Unlike<br>previous labs, your starting point for the next lab will be what you have done<br>for this lab. Therefore you need to get this one correct to be able to move<br>on.<br>Your ray tracing work will conclude with a project that will require you to<br>implement shadow feelers, reflection, and add additional types of shapes.<br>Important Note: In numerous places, this lab will instruct you to use the<br>debugger in order to check that your implementation is correct. Later in the<br>lab, when you actually start trying to render ray traced images, be sure you<br>are running in the “Release” mode. Running in Debug significantly slows<br>execution speed and will have you waiting significantly longer to see the<br>results of your work.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><ol>
+<li>Download the archive containing the CSE287Lab4 archive and extract it. </li>
+<li>Use MSVC 2015 to open the CSE287Lab solution.</li>
+</ol>
+<h2 id="Setting-all-the-Pixels"><a href="#Setting-all-the-Pixels" class="headerlink" title="Setting all the Pixels"></a>Setting all the Pixels</h2><ol>
+<li>Add a statement to the main in Lab.cpp that explicitly sets the defaultColor data member of the RayTracer class to the color of your choice using the setDefaultColor method. </li>
+<li>Add a set of nested for loops to the rayTraceScene method of the RayTracer class that set every pixel on the screen to the color stored in defaultColor the data member.<br>The first two arguments that are passed to the setPixel method of the<br>FrameBuffer class give the position of the pixel relative to the lower left<br>hand corner of the rendering window. The first argument (x) is horizontal<br>position of the pixel and the second argument (y) is the vertical position.<br>Double check to make sure you do not have these reversed.<br>Run the program. The entire rendering window should be set to the default<br>color that you specified instead of the original clear color.</li>
+<li>If this is all working, you can comment out or delete the following statement in the RenderSceneCB function in Lab.cpp. With ray tracing there is no need to clear the color buffer memory since the algorithm individually considers and sets every pixel on the screen.<br>&#x2F;&#x2F; Clear the color buffer<br>frameBuffer.clearColorAndDepthBuffers( );<br>—|—</li>
+</ol>
+<h2 id="Setting-the-Camera-Frame"><a href="#Setting-the-Camera-Frame" class="headerlink" title="Setting the Camera Frame"></a>Setting the Camera Frame</h2><p>Complete the setCameraFrame method of the RayTracer class. It should calculate<br>the w, u, and v orthonormal basis vectors associated with the coordinate frame<br>that is tied to the viewing position and the eye data member of the class.<br>Example code for doing this is in the Chapter Two notes. The associated<br>mathematics are shown in the Chapter Four notes.<br>Compile and link.<br>Use the debugger to check that the method is working correctly. The ‘w’ data<br>member of the RayTracer should point a direction that is opposite the viewing<br>direction. Verify that the ‘v’ data member of the RayTracer is orthogonal to<br>the viewing direction even when the “up” vector passed to the method the<br>setCameraFrame method is not.<br>Will the method be able to square the basis if the viewing direction vector<br>and up vector are parallel?</p>
+<h2 id="Find-Projection-Plane-Limits"><a href="#Find-Projection-Plane-Limits" class="headerlink" title="Find Projection Plane Limits"></a>Find Projection Plane Limits</h2><p>Complete the calculatePerspectiveViewingParameters method of the RayTracer<br>class. In the method, you need to set the following members of the class:<br>topLimit, bottomLimit, rightLimit, leftLimit, distToPlane, nx, and ny. The<br>associated mathematics are shown in the Chapter Four notes. You also might<br>want to look at the calculateOrthographicViewingParameters to see what the<br>calculations looked like for orthographic viewing.<br>Compile and link.<br>Calculate what the right and top should be for a vertical field of view equal<br>30 . Use the debugger and check that your method produces the correct values.<br>Check that the aspect ratio of the projection plane equals ratio of window<br>width to window height as defined in “BasicIncludesAndDefines.h.”</p>
+<h2 id="Calculating-Projection-Plane-Coordinates-for-a-Pixel"><a href="#Calculating-Projection-Plane-Coordinates-for-a-Pixel" class="headerlink" title="Calculating Projection Plane Coordinates for a Pixel"></a>Calculating Projection Plane Coordinates for a Pixel</h2><p>Complete the getProjectionPlaneCoordinates method of the RayTracer class. The<br>method should return the scalar u and v values for the pixel identified by the<br>input arguments. It returns the two values in a vec2. Consult the Chapter Four<br>notes or the textbook.<br>Compile and link.<br>The pixel coordinate with a row equal to 0 and column equal to 0 and should<br>map to the lower left hand corner of the projection plane. The scalar u and v<br>values should both be negative. Use the debugger and check that your method<br>produces the correct values</p>
+<h2 id="Generating-Rays"><a href="#Generating-Rays" class="headerlink" title="Generating Rays"></a>Generating Rays</h2><p>CompletethesetPerspectiveRayOriginAndDirectionmethodoftheRayTracer class. This<br>method should set the rayOrigin and rayDirection data members of the class<br>based on the row and column of a pixel. These two data members together<br>represent a parametric description of a ray to be checked for intersection<br>with objects in the scene. Make sure rayDirection is unit length. Why? What is<br>the advantage of using a unit length direction vector in a parametric<br>description of a ray?<br>Compile and link.</p>
+<h2 id="Using-the-Rays"><a href="#Using-the-Rays" class="headerlink" title="Using the Rays"></a>Using the Rays</h2><p>Modify the rayTraceScene method of the RayTracer class so that it uses the<br>setPerspectiveRayOriginAndDirection method to set the rayOrigin and<br>rayDirection data members. It should then pass these to the traceIndividualRay<br>method so that the ray can be traced. Set each pixel to the color returned by<br>traceIndividualRay.<br>Run the program. Make sure all the pixels are still being set to the<br>defaultColor.</p>
+<h2 id="Checking-for-Intersections"><a href="#Checking-for-Intersections" class="headerlink" title="Checking for Intersections"></a>Checking for Intersections</h2><p>Modify the traceIndividualRay method of the RayTracer class so that it checks<br>the ray for intersection against every Surface in the scene. It should do this<br>by repeatedly passing the ray origin (e) and the ray direction (d) to<br>findClosestIntersection methods of the Surface class and its sub-classes.<br>If a findClosestIntersection method does not find an intersection, it will<br>return a HitRecord in which the value of the data member t is equal to<br>FLT_MAX. If an intersection is found, the value of t will be equal to the<br>distance from the ray origin to the closest point of intersection. The other<br>data members in the returned HitRecord will contain additional information<br>about the point of intersection, including its position (interceptPoint), the<br>surface normal at the point of intersection (surfaceNormal), and the color of<br>the surface (material).<br>When an intersection is found, return the color contained in the material data<br>member of the associated HitRecord. If no intersection is found, return the<br>defaultColor.<br>You should call the size method of the c++ vector collection to determine how<br>many Surfaces are in surfacesInScene when setting up a loop to go through all<br>the Surfaces.<br>    (int)surfacesInScene.size()…<br>—|—<br>Since SurfacesInScene contains pointers, you will have to use pointer instead<br>of dot notation to call findClosestIntersection methods.<br>    surfacesInScene[s]-&gt;findClosestIntersection (…<br>—|—<br>Run the program. If it is working correctly, you should see a single sphere<br>that appears as a disk or circle.<br>Now modify the traceIndividualRay method so that it returns the color of the<br>Surface with the closest point of intersection.<br>Modify the buidScene function in Lab.cpp to add additional Sphere objects to<br>the scene. Run the program. Place some of the spheres so that you can verify<br>that the nearer Sphere objects cover those that are further from the view<br>point.</p>
+<h2 id="Planes"><a href="#Planes" class="headerlink" title="Planes"></a>Planes</h2><p>Complete the findClosestIntersection method of the Plane class. Use the<br>Chapter Four notes as well as the Sphere findClosestIntersection method as a<br>guide.<br>Modify the buidScene function so that a horizontal plane is added to the<br>scene. Run the program. Make sure it works. Add additional planes if you<br>desire.<br>If you have a plane and a few spheres, your scene might look something like<br>the following.</p>
+<h2 id="Turn-it-in"><a href="#Turn-it-in" class="headerlink" title="Turn it in"></a>Turn it in</h2><ol>
+<li>Copy the folder containing your solution to the desktop. </li>
+<li>Change the name of the folder to CSE287LabFour followed by your unique identifier. For instance “CSE287LabFourBachmaer.” </li>
+<li>Open the solution. Make sure it still runs. </li>
+<li>Clean the solution by selecting Build-]Clean Solution. (The will delete all the intermediate temporary files that are part of your project and reduce the size of your submission.) </li>
+<li>Make sure your solution does not include a .sdf file of a ipch folder. </li>
+<li>Zip up the solution folder using the standard windows compression tool. (No 7zips, rars, etc.) </li>
+<li>Submit your zip archive of the solution through canvas.<br>You will need to have this project available and complete when you start the<br>next lab.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/07/29/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE287TracingRaysandFindingIntersections/">http://saferman.github.io/2020/07/29/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE287TracingRaysandFindingIntersections/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/07/29/Oracle%E4%BB%A3%E5%86%99%EF%BC%9ACS6024DynamicSQL/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Oracle代写：CS6024 Dynamic SQL">
+                        
+                        <span class="card-title">Oracle代写：CS6024 Dynamic SQL</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Oracle代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/07/29/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS143CircularDoublyLinkedList/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Java代写：CS143 Circular Doubly Linked List">
+                        
+                        <span class="card-title">Java代写：CS143 Circular Doubly Linked List</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

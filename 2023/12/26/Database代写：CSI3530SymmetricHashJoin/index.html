@@ -1,0 +1,933 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Database代写：CSI3530 Symmetric Hash Join, 留学生CS|辅导|代写">
+    <meta name="description" content="修改PostgreSQL源码，改进  Hash join  的实现。![PostgreSQL](https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_ele">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Database代写：CSI3530 Symmetric Hash Join | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Database代写：CSI3530 Symmetric Hash Join</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Database代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-12-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>修改PostgreSQL源码，改进 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hash_join" title="Hash
+join"> Hash join </a> 的实现。<br>![PostgreSQL](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/220px-</a><br>Postgresql_elephant.svg.png)</p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>You are to implement a new symmetric hash join query operator to replace the<br>current hash join implementation. Adding the new operator will require<br>modifications to both the optimizer component and the executor component of<br>PostgreSQL .</p>
+<h2 id="Hash-Join"><a href="#Hash-Join" class="headerlink" title="Hash Join"></a>Hash Join</h2><p>In this section we introduce the regular hash join operator which is currently<br>implemented in PostgreSQL 8.1.4. Hash join can be used when the query includes<br>join predicates of the form <code>T1.attr1 = T2.attr2</code> , where T1 and T2 are two<br>relations to be joined and attr1 and attr2 are join attributes with the same<br>data type. One of the relations is designated as the inner relation while the<br>other is designated as the outer relation. We will assume that T1 is the inner<br>relation and T2 is the outer relation.<br>The hash join has two consecutive phases: the building phase and the probing<br>phase.</p>
+<h3 id="Building-Phase"><a href="#Building-Phase" class="headerlink" title="Building Phase"></a>Building Phase</h3><p>In this phase, the inner relation (T1) is scanned. The hash value of each<br>tuple is computed by applying a hash function f to the join attribute (attr1).<br>The tuple is then inserted into a hash table. No outputs are produced during<br>this phase.</p>
+<h3 id="The-probing-phase"><a href="#The-probing-phase" class="headerlink" title="The probing phase"></a>The probing phase</h3><p>When the inner relation has been completely processed and the hash table has<br>been constructed, the outer relation T2 is scanned and its tuples are matched<br>to those from the inner relation. This matching is done on two steps. First,<br>the outer tuple’s join attribute, attr2 , is hashed using the same hash<br>function f . The resulting hash value is used to probe the inner hash table.<br>Next, if the appropriate bucket of the inner hash table is not empty, the<br>attr1 value of each inner tuple in the bucket is compared to attr2 of the<br>outer tuple. If the actual values match, then the corresponding tuples are<br>returned as one tuple in the join result. This comparison of the actual<br>attribute values of the two tuples is necessary because of the possibility of<br>hash collisions (multiple attribute values having the same hash value).<br>One property of this algorithm is that no join outputs are produced until all<br>of the tuples of the inner relation are completely processed and inserted into<br>the hash table. This represents a bottleneck in the query execution pipeline.<br>Symmetric hash join, which you will implement in this assignment, avoids this<br>problem.<br>One of the drawbacks of the hashing algorithm that was just described is that<br>there must be sufficient memory available to hold the hash table for the inner<br>relation. This can be a problem for large relations. For this reason,<br>PostgreSQL actually implements a more complex algorithm, known as Hybrid Hash<br>Join, which avoids this problem. The hybrid hash join algorithm divides the<br>tuples of the two relations into multiple partitions, or batches. For example,<br>each partition can be associated with a specific range of hash values. Only<br>one partition of the inner relation’s tuples is kept in main memory at any<br>time. The remaining batches reside on disk. When an outer tuple is found to<br>belong in a partition other than the current one (i.e. the memory-resident<br>partition), it is written to a temporary file and its processing is postponed<br>until the corresponding partition from the inner relation is retrieved.<br>Partitions are processed in sequence until all partitions have been processed.</p>
+<h2 id="Symmetric-Hash-Join"><a href="#Symmetric-Hash-Join" class="headerlink" title="Symmetric Hash Join"></a>Symmetric Hash Join</h2><p>Here we describe the symmetric hash join that you are required to implement.<br>The symmetric hash join operator maintains two hash tables, one for each<br>relation. Each hash table uses a different hash function. It supports the<br>traditional demand-pull pipeline interface. The symmetric hash join works as<br>follows:</p>
+<ul>
+<li>Read a tuple from the inner relation and insert it into the inner relation’s hash table, using the inner relation’s hash function. Then, use the new tuple to probe the outer relation’s hash table for matches. To probe, use the outer relation’s hash function. </li>
+<li>When probing with the inner tuple finds no more matches, read a tuple from the outer relation. Insert it into the outer relation’s hash table using the outer relation’s hash function. Then, use the outer tuple to probe the inner relation’s hash table for matches, using the inner table’s hash function.<br>These two steps are repeated until there are no more tuples to be read from<br>either of the two input relations. That is, the algorithm alternates between<br>getting an inner tuple and getting an outer tuple until one of the two input<br>relations is exhausted, at which point the algorithm reads (and hashes and<br>probes with) the remaining tuples from the other relation.<br>Note that the symmetric hash join operator must be implemented to adhere to<br>the demand-pull pipeline operator interface. That is, on the first pull call,<br>the algorithm should run until it can produce one join output tuple. On the<br>next pull call, the algorithm should pick up where it left off, and should run<br>until it can produce the second join output tuple, and so on. This incremental<br>behaviour requires that some state be saved between successive calls to the<br>operator. Essentially, this state records where the algorithm left off after<br>the previous demand-pull call so that it can pick up from there on the next<br>call. Clearly, this state should include an indication of whether the operator<br>is currently working on an inner or an outer tuple, the current tuple itself,<br>the current “probe position” within the inner or outer hash table, and so on.<br>The symmetric hash join operator records this state into a structure called a<br>state node.<br>As an example of join execution, consider a join with join predicate <code>T1.attr1 = T2.attr2</code> . The join operator will incrementally load a hash table<br>H1 for T1 by hashing attr1 using hash function f1, and another hash table H2<br>for T2 by hashing attr2 using hash function f2. The symmetric hash join<br>operator starts by getting a tuple from T1, hashing its attr1 field using f1,<br>and inserting it into H1. Then, it probes H2 by applying f2 to attr1 of the<br>current T1 tuple, returning any matched tuple pairs that it finds. Next, it<br>gets a tuple from T2, hashes it by applying f2 to attr2, and inserts it into<br>H2. Then, it probes H1 by applying f1 to attr2 of the current T2 tuple, and<br>returns any matches. This continues until all tuples from T1 and T2 have been<br>consumed.</li>
+</ul>
+<h2 id="PostgreSQL-Implementation-of-Hash-Join"><a href="#PostgreSQL-Implementation-of-Hash-Join" class="headerlink" title="PostgreSQL Implementation of Hash Join"></a>PostgreSQL Implementation of Hash Join</h2><p>In this section, we present an introduction to two components of PostgreSQL<br>that you will need to modify in this assignment, namely the optimizer and the<br>executor. Then, we describe the hash join algorithm that is already<br>implemented in PostgreSQL .</p>
+<h3 id="Optimizer"><a href="#Optimizer" class="headerlink" title="Optimizer"></a>Optimizer</h3><p>The optimizer uses the output of the query parser to generate an execution<br>plan for the executor. During the optimization process, PostgreSQL builds Path<br>trees representing the different ways of executing a query. It selects the<br>cheapest Path that generates the desired outputs and converts it into a Plan<br>to pass to the executor. A Path (or Plan) is represented as a set of nodes,<br>arranged in a tree structure with a top-level node, and various sub-nodes as<br>children. There is a one-to-one correspondence between the nodes in the Path<br>and Plan trees. Path nodes omit information that is not needed during<br>planning, while Plan nodes discard planning information that is not needed by<br>executor.<br>The optimizer builds a RelOptInfo structure for each base relation used in the<br>query. RelOptInfo records information necessary for planning, such as the<br>estimated number of tuples and their order. Base relations (baserel) are<br>either primitive tables, or subqueries that are planned via a separate<br>recursive invocation of the planner. A RelOptInfo is also built for each join<br>relation (joinrel) that is considered during planning. A joinrel is simply a<br>combination of baserel’s. There is only one join RelOptInfo for any given set<br>of baserels. For example, the join is represented by the same RelOptInfo<br>whether it is built by first joining A and B and then adding C, or by first<br>joining B and C and then adding A. These different means of building the<br>joinrel are represented as different Paths. For each RelOptInfo we build a<br>list of Paths that represent plausible ways to implement the scan or join of<br>that relation. Once we have considered all of the plausible Paths for a<br>relation, we select the cheapest one according to the planner’s cost<br>estimates. The final plan is derived from the cheapest Path for the RelOptInfo<br>that includes all the base relations of the query. A Path for a join relation<br>is a tree structure, with the top Path node representing the join method. It<br>has left and right subpaths that represent the scan or join methods used for<br>the two input relations.<br>The join tree is constructed using a dynamic programming algorithm. In the<br>first pass we consider ways to create joinrels representing exactly two<br>relations. The second pass considers ways to make joinrels that represent<br>exactly three relations. The next pass considers joins of four relations, and<br>so on. The last pass considers how to make the final join relation that<br>includes all of the relations involved in the query. For more details about<br>the construction of query Path and optimizer data structures, refer to<br>src&#x2F;backend&#x2F;optimizer&#x2F;README.</p>
+<h3 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h3><p>The executor processes a tree of Plan nodes. The plan tree is essentially a<br>demand-pull pipeline of tuple processing operations. Each node, when called,<br>will produce the next tuple in its output sequence, or NULL if no more tuples<br>are available. If the node is not a primitive relation-scanning node, it will<br>have child node(s) that it calls recursively to obtain input tuples. The plan<br>tree delivered by the planner contains a tree of Plan nodes (struct types<br>derived from struct Plan). Each Plan node may have expression trees associated<br>with it to represent, e.g., qualification conditions.<br>During executor startup, PostgreSQL builds a parallel tree of identical<br>structure containing executor state nodes. Every plan and expression node type<br>has a corresponding executor state node type. Each node in the state tree has<br>a pointer to its corresponding node in the plan tree, in addition to executor<br>state data that is needed to implement that node type. This arrangement allows<br>the plan tree to be completely read-only as far as the executor is concerned;<br>all data that is modified during execution is in the state tree. Read-only<br>plan trees simplify plan caching and plan reuse. Altogether there are four<br>classes of nodes used in these trees: Plan nodes, their corresponding<br>PlanState nodes, Expr nodes, and their corresponding ExprState nodes.<br>There are two types of Plan node execution: single tuple retrieval and multi-<br>tuple retrieval. These are implemented using the functions ExecInitNode and<br>MultiExecProcNode, respectively. In single tuple retrieval, ExecInitNode is<br>invoked each time a new tuple is needed. In multi-tuple retrieval, the<br>function MultiExecProcNode is invoked only once to obtain all of the tuples,<br>which are returned in a form of a hash table or a bitmap. For more details<br>about executor structures, refer to src&#x2F;backend&#x2F;executor&#x2F;README.</p>
+<h3 id="PostgreSQL-Hash-Join-Operator"><a href="#PostgreSQL-Hash-Join-Operator" class="headerlink" title="PostgreSQL Hash Join Operator"></a>PostgreSQL Hash Join Operator</h3><p>In PostgreSQL , hash join is implemented in the file nodeHashjoin.c and<br>creation of a hash table is implemented in the file nodeHash.c. A hash join<br>node in the query plan has two subplans that represents the outer and the<br>inner relations to be joined. The inner subplan must be of type HashN ode.<br>As was described in Section 2, PostgreSQL implements hybrid hash join so that<br>it can deal with large relations. Recall that hybrid hash join processes<br>tuples in batches based on their hash values. To make the implementation of<br>the symmetric hash join algorithm simpler, you may ignore this additional<br>complexity. Specifically, your symmetric hash join implementation may assume<br>that both hash tables will fit memory without resorting to paritioning into<br>multiple batches. However, you will need to find out how to disable the use of<br>multiple batches in the current implementation of hashing.</p>
+<h3 id="Relevant-Files"><a href="#Relevant-Files" class="headerlink" title="Relevant Files"></a>Relevant Files</h3><p>Here we present a list of files that are relevant to the assignment.</p>
+<ul>
+<li>src&#x2F;backend&#x2F;executor&#x2F; <ul>
+<li>nodeHashJoin.c: This file implements the actual processing of the hash join operator. </li>
+<li>nodeHash.c: This file is responsible for creating and maintaining a hash table.</li>
+</ul>
+</li>
+<li>src&#x2F;backend&#x2F;optimizer&#x2F;plan&#x2F; <ul>
+<li>createplan.c: This file contains the code that creates a hash join node in the query plan.</li>
+</ul>
+</li>
+<li>src&#x2F;include&#x2F;nodes&#x2F; <ul>
+<li>execnodes.h: This file contains the structure HashJoinState that maintains the state of the hash join during execution.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Main-Functions"><a href="#Main-Functions" class="headerlink" title="Main Functions"></a>Main Functions</h3><p>The implementation of the hash join operator consists of a number of functions<br>as follows:</p>
+<ul>
+<li>ExecHashJoin: This is the main function that is called each time a new tuple is required by the hash join node. Note that the first time this function is called, it has to create the hash table of the inner node. The join algorithm goes as described in Section 2. </li>
+<li>ExecInitHashJoin: This function is responsible for initializing the state of the join node as well as invoking initialization procedures for inner and outer nodes. </li>
+<li>ExecHashJoinOuterGetT uple: When a new outer tuple is required, this function is invoked to get the next tuple from the outer node. Note that after all tuples are retrieved from the outer relation, it is still necessary to retrieve the tuples that were previously saved to temporary files as soon as their correct batch of the inner hash table becomes available in the memory. </li>
+<li>ExecHashJoinSaveT uple and ExecHashJoinGetSavedT uple: These support saving and retrieving the outer tuples to&#x2F;from temporary files. Saving a tuple of the outer relation is necessary when its batch number is not the same as the current memory resident batch of the hash table. Retrieving all saved tuples is done after consuming all tuples of the outer relation. </li>
+<li>ExecHashJoinN ewBatch This function retrieves the next batch of the inner hash table.<br>To implement hash node, a number of functions are provided in nodeHash.c. The<br>following functions are relevant to the assignment.</li>
+<li>MultiExecHash: This function retrieves all tuples from the subnode and insert them into the hash table. It returns the created hash table to the caller. </li>
+<li>ExecHash: Pipelined execution of hash is not implemented by default in PostgreSQL . This function will simply return an error message indicating that this execution mode is not supported for hash nodes. </li>
+<li>ExecHashGetBucketAndBatch: This function retrieves the bucket number and the batch number for a specific hash key.</li>
+</ul>
+<h2 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h2><p>In this assignment, you are to implement the symmetric hash join to replace<br>the traditional hash join. You should alter the necessary files&#x2F;functions to<br>achieve all requirements. The assignment can be divided into subtasks as<br>follows:</p>
+<ul>
+<li>Change the optimizer so that both the inner and outer relations are first processed by hash nodes before being processed by the hash join operator. In the current implementation, only the inner relation is hashed, as described in Section 2. The hashing nodes is necessary to incrementally retrieve a tuple from each relation, insert it into the corresponding hash table and return it to the hash join node. This effect can be implemented by modifying the function that creates the hash join node in the planner component, which can found in the file createplan.c. </li>
+<li>Modify the hashing algorithm to support pipelined execution instead of the multi-tuple execution mode that is currently implemented. This means that you will need to implement the ExecHash function, which currently returns an error message to indicate that this execution mode is not supported. </li>
+<li>For this assignment you can disable the use of multiple batches, i.e. you may assume that the whole hash table consists one batch that is resident in memory for the duration of the join processing. Modify the file nodeHash.c to achieve this. Note that related code in nodeHashjoin.c that handles saving and retrieving tuples to temporary batch files can now be discarded. </li>
+<li>Modify the structure of HashJoinState to support the symmetric hash join algorithm by altering the file execnodes.h. You need to replicate the existing structures to support bi-directional probing. </li>
+<li>Replace the hash join algorithm with the symmetric hash join. This algorithm should be implemented in nodeHashjoin.c. After completing the join operation, your operator should print the number of resulting tuples that were found by probing inner hash table and outer hash tables, respectively. </li>
+<li>Disable other join operators (i.e. merge join and nested loop join) to force the query optimizer to use the symmetric hash join operator. This can be done by modifying the configuration file postgresql.conf which can be found in the database directory. (0%)<br>You can test that the symmetric hash join is working properly by comparing the<br>tuples resulting from an arbitrary join query before and after the<br>modification. You can use the provided test case from the course web site to<br>test your implementation.</li>
+</ul>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>The following files should be submitted : nodeHashjoin.c, nodeHash.c,<br>execnodes.h and createplan.c. Although you do not have to change other files,<br>you may need to explore additional files to understand how certain procedures<br>and structures are implemented.<br>You can submit these files by sending them to the TA by email in a ZIPed file.<br>To use the zip command, make sure that all the required files are in the<br>current directory.<br>Make sure to clearly emphasize parts of the files that you have modified by<br>inserting comments before and after changes. Also, include any necessary<br>comments to describe how modifications are done or how you implemented new<br>features.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/12/26/Database%E4%BB%A3%E5%86%99%EF%BC%9ACSI3530SymmetricHashJoin/">http://saferman.github.io/2023/12/26/Database%E4%BB%A3%E5%86%99%EF%BC%9ACSI3530SymmetricHashJoin/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Database代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/12/28/Web%E4%BB%A3%E5%86%99%EF%BC%9ACSE383MapQuest/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Web代写：CSE383 MapQuest">
+                        
+                        <span class="card-title">Web代写：CSE383 MapQuest</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Web%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Web代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/12/24/Web%E4%BB%A3%E5%86%99%EF%BC%9ACOMP30231ServiceOrientedArchitecturePrinciples/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Web代写：COMP30231 Service Oriented Architecture Principles">
+                        
+                        <span class="card-title">Web代写：COMP30231 Service Oriented Architecture Principles</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Web%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Web代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CIS455 Web Crawling and Stream Processing, 留学生CS|辅导|代写">
+    <meta name="description" content="拓展爬虫程序  Web Crawler  ，并将数据通过Spark进行流式分析。![WebCrawler](https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/WebCrawl">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CIS455 Web Crawling and Stream Processing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CIS455 Web Crawling and Stream Processing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-03-20
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>拓展爬虫程序 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Web_crawler" title="Web
+Crawler"> Web Crawler </a> ，并将数据通过Spark进行流式分析。<br>![Web<br>Crawler](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/WebCrawlerArchitecture.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/WebCrawlerArchitecture.svg/220px-</a><br>WebCrawlerArchitecture.svg.png)</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>In this assignment, you will explore several more Web technologies and<br>continue to build components useful towards your course project, by building a<br>topic-specific Web crawler. A topic-specific crawler looks for documents or<br>data matching certain phrases or content in the header or body. Similar tasks<br>are handled by firewalls with various data-driven filter rules, and by stream<br>processing systems looking for specific sequences of messages.<br>This assignment will entail, in Milestone 1:</p>
+<ul>
+<li>Expanding a dynamic Web application, which runs on the framework you built for Assignment 1 (or the Sparkjava Framework) and allows users to (1) create user identities, (2) define topic-specific “channels” defined by a set of XPath expressions, and (3) to display documents that match a channel; </li>
+<li>Implementing and expanding a persistent data store (using Oracle Berkeley DB) to hold retrieved HTML&#x2F;XML documents and channel definitions. </li>
+<li>Fleshing out a crawler that traverses the Web, looking for HTML and XML documents that match one of the patterns.<br>In Milestone 2:</li>
+<li>Refactoring the crawler to fit into a stream processing system’s basic abstractions; </li>
+<li>Routing documents from the crawler through a stream engine for processing one at a time; </li>
+<li>Writing a pattern matcher that determines if an HTML or XML document matches one of a set of patterns;<br>The resulting application will be very versatile, able to filter documents<br>into categories with specified keywords. Assignment 2 can build on your<br>application server from Assignment 1. However, if you are not confident that<br>your web server is working well, please use Spark Framework ( <a target="_blank" rel="noopener" href="http://www.sparkjava.com/"><br>http://www.sparkjava.com/ </a> ) to test your<br>application. (Using your own server will earn you +5% extra credit. You are<br>allowed to make fixes to it as necessary.)</li>
+</ul>
+<h2 id="Developing-and-running-your-code"><a href="#Developing-and-running-your-code" class="headerlink" title="Developing and running your code"></a>Developing and running your code</h2><p>You should fork, clone, and import the framework code for HW2 using the same<br>process as for HW0 and<br>HW1 to your own private repository, then clone from your repository to your<br>VirtualBox&#x2F;Vagrant instance). You should, of course, regularly commit code as<br>you make changes so you can revert; and you should periodically push to your<br>own repository on bitbucket, in case your computer crashes.<br>Initially you will be using the Spark Framework for this assignment, but for<br>extra credit you can run it using your own HW1 framework (see Section 6).<br>Carefully read the entire assignment (both milestones) from front to back and<br>make a list of the features you need to implement. There are many important<br>details that are easily overlooked! Spend at least some time thinking about<br>the design of your solution. What classes will you need? How many threads will<br>there be? What will their interfaces look like? Which data structures need to<br>be synchronized? And so on.<br>We strongly recommend that you regularly check the discussions on Piazza for<br>clarifications and solutions to common problems. We will try to include a<br>“rollup” post with tips.</p>
+<h2 id="Milestone-1-Crawler-Manager-B-Tree-Storage-and-Crawler"><a href="#Milestone-1-Crawler-Manager-B-Tree-Storage-and-Crawler" class="headerlink" title="Milestone 1: Crawler Manager, B+ Tree Storage, and Crawler"></a>Milestone 1: Crawler Manager, B+ Tree Storage, and Crawler</h2><p>For the first milestone, your task is to crawl and store Web documents. These<br>will ultimately be fed into a pattern matching engine for Milestone 2.</p>
+<h3 id="Routes-Based-Web-Interface-Crawler-Manager"><a href="#Routes-Based-Web-Interface-Crawler-Manager" class="headerlink" title="Routes-Based Web Interface &#x2F; Crawler Manager"></a>Routes-Based Web Interface &#x2F; Crawler Manager</h3><p>In preparation for Milestone 2, we will have a Web interface for login. Your<br>main class should be called and it should register routes for various<br>behaviors. We have given you a partial implementation of the login handler so<br>you can get started.</p>
+<ol>
+<li>If the user makes a request for a page and is not logged in (i.e., has no Session), the server should output the login form, login-form.html. This form should submit a POST message as described below under “log in to existing account.” </li>
+<li>If the user is logged in (has a Session), requests to the root URL (or &#x2F;index.html) should present a simple login page showing “Welcome “ followed by the user’s username. (We will add more functionality in Milestone 2.)<br>You will see in the provided code how Filters allow you to make decisions<br>about whether the user’s request should proceed, or the user should be<br>redirected to the login form. Thus, some of the above should already be<br>present.<br>Beyond the above, you should build additional routes to support the following<br>functions:</li>
+</ol>
+<ul>
+<li>Create a new account. This should take a POST to URL localhost:45555&#x2F;register with two parameters, username and password. Upon success it should return an appropriate success code with a link to the main page and its login screen. On failure, it should return an appropriate error. </li>
+<li>Log into an existing account (multiple users should be able to log in at the same time). This should take a POST to URL localhost:45555&#x2F;login with two parameters, username and password. Upon success it should create a new Session with the user’s info and return the user to the main page, which should show the logged-in info as above. The Session should time out after 5 minutes of inactivity. </li>
+<li>Log out of the account that is currently logged in, via &#x2F;logout. Upon success it should redirect the user to the login page.<br>Note that you may take advantage of Sessions and the various other<br>capabilities of the Spark Framework and&#x2F;or the ones you developed in Homework<br>1 Milestone 2. Some of the above functionality is provided, so please look<br>carefully to understand what is and is not there.</li>
+</ul>
+<h3 id="Storage-of-Document-and-User-Credentials-in-a-B-Tree"><a href="#Storage-of-Document-and-User-Credentials-in-a-B-Tree" class="headerlink" title="Storage of Document and User Credentials in a B+ Tree"></a>Storage of Document and User Credentials in a B+ Tree</h3><p>We will use Berkeley DB Java Edition ( <a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/database/berkeleydb/"><br>http://www.oracle.com/technetwork/database/berkeleydb/
+</a><br>overview&#x2F;index.html), which may be downloaded freely from their website, to<br>implement a disk-backed data store. Berkeley DB is a popular embedded<br>database, and it is relatively easy to use as a key-value store; there is<br>ample documentation and reference information available on its Web site, e.g.,<br>the Getting Started Guide. Berkeley DB has several different ways of storing<br>and retrieving data; perhaps the simplest is through the Java Collections<br>interface, although the Direct Persistence Layer (DPL) has slightly more<br>power. You may choose whichever BerkeleyDB interface method you prefer.<br>Your store will hold (at least):</p>
+<ul>
+<li>the usernames and encrypted passwords of registered users (see below), </li>
+<li>(in Milestone 2) information about user channels </li>
+<li>and the raw content of HTML or XML files retrieved from the Web, as well as the time the file was last checked by the crawler.<br>If you use the Collections interface, you will create objects, representing<br>your data, that extend java.io.Serializable and store them in objects like<br>StoredSortedMaps. User passwords should instead be saved using SHA-256<br>hashing. No cleartext passwords should be saved.<br>The WebInterface program, when run from the command-line, should take as the<br>first argument a path for the BerkeleyDB data storage instance, and as a<br>second argument, a path to your static HTML files. Your code should create a<br>data storage directory if it does not already exist.</li>
+</ul>
+<h3 id="Basic-Web-Crawler"><a href="#Basic-Web-Crawler" class="headerlink" title="Basic Web Crawler"></a>Basic Web Crawler</h3><p>Your web crawler will initially be a Java application that can be run in<br>Eclipse by creating a Run Configuration (as in HW0) with the goal “clean<br>install exec:java@crawler”. From the command line, you can also run mvn<br>exec:java@crawler. In both cases, the crawler will take the following command-<br>line arguments (in this specific order, and the first three are required):</p>
+<ol>
+<li>The URL of the Web page at which to start. Note that there are several ways to open the URL.<br>* a. For plain HTTP URLs you will probably get the best performance by just opening a socket to the port (we’ve provided the URLInfo class to help parse the pieces out). It is also acceptable to use Java’s HTTPUrlConnection.<br>* b. For HTTPS URLs you may want to use java.net.URL’s openConnection() method and cast to javax.net.ssl.HttpsURLConnection. This in turn has input and output streams as usual. Here you can keep relying on the sample code.<br>* c. Your crawler should recursively follow links from the page it starts on. </li>
+<li>The directory containing the BerkeleyDB database environment that holds your store (this will match the path the WebInterface takes). As specified above, the directory should be created if it does not already exist. </li>
+<li>The maximum size, in megabytes, of documents to be retrieved from a Web server. You should stop the crawl once you’ve reached that limit. </li>
+<li>An optional argument indicating the number of files (HTML and XML) to retrieve before ending and exiting. This will be useful for testing!<br>The crawler is intended to be run periodically, either by hand or from an<br>automated tool like the cron command. It is, therefore, not necessary to build<br>a connection from the Web interface to the crawler, except that the two will<br>share a common database. Note also that BerkeleyDB does not like to share<br>database instances across concurrently executing programs, so it’s okay to<br>assume only one runs at a time.<br>The crawler traverses links in HTML documents. You can extract these using a<br>HTML parser, such as JSoup ( <a target="_blank" rel="noopener" href="https://jsoup.org/"> https://jsoup.org/ </a> ,<br>included with your Maven package), or simply by searching the HTML document<br>for occurrences of the pattern href&#x3D;”URL” and its subtle variations.<br>If a link points to another HTML document, it should be retrieved and scanned<br>for links as well. The same is true if it points to an XML or RSS document.<br>Don’t bother crawling images or trying to extract links from XML files. All<br>retrieved HTML and XML documents should be stored in the BerkeleyDB database<br>(so that the crawler does not have to retrieve them again if they do not<br>change before the next crawl). The crawler must be careful not to search the<br>same page multiple times during a given crawl, and it should exit when it has<br>no more pages to crawl. You’ll need to understand what parts of functionality<br>are provided and where you need to supplement.<br>Redundant documents and cyclic crawls: Your crawler should compute an MD5 hash<br>of every document that is fetched, and store this in a “content seen” table in<br>BerkeleyDB. If you crawl a document with a matching hash during the same<br>crawler run, you should not index it or traverse its outgoing links.<br>When your crawler is processing a new HTML or XML page, it should print a<br>short status report to the Apache Log4J logger, using the “info” status level.<br>At the very least, you should print: “ <a target="_blank" rel="noopener" href="http://xyz.com/index.html"> http://xyz.com/index.html
+</a> : downloading” (if the page is actually<br>downloaded) or “ <a target="_blank" rel="noopener" href="http://abc.com/def.html"> http://abc.com/def.html </a> : not<br>modified” (if the page is not downloaded because it has not changed). Make<br>sure you follow the above format to comply with the autograder’s assumptions.</li>
+</ol>
+<h3 id="Politeness"><a href="#Politeness" class="headerlink" title="Politeness"></a>Politeness</h3><p>Your crawler must be a considerate Web citizen. First, it must respect the<br>robots.txt file, as described in A Standard for Robot Exclusion ( <a target="_blank" rel="noopener" href="http://www.robotstxt.org/robotstxt.html"><br>http://www.robotstxt.org/robotstxt.html
+</a> ). It must support the CrawlDelay<br>directive (see <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Robots.txt"> http://en.wikipedia.org/wiki/Robots.txt
+</a> ) and “User-agent: *”, but it need<br>not support wildcards in the Disallow: paths. Second, it must always send a<br>HEAD request first to determine the type and size of a file on a Web server.<br>If the file has the type text&#x2F;html or one of the XML MIME types:</p>
+<ul>
+<li>text&#x2F;xml </li>
+<li>application&#x2F;xml </li>
+<li>Any mime types that ends with +xml<br>and if the file is less than or equal to the specified maximum size, then the<br>crawler should retrieve the file and process it; otherwise it should ignore it<br>and move on. For more details on XML media types, see RFC 3023 ( <a target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc3023.txt"><br>http://www.ietf.org/rfc/rfc3023.txt </a> ).<br>Your crawler should also not retrieve the file if it has not been modified<br>since the last time it was crawled, but it should still process unchanged<br>files (i.e., match them against XPaths and extract links from them) using the<br>copy in its local database.<br>We have given you some “helper” classes in the crawler.utils package, which<br>might be useful to store information about URLs and robots.txt.<br>Certain web content, such as the papers in ACM’s Digital Library, normally<br>costs money to download but is free from Penn’s campus network. If your<br>crawler accidentally downloads a lot of this content, this will cause a lot of<br>trouble. To prevent this, you must send the header User-Agent: cis455crawler<br>in each request.</li>
+</ul>
+<h3 id="Test-cases"><a href="#Test-cases" class="headerlink" title="Test cases"></a>Test cases</h3><p>You must develop at least two JUnit tests for storage system and two more for<br>the crawler.<br>You should next add a Route to enable retrieval of documents from the<br>BDBstore, using the following form that takes a GET request with a URL as<br>parameter url, and returns the stored document corresponding to that URL.<br>Think of this as the equivalent of Google’s cache. If the document was not<br>crawled, your server should return a 404 error. We will use this interface for<br>testing.</p>
+<h3 id="Milestone-1-Submission"><a href="#Milestone-1-Submission" class="headerlink" title="Milestone 1 Submission"></a>Milestone 1 Submission</h3><p>Submit a zip file on Gradescope as before. Additionally, as with Homework 1,<br>to be eligible for submitting a “patch” for regrading:</p>
+<ol>
+<li>Share your Homework 2 repo </li>
+<li>Commit your current code. </li>
+<li>git tag hw2m1 to tag this version as your HW2M2 version. </li>
+<li>Push to bitbucket (you may need to use git push –tag).</li>
+</ol>
+<h2 id="Milestone-2-Streaming-Crawler-and-Matching-Engine"><a href="#Milestone-2-Streaming-Crawler-and-Matching-Engine" class="headerlink" title="Milestone 2: Streaming Crawler and Matching Engine"></a>Milestone 2: Streaming Crawler and Matching Engine</h2><p>The next milestone will consist of an evaluator for streams of document<br>content. You will extend your<br>Milestone 1 project to run on a stream processing engine that enables<br>multithreaded execution. You will also extend your application and storage<br>system to enable users to register “subscription channels” with the system.<br>Finally, you will build a stream processing component that checks documents<br>against the various “channels” and outputs results per user.</p>
+<h3 id="Rework-the-Crawler-as-a-“Spout-”-“Bolt-”-and-Shared-Modules-in-StormLite"><a href="#Rework-the-Crawler-as-a-“Spout-”-“Bolt-”-and-Shared-Modules-in-StormLite" class="headerlink" title="Rework the Crawler as a “Spout,” “Bolt,” and Shared Modules in StormLite"></a>Rework the Crawler as a “Spout,” “Bolt,” and Shared Modules in StormLite</h3><p>Your Milestone 1 project had a simple execution model, in which you controlled<br>the execution of the crawler and presumably did this in a crawler loop. Now we<br>want to break in into a smaller unit of work that can be parallelized.<br>To do this, we’ll be using a CIS 455&#x2F;555-custom emulation of the Apache Storm<br>stream engine, which we call StormLite (it should show up in your HW2 repo<br>already). Please see the document on StormLite and see TestWordCount (in the<br>test directory) as an example of a multithreaded stream job. Storm has spouts<br>that produce data one result at a time, and bolts that process data one result<br>at a time. As with our emulation of the Spark Framework, you should be able to<br>use examples of Apache Storm code to understand how StormLite works.<br>You should refactor your Milestone 1 crawl task to run within StormLite, as<br>follows. Note that StormLite supports multiple worker threads but you can<br>control the number of “executors” (and start with 1).</p>
+<ol>
+<li>You will maintain (or update) your frontier&#x2F;crawl queue of URLs from Milestone 1. However, you want to place it in a “spout” (implement IRichSpout) so it sends URLs one at a time to the crawler via the nextTuple interface. </li>
+<li>You will maintain your BerkeleyDB storage system from Milestone 1. This will also be a shared object, at least across some aspects of your Milestone 2 implementation. Again, you may want to use a “singleton factory” pattern. </li>
+<li>The crawler should be placed in a bolt - its execute method gets called once for each URL from the crawler queue. The crawler should output documents one at a time to its output stream. See the IRichBolt interface and the example code. </li>
+<li>Now, in our suggested (but not mandatory) architecture, there should be two “downstream” bolts that take documents. (It is perfectly possible to send an output stream to two destinations.) </li>
+<li>Lower branch:<br>* a. One bolt should have an execute method that takes a document, writes it to the BerkeleyDB storage system, and outputs a stream of extracted URLs.<br>* b. Next, there should be a bolt that filters URLs (using appropriate techniques and data structures) and updates the shared frontier queue. </li>
+<li>Upper branch:<br>* a. A second (in parallel) bolt should take a document and parse it using JSoup or another parser that takes into account element structure. It should send streams of OccurrenceEvents. This bolt will traverse the entire DOM tree in the DOM, using a standard tree traversal. You will send an OccurrenceEvent each time you traverse to an element node from its parent (ElementOpen), each time you traverse to a text node (Text), or each time you traverse back up to an element node from its children (ElementClose).<br>* b. Finally, there should be a bolt that checks for matches to channels by using the streams of events. When there is a match, it should update the BerkeleyDB store accordingly.<br>Based on the sample code in test.upenn.cis.stormlite, the StormLite document,<br>and (in fact) the documentation on Storm available from Stack Overflow and the<br>Web, you should be able to assemble a stream dataflow like the one illustrated<br>above.<br>You can assume a single crawler queue bolt, but should look at how the<br>fieldGrouping, allGrouping, and shuffleGrouping specifiers allow you to<br>specify how data gets distributed when there are multiple “executors” such as<br>multiple copies of the crawler, parser, etc.</li>
+</ol>
+<h3 id="Extended-Routes-based-Web-Interface"><a href="#Extended-Routes-based-Web-Interface" class="headerlink" title="Extended Routes-based Web Interface"></a>Extended Routes-based Web Interface</h3><p>For Milestone 2, you will also enhance the Web application to support the<br>following functions for logged in users.</p>
+<h4 id="Channels"><a href="#Channels" class="headerlink" title="Channels"></a>Channels</h4><p>Now that you have users and HTML or XML, we want to “connect” users with<br>“interesting” content. To do this, any logged in user will be able to create<br>channels. A channel is a named pattern describing a class of documents. An<br>example of a channel definition would be sports and you can see an example of<br>content that would match the channel at.<br>Assume that channels and their names are global.<br>You should implement an interface to create a channel, as a GET call.</p>
+<h4 id="Updated-Login-Screen"><a href="#Updated-Login-Screen" class="headerlink" title="Updated Login Screen"></a>Updated Login Screen</h4><p>As before, you should have a login&#x2F;registration form at<br>localhost:45555&#x2F;register. Once a user is logged in, you should have a “home<br>page” at localhost:45555&#x2F;.</p>
+<ul>
+<li>List all channels available on the system, and for each </li>
+<li>Include a link to the documents matching each channel, which triggers the application at localhost:45555&#x2F;show?channel&#x3D;{name}<br>Obviously, you will need to add some logic to the BerkeleyDB storage system to<br>store user subscriptions and to store which documents correspond to a channel<br>(see Section 3.2 for how this will be populated).<br>How you implement most of the functionality of the Web interface is entirely<br>up to you; we are just constraining the URL interfaces. To make things<br>consistent across assignments, we are specifying how the channel must be<br>displayed by the “show” request.</li>
+<li>For each channel, a [div class&#x3D;”channelheader”] element around its header, with the string “Channel name: “ followed by the name of the channel; a and the string “, created by: “ followed by the username of the user who created the channel. </li>
+<li>For each HTTP or XML (e.g., RSS) document that matched an XPath in the channel: <ul>
+<li>The string “Crawled on: “ followed by a date in the same format as 2019-1031T17:45:48, i.e. YYYY-MM-DDThh:mm:ss, where the T is a separator between the day and the time. </li>
+<li>The string “Location: “ followed by the URL of the document. </li>
+<li>A <code>&lt;div class=&quot;document&quot;&gt;</code> element with the contents of the document. </li>
+<li>If the channel does not exist, return a 404.<br>We expect this application to run on your application server from the HW1. If<br>you did not complete the HW1, or for some other reason do not want to continue<br>to use the application server that you wrote, you may continue to use Spark<br>Java with no penalty.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Pattern-Engine-as-a-StormLite-Bolt"><a href="#Pattern-Engine-as-a-StormLite-Bolt" class="headerlink" title="Pattern Engine as a StormLite Bolt"></a>Pattern Engine as a StormLite Bolt</h3><p>You need to write a class edu.upenn.cis455.xpathengine.XPathEngineImpl that<br>implements edu.upenn.cis455.xpathengine.XPathEngine (included with the code in<br>Bitbucket), and evaluates a set of XPath expressions on the specified HTML or<br>XML document. Both protocols can be handled similarly, except that HTML,<br>unlike XML, is case insensitive. Once you have tested that individually, you<br>will incorporate it into (call it from) a StormLite bolt. We will be focusing<br>only on elements, subelements, and text nodes.<br>The implementation object (instance of XPathEngineImpl) should be created via<br>the XPathEngineFactory. The setXPaths method gives the class a number of<br>XPaths to evaluate. The isValid(i) method should return false if the ith XPath<br>was invalid, and true otherwise. You should implement the evaluateEvent()<br>method:</p>
+<ol>
+<li>This takes an OccurrenceEvent, which will have a document ID and a “parse event.” </li>
+<li>Given a set of registered XPaths, if the document associated with the event has satisfied (at any point) the XPath, a bit corresponding to that XPath should be set. </li>
+<li>Your XPathEngine will need to store state for each document, to monitor its progress. This state should be initialized when you first encounter a document with an ElementOpen; it should be updated each time you get an event, and it should remove the state once all elements in the document have been closed.<br>To make things simpler, we are supporting a very limited subset of XPath, as<br>specified by the following grammar (modulo white space, which your engine<br>should ignore). Where nodename is a valid XML identifier, and “…” indicates a<br>quoted string. This means that a query like &#x2F;db&#x2F;record&#x2F;name[text() &#x3D; “Alice”]<br>is valid. Recall that if two separate bracketed conditions are imposed at the<br>same step in a query, both must apply for a node to be in the answer set.<br>You should be able to think about these kinds of XPaths as regular expressions<br>over open and close events.<br>The stream of OccurrenceEvents will be coming from a separate parser bolt (in<br>our standard architecture; you can diverge from this if you prefer). You will<br>probably want to create a test bolt when developing the XPath engine. The<br>easiest HTML&#x2F;XML parser to use in Java is probably a DOM (Document Object<br>Model) parser, e.g., the one from JSoup. Such a parser builds an in-memory<br>data structure holding an entire HTML or XML document. From there, it is easy<br>to walk the tree and output events. You can also look into SAX parsers.<br>Once your XPath engine works over individual documents, you’ll want to write a<br>StormLite bolt whose execute() method instantiates the XPath engine for a<br>given input document (passed in as a tuple), looks up all of the channels<br>defined in the BerkeleyDB database, and for each document that matches an<br>XPath for a channel, records the document as a match to the channel.<br>Subsequently, the Web application interface will be able to show the documents<br>as matches.</li>
+</ol>
+<h3 id="Unit-Tests"><a href="#Unit-Tests" class="headerlink" title="Unit Tests"></a>Unit Tests</h3><p>In addition, you must implement at least 5 unit tests, using the JUnit package<br>(see the section on Testing below for helpful Web page references). JUnit<br>provides automated test scaffolding for your code: you can set up a set of<br>basic objects for all of the test cases, then have the test cases run one-by-<br>one.<br>Your JUnit test suite should instantiate any necessary objects with some test<br>data (e.g., parse a given HTML or XML document or build a DOM tree), then run<br>a series of unit tests that validate your Web application and your XPath<br>matcher. In total you must have at least 5 unit tests (perhaps each designed<br>to exercise some particular functionality) and at least one must be for the<br>Web application and one for the XPath evaluator.</p>
+<h3 id="Submitting-Milestone-2"><a href="#Submitting-Milestone-2" class="headerlink" title="Submitting Milestone 2"></a>Submitting Milestone 2</h3><p>Submit to Gradescope as per before. Your solution must meet the following<br>requirements (please read carefully!):</p>
+<ol>
+<li>You must implement the edu.upenn.cis455.xpathengine.XPathEngine interface. </li>
+<li>Your XPath engine class must be must be created by the XPathFactory when the appropriate static method is called. </li>
+<li>Your submission must contain a) the entire source code, as well as any supplementary files needed to build your solution, b) a working Maven pom.xml, and c) a README file that contains 1) your full name and SEAS login name, 2) any extra credit claimed, 3) any special instructions for building or running. </li>
+<li>Your code must contain a reasonable amount of useful documentation.<br>Additionally, git tag your version as hw2m2, and push to your bitbucket repo.<br>Reminder: All the code you submit (other than the dependencies on the<br>JSoup&#x2F;JTidy&#x2F;TagSoup parser, the standard Java libraries, and any code we have<br>provided) must have been written by you personally, and you may not<br>collaborate with anyone else on this assignment.</li>
+</ol>
+<h2 id="Testing-the-Crawler"><a href="#Testing-the-Crawler" class="headerlink" title="Testing the Crawler"></a>Testing the Crawler</h2><h3 id="‘Sandbox’"><a href="#‘Sandbox’" class="headerlink" title="‘Sandbox’"></a>‘Sandbox’</h3><p>We have implemented a small sandbox for you to test your code on. It runs on<br>machines in Penn<br>Engineering, so it will be fast to access, and it will not contain any links<br>out of itself. There should be adequate XML and HTML documents there to test<br>your XPath matching.</p>
+<h3 id="JUnit"><a href="#JUnit" class="headerlink" title="JUnit"></a>JUnit</h3><p>In order to encourage modularization and test driven development, you will be<br>required to code test cases using the JUnit package ( <a target="_blank" rel="noopener" href="http://www.junit.org/"> http://www.junit.org/
+</a> ) - a framework that allows you to write and run<br>tests over your modules. A single test case consists of a class of methods,<br>each of which (usually) tests one of your source classes and its methods. A<br>test suite is a class that allows you to run all your test cases as a single<br>program. You can get more information here: <a target="_blank" rel="noopener" href="http://www.onjava.com/pub/a/onjava/2004/02/04/juie.html"><br>http://www.onjava.com/pub/a/onjava/2004/02/04/juie.html
+</a> .<br>For Milestone 1, you must include 5 test cases and for Milestone 2, a test<br>suite consisting of these 5 and at least 2 more for each of DOM Parser and<br>Path Matcher (for a total of 5 new tests). If your test suite uses any files<br>(e.g., test inputs), please put them into your project folder and use a<br>relative path, so your tests will run correctly on the graders’ machines.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/03/20/Java%E4%BB%A3%E5%86%99%EF%BC%9ACIS455WebCrawlingandStreamProcessing/">http://saferman.github.io/2022/03/20/Java%E4%BB%A3%E5%86%99%EF%BC%9ACIS455WebCrawlingandStreamProcessing/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/03/20/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS2250DelimiterMatching/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="C++代写：CS2250 Delimiter Matching">
+                        
+                        <span class="card-title">C++代写：CS2250 Delimiter Matching</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/03/17/Python%E4%BB%A3%E5%86%99%EF%BC%9ACMPS2200SearchingUnsortedLists/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Python代写：CMPS2200 Searching Unsorted Lists">
+                        
+                        <span class="card-title">Python代写：CMPS2200 Searching Unsorted Lists</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

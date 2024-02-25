@@ -1,0 +1,942 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS313 Ext2 File System, 留学生CS|辅导|代写">
+    <meta name="description" content="代写ext2文件系统相关作业，首先熟悉  ext2 文件系统，然后实现文件系统中的path resolution process，最后实现基于ext2文件系统的  virtual file system
+ .![Linux StorageS">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS313 Ext2 File System | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS313 Ext2 File System</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-06-17
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写ext2文件系统相关作业，首先熟悉 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ext2" title="ext2"> ext2 </a><br>文件系统，然后实现文件系统中的path resolution process，最后实现基于ext2文件系统的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Virtual_file_system" title="Virtual file system"> virtual file system
+</a> .<br>![Linux Storage<br>Stack](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-">https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/IO_stack_of_the_Linux_kernel.svg/440px-</a><br>IO_stack_of_the_Linux_kernel.svg.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The assignment is divided into three parts. The division is meant to help you<br>with time management while working on the assignment, and to ensure you make<br>steady progress on it instead of leaving it to the last minute. You will<br>submit all three parts at once.</p>
+<ul>
+<li>In part 1, you will obtain information about an ext2 file system, based on the data contained in the first copy of the superblock and group descriptor table. </li>
+<li>In part 2, you will implement a path resolution process based on the ext2 file system. You will identify the inode associated with each file in the file system, and read both the metadata and the contents of the file. </li>
+<li>Finally, in part 3, you will implement a virtual file system based on an ext2 file system volume.</li>
+</ul>
+<h2 id="General-Assignment-Rules"><a href="#General-Assignment-Rules" class="headerlink" title="General Assignment Rules"></a>General Assignment Rules</h2><ul>
+<li>This assignment may be done in pairs or alone. Groups of 3 or more are not permitted. You are strongly encouraged to work with a partner. </li>
+<li>Your program must be written in C. C++ or any other language will not be marked and you will get 0. </li>
+<li>In the top level directory, typing make must produce the executable programs ext2test and ext2fs (the provided Makefile already does this, so if you make changes to it don’t break it). </li>
+<li>To be marked, the program must compile and run on the department provided Linux undergraduate servers. In particular, note that parts of the provided code may not work at all in other environment, including Mac OS X. If your program does not compile by simply typing make in the assignment directory it will not be marked and 0 will be awarded. In this situation no part marks will be granted regardless of the amount of work done. If you are testing your code in your own Linux environment, you may need to install package libfuse-dev (or its equivalent in your distribution). </li>
+<li>You are not permitted to modify the Makefile or change compilation options to suppress warnings, to eliminate the need for prototypes, or to change the version of the compiler used. </li>
+<li>The only branch of your repo that will be marked is master. If we have to mark a different branch or a different version of the assignment a penalty of 20% will be applied. </li>
+<li>As usual, the late penalty for this assignment is 33.33% per day, rounded by the minute. To allow marking to start as fast as possible, late submissions will be limited to 24 hours after the deadline, unless some previous arrangement is made with the instructor.</li>
+</ul>
+<h2 id="Setting-up-your-repository"><a href="#Setting-up-your-repository" class="headerlink" title="Setting up your repository"></a>Setting up your repository</h2><p>Just like in previous assignments we will use version control to distribute<br>the files that you will be working on. It will also be the way that you handin<br>your assignment.<br>As indicated above you will be allowed to do this assignment either working by<br>yourself, or with a partner; teams of three or more are not allowed. Before<br>you can access the git repo with your copy of the assignment, you will need to<br>register your team, or yourself if you aren’t working with a partner. You must<br>do this even if you are working by yourself in this case you leave the Partner<br>field blank. When you are working with a partner, both of you must register<br>your team before the assignment repo will be created. For additional<br>information on using git and the format of repo names etc., see the<br>information supplied with assignment 1.<br>As you work on your code you will want to periodically “push” changes to the<br>Stash repository. It is highly recommended that you do this frequently. You<br>might want to push these changes every time you stop working on the code and<br>when you get to important implementation milestones.</p>
+<h2 id="Details-of-the-tasks"><a href="#Details-of-the-tasks" class="headerlink" title="Details of the tasks"></a>Details of the tasks</h2><h3 id="Part-1-File-System-Information"><a href="#Part-1-File-System-Information" class="headerlink" title="Part 1: File System Information"></a>Part 1: File System Information</h3><p>You have access to a series of images of ext2 file systems in the directory<br>~cs313&#x2F;EXTimages, which should be available in any of the department’s Linux<br>servers. Your task it to write code to determine some basic information about<br>each of these file systems. The following is a list of some of the information<br>to be determined about the file system:</p>
+<ul>
+<li>its size, in bytes. </li>
+<li>its block size, in sectors. </li>
+<li>its volume name. </li>
+<li>the total number of blocks and inodes. </li>
+<li>the number of reserved blocks. </li>
+<li>the number of blocks and inodes in each block group. </li>
+<li>the number of block groups. </li>
+<li>for each block group, the number of free blocks and inodes. </li>
+<li>other relevant information stored in the superblock.<br>Most of the information above can be read, or computed, from the information<br>stored in the superblock (located 1024 bytes from the start of the image) or<br>the group descriptor table (located in the following block) of the file system<br>volume file. Relevant details about the ext2 file systems can be found here:</li>
+<li><a target="_blank" rel="noopener" href="https://wiki.osdev.org/Ext2"> https://wiki.osdev.org/Ext2 </a> (Links to an external site.)Links to an external site. </li>
+<li><a target="_blank" rel="noopener" href="https://www.nongnu.org/ext2-doc/ext2.html"> https://www.nongnu.org/ext2-doc/ext2.html </a> (Links to an external site.)Links to an external site.<br>In order to simplify your implementation of this part, and clarify the format<br>of the output of your code, a skeleton code is provided in files ext2test.c,<br>ext2.c, and ext2.h. In this part you will need to implement the following<br>functions in ext2.c open_volume_file, close_volume_file, and read_block (as<br>well as any additional helper functions you may see fit). You are allowed to<br>change the function implementations and signature, provided the information<br>printed in ext2test.c is still printed in your final version of those files.<br>Note, however, that the function prototypes are provided in a manner that is<br>expected to be helpful for the last part of the assignment, so you should<br>limit your changes to those that aim to improve clarity.<br>You are allowed to make some assumptions: you may assume that your code is<br>running on a little-endian CPU, which allows you to read the integer values in<br>the image file in its raw format. You are also allowed to assume that the file<br>system uses version 1.0 of the ext2 specification, and that it follows the<br>specific format described for the Linux environment, in particular regarding<br>the use of 32-bit values for UID and GID.<br>To allow easier testing, your code must compile by using the make command.<br>Your program must also take as an argument the name of the file containing the<br>file system. This functionality is provided, so make sure you don’t break it.<br>If you would like to implement additional arguments for testing purposes, you<br>must make sure that calling the program with a single argument still works as<br>expected.</li>
+</ul>
+<h3 id="Part-2-Inodes-and-Path-Resolution"><a href="#Part-2-Inodes-and-Path-Resolution" class="headerlink" title="Part 2: Inodes and Path Resolution"></a>Part 2: Inodes and Path Resolution</h3><p>The goal of this part is to be able to deal with inodes, and extract<br>information about the associated files. More specifically, you must implement<br>the functions read_inode, read_ind_block_entry, get_inode_block_no,<br>read_file_block and read_file_content in ext2.c, so that they can obtain both<br>the metadata and content of an inode.<br>One particular topic that is not properly explained in the reference links<br>above is regarding sparse files. In ext2 (and other similar file systems), if<br>the block number associated to a particular location in the file is 0 (zero),<br>then no block is allocated for the region in question, and all data bytes for<br>that block are considered to be zero. This allows the file system to store<br>very large files with sparse content (e.g., a 13 GB file with only a handful<br>of non-zero blocks) by only using blocks for regions of the file that actually<br>contain non-zero data. This applies to both data blocks and indirect blocks.<br>You must also implement the function follow_directory_entries in the same<br>file. This function is used to traverse all the entries in a directory,<br>calling a function for each entry. The function is used in the implementation<br>of find_file_in_directory, which is provided.<br>Next, you must implement function find_file_from_path, which will perform the<br>path resolution process on the file system. In particular, this function will<br>split a path into components (file names and directory names); for each<br>component the function will find the directory entry for the individual name,<br>then find the inode associated to that entry. For example, if the path is<br>&#x2F;FOO&#x2F;BAR&#x2F;BUZZ.TXT, the function will:</p>
+<ul>
+<li>read the inode for the root directory; </li>
+<li>visit the entries in the root directory until it finds one whose name is FOO, keeping track of the inode number (see find_file_in_directory); </li>
+<li>find and read the inode for the directory FOO (see read_inode); </li>
+<li>visit the entries in the content of this directory until it finds one whose name is BAR; </li>
+<li>find and read the inode for the directory BAR; </li>
+<li>visit the entries in the content of this directory until it finds one whose name is BUZZ.TXT; </li>
+<li>find and read the inode for the file, returning this inode.<br>Note that the file ext2test.c already has some preliminary tests for the<br>functions above. These tests are based on files that exist in some of the<br>images provided above (though some of the images may not contain all of the<br>files in the test). You should, however, extend that file to test additional<br>cases, such as corner cases (e.g., files not in the first block of a<br>directory) and errors (e.g., a file with a path whose directory does not<br>exist).</li>
+</ul>
+<h3 id="Part-3-A-Virtual-File-System"><a href="#Part-3-A-Virtual-File-System" class="headerlink" title="Part 3: A Virtual File System"></a>Part 3: A Virtual File System</h3><p>This part of the system aims to give you a better understanding of how a file<br>system actually works. You will use the FUSE (Filesystem in Userspace) library<br>to create a functional file system that will allow a user to read the data in<br>the file system using tools provided by the operating system.<br>In a FUSE-based file system, any system calls received by the kernel related<br>to actions in files inside the mounted file system will trigger calls to<br>predetermined functions associated to those actions. So, for example, when a<br>user opens a file inside the file system, the kernel will call the function<br>associated to the open operation. When a user reads data from that file, the<br>kernel will call the function associated to the read operation, and will use<br>its result as the result of the read operation.<br>In the provided file ext2fs.c, you are provided with the skeleton of a FUSE-<br>based file system that uses an ext2 volume file as the underlying data<br>structure. This skeleton provides support for the following operations:</p>
+<ul>
+<li>init: this operation is called automatically when the file system is first mounted. </li>
+<li>destroy: this operation is called automatically just before the file system is un-mounted. </li>
+<li>getattr: read the metadata of a file (similar to the stat command, or the stat system call). </li>
+<li>readdir: lists the contents of a directory. </li>
+<li>open: opens a file (similar to the open or fopen functions). </li>
+<li>read: reads the contents at a specific position of a file (similar to an fseek followed by fread, or a call to pread). </li>
+<li>release: releases a file (used in functions like close or fclose). </li>
+<li>readlink: reads the target of a symbolic (soft) link.<br>In this part of the assignment you are responsible for implementing the<br>operations above (except for init and destroy, which are already implemented).<br>The comments provided in the file should give you enough information to<br>implement the operations successfully, but if you require additional<br>information, you can find them in <a target="_blank" rel="noopener" href="http://libfuse.github.io/doxygen/"> http://libfuse.github.io/doxygen/
+</a> (Links to an external site.)Links to an<br>external site..</li>
+</ul>
+<h3 id="Testing-your-file-system"><a href="#Testing-your-file-system" class="headerlink" title="Testing your file system"></a>Testing your file system</h3><p>To run the file system above, you must use the following command:<br>    .&#x2F;ext2fs -f -s -o use_ino mountpoint file.img<br>where mountpoint is the directory where you will mount your file system<br>(details below), and file.img is the file containing the ext2 volume where the<br>data used by the file system is obtained. The command-line option -f indicates<br>that the file system should run in the foreground (details below). The<br>command-line option -s is used to indicate your file system will run single-<br>threaded, i.e., only one file operation will be called at a time. You can also<br>use the option -d for additional debugging information.<br>The command-line option -o is used to set additional options. In the example<br>above, it is used to add the use_ino option (see below). You are welcome to<br>explore further options (such as allow_other, direct_io, max_read or nonempty;<br>see man 8 mount.fuse for more details), but you are not required to support<br>them, and your final implementation should not rely on these options being<br>set.<br>By default, FUSE will generate inode numbers for any new file it is made aware<br>of. The use_ino option will ask FUSE to use the inode number provided by the<br>getattr function instead of the one generated by FUSE. Your code must support<br>the use_ino option, i.e., it must set the st_ino field for the struct stat<br>buffer in ext2_getattr to the inode used in the file system.<br>The mountpoint is the directory where you will mount your file system. Once<br>you mount it, any access to a file or directory within the mountpoint will<br>automatically be redirected to the file system. So, for example, if you mount<br>a file system in &#x2F;tmp&#x2F;myfs, and run the command:<br>    ls -ali &#x2F;tmp&#x2F;myfs<br>the command will request the directory listing from the kernel, and the kernel<br>will request the directory listings (readdir operation) from the file system,<br>with the path &#x2F;. If you run the command:<br>    cat &#x2F;tmp&#x2F;myfs&#x2F;sp.c<br>the kernel will call operations getattr (to confirm file exists), open, read,<br>and release in the file system, with the path &#x2F;sp.c.<br>You can choose almost any empty directory to be your mountpoint. However,<br>there are some restrictions. First of all, you can only mount one file system<br>in each directory. If you choose a mountpoint inside your home directory in<br>the department Linux computers, this directory must be readable&#x2F;executable by<br>everybody, and its path must be executable. So, for example, if you choose the<br>mountpoint &#x2F;home&#x2F;r&#x2F;r2d2&#x2F;cs313&#x2F;a4&#x2F;mp, you can run the following commands to<br>provide access to the directory:<br>    chmod a+x &#x2F;home&#x2F;r&#x2F;r2d2 &#x2F;home&#x2F;r&#x2F;r2d2&#x2F;cs313 &#x2F;home&#x2F;r&#x2F;r2d2&#x2F;cs313&#x2F;a4<br>    chmod a+rx &#x2F;home&#x2F;r&#x2F;r2d2&#x2F;cs313&#x2F;a4&#x2F;mp<br>Alternatively, you can choose a mountpoint in a folder outside of your home<br>directory, like a folder in &#x2F;tmp (not &#x2F;tmp itself!!!). In this case, make sure<br>to choose a unique name that won’t conflict with other students using the same<br>computer, like your account (e.g., &#x2F;tmp&#x2F;r2d2).<br>You can run your file system in the foreground (with the -f option) or in the<br>background (without it). If you run it in the background, the file system will<br>be created, and the command shell will be restored for you, so you can use the<br>same terminal for testing. The disadvantage, though, is that you won’t have<br>access to the standard output and debugging messages. If you run it in the<br>foreground, the program will stay running in the terminal, and will wait there<br>for operations. You will need to open a new terminal to test your file system.<br>It is recommended that you run your system in the foreground, as this provides<br>more flexibility to debug your code and see it running.<br>After testing your program, to unmount and close the file system, you have two<br>options. One is to hit Ctrl-C in your file system terminal, if you are running<br>it in the foreground. The other is to run:<br>    fusermount -u mountpoint<br>replacing mountpoint with the mountpoint of your file system. If your file<br>system crashed because of a bug (e.g., segmentation fault), you must still<br>unmount the file system using the command above before you are able to reuse<br>the same mountpoint.<br>To test your file system, you can use commands like:<br>    stat FILE<br>    ls FILE<br>    cat FILE<br>    readlink FILE<br>If you change into the mountpoint directory using a command like cd, note that<br>you will not be able to cleanly unmount the file system until you leave that<br>directory.</p>
+<h2 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h2><p>If you would like to try some extra activities, the following tasks will allow<br>you to get bonus points in this assignment. Note that only complete and<br>correct implementations of these features will be entertained, and there will<br>be no partial marks.</p>
+<ul>
+<li>Modify your code in part 3 so it can support multi-threading, i.e., multiple file operations at the same time. Note that this means you will need to handle race conditions for simultaneous access to the volume file in different offsets (e.g., different block numbers). </li>
+<li>Implement operations that allow you to modify the ext2 volume, like writing to a file, creating a new file, moving or deleting a file, creating or deleting a directory</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/06/17/C%E4%BB%A3%E5%86%99%EF%BC%9ACS313Ext2FileSystem/">http://saferman.github.io/2020/06/17/C%E4%BB%A3%E5%86%99%EF%BC%9ACS313Ext2FileSystem/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/06/17/Algorithm%E4%BB%A3%E5%86%99%EF%BC%9ACOMP26GA/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Algorithm代写：COMP26 GA">
+                        
+                        <span class="card-title">Algorithm代写：COMP26 GA</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Algorithm%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Algorithm代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/06/15/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP222RecordManager/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="C代写：COMP222 Record Manager">
+                        
+                        <span class="card-title">C代写：COMP222 Record Manager</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

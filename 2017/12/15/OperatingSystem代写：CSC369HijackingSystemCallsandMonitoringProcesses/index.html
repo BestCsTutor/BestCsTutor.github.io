@@ -1,0 +1,961 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CSC369 Hijacking System Calls and Monitoring Processes, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个Kernel Module，对System Calls的入口进行Hook，进而达到监控系统的目的。  
+OverviewIn this assignment, you will achieve the goal of hijacki">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CSC369 Hijacking System Calls and Monitoring Processes | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CSC369 Hijacking System Calls and Monitoring Processes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-12-15
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个Kernel Module，对System Calls的入口进行Hook，进而达到监控系统的目的。  </p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In this assignment, you will achieve the goal of hijacking (intercepting)<br>system calls by writing and installing a very basic kernel module to the Linux<br>kernel.<br>Here is what “hijacking (intercepting) a system call” means. You will<br>implement a new system call named my_syscall, which will allow you to send<br>commands from userspace, to intercept another pre-existing system call (like<br>read, write, open, etc.). After a system call is intercepted, the intercepted<br>system call would log a message first before continuing performing what it was<br>supposed to do.<br>For example, if we call my_syscall with command REQUEST_SYSCALL_INTERCEPT and<br>target system call number __NR_mkdir (which is the macro representing the<br>system call mkdir) as parameters, then the mkdir system call would be<br>intercepted; then, when another process calls mkdir, mkdir would log some<br>message (e.g., “muhahaha”) first, then perform what it was supposed to do<br>(i.e., make a directory).<br>But wait, that’s not the whole story yet. Actually we don’t want mkdir to log<br>a message whenever any process calls it. Instead, we only want mkdir to log a<br>message when a certain set of processes (PIDs) are calling mkdir. In other<br>words, we want to monitor a set of PIDs for the system call mkdir. Therefore,<br>you will need to keep track, for each intercepted system call, of the list of<br>monitored PIDs. Our new system call will support two additional commands to<br>add&#x2F;remove PIDs to&#x2F;from the list.<br>When we want to stop hijacking a system call (let’s say mkdir but it can be<br>any of the previously hijacked system calls), we can invoke the interceptor<br>(my_syscall), with a REQUEST_SYSCALL_RELEASE command as an argument and the<br>system call number that we want to release. This will stop intercepting the<br>target system call mkdir, and the behaviour of mkdir should go back to normal<br>like nothing happened.</p>
+<h2 id="Checklist"><a href="#Checklist" class="headerlink" title="Checklist"></a>Checklist</h2><p>Here is a checklist that should help get you started, and to make sure that<br>you won’t forget the important things:</p>
+<ol>
+<li>Find your SVN repository on MarkUs (see “Submission”), and do a checkout to make sure you can access it. The starter code files can be found on the teaching lab machines (either the servers or workstations). </li>
+<li>Test that you have access to the VM in the teaching labs (instructions below). </li>
+<li>Download the disk image for the virtual machine here (gzipped). On the host computer (your laptop or a lab computer), use a virtual machine software (VirtualBox or VMware) to create a virtual machine using the the disk image you downloaded (instructions to follow below). </li>
+<li>Read and understand the existing code in the starter code. This is an important step of this assignment, and you should not start writing your own code before you have a good understanding of the starter code. </li>
+<li>Implement the new kernel module by completing source file “interceptor.c”. Sections that need to be completed are marked with the TODO tag). Do NOT modify the header file “interceptor.h”. </li>
+<li>Make sure to test as you go. You should first make sure that the commands to intercept and de-intercept work well, before attempting to implement the monitoring commands. </li>
+<li>Testing and debugging (must be done in the virtual machine):<br>* Check out your code inside the virtual machine.<br>* Type make to compile your kernel module. Make sure there is no error or warning.<br>* Implement the intercept and release commands.<br>* Compile the test_intercept.c program using gcc.<br>* Test your code using sudo .&#x2F;test_intercept, and make sure that all tests pass.<br>* Implement the monitoring&#x2F;un-monitoring commands.<br>* Compile the test_full.c program using gcc.<br>* Test your code using sudo .&#x2F;test_full, and make sure that all tests pass. </li>
+<li>Submit your code on time. See “Submission” for more details. </li>
+<li>Congratulations! You now have some great hands-on experience with the Linux kernel! You can now be proud of having programmed a Linux kernel module. You know what else are commonly implemented as kernel modules? Device drivers! Although they are more complex, you now technically have the basis to try to write one. Isn’t that cool?</li>
+</ol>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>The goal of this assignment is to learn more about system calls and to use<br>synchronization mechanisms. For this assignment you will be writing a very<br>basic kernel module that intercepts system calls and monitors processes on<br>demand.</p>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><p>In order to be able to issue our own hijacking commands from userspace, we<br>need a new system call that takes as parameters the command, the system call<br>number (to be intercepted), and (for monitoring) a pid.<br>Instead of adding a new system call, which can be tricky, our new system call<br>my_syscall will be installed in place of an unused system call in the system<br>call table. We will connect my_syscall to the entry number MY_CUSTOM_SYSCALL<br>(in effect, entry 0 which is mostly unused). The new system call my_syscall,<br>defined as follows: int my_syscall(int cmd, int syscall, int pid); will serve<br>as an interceptor and will receive the following commands from userspace:</p>
+<ul>
+<li>REQUEST_SYSCALL_INTERCEPT: intercept the system call syscall </li>
+<li>REQUEST_SYSCALL_RELEASE: de-intercept the system call syscall </li>
+<li>REQUEST_START_MONITORING: start monitoring process pid for system call syscall, i.e., add pid to the syscall’s list of monitored PIDs. A special case is that if pid is 0 then all processes are monitored for syscall, but only root has the permission to issue this command (see the comments for my_syscall in the starter code for more details). </li>
+<li>REQUEST_STOP_MONITORING: stop monitoring process pid for system call syscall, i.e., remove pid from the syscall’s list of monitored PIDs.</li>
+</ul>
+<h3 id="Kernel-module-operation"><a href="#Kernel-module-operation" class="headerlink" title="Kernel module operation"></a>Kernel module operation</h3><p>Your kernel module must, upon initialization, replace the system call table<br>entry for the MY_CUSTOM_SYSCALL number, with the my_syscall function. When the<br>module is released, it must restore this system call to its original routine.<br>As a result, when your kernel module is loaded, any subsequent invocations of<br>the system call number MY_CUSTOM_SYSCALL from userspace, will issue four types<br>of commands, to intercept or release a given system call, and to start and<br>stop monitoring a pid for a specific syscall. You must implement the<br>my_syscall function accordingly.</p>
+<ol>
+<li>REQUEST_SYSCALL_INTERCEPT and REQUEST_SYSCALL_RELEASE.<br>When an intercept command is issued, the corresponding entry in the system<br>call table will be replaced with a generic interceptor function (discussed<br>later) and the original system call will be saved. When a<br>REQUEST_SYSCALL_RELEASE command is issued, the original saved system call is<br>restored in the system call table in its corresponding position.</li>
+<li>REQUEST_START_MONITORING and REQUEST_STOP_MONITORING<br>Monitoring a process consists of the module logging into userspace some<br>information about the process and the system call: the system call number, the<br>parameters of the system call, and the pid of the process.<br>When a REQUEST_START_MONITORING command comes through our custom system call,<br>the kernel module must record internally that the pid passed as a parameter<br>should be monitored for the syscall number (passed as a parameter as well).<br>The monitoring can be done for a specific pid, or for all pids (in which case<br>the pid parameter for my_syscall will be 0).<br>Ok, but I still don’t understand, what does it mean to monitor a pid? And what<br>does the generic interceptor function do?<br>Let’s start with the monitoring. We have established that once the user issues<br>a monitoring command, the kernel module records internally that pid should be<br>monitored whenever it issues system call number syscall (it will be placed in<br>a monitored list - see details in starter code).<br>We have also established that the generic interceptor function is what each<br>intercepted system call will reach. In other words, whenever we reach the<br>generic interceptor, we know that the system call is being intercepted<br>(otherwise we would not reach this). If the pid of the process issuing the<br>system call is being monitored, that means that we must print some information<br>to a log. The log message will simply contain the system call number and the<br>arguments, as well as the calling process’s pid.<br>We have provided you in the starter code with a log_message macro, which takes<br>care of sending a message to the system log. You can check the log using the<br>dmesg command.<br>As you might expect, regardless if a pid is monitored or not, the generic<br>interceptor must eventually (once it’s done logging, if applicable), call the<br>original system call to allow normal operation of all processes in the system.<br>Alright, but what if a process exits before the user can issue a system call<br>to stop monitoring it?<br>Good question! When your kernel module initializes, you should also hijack the<br>exit_group system call (with number __NR_exit_group), by replacing it in the<br>system call table with your own custom function my_exit_group. Of course, make<br>sure to save the original exit_group function, and to restore it when your<br>kernel module is unloaded.<br>Implementing the my_exit_group function should be simple: all you have to do<br>is to remove the pid of the exiting process from all kernel module’s internal<br>bookkeeping on monitored processes, then call the original exit_group<br>function.</li>
+</ol>
+<h2 id="Error-Conditions"><a href="#Error-Conditions" class="headerlink" title="Error Conditions"></a>Error Conditions</h2><p>You must make sure to check any possible misuse of the commands. In case of a<br>misuse, you should return a proper error code (e.g., -EINVAL, -EPERM, google<br>“Linux error code” for more information on error codes). Here is a list of<br>things you should keep in mind:</p>
+<ul>
+<li>For each of the commands, check that the arguments are valid (-EINVAL): <ul>
+<li>The syscall number must be valid: not negative, not &gt; NR_syscalls (the last syscall number in the table), and not MY_CUSTOM_SYSCALL itself (for obvious reasons). </li>
+<li>The pid must be valid for the monitoring commands. It cannot be a negative integer, and it must be an existing pid (except for the case when it’s 0, indicating that we want to start&#x2F;stop monitoring for all pids).<br>If a pid belongs to a valid process, then the following call is not NULL</li>
+</ul>
+</li>
+<li>Check that the called has the right permissions (-EPERM): <ul>
+<li>For the first two commands, we must be root (see the current_uid() macro), to be able to intercept or release system calls. </li>
+<li>For the last two commands, the following logic applies: <ul>
+<li>Is the calling process root? if so, all is good, no doubts about permissions. </li>
+<li>If it is not, then check if the pid requested is owned by the calling process </li>
+<li>Also, if pid is 0 and the calling process is not root, then access is denied (monitoring all pids should only be allowed for a superuser, for obvious reasons).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check for correct context of commands (-EINVAL): <ul>
+<li>Cannot de-intercept a system call that has not been intercepted yet. </li>
+<li>Cannot stop monitoring for a pid that is not being monitored, or if the system call has not been intercepted yet. If the system call has not been intercepted yet, a command to start monitoring a pid for that syscall is also invalid.</li>
+</ul>
+</li>
+<li>Check for -EBUSY conditions: <ul>
+<li>If intercepting a system call that is already intercepted. </li>
+<li>If monitoring a pid that is already being monitored.</li>
+</ul>
+</li>
+<li>If a pid cannot be added to a monitored list, due to no memory being available, an -ENOMEM error code should be returned. The starter code provides a set of functions that enable operation with kernel lists.<br>What if a stop monitoring request comes in for a specific PID (let’s call it<br>P), for a syscall that monitors all PIDs? Is that an error or should we treat<br>this as a special case? For this assignment, you can assume that this is an<br>error and simply return -EINVAL.<br>BONUS (5% applicable to marks lost elsewhere on this assignment): Instead of<br>ignoring this case and returning -EINVAL, you can optionally treat this as a<br>special case. If we already monitor all PIDs for a syscall, then you might<br>have to think of a solution to make sure that you can keep monitoring all the<br>PIDs in the system, except for P. Please keep in mind that some processes that<br>will be monitored may not have even started their execution. Also, please keep<br>in mind that we might have other stop monitoring requests for the same<br>syscall, in which case, you might have to think of how to use the list of<br>monitored pids in a smart way. One possibility is turning the list of<br>monitored pids into a “blacklist” (keeping track of the pids that are not<br>being monitored).</li>
+</ul>
+<h2 id="General-information"><a href="#General-information" class="headerlink" title="General information"></a>General information</h2><ol>
+<li>You must use the starter code provided, which gives you detailed instructions on what you need to implement. Please make sure to implement all the parts indicated using detailed TODO comments. Please make sure to first attend the tutorial which will help you write a simple kernel module and show you how to use printk statements for debugging. See the tutorial notes as well. </li>
+<li>Your assignment will be tested on a virtual machine on CDF (aka teaching labs). You can access this virtual machine from your teaching labs account, or you can download the provided virtual machine disk image and install it on your personal computer through a virtualization solution (for example, free software include VMWare Player, VirtualBox, etc.) </li>
+<li>We strongly recommend that you do NOT use the virtual machine for development, but rather only for testing and debugging. While working on this assignment, it is quite likely you will crash the kernel and although you can kill and restart the VM, there will be no guarantee that your code will still be there (the VM tools on the teaching labs won’t guarantee you safe snapshots). To prevent your hard work from possible data corruption, either do an SVN checkout inside the VM and use your repository to commit your code periodically from within the VM, or make sure to at least back up your code periodically (e.g., by scp-ing it back to your teaching labs account).</li>
+</ol>
+<h2 id="Accessing-the-Virtual-Machine-on-the-teaching-labs"><a href="#Accessing-the-Virtual-Machine-on-the-teaching-labs" class="headerlink" title="Accessing the Virtual Machine on the teaching labs"></a>Accessing the Virtual Machine on the teaching labs</h2><p>Guidelines for accessing the VM on the teaching labs can be found here. Please<br>make sure to follow the instructions carefully.</p>
+<h2 id="Setup-VM-On-Your-Own-Machine"><a href="#Setup-VM-On-Your-Own-Machine" class="headerlink" title="Setup VM On Your Own Machine"></a>Setup VM On Your Own Machine</h2><p>Note: Your assignment has to ultimately be tested on a teaching lab machine.<br>However, if you wish to develop it and test it first on your own machine,<br>using virtualization software (do not test your assignment directly on your<br>computer!), then we will provide some basic instructions on how to do so.<br>Since VirtualBox is one of the most portable (as well as free) virtualization<br>software, here and here are some basic guidelines on how to install the VM<br>image in VirtualBox on your computer (of course, many tutorials can be found<br>online as well, so feel free to consult other sources if something does not<br>work well for your own machine).</p>
+<h2 id="Testing-your-code"><a href="#Testing-your-code" class="headerlink" title="Testing your code"></a>Testing your code</h2><p>To help you test your code, we have provided two testers, which you will also<br>find in your repositories. To encourage you to test as you go, we are<br>providing you with two testers:</p>
+<ul>
+<li>test_intercept.c - tests if your intercept and de-intercept commands work correctly. You should first implement these and make sure the tester passes all cases. </li>
+<li>test_full.c - tests if all commands (including intercept, release, and both monitoring commands) work properly. This is a superset of the first tester, and you should only use once your code passes the first tester.<br>The tester loads your module and tests some basic functionality. It is by no<br>means a comprehensive tool to ensure your code works for every corner case. To<br>ensure that your code works correctly in all possible scenarios, you should<br>add more test cases by modifying the testers (see code comments in main).<br>However, please do not submit your own tester files, because they will not be<br>marked. The tester will also not catch synchronization bugs, except for<br>blatant deadlocks. It is your responsibility to ensure that your code is not<br>likely to run into synchonization problems. Finally, when testing, you will<br>likely see the tester crash on various tests, due to bugs in your module.<br>During your debugging, please feel free to go in each tester, and comment out<br>some of the system calls being tested, if you wish to debug each test case in<br>isolation.</li>
+</ul>
+<h2 id="Other-Useful-Tips"><a href="#Other-Useful-Tips" class="headerlink" title="Other Useful Tips"></a>Other Useful Tips</h2><ul>
+<li>Again, run tests ONLY in the virtual machine, NOT native computer, unless you hate your laptop. </li>
+<li>Once more, we strongly recommend that you do NOT use the virtual machine for development, but rather only for testing and debugging. Since it is quite likely you will crash the kernel and there will be no guarantee that your code will be intact. To prevent your hard work from possible data corruption, either do an SVN checkout inside the VM and commit your code periodically, or make sure to at least back up your code periodically. </li>
+<li>Reading and understanding code is as important as (if not more important than) writing code. </li>
+<li>The comments in the starter code have a lot of information, make sure to read them carefully. </li>
+<li>Remember that when we de-intercept a syscall, the original system call must be restored in the system call table. For that you must properly store the original system call before replacing it. </li>
+<li>For debugging, learn how to use the printk function, which prints messages to kernel log. See tutorial notes as well. </li>
+<li>Use dmesg command to check the kernel log.</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>You will submit the interceptor.c file that contains your implementation,<br>along with the files required to build your program (including the provided<br>interceptor.h, Makefile, and Kbuild, which you should not modify). Do not<br>submit executables, or tester files!<br>For those working in pairs, please make sure to commit to the group<br>repository. If you previously had trouble forming groups on A0, please contact<br>me in advance. Do not leave this to the last minute, technical trouble with<br>your repository will not get you an extension!<br>Aside from this, please feel free to describe problems you’ve encountered,<br>what isn’t fully implemented (or doesn’t work fully), any special design<br>decisions you’ve taken, etc.<br>Make sure your code compiles without any errors or warnings.<br>Code that does not compile will receive zero marks!</p>
+<h2 id="Marking-scheme"><a href="#Marking-scheme" class="headerlink" title="Marking scheme"></a>Marking scheme</h2><p>Once again: code that does not compile will receive 0 marks!</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2017/12/15/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSC369HijackingSystemCallsandMonitoringProcesses/">http://saferman.github.io/2017/12/15/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSC369HijackingSystemCallsandMonitoringProcesses/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/12/15/C#%E4%BB%A3%E5%86%99%EF%BC%9ACOMP104BattleshipCardGame/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="C#代写：COMP104 Battleship Card Game">
+                        
+                        <span class="card-title">C#代写：COMP104 Battleship Card Game</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2017-12-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C#代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/12/12/Java%E4%BB%A3%E5%86%99%EF%BC%9AISOM3320StudentRecord/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java代写：ISOM3320 Student Record">
+                        
+                        <span class="card-title">Java代写：ISOM3320 Student Record</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-12-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

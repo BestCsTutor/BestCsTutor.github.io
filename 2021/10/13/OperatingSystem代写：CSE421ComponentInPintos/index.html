@@ -1,0 +1,960 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CSE421 Component In Pintos, 留学生CS|辅导|代写">
+    <meta name="description" content="根据已有的Pintos代码，按照要求增加以及完善Kernel的功能。  
+PreparationBefore beginning your work, please read the following carefully:
+
+Chapte">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CSE421 Component In Pintos | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CSE421 Component In Pintos</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-10-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>根据已有的Pintos代码，按照要求增加以及完善Kernel的功能。  </p>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>Before beginning your work, please read the following carefully:</p>
+<ul>
+<li>Chapters 8-9 from Silberschatz </li>
+<li>Lecture slides on Memory and Virtual Memory </li>
+<li>Pintos Introduction </li>
+<li>Pintos Reference Guide </li>
+<li>Complete Pintos Documentation (PDF file) – for reference only</li>
+</ul>
+<h2 id="Task-Implement-User-Programs-in-Pintos-OS"><a href="#Task-Implement-User-Programs-in-Pintos-OS" class="headerlink" title="Task: Implement User Programs in Pintos OS"></a>Task: Implement User Programs in Pintos OS</h2><p>In this project, you are asked to perform “kernel” level programming of the<br>User Programs component in the Pintos operation system. The base code already<br>supports loading and running user programs, but no I&#x2F;O or interactivity is<br>possible. In this project, you will enable programs to interact with the OS<br>via system calls.</p>
+<h3 id="Setting-Up-The-Pintos-Environment"><a href="#Setting-Up-The-Pintos-Environment" class="headerlink" title="Setting Up The Pintos Environment"></a>Setting Up The Pintos Environment</h3><p>Project-2 does not depend on project-1. No code from project-1 is required for<br>this assignment. So, you can choose to continue working on your existing code<br>base, or you can fetch a clean copy of the Pintos source code (especially if<br>you think you have messed up in project-1).<br>If you want to continue working on your existing code base, please jump to<br>Section 3 – Implementation of the Project. Otherwise, follow the steps below<br>if you want to get a clean copy of the Pintos source code:<br>Set up Pintos on departmental servers (i.e. timberlake) by following the<br>detailed instructions from the “How to configure Pintos on Timberlake” post on<br>Piazza under Resources. Please follow these instructions very carefully (line<br>by line) to install and run Pintos without any problems.<br>To learn how to run, debug and test Pintos code, please read the Section 1<br>[Pintos Introduction from Pintos Manual.</p>
+<h2 id="Implementation-of-the-Project"><a href="#Implementation-of-the-Project" class="headerlink" title="Implementation of the Project"></a>Implementation of the Project</h2><p>You will be working primarily in the “userprog” directory of the source tree<br>for this assignment. Compilation should be done in the “userprog” directory.</p>
+<h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Up to now, all of the code you have run under Pintos has been part of the<br>operating system kernel. This means, for example, that all the test code from<br>the last assignment ran as part of the kernel, with full access to privileged<br>parts of the system. Once we start running user programs on top of the<br>operating system, this is no longer true. This project deals with the<br>consequences.<br>We allow more than one process to run at a time. Each process has one thread<br>(multi-threaded processes are not supported). User programs are written under<br>the illusion that they have the entire machine. This means that when you load<br>and run multiple processes at a time, you must manage memory, scheduling, and<br>other state correctly to maintain this illusion.<br>In the previous project, we compiled our test code directly into your kernel,<br>so we had to require specific function interfaces within the kernel. From now<br>on, we will test your operating system by running user programs. This gives<br>you much greater freedom. You must make sure that the user program interface<br>meets the specifications described here, but given that constraint you are<br>free to restructure or rewrite kernel code however you wish.</p>
+<h4 id="Source-Files"><a href="#Source-Files" class="headerlink" title="Source Files"></a>Source Files</h4><p>The easiest way to get an overview of the programming you will be doing is to<br>simply go over each part you’ll be working with. In ‘userprog’, you’ll find a<br>small number of files, but here is where the bulk of your work will be:</p>
+<ul>
+<li>‘process.c’ </li>
+<li>‘process.h’<br>Loads ELF binaries and starts processes.</li>
+<li>‘pagedir.c’ </li>
+<li>‘pagedir.h’<br>A simple manager for 80x86 hardware page tables. Although you probably won’t<br>want to modify this code for this project, you may want to call some of its<br>functions.</li>
+<li>‘syscall.c’ </li>
+<li>‘syscall.h’<br>Whenever a user process wants to access some kernel functionality, it invokes<br>a system call. This is a skeleton system call handler. Currently, it just<br>prints a message and terminates the user process. In part 2 of this project<br>you will add code to do everything else needed by system calls.</li>
+<li>‘exception.c’ </li>
+<li>‘exception.h’<br>When a user process performs a privileged or prohibited operation, it traps<br>into the kernel as an “exception” or “fault.”1 These files handle exceptions.<br>Currently all exceptions simply print a message and terminate the process.<br>Some, but not all, solutions to project 2 require modifying page_fault() in<br>this file.</li>
+<li>‘gdt.c’ </li>
+<li>‘gdt.h’<br>The 80x86 is a segmented architecture. The Global Descriptor Table (GDT) is a<br>table that describes the segments in use. These files set up the GDT. You<br>should not need to modify these files for any of the projects. You can read<br>the code if you’re interested in how the GDT works.</li>
+<li>‘tss.c’ </li>
+<li>‘tss.h’<br>The Task-State Segment (TSS) is used for 80x86 architectural task switching.<br>Pintos uses the TSS only for switching stacks when a user process enters an<br>interrupt handler, as does Linux. You should not need to modify these files<br>for any of the projects. You can read the code if you’re interested in how the<br>TSS works.</li>
+</ul>
+<h3 id="Using-the-File-System"><a href="#Using-the-File-System" class="headerlink" title="Using the File System"></a>Using the File System</h3><p>You will need to interface to the file system code for this project, because<br>user programs are loaded from the file system and many of the system calls you<br>must implement deal with the file system. However, the focus of this project<br>is not the file system, so we have provided a simple but complete file system<br>in the ‘filesys’ directory. You will want to look over the ‘filesys.h’ and<br>‘file.h’ interfaces to understand how to use the file system, and especially<br>its many limitations.<br>There is no need to modify the file system code for this project, and so we<br>recommend that you do not. Working on the file system is likely to distract<br>you from this project’s focus.<br>You will have to tolerate the following limitations of the file system:</p>
+<ul>
+<li>No internal synchronization. Concurrent accesses will interfere with one another. You should use synchronization to ensure that only one process at a time is executing file system code. </li>
+<li>File size is fixed at creation time. The root directory is represented as a file, so the number of files that may be created is also limited. </li>
+<li>File data is allocated as a single extent, that is, data in a single file must occupy a contiguous range of sectors on disk. External fragmentation can therefore become a serious problem as a file system is used over time. </li>
+<li>No subdirectories. </li>
+<li>File names are limited to 14 characters. </li>
+<li>A system crash mid-operation may corrupt the disk in a way that cannot be repaired automatically. There is no file system repair tool anyway.<br>One important feature is included:</li>
+<li>Unix-like semantics for filesys_remove() are implemented. That is, if a file is open when it is removed, its blocks are not deallocated and it may still be accessed by any threads that have it open, until the last one closes it.<br>You need to be able to create a simulated disk with a file system partition.<br>The pintos-mkdisk program provides this functionality. From the<br>‘userprog&#x2F;build’ directory, execute pintos-mkdisk filesys.dsk –filesys-size&#x3D;2.<br>This command creates a simulated disk named ‘filesys.dsk’ that contains a 2 MB<br>Pintos file system partition. Then format the file system partition by passing<br>‘-f -q’ on the kernel’s command line: pintos -f -q. The ‘-f’ option causes the<br>file system to be formatted, and ‘-q’ causes Pintos to exit as soon as the<br>format is done.<br>You’ll need a way to copy files in and out of the simulated file system. The<br>pintos ‘-p’ (“put”) and ‘-g’ (“get”) options do this. To copy ‘file’ into the<br>Pintos file system, use the command ‘pintos -p file – -q’. (The ‘–’ is needed<br>because ‘-p’ is for the pintos script, not for the simulated kernel.) To copy<br>it to the Pintos file system under the name ‘newname’, add ‘-a newname’:<br>‘pintos -p file -a newname – -q’. The commands for copying files out of a VM<br>are similar, but substitute ‘-g’ for ‘-p’.<br>Incidentally, these commands work by passing special commands extract and<br>append on the kernel’s command line and copying to and from a special<br>simulated “scratch” partition. If you’re very curious, you can look at the<br>pintos script as well as ‘filesys&#x2F;fsutil.c’ to learn the implementation<br>details.<br>Here’s a summary of how to create a disk with a file system partition, format<br>the file system, copy the echo program into the new disk, and then run echo,<br>passing argument x. (Argument passing won’t work until you implemented it.) It<br>assumes that you’ve already built the examples in ‘examples’ and that the<br>current directory is ‘userprog&#x2F;build’:<br>pintos-mkdisk filesys.dsk –filesys-size&#x3D;2<br>pintos -f -q<br>pintos -p ..&#x2F;..&#x2F;examples&#x2F;echo -a echo – -q<br>pintos -q run ‘echo x’<br>The three final steps can actually be combined into a single command:<br>pintos-mkdisk filesys.dsk –filesys-size&#x3D;2<br>pintos -p ..&#x2F;..&#x2F;examples&#x2F;echo -a echo – -f -q run ‘echo x’<br>If you don’t want to keep the file system disk around for later use or<br>inspection, you can even combine all four steps into a single command. The<br>–filesys-size&#x3D;n option creates a temporary file system partition approximately<br>n megabytes in size just for the duration of the pintos run. The Pintos<br>automatic test suite makes extensive use of this syntax:<br>pintos –filesys-size&#x3D;2 -p ..&#x2F;..&#x2F;examples&#x2F;echo -a echo – -f -q run ‘echo x’<br>You can delete a file from the Pintos file system using the rm file kernel<br>action, e.g. pintos -q rm file. Also, ls lists the files in the file system<br>and cat file prints a file’s contents to the display.</li>
+</ul>
+<h3 id="How-User-Programs-Work"><a href="#How-User-Programs-Work" class="headerlink" title="How User Programs Work"></a>How User Programs Work</h3><p>Pintos can run normal C programs, as long as they fit into memory and use only<br>the system calls you implement. Notably, malloc() cannot be implemented<br>because none of the system calls required for this project allow for memory<br>allocation. Pintos also can’t run programs that use floating point operations,<br>since the kernel doesn’t save and restore the processor’s floating-point unit<br>when switching threads.<br>The ‘src&#x2F;examples’ directory contains a few sample user programs. The<br>‘Makefile’ in this directory compiles the provided examples, and you can edit<br>it to compile your own programs as well. Some of the example programs will<br>only work once projects 3 or 4 have been implemented.<br>Pintos can load ELF executables with the loader provided for you in<br>‘userprog&#x2F;process.c’. ELF is a file format used by Linux, Solaris, and many<br>other operating systems for object files, shared libraries, and executables.<br>You can actually use any compiler and linker that output 80x86 ELF executables<br>to produce programs for Pintos. (We’ve provided compilers and linkers that<br>should do just fine.)<br>You should realize immediately that, until you copy a test program to the<br>simulated file system, Pintos will be unable to do useful work. You won’t be<br>able to do interesting things until you copy a variety of programs to the file<br>system. You might want to create a clean reference file system disk and copy<br>that over whenever you trash your ‘filesys.dsk’ beyond a useful state, which<br>may happen occasionally while debugging.</p>
+<h3 id="Virtual-Memory-Layout"><a href="#Virtual-Memory-Layout" class="headerlink" title="Virtual Memory Layout"></a>Virtual Memory Layout</h3><p>Virtual memory in Pintos is divided into two regions: user virtual memory and<br>kernel virtual memory. User virtual memory ranges from virtual address 0 up to<br>PHYS_BASE, which is defined in ‘threads&#x2F;vaddr.h’ and defaults to 0xc0000000 (3<br>GB). Kernel virtual memory occupies the rest of the virtual address space,<br>from PHYS_BASE up to 4 GB.<br>User virtual memory is per-process. When the kernel switches from one process<br>to another, it also switches user virtual address spaces by changing the<br>processor’s page directory base register (see pagedir_activate() in<br>‘userprog&#x2F;pagedir.c’). struct thread contains a pointer to a process’s page<br>table.<br>Kernel virtual memory is global. It is always mapped the same way, regardless<br>of what user process or kernel thread is running. In Pintos, kernel virtual<br>memory is mapped one-to-one to physical memory, starting at PHYS_BASE. That<br>is, virtual address PHYS_BASE accesses physical address 0, virtual address<br>PHYS_BASE + 0x1234 accesses physical address 0x1234, and so on up to the size<br>of the machine’s physical memory.<br>A user program can only access its own user virtual memory. An attempt to<br>access kernel virtual memory causes a page fault, handled by page_fault() in<br>‘userprog&#x2F;exception.c’, and the process will be terminated. Kernel threads can<br>access both kernel virtual memory and, if a user process is running, the user<br>virtual memory of the running process. However, even in the kernel, an attempt<br>to access memory at an unmapped user virtual address will cause a page fault.</p>
+<h3 id="Typical-Memory-Layout"><a href="#Typical-Memory-Layout" class="headerlink" title="Typical Memory Layout"></a>Typical Memory Layout</h3><p>Conceptually, each process is free to lay out its own user virtual memory<br>however it chooses. In practice, user virtual memory is laid out like this:<br>In this project, the user stack is fixed in size. Traditionally, the size of<br>the uninitialized data segment can be adjusted with a system call, but you<br>will not have to implement this.<br>The code segment in Pintos starts at user virtual address 0x08048000,<br>approximately 128 MB from the bottom of the address space.<br>The linker sets the layout of a user program in memory, as directed by a<br>“linker script” that tells it the names and locations of the various program<br>segments. You can learn more about linker scripts by reading the \Scripts”<br>chapter in the linker manual, accessible via ‘info ld’.<br>To view the layout of a particular executable, run objdump (80x86) or<br>i386-elf-objdump (SPARC) with the ‘-p’ option.</p>
+<h3 id="Accessing-User-Memory"><a href="#Accessing-User-Memory" class="headerlink" title="Accessing User Memory"></a>Accessing User Memory</h3><p>As part of a system call, the kernel must often access memory through pointers<br>provided by a user program. The kernel must be very careful about doing so,<br>because the user can pass a null pointer, a pointer to unmapped virtual<br>memory, or a pointer to kernel virtual address space (above PHYS_BASE). All of<br>these types of invalid pointers must be rejected without harm to the kernel or<br>other running processes, by terminating the offending process and freeing its<br>resources.<br>There are at least two reasonable ways to do this correctly. The first method<br>is to verify the validity of a user-provided pointer, then dereference it. If<br>you choose this route, you’ll want to look at the functions in<br>‘userprog&#x2F;pagedir.c’ and in ‘threads&#x2F;vaddr.h’. This is the simplest way to<br>handle user memory access.<br>The second method is to check only that a user pointer points below PHYS_BASE,<br>then dereference it. An invalid user pointer will cause a \page fault” that<br>you can handle by modifying the code for page_fault() in<br>‘userprog&#x2F;exception.c’. This technique is normally faster because it takes<br>advantage of the processor’s MMU, so it tends to be used in real kernels<br>(including Linux).<br>In either case, you need to make sure not to “leak” resources. For example,<br>suppose that your system call has acquired a lock or allocated memory with<br>malloc(). If you encounter an invalid user pointer afterward, you must still<br>be sure to release the lock or free the page of memory. If you choose to<br>verify user pointers before dereferencing them, this should be<br>straightforward. It’s more difficult to handle if an invalid pointer causes a<br>page fault, because there’s no way to return an error code from a memory<br>access. Therefore, for those who want to try the latter technique, we’ll<br>provide a little bit of helpful code:<br>    &#x2F;* Reads a byte at user virtual address UADDR.<br>       UADDR must be below PHYS_BASE.<br>       Returns the byte value if successful, -1 if a segfault<br>       occurred. *&#x2F;<br>    static int<br>    get_user (const uint8_t *uaddr)<br>    {<br>        int result;<br>        asm (“movl $1f, %0; movzbl %1, %0; 1:”<br>               : “&#x3D;&amp;a” (result) : “m” (<em>uaddr));<br>        return result;<br>    }<br>    &#x2F;</em> Writes BYTE to user address UDST.<br>       UDST must be below PHYS_BASE.<br>       Returns true if successful, false if a segfault occurred. *&#x2F;<br>    static bool<br>    put_user (uint8_t *udst, uint8_t byte)<br>    {<br>        int error_code;<br>        asm (“movl $1f, %0; movb %b2, %1; 1:”<br>               : “&#x3D;&amp;a” (error_code), “&#x3D;m” (*udst) : “q” (byte));<br>        return error_code !&#x3D; -1;<br>    }<br>—|—  </p>
+<h2 id="Suggested-Order-of-Implementation"><a href="#Suggested-Order-of-Implementation" class="headerlink" title="Suggested Order of Implementation"></a>Suggested Order of Implementation</h2><p>We suggest first implementing the following, which can happen in parallel:</p>
+<ul>
+<li>Argument passing. Every user program will page fault immediately until argument passing is implemented.<br>For now, you may simply wish to change<br><code>*esp = PHYS_BASE;</code><br>to<br><code>*esp = PHYS_BASE - 12;</code><br>in setup_stack(). That will work for any test program that doesn’t examine its<br>arguments, although its name will be printed as (null). Until you implement<br>argument passing, you should only run programs without passing command-line<br>arguments. Attempting to pass arguments to a program will include those<br>arguments in the name of the program, which will probably fail.</li>
+<li>User memory access. All system calls need to read user memory. Few system calls need to write to user memory. </li>
+<li>System call infrastructure. Implement enough code to read the system call number from the user stack and dispatch to a handler based on it. </li>
+<li>The exit system call. Every user program that finishes in the normal way calls exit. Even a program that returns from main() calls exit indirectly (see _start() in ‘lib&#x2F;user&#x2F;entry.c’). </li>
+<li>The write system call for writing to fd 1, the system console. All of our test programs write to the console (the user process version of printf() is implemented this way), so they will all malfunction until write is available. </li>
+<li>For now, change process_wait() to an infinite loop (one that waits forever). The provided implementation returns immediately, so Pintos will power off before any processes actually get to run. You will eventually need to provide a correct implementation.<br>After the above are implemented, user processes should work minimally. At the<br>very least, they can write to the console and exit correctly. You can then<br>refine your implementation so that some of the tests start to pass.</li>
+</ul>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><h3 id="Process-Termination-Messages"><a href="#Process-Termination-Messages" class="headerlink" title="Process Termination Messages"></a>Process Termination Messages</h3><p>Whenever a user process terminates, because it called exit or for any other<br>reason, print the process’s name and exit code, formatted as if printed by<br>printf (“%s: exit(%d)\n”, …);. The name printed should be the full name passed<br>to process_execute(), omitting command-line arguments. Do not print these<br>messages when a kernel thread that is not a user process terminates, or when<br>the halt system call is invoked. The message is optional when a process fails<br>to load.<br>Aside from this, don’t print any other messages that Pintos as provided<br>doesn’t already print. You may _nd extra messages useful during debugging, but<br>they will confuse the grading scripts and thus lower your score.</p>
+<h3 id="Argument-Passing"><a href="#Argument-Passing" class="headerlink" title="Argument Passing"></a>Argument Passing</h3><p>Currently, process_execute() does not support passing arguments to new<br>processes. Implement this functionality, by extending process_execute() so<br>that instead of simply taking a program file name as its argument, it divides<br>it into words at spaces. The _rst word is the program name, the second word is<br>the _rst argument, and so on. That is, process_execute(“grep foo bar”) should<br>run grep passing two arguments foo and bar.<br>Within a command line, multiple spaces are equivalent to a single space, so<br>that process_execute(“grep foo bar”) is equivalent to our original example.<br>You can impose a reasonable limit on the length of the command line arguments.<br>For example, you could limit the arguments to those that will _t in a single<br>page (4 kB). (There is an unrelated limit of 128 bytes on command-line<br>arguments that the pintos utility can pass to the kernel.)<br>You can parse argument strings any way you like. If you’re lost, look at<br>strtok_r(), prototyped in ‘lib&#x2F;string.h’ and implemented with thorough<br>comments in ‘lib&#x2F;string.c’. You can _nd more about it by looking at the man<br>page (run man strtok_r at the prompt).</p>
+<h3 id="System-Calls"><a href="#System-Calls" class="headerlink" title="System Calls"></a>System Calls</h3><p>Implement the system call handler in ‘userprog&#x2F;syscall.c’. The skeleton<br>implementation we provide \handles” system calls by terminating the process.<br>It will need to retrieve the system call number, then any system call<br>arguments, and carry out appropriate actions.<br>Implement the following system calls. The prototypes listed are those seen by<br>a user program that includes ‘lib&#x2F;user&#x2F;syscall.h’. (This header, and all<br>others in ‘lib&#x2F;user’, are for use by user programs only.) System call numbers<br>for each system call are de_ned in ‘lib&#x2F;syscall-nr.h’:</p>
+<ul>
+<li>void halt (void)<br>Terminates Pintos by calling shutdown_power_off() (declared in<br>‘devices&#x2F;shutdown.h’). This should be seldom used, because you lose some<br>information about possible deadlock situations, etc.</li>
+<li>void exit (int status)<br>Terminates the current user program, returning status to the kernel. If the<br>process’s parent waits for it (see below), this is the status that will be<br>returned. Conventionally, a status of 0 indicates success and nonzero values<br>indicate errors.</li>
+<li>pid_t exec (const char *cmd_line)<br>Runs the executable whose name is given in cmd line, passing any given<br>arguments, and returns the new process’s program id (pid). Must return pid -1,<br>which otherwise should not be a valid pid, if the program cannot load or run<br>for any reason. Thus, the parent process cannot return from the exec until it<br>knows whether the child process successfully loaded its executable. You must<br>use appropriate synchronization to ensure this.</li>
+<li>int wait (pid t pid)<br>Waits for a child process pid and retrieves the child’s exit status. If pid is<br>still alive, waits until it terminates. Then, returns the status that pid<br>passed to exit. If pid did not call exit(), but was terminated by the kernel<br>(e.g. killed due to an exception), wait(pid) must return -1. It is perfectly<br>legal for a parent process to wait for child processes that have already<br>terminated by the time the parent calls wait, but the kernel must still allow<br>the parent to retrieve its child’s exit status, or learn that the child was<br>terminated by the kernel. wait must fail and return -1 immediately if any of<br>the following conditions is true:<ul>
+<li>pid does not refer to a direct child of the calling process. pid is a direct child of the calling process if and only if the calling process received pid as a return value from a successful call to exec.<br>Note that children are not inherited: if A spawns child B and B spawns child<br>process C, then A cannot wait for C, even if B is dead. A call to wait(C) by<br>process A must fail. Similarly, orphaned processes are not assigned to a new<br>parent if their parent process exits before they do.</li>
+<li>The process that calls wait has already called wait on pid. That is, a process may wait for any given child at most once.<br>Processes may spawn any number of children, wait for them in any order, and<br>may even exit without having waited for some or all of their children. Your<br>design should consider all the ways in which waits can occur. All of a<br>process’s resources, including its struct thread, must be freed whether its<br>parent ever waits for it or not, and regardless of whether the child exits<br>before or after its parent.<br>You must ensure that Pintos does not terminate until the initial process<br>exits. The supplied Pintos code tries to do this by calling process_wait() (in<br>‘userprog&#x2F;process.c’) from main() (in ‘threads&#x2F;init.c’). We suggest that you<br>implement process_wait() according to the comment at the top of the function<br>and then implement the wait system call in terms of process_wait().<br>Implementing this system call requires considerably more work than any of the<br>rest.</li>
+</ul>
+</li>
+<li>bool create (const char *file, unsigned initial_size)<br>Creates a new file called ‘file’ initially initial_size bytes in size. Returns<br>true if successful, false otherwise. Creating a new file does not open it:<br>opening the new file is a separate operation which would require a open system<br>call.</li>
+<li>bool remove (const char *file)<br>Deletes the file called ‘file’. Returns true if successful, false otherwise. A<br>file may be removed regardless of whether it is open or closed, and removing<br>an open file does not close it.</li>
+<li>int open (const char *file)<br>Opens the file called ‘file’. Returns a nonnegative integer handle called a<br>“file descriptor” (fd), or -1 if the file could not be opened. File<br>descriptors numbered 0 and 1 are reserved for the console: fd 0 (STDIN_FILENO)<br>is standard input, fd 1 (STDOUT_FILENO) is standard output. The open system<br>call will never return either of these file descriptors, which are valid as<br>system call arguments only as explicitly described below.<br>Each process has an independent set of file descriptors. File descriptors are<br>not inherited by child processes. When a single file is opened more than once,<br>whether by a single process or different processes, each open returns a new<br>file descriptor. Different file descriptors for a single file are closed<br>independently in separate calls to close and they do not share a file<br>position.</li>
+<li>int filesize (int fd)<br>Returns the size, in bytes, of the file open as fd.</li>
+<li>int read (int fd, void *buffer, unsigned size)<br>Reads size bytes from the file open as fd into buffer. Returns the number of<br>bytes actually read (0 at end of file), or -1 if the file could not be read<br>(due to a condition other than end of file). Fd 0 reads from the keyboard<br>using input_getc().</li>
+<li>int write (int fd, const void *buffer, unsigned size)<br>Writes size bytes from buffer to the open file fd. Returns the number of bytes<br>actually written, which may be less than size if some bytes could not be<br>written.<br>Writing past end-of-file would normally extend the file, but file growth is<br>not implemented by the basic file system. The expected behavior is to write as<br>many bytes as possible up to end-of-file and return the actual number written,<br>or 0 if no bytes could be written at all.<br>Fd 1 writes to the console. Your code to write to the console should write all<br>of buffer in one call to putbuf(), at least as long as size is not bigger than<br>a few hundred bytes. (It is reasonable to break up larger buffers.) Otherwise,<br>lines of text output by different processes may end up interleaved on the<br>console, confusing both human readers and our grading scripts.</li>
+<li>void seek (int fd, unsigned position)<br>Changes the next byte to be read or written in open file fd to position,<br>expressed in bytes from the beginning of the file. (Thus, a position of 0 is<br>the file’s start.) A seek past the current end of a file is not an error. A<br>later read obtains 0 bytes, indicating end of file. A later write extends the<br>file, filling any unwritten gap with zeros. (However, in Pintos files have a<br>fixed length by default, so writes past end of file will return an error.)<br>These semantics are implemented in the file system and do not require any<br>special effort in system call implementation.</li>
+<li>unsigned tell (int fd)<br>Returns the position of the next byte to be read or written in open file fd,<br>expressed in bytes from the beginning of the file.</li>
+<li>void close (int fd)<br>Closes file descriptor fd. Exiting or terminating a process implicitly closes<br>all its open file descriptors, as if by calling this function for each one.<br>The file defines other syscalls, but you can ignore them for this project.<br>To implement syscalls, you need to provide ways to read and write data in user<br>virtual address space. You need this ability before you can even obtain the<br>system call number, because the system call number is on the user’s stack in<br>the user’s virtual address space. This can be a bit tricky: what if the user<br>provides an invalid pointer, a pointer into kernel memory, or a block<br>partially in one of those regions? You should handle these cases by<br>terminating the user process. We recommend writing and testing this code<br>before implementing any other system call functionality.<br>You must synchronize system calls so that any number of user processes can<br>make them at once. In particular, it is not safe to call into the file system<br>code provided in the ‘filesys’ directory from multiple threads at once. Your<br>system call implementation must treat the file system code as a critical<br>section. Don’t forget that process_execute() also accesses files. For now, we<br>recommend against modifying code in the ‘filesys’ directory.<br>We have provided you a user-level function for each system call in<br>‘lib&#x2F;user&#x2F;syscall.c’. These provide a way for user processes to invoke each<br>system call from a C program. Each uses a little inline assembly code to<br>invoke the system call and (if appropriate) returns the system call’s return<br>value.<br>When you’re done with this part, and forevermore, Pintos should be<br>bulletproof. Nothing that a user program can do should ever cause the OS to<br>crash, panic, fail an assertion, or otherwise malfunction. It is important to<br>emphasize this point: our tests will try to break your system calls in many,<br>many ways. You need to think of all the corner cases and handle them. The sole<br>way a user program should be able to cause the OS to halt is by invoking the<br>halt system call.<br>If a system call is passed an invalid argument, acceptable options include<br>returning an error value (for those calls that return a value), returning an<br>undefined value, or terminating the process.</li>
+</ul>
+<h3 id="5-4-Denying-Writes-to-Executables"><a href="#5-4-Denying-Writes-to-Executables" class="headerlink" title="5.4 Denying Writes to Executables"></a>5.4 Denying Writes to Executables</h3><p>Add code to deny writes to files in use as executables. Many OSes do this<br>because of the unpredictable results if a process tried to run code that was<br>in the midst of being changed on disk.<br>You can use file_deny_write() to prevent writes to an open file. Calling<br>file_allow_write() on the file will re-enable them (unless the file is denied<br>writes by another opener).<br>Closing a file will also re-enable writes. Thus, to deny writes to a process’s<br>executable, you<br>must keep it open as long as the process is still running.</p>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>Your project grade will be based on our tests. Each project has several tests,<br>each of which has a name beginning with “tests”. To completely test your<br>submission, invoke “make check” from the project “build” directory. This will<br>build and run each test and print a “pass” or “fail” message for each one.<br>When a test fails, make check also prints some details of the reason for<br>failure. After running all the tests, make check also prints a summary of the<br>test results.<br>You can also run individual tests one at a time. A given test t writes its<br>output to “t.output”, then a script scores the output as “pass” or “fail” and<br>writes the verdict to “t.result”. To run and grade a single test, make the<br>“.result” file explicitly from the “build” directory, e.g. make<br>tests&#x2F;userprog&#x2F;args-none.result. If make says that the test result is up-to-<br>date, but you want to re-run it anyway, either run make clean or delete the<br>“.output” file by hand.<br>By default, each test provides feedback only at completion, not during its<br>run. If you prefer, you can observe the progress of each test by specifying<br>“VERBOSE&#x3D;1” on the make command line, as in make check VERBOSE&#x3D;1. You can also<br>provide arbitrary options to the pintos run by the tests with<br>“PINTOSOPTS&#x3D;’…’”, e.g. make check PINTOSOPTS&#x3D;’-j 1’ to select a jitter value<br>of 1.<br>All of the tests and related files are in “pintos&#x2F;src&#x2F;tests”.</p>
+<h2 id="Design-Document"><a href="#Design-Document" class="headerlink" title="Design Document"></a>Design Document</h2><p>Before you turn in your project, you must copy the Project 2 Design Document<br>Template (userprog.tmpl) into your source tree under the name<br>“pintos&#x2F;src&#x2F;threads&#x2F;DESIGNDOC” and fill it in. We recommend that you read the<br>design document template before you start working on the project.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/10/13/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSE421ComponentInPintos/">http://saferman.github.io/2021/10/13/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSE421ComponentInPintos/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/10/13/NodeJS%E4%BB%A3%E5%86%99%EF%BC%9ACSE2WDCNeverwrote/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="NodeJS代写：CSE2WDC Neverwrote">
+                        
+                        <span class="card-title">NodeJS代写：CSE2WDC Neverwrote</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/NodeJS%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">NodeJS代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/10/13/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS1110Functions/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Python代写：CS1110 Functions">
+                        
+                        <span class="card-title">Python代写：CS1110 Functions</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

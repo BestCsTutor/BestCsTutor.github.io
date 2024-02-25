@@ -1,0 +1,983 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Security代写：CS588 Attacking RSA, 留学生CS|辅导|代写">
+    <meta name="description" content="不正确的使用RSA算法会导致脆弱性，这个lab作业模拟脆弱的RSA加密过程，并完成对应的攻击代码。  
+IntroductionIn this lab, you will investigate vulnerabilities in RSA">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Security代写：CS588 Attacking RSA | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Security代写：CS588 Attacking RSA</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Security代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-02-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>不正确的使用RSA算法会导致脆弱性，这个lab作业模拟脆弱的RSA加密过程，并完成对应的攻击代码。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this lab, you will investigate vulnerabilities in RSA, when it is used<br>incorrectly.</p>
+<h3 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h3><ul>
+<li>Understand how to apply RSA encryption and digital signatures. </li>
+<li>Investigate how using RSA incorrectly can compromise confidentiality and integrity.</li>
+</ul>
+<h2 id="Getting-Familiar-with-RSA"><a href="#Getting-Familiar-with-RSA" class="headerlink" title="Getting Familiar with RSA"></a>Getting Familiar with RSA</h2><h3 id="Textbook-RSA"><a href="#Textbook-RSA" class="headerlink" title="Textbook RSA"></a>Textbook RSA</h3><p>Here, we summarize a naive version of the RSA (“textbook RSA”) encryption and<br>digital signatures schemes. This version of RSA should not be used; you will<br>show in this lab several ways in which it can be vulnerable. Consult <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/RSA_(cryptosystem"><br>https://en.wikipedia.org/wiki/RSA_(cryptosystem
+</a> ) for more detail.</p>
+<h3 id="Encryption"><a href="#Encryption" class="headerlink" title="Encryption"></a>Encryption</h3><p>Below we describe the key generation (KeyGen), encryption (Enc), and<br>decryption (Dec) algorithms of RSA.</p>
+<ol>
+<li>KeyGen:<br>* (a) Choose two random primes p and q.<br>* (b) Let n &#x3D; pq be the modulus.<br>* (c) Select a random encryption exponent e such that the greatest common denominator of e and (p - 1)(q - 1) is 1 (that is, e and (p - 1)(q - 1) are relatively prime).<br>* (d) Let the decryption exponent d be e^-1 mod (p - 1)(q - 1).<br>* (e) Return the public key pk &#x3D; (n, e) and the secret key sk &#x3D; d. </li>
+<li>Enc(pk &#x3D; (n, e), m), where m is a message to be encrypted:<br>* (a) Return the ciphertext c &#x3D; m^e mod n. </li>
+<li>Dec(sk &#x3D; d, c), where c is a ciphertext to be decrypted:<br>* (a) Return the recovered message m &#x3D; c^d mod n.<br>As an example, say that during KeyGen, I choose p &#x3D; 5 and q &#x3D; 11. Therefore, I<br>have n &#x3D; 55. If I choose e &#x3D; 3, I need to find a d such that 3d mod (5 - 1)(11</li>
+</ol>
+<ul>
+<li><ol>
+<li>&#x3D; 3d mod 40 &#x3D; 1. I can try a few numbers, and see that 3 27 mod 40 &#x3D; 81<br>mod 40 &#x3D; 1, so I set d &#x3D; 27.<br>Now, say that you know only n &#x3D; 55 and e &#x3D; 3. Encryption is just raising the<br>message m to the power of e; you can encrypt m &#x3D; 51 as c &#x3D; 51^3 mod 55 &#x3D;<br>132651 mod 55 &#x3D; 46.<br>Decryption is the inverse of encryption; it takes the e-th root of the<br>ciphertext. e and d are chosen in such a way that raising to the power of d is<br>the same as taking the eth root. Therefore, I, who also know d &#x3D; 27, can<br>decrypt c &#x3D; 46 by taking m &#x3D; 46^27 mod 55 &#x3D; 51.<br>Taking the eth root of a value modulo an n whose factorization you don’t know<br>is considered to be unrealistic for large numbers. However, in our example,<br>someone else, who doesn’t know d &#x3D; 27, can also figure out what m is, just by<br>trying each number modulo 55 and raising it to e &#x3D; 3. (If they get 46, they<br>know they’ve found the right m!) This is only possible because we chose small<br>p and q. If p and q are over 1000 bits long, instead of just 5 bits long,<br>decryption without knowledge of d (or the factorization of n) becomes<br>unrealistic.</li>
+</ol>
+</li>
+</ul>
+<h3 id="Digital-Signatures"><a href="#Digital-Signatures" class="headerlink" title="Digital Signatures"></a>Digital Signatures</h3><p>In “textbook RSA” digital signatures, key generation (KeyGen) is exactly the<br>same as it is in the encryption scheme described above. Signing (Sig) is<br>reminiscent of decryption, and verification (Ver) is reminiscent of<br>encryption.</p>
+<ol>
+<li>Sig(sk &#x3D; d, m), where m is a message to be signed:<br>* (a) Return the signature σ &#x3D; m^d mod n. </li>
+<li>Ver(m, σ, pk &#x3D; (n, e)), where m is a message and is a signature to be verified:<br>* (a) Verify that σ^e mod n &#x3D; m mod n.</li>
+</ol>
+<h2 id="Using-RSA-Securely"><a href="#Using-RSA-Securely" class="headerlink" title="Using RSA Securely"></a>Using RSA Securely</h2><p>In order to avoid vulnerabilities such as the ones explored in this lab,<br>instead of “textbook RSA”, RSA PKCS #1<br>(<a href="ftp://ftp.rsasecurity.com/pub/pkcs/ascii/pkcs-1.asc">ftp://ftp.rsasecurity.com/pub/pkcs/ascii/pkcs-1.asc</a>) is used.</p>
+<h3 id="Encryption-1"><a href="#Encryption-1" class="headerlink" title="Encryption"></a>Encryption</h3><p>To encrypt a message m using RSA PKCS #1 version 1.5, the message is padded as<br>follows.<br>The result is encrypted using the “textbook RSA” encryption function.</p>
+<h3 id="Digital-Signatures-1"><a href="#Digital-Signatures-1" class="headerlink" title="Digital Signatures"></a>Digital Signatures</h3><p>To sign a message m using RSA PKCS #1 version 1.5, the message is padded as<br>follows:<br>The result is signed using the “textbook RSA” signing function. The algorithms<br>that check the digital signatures need to be implemented very carefully. In<br>Part 5, you will show that if the implementation of the verification algorithm<br>is slightly off, PKCS1.5 signatures can be forged.<br>NOTE: The implementation vulnerabilities that are explored in this lab have<br>occurred often enough in the wild that many cryptographers and practitioners<br>have concluded that using RSA PKCS v1.5 is not a good idea. RSA-OAEP is the<br>suggested choice for RSA encryption. See <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc3560"> https://tools.ietf.org/html/rfc3560
+</a> .)<br>Avoiding the attacks discussed in this lab has also been cited as motivation<br>for using elliptic curve cryptographic signatures (e.g., ECDSA) instead of<br>RSA.<br>Nevertheless, RSA is still widely used in practice.</p>
+<h2 id="Textbook-RSA-in-Python"><a href="#Textbook-RSA-in-Python" class="headerlink" title="Textbook RSA in Python"></a>Textbook RSA in Python</h2><p>You can experiment with RSA yourself, using Python. In tools.py, we provide<br>several functions you can use in this exploration. For instance, we provide<br>text to integer (and integer to text) conversion, because the RSA algorithms<br>assume that the message m is an integer modulo n.</p>
+<ul>
+<li>text_to_int: takes in a string and returns an integer which can be used in RSA. </li>
+<li>int_to_text: takes in an integer and returns the corresponding string.<br>We also provide a few other functions:</li>
+<li>find_root: takes in integers x and r, and returns the integer component of the rth root of x. (Python’s built in pow function can be used to do this, but it doesn’t work for very large ‘long’-type values.) </li>
+<li>combine_moduli: takes in two integer moduli n1 and n2 and two integers x1 and x2 , and returns an integer x mod n1 n2 such that x mod n1 &#x3D; x1 and x mod n2 &#x3D; x2 . For instance, combine_moduli(n1 &#x3D; 5, n2 &#x3D; 7, x1 &#x3D; 2, x2 &#x3D; 3) &#x3D; 17, since 17 mod 5 &#x3D; 2, and 17 mod 7 &#x3D; 3.<br>The following shows how to use Python to do some basic RSA operations:<br>from Crypto.PublicKey import RSA<br>from Crypto.Hash import SHA256<br>import tools  <h1 id="set-the-security-parameter"><a href="#set-the-security-parameter" class="headerlink" title="set the security parameter:"></a>set the security parameter:</h1>secparam &#x3D; 2048  <h1 id="generate-an-RSA-key"><a href="#generate-an-RSA-key" class="headerlink" title="generate an RSA key:"></a>generate an RSA key:</h1>key &#x3D; RSA.generate(secparam)<br>public_key &#x3D; key.publickey()  <h1 id="save-the-public-and-private-keys-to-files-and-read-them-back"><a href="#save-the-public-and-private-keys-to-files-and-read-them-back" class="headerlink" title="save the public and private keys to files and read them back:"></a>save the public and private keys to files and read them back:</h1>open(‘key.pub’, ‘w’).write(public_key.exportKey())<br>open(‘key.priv’, ‘w’).write(key.exportKey())  <h1 id="read-the-public-key-in"><a href="#read-the-public-key-in" class="headerlink" title="read the public key in:"></a>read the public key in:</h1>recovered_public_key &#x3D; RSA.importKey(open(‘key.pub’, ‘r’).read())<br>assert recovered_public_key &#x3D;&#x3D; public_key  <h1 id="read-the-private-key-in"><a href="#read-the-private-key-in" class="headerlink" title="read the private key in:"></a>read the private key in:</h1>recovered_key &#x3D; RSA.importKey(open(‘key.priv’, ‘r’).read())<br>assert recovered_key &#x3D;&#x3D; key  <h1 id="use-the-PUBLIC-KEY-to-encrypt-a-message"><a href="#use-the-PUBLIC-KEY-to-encrypt-a-message" class="headerlink" title="use the PUBLIC KEY to encrypt a message:"></a>use the PUBLIC KEY to encrypt a message:</h1>message &#x3D; “I ATE SOME PIE”<br>message_int &#x3D; tools.text_to_int(message)<br>ciphertext &#x3D; public_key.encrypt(message_int, None)  <h1 id="save-the-ciphertext-to-a-file-and-read-it-back"><a href="#save-the-ciphertext-to-a-file-and-read-it-back" class="headerlink" title="save the ciphertext to a file and read it back:"></a>save the ciphertext to a file and read it back:</h1>open(‘ciphertext’, ‘w’).write(str(ciphertext))<br>recovered_ciphertext &#x3D; eval(open(‘ciphertext’, ‘r’).read())<br>assert recovered_ciphertext &#x3D;&#x3D; ciphertext  <h1 id="use-the-PRIVATE-KEY-to-decrypt-the-message"><a href="#use-the-PRIVATE-KEY-to-decrypt-the-message" class="headerlink" title="use the PRIVATE KEY to decrypt the message:"></a>use the PRIVATE KEY to decrypt the message:</h1>recovered_message_int &#x3D; int(key.decrypt(ciphertext))<br>assert recovered_message_int &#x3D;&#x3D; message_int  <h1 id="use-the-PRIVATE-KEY-to-sign-a-hash-of-the-message"><a href="#use-the-PRIVATE-KEY-to-sign-a-hash-of-the-message" class="headerlink" title="use the PRIVATE KEY to sign a hash of the message:"></a>use the PRIVATE KEY to sign a hash of the message:</h1>hash &#x3D; SHA256.new(message).digest()<br>signature &#x3D; key.sign(hash, None)  <h1 id="save-the-signature-to-a-file-and-read-it-back"><a href="#save-the-signature-to-a-file-and-read-it-back" class="headerlink" title="save the signature to a file and read it back:"></a>save the signature to a file and read it back:</h1>open(‘signature’, ‘w’).write(str(signature))<br>recovered_signature &#x3D; eval(open(‘signature’, ‘r’).read())<br>assert recovered_signature &#x3D;&#x3D; signature  <h1 id="use-the-PUBLIC-KEY-to-verify-the-signature"><a href="#use-the-PUBLIC-KEY-to-verify-the-signature" class="headerlink" title="use the PUBLIC KEY to verify the signature:"></a>use the PUBLIC KEY to verify the signature:</h1>hash &#x3D; SHA256.new(message).digest()<br>assert public_key.verify(hash, signature)<br>—|—</li>
+</ul>
+<p>We can also use math operations in Python to explore RSA ciphertexts and<br>signatures manually.<br>For instance, you can manually verify the signature. The modulus can be<br>accessed as public_key.n, and the public exponent can be accessed as<br>public_key.e.<br>    print “%0128x” % pow(signature[0], public_key.e, public_key.n)<br>    # The suffix of the signature^e mod n should be:<br>    print SHA256.new(message).hexdigest()<br>—|—  </p>
+<h2 id="Small-Message-Space-Attack"><a href="#Small-Message-Space-Attack" class="headerlink" title="Small Message Space Attack"></a>Small Message Space Attack</h2><p>Imagine that you are a government agent trying to determine when your<br>neighboring country,<br>Malland, will attack. Open part2_ctext to find a “textbook RSA” ciphertext<br>sent by Malland to its ally, Horridland. You know that the Mallanders are<br>likely to be saying one of three things:</p>
+<ol>
+<li>“attack tomorrow at dawn”, </li>
+<li>“attack just before dusk”, or </li>
+<li>“attack early next week”.<br>The file part2_key.pub contains Horridland’s public key. Use this knowledge to<br>figure out what the message is.<br>What would you do to prevent Malland from executing the same attack on<br>ciphertexts you send?</li>
+</ol>
+<h3 id="What-to-submit"><a href="#What-to-submit" class="headerlink" title="What to submit"></a>What to submit</h3><ol>
+<li>A Python 2.x script named part2.py that:<br>* (a) Takes in three parameters: <ul>
+<li>i. The path to a file with a public key, </li>
+<li>ii. The path to a file with a ciphertext, and </li>
+<li>iii. The path to a file enumerating the possible messages, each on a new line. <ul>
+<li>(b) Prints the identified message.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A file named part2.txt with your suggestion for how to prevent the attack you executed in part2.py.</li>
+</ol>
+<h2 id="Small-Plaintext-and-Encryption-Exponent-Attack"><a href="#Small-Plaintext-and-Encryption-Exponent-Attack" class="headerlink" title="Small Plaintext and Encryption Exponent Attack"></a>Small Plaintext and Encryption Exponent Attack</h2><p>Open part3_ctext to find another “textbook RSA” ciphertext, sent by Malland to<br>Horridland.<br>However, this time, you don’t really know what Malland might be saying. You<br>do, however, know that the encryption exponent is e &#x3D; 3, and that Mallanders<br>tend to be very brief and to the point, so you think the message in question<br>is probably very short. Use this knowledge to figure out what the message is.</p>
+<h3 id="Defense-Padding"><a href="#Defense-Padding" class="headerlink" title="Defense: Padding"></a>Defense: Padding</h3><p>A technique that prevents this attack is padding, which is used in PKCS #1.<br>Padding artificially increases the size of the message so that it is almost as<br>big as the modulus n by adding extra characters or bits to the message. Why<br>would padding help prevent this attack?</p>
+<h3 id="What-to-submit-1"><a href="#What-to-submit-1" class="headerlink" title="What to submit"></a>What to submit</h3><ol>
+<li>A Python 2.x script named part3.py that:<br>* (a) Takes in one parameter: the path to a file with a ciphertext.<br>* (b) Prints the identified message. </li>
+<li>A file named part3.txt that explains why padding prevents the attack you executed in part3.py.</li>
+</ol>
+<h2 id="Broadcast-Attack"><a href="#Broadcast-Attack" class="headerlink" title="Broadcast Attack"></a>Broadcast Attack</h2><p>Since you thwarted Malland’s plots with Horridland, Malland enlisted the help<br>of two more allies Awfuland and Badland. Horridland, Awfuland and and Badland<br>made the mistake of all having the same low encryption exponent, e &#x3D; 3. Their<br>public keys are in part4_key1.pub, part4_key2.pub, and part4_key3.pub,<br>repectively. Malland sends Horridland, Awfuland and Badland a plan of attack,<br>still using “textbook RSA” encryption. You get your hands on all three<br>ciphertexts:</p>
+<ol>
+<li>In part4_ctext1, find the ciphertext Malland sent Awfuland, encrypted as cA &#x3D; m^3 mod nA (using Awfuland’s modulus nA). </li>
+<li>In part4_ctext2, find the ciphertext Malland sent Badland, encrypted as cB &#x3D; m^3 mod nB (using Badland’s modulus nB). </li>
+<li>In part4_ctext3, find the ciphertext Malland sent Horridland, encrypted as cH &#x3D; m^3 mod nH (using Horridland’s modulus nH ).<br>Use the fact that all three ciphertexts use the same low encryption exponent<br>to figure out what their plan of attack is.<br>Hint: Use the provided function combine_moduli in tools.py.<br>If Malland padded the message by adding enough ‘1’ characters to the end to<br>make it almost as long as the modulus, would that prevent you from recovering<br>their message? If not, how could<br>Malland go about thwarting you?</li>
+</ol>
+<h3 id="What-to-submit-2"><a href="#What-to-submit-2" class="headerlink" title="What to submit"></a>What to submit</h3><ol>
+<li>A Python 2.x script named part4.py that:<br>* (a) Takes in six parameters: <ul>
+<li>i. three paths to files with public keys (all of whose public exponents are e &#x3D; 3), and </li>
+<li>ii. three paths to files with ciphertexts. <ul>
+<li>(b) Prints the identified message.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A file named part4.txt that explains whether padding the message with ‘1’ characters prevents the attack you executed in part4.py, and if not, how that attack could be prevented.</li>
+</ol>
+<h2 id="Breaking-PKCS-1-v1-5"><a href="#Breaking-PKCS-1-v1-5" class="headerlink" title="Breaking PKCS #1 v1.5"></a>Breaking PKCS #1 v1.5</h2><p>Up until now, we have been talking about encryption. Now, we’ll take a brief<br>detour and talk about<br>RSA signatures. Signatures are frequently generated on hashes of messages,<br>instead of on messages themselves. PKSC #1 v1.5 is a signing standard widely<br>used on the internet. It involves adding padding to a message hash before<br>signing it using RSA, as described in Part 1.2.2. When PKSC #1 v1.5 is used,<br>an RSA signature on the following padded message hash is generated.<br>When PKCS padding is used, it is important for implementations to verify that<br>every bit of the padded, signed message is exactly as it should be. It is<br>tempting for an implementor to validate the signature by first stripping off<br>the 00 01 bytes, then some number of padding FF bytes, then 00, and then parse<br>the ASN.1 and verify the hash. If the implementation does not check the length<br>of the FF bytes and that the hash is in the least significant bits of the<br>message, then it the public verification exponent e is low, is possible for an<br>attacker to forge values that pass this validation check.<br>Say that e &#x3D; 3, as in Parts 3 and 4. If the length of the required padding,<br>ASN.1 bytes, and hash value is significantly less than n1&#x2F;3 then an attacker<br>can construct a cube root over the integers whose most significant bits will<br>validate as a correct signature, ignoring the actual key. To construct a<br>forged signature that will validate against such implementations, an attacker<br>simply needs to construct an integer whose most significant bytes have the<br>correct format, including the hashed message, pad the remainder of this value<br>with zeros or other garbage that will be ignored by the vulnerable<br>implementation, and then take a cube root over the integers, rounding as<br>appropriate.<br>Historical fact: This attack was discovered by Daniel Bleichenbacher, who<br>presented it in a lightning talk at the rump session at the Crypto 2006<br>conference. At the time, many important implementations of RSA signatures were<br>discovered to be vulnerable to this attack, including<br>OpenSSL. In 2014, the Mozilla library NSS was found to be vulnerable to this<br>type of attack: <a target="_blank" rel="noopener" href="https://www.mozilla.org/security/advisories/mfsa2014-73/"> https://www.mozilla.org/security/advisories/mfsa2014-73/
+</a> .<br>Horridland is still using a broken implementation of signature verification;<br>in fact, below is the code they are using.<br>    ASN1_MAGIC &#x3D; “003021300906052b0e03021a05000414”<br>    def verify_rsa(sig_hex, message, public_key):<br>      “””<br>      Verifies an RSA signature.<br>      inputs:<br>        sig_hex: a digital signature, in hexadecimal<br>        message: the message string to which sig_hex corresponds<br>        public_key: the public verification key<br>          (a Crypto.PublicKey.RSA._RSAobj value)<br>      output: true or false<br>      “””<br>      sig_int &#x3D; int(sig_hex , 16)<br>      m_int &#x3D; pow(sig_int, public_key.e, public_key.n)<br>      m_hex &#x3D; “%0512x” % m_int<br>      h &#x3D; SHA.new(message).hexdigest()<br>      return re.match(‘0001f*’ + ASN1_MAGIC + h, m_hex) is not None<br>—|—<br>Open part5_key.pub to find Malland’s public verification key. You want to tell<br>Horridland to retreat, and make them believe that it’s a message from their<br>ally Malland. Using the signature forgery technique described above, produce<br>an RSA signature on “retreat immediately” that Horridland would accept.<br>Since 2010, NIST has specified that RSA public exponents must be at least 216</p>
+<ul>
+<li><ol>
+<li>Briefly explain why Bleichenbacher’s attack would not work for these<br>keys.</li>
+</ol>
+</li>
+</ul>
+<h3 id="What-to-submit-3"><a href="#What-to-submit-3" class="headerlink" title="What to submit"></a>What to submit</h3><ol>
+<li>A Python 2.x script named part5.py that:<br>* (a) Takes in two parameters: <ul>
+<li>i. the path to a file with a public key, and </li>
+<li>ii. a message string. <ul>
+<li>(b) Prints a valid signature on the message under the given public key.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A file named part5.txt containing your answer to the question above (why Bleichenbacher’s attack wouldn’t work with a high public verification exponent).</li>
+</ol>
+<h2 id="RSA-in-the-Wild"><a href="#RSA-in-the-Wild" class="headerlink" title="RSA in the Wild"></a>RSA in the Wild</h2><p>Find one network protocol that uses RSA on the internet. Make sure to cite<br>your source, and to specify the version of the protocol that you are talking<br>about!</p>
+<ol>
+<li>A file named part6.txt containing the name and version of the network protocol that uses RSA on the internet, and a citation to your source.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/02/18/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS588AttackingRSA/">http://saferman.github.io/2021/02/18/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS588AttackingRSA/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Security代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/02/19/Hardware%E4%BB%A3%E5%86%99%EF%BC%9ACSE237ASensorInteractionAndRealTimeScheduler/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Hardware代写：CSE237A Sensor Interaction And Real Time Scheduler">
+                        
+                        <span class="card-title">Hardware代写：CSE237A Sensor Interaction And Real Time Scheduler</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Hardware%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Hardware代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/02/17/C++%E4%BB%A3%E5%86%99%EF%BC%9ACICS1600MathChallenge/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="C++代写：CICS1600 Math Challenge">
+                        
+                        <span class="card-title">C++代写：CICS1600 Math Challenge</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

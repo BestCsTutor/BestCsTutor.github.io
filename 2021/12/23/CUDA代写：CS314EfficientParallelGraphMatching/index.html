@@ -1,0 +1,917 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="CUDA代写：CS314 Efficient Parallel Graph Matching, 留学生CS|辅导|代写">
+    <meta name="description" content="使用GPU编程，实现一个Efficient Parallel  Graph Matching
+算法。![GraphMatching](https://upload.wikimedia.org/wikipedia/commons/thumb/">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>CUDA代写：CS314 Efficient Parallel Graph Matching | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CUDA代写：CS314 Efficient Parallel Graph Matching</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">CUDA代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-12-23
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用GPU编程，实现一个Efficient Parallel <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Matching_(graph_theory)" title="Graph Matching"> Graph Matching
+</a><br>算法。<br>![Graph<br>Matching](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Maximal-">https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Maximal-</a><br>matching.svg&#x2F;450px-Maximal-matching.svg.png)</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Graph-Matching-Problem"><a href="#Graph-Matching-Problem" class="headerlink" title="Graph Matching Problem"></a>Graph Matching Problem</h3><p>Given a graph G &#x3D; (V, E), where V is the set of vertices (also called nodes).<br>A matching M in G is a set of pairwise non-adjacent edges such that no two<br>edges share a common vertex. A vertex is matched if it is an endpoint of one<br>of the edges in the matching. A vertex is unmatched if it does not belong to<br>any edge in the matching. We show examples of possible matchings for a given<br>graph.<br>A maximum matching can be defined as a matching where the total weight of the<br>edges in the matching is maximized. (c) is a maximum matching, where the total<br>weight of the edges in the matching is 7. Fig. (a) and (b) respectively have<br>the total weight of 3 and 2.</p>
+<h3 id="Parallel-Graph-Matching"><a href="#Parallel-Graph-Matching" class="headerlink" title="Parallel Graph Matching"></a>Parallel Graph Matching</h3><p>Most well-known matching algorithms such as blossom algorithm are<br>embarrassingly sequential and hard to parallelize. In this project, we will<br>adopt the handshaking-based algorithm which is amenable to parallelization on<br>GPUs.<br>In the handshaking-based algorithm, a vertex v extends a hand to one of its<br>neighbours and the neighbor must be on the maximum-weight edge incident to v.<br>If two vertices shake hands, the edge between these two vertices will be added<br>to the matching. (b) where node A extends a hand to D since edge(A,D) has the<br>largest weight among all edges incident to node A; Nodes C and F shake hands<br>because they extend a hand to each other.<br>It is possible that multiple incident edges of a node have maximum weight. In<br>this project, we let the algorithm pick the neighbor vertex that has the<br>smallest vertex index.<br>For example, among the maximum-weight neighbors of vertex E, we pick vertex B<br>since it has the smallest index (in alphabetical order) among all E’s edges<br>that have maximum-weight 4.<br>The handshaking algorithm needs to run one or multiple passes. A one-pass<br>handshaking checks all nodes once and only once. At the end of every pass, we<br>remove all matched nodes and check if there is any remaining un-matched nodes.<br>If the remaining un-matched nodes are connected, another pass of handshaking<br>must be performed. We repeat this until no more edges can be added to the<br>matching. In Fig. 2, we show two passes of handshaking.<br>The handshaking algorithm is highly data parallel, since each vertex is<br>processed independently and the find-maximum-weight-neighbor step involves<br>only reads to shared data. It is a greedy algorithm that attempts to maximize<br>the total weight in the matching.</p>
+<h2 id="Implementing-Parallel-Graph-Matching"><a href="#Implementing-Parallel-Graph-Matching" class="headerlink" title="Implementing Parallel Graph Matching"></a>Implementing Parallel Graph Matching</h2><h3 id="Data-Structure"><a href="#Data-Structure" class="headerlink" title="Data Structure"></a>Data Structure</h3><p>The graph is encoded as an edge list consisting of three arrays: src, dst, and<br>weight, such that src[n] is the source node for the n-th edge, dst[n] is the<br>destination node for the n-th edge, and weight[n] is the weight of the n-th<br>edge. The graph is undirected, so if src[n]&#x3D;x and dst[n]&#x3D;y then there exists<br>an edge m such that src[m]&#x3D;y and dst[m]&#x3D;x.<br>An example of this representation is shown in. The example graph, with five<br>vertices, has a total of six un-directed edges. The edge list is arranged such<br>that edges that have the same source node are placed together. For edges that<br>have the same source node, they are sorted by the destination indices. The<br>relative order of the edges is important, please do not modify it.<br>We have provided graph I&#x2F;O functions for you. The code given to you will read<br>and parse the graphs stored in matrix format. After the graph is parsed, three<br>arrays src[ ], dst[ ], weight[ ] contain graph information. Pointers to the<br>three arrays: src[ ], dst[ ], weight[ ] are stored in the GraphData struct.<br>This is what GraphData looks like:<br>    struct GraphData {<br>      int numNodes;<br>      int numEdges;<br>      int * src;<br>      int * dst;<br>      int * weight;<br>    }<br>—|—<br>The program contains four GPU kernel functions, three of which you are<br>required to implement (while the fourth is already implemented). Their<br>arguments (input and output) are all described in the file src&#x2F;gpuHeaders.cuh.<br>Your implementations should go inside the appropriate files in the<br>src&#x2F;gpu_required&#x2F; directory.<br>We show an example of the data produced during the first iteration of the<br>handshaking algorithm, based on the same graph as in our edge list example.<br>Note that the notations used in Fig will be used consistently in the following<br>subsection. Those notations include the keep_edges, new_indices,<br>strongNeighbor, and matches arrays. Please refer to Fig for a specific example<br>of the results from each of the functions described in the subsections below.<br>Note that by default, the program uses provided CPU code to serially identify<br>the strongest neighbors. For information about the extra credit part of this<br>project, see Section 6.</p>
+<h3 id="Update-Matches"><a href="#Update-Matches" class="headerlink" title="Update Matches"></a>Update Matches</h3><p>With the strongNeighbor results calculated, we can now perform handshaking to<br>update the matching results. This kernel function looks for node-pairs which<br>are both each other’s maximum-weight neighbor, and matches them.<br>    <strong>global</strong> void check_handshaking_gpu(int * strongNeighbor, int * matches, int numNodes);<br>—|—<br>The strongNeighbor array is the input, such that strongNeighbor[x]&#x3D;y if the<br>x-th node’s strongest neighbor is the y-th node. The matches array is the<br>output, such that matches[x]&#x3D;y if the x-th has been matched with the y-th<br>node. Note that some nodes may already be matched from prior iterations, and<br>they should not be changed. An unmatched node is indicated by UNMATCHED<br>defined in utils.hpp.We use -1 to represent UNMATCHED.</p>
+<h3 id="Edges-Filtering"><a href="#Edges-Filtering" class="headerlink" title="Edges Filtering"></a>Edges Filtering</h3><p>To filter out the edges we no longer need, we must first distinguish them from<br>the edges to keep. A vertex can be matched with only one vertex - therefore if<br>an edge has a source or destination which has already been matched then we can<br>discard it; otherwise we must keep it.<br>    <strong>global</strong> void markFilterEdges_gpu(int * src, int * dst, int * matches, int * keepEdges, int numEdges);<br>—|—<br>The input arrays for this function are src (the source array from the edge<br>list), dst (the destination array from the edge list), matches (the current<br>node matches). The output is keepEdges. The src, dst, and keepEdges arrays<br>each have numEdges elements.<br>After this function is complete, keepEdges[x] should be 1 if we want to keep<br>the xth edge, or 0 otherwise.</p>
+<h3 id="Get-New-Edge-Indices"><a href="#Get-New-Edge-Indices" class="headerlink" title="Get New Edge Indices"></a>Get New Edge Indices</h3><p>Once we know which edges to keep versus which edges to filter, we can<br>determine each edge’s new index in the edge list. This is performed with an<br>exclusive prefix sum.<br>    <strong>global</strong> void exclusive_prefix_sum_gpu(int * oldSum, int * newSum, int distance, int numElements);<br>—|—<br>The input array is oldSum, and the output array is newSum. Each of these<br>arrays has numElements elements. The distance variable tells us which stride<br>to use at each iteration. This function will be called multiple times. A<br>sketch of the parallel algorithm is in lecture 22 slides, page 40.<br>Since this is an exclusive prefix sum, we do not want the sum to include the<br>current element. In other words.<br>The first time exclusive_prefix_sum_gpu is launched, it will be given a<br>distance value of 0. In this case, instead of performing addition, it should<br>merely shift everything one element to the right - in other words, each<br>element in the output should be set to the previous element in the input when<br>distance is 0 in this kernel function. That is how we implement the<br>exclusivity, after which we can operate like an inclusive prefix scan.</p>
+<h3 id="Filter-Edges"><a href="#Filter-Edges" class="headerlink" title="Filter Edges"></a>Filter Edges</h3><p>This function is already implemented for you. When the program reaches this<br>point, we know where the edges will go in the filtered edge list, but we need<br>to repack them for use in the next iteration of matching.<br>    <strong>global</strong> void packGraph_gpu(int * newSrc, int * oldSrc, int * newDst, int * oldDst, int * newWeight, int * oldWeight, int * edgeMap, int numEdges)<br>—|—<br>Here oldSrc, oldDst, and oldWeight are the edge list before filtering, each<br>with numEdges elements. The edgeMap array, with (numEdges+1) elements,<br>contains the results of the exclusive prefix sum from the previous step. The<br>newSrc, newDst, and newWeight arrays are the output of this kernel function.<br>After this kernel function is complete, for every edge x that we want to keep,<br>it will be the case that <code>newSrc[edgeMap[x]] = oldSrc[x]</code> . The dest and<br>weight arrays are handled similarly.</p>
+<h3 id="GPU-Memory"><a href="#GPU-Memory" class="headerlink" title="GPU Memory"></a>GPU Memory</h3><p>You are expected to handle allocation, initialization, and de-allocation of<br>GPU memory yourself. You must use the function cudaMalloc for to allocate GPU<br>memory. For initialization, you can use cudaMemcpy to copy memory between GPU<br>and CPU. Finally, you must use cudaFree for de-allocation.<br>You can find examples of how to use these functions inside the Lecture 19 and<br>Lecture 20 slides from class.</p>
+<h3 id="Thread-Assignment"><a href="#Thread-Assignment" class="headerlink" title="Thread Assignment"></a>Thread Assignment</h3><p>It is important to map tasks to threads in a reasonable manner. Furthermore,<br>although GPU kernels can be launched with a large number of threads, we may<br>not want to do so because it incurs significant kernel launch overhead. In<br>this project, we do not guarantee the number of threads allocated for each<br>kernel is the same as the number of tasks to perform. Your code within a<br>kernel needs to account for that.<br>For example, suppose we are working on an array with 1024 elements, but only<br>have 256 threads. Each thread should work on four elements. To ensure memory<br>coalescing, the first thread should handle array[0], array[256], array[512],<br>and array[768]. Meanwhile the second thread should handle array[1],<br>array[257], array[513], and array[769], and etc. This mapping distributes the<br>work evenly across threads, while offering opportunity for the GPU device to<br>combine adjacent memory requests performed by adjacent threads.<br>We use one-dimensional grids and one-dimensional thread-blocks, making it<br>straightforward for you to calculate both the thread’s ID, and the total<br>number of threads launched by the kernel function. Each thread can query the<br>total number of threads launched using the expression <code>blockDim.x * gridDim.x</code> .<br>Also note that the number of tasks to process is not necessarily a multiple of<br>the number of threads. In your code, you will need to add condition checks to<br>account for that. For the three kernels you’re required need to implement, the<br>number of tasks is the same as the size of the output array, which is given as<br>an argument.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Your programs will be graded primarily on functionality. Grading will be done<br>on ilab machines. You will receive 0 credit if we cannot compile and run your<br>code on ilab machines.<br>Although we have provided you with some testcases, we will use secret test<br>cases when we perform grading. Additionally, we will run your code with<br>varying numbers of threads.<br>During grading, your submission will be run with a (generous) time limit, to<br>ensure the program terminates even if it gets stuck. We may run your kernel<br>functions separately (alongside our own implementations of the other<br>functions), or altogether.</p>
+<h2 id="How-to-Get-Started"><a href="#How-to-Get-Started" class="headerlink" title="How to Get Started"></a>How to Get Started</h2><p>The code package for you to start with is provided on Sakai. Create your own<br>directory on the ilab cluster, and copy the entire provided project folder to<br>your home directory or any other one of your directories. Make sure that the<br>read, write, and execute permissions for groups and others are disabled (chmod<br>go-rwx [directory_name]).<br>DO NOT change any files except onewaywrapper.cu, the existing files in the<br>gpu_required directory, and the file in the gpu_extra_credit directory. No<br>other code files will be considered when we grade your submission.<br>The various parts of the code you’re expected to modify are prepended and<br>post-pended by comments stating “YOUR CODE GOES BELOW” and “YOUR CODE GOES<br>ABOVE”, respectively. This includes the contents of kernel functions, as well<br>as allocation and deallocation of GPU memory.</p>
+<h3 id="Compilation-and-Execution"><a href="#Compilation-and-Execution" class="headerlink" title="Compilation and Execution"></a>Compilation and Execution</h3><p>Compilation: We have provided a Makefile in the sample code package.</p>
+<ul>
+<li>make should compile all code into an executables called match. </li>
+<li>make submit should generate a tar file containing your current code, which you must manually submit to Sakai. </li>
+<li>make clean should remove all files that were generated by Make, including object files, executables, and the tar file. </li>
+<li>make debug compiles the executable with flags that disable optimizations and add debugging information. Note that you may need to run make clean prior to switching between the debug and default versions.<br>Execution: The match program performs one-way matching on a given graph. It<br>allows the following arguments:</li>
+<li>input [file] Use the specified graph file as input. </li>
+<li>output [file] Write matching results to specified file. </li>
+<li>threads [number] Launch approximately the specified number of threads when calling a GPU kernel. </li>
+<li>device [number] Run all GPU kernels on the specified GPU device.<br>The -input flag is mandatory; if the other flags are not used then the program<br>will use default settings, such as writing the results to a file named<br>out.txt.<br>Program Output: The program will output the matching results to the specified<br>output file, and print the approximate time it spent. We have handled the<br>functionality of generating the output file.</li>
+</ul>
+<h3 id="Test-Cases"><a href="#Test-Cases" class="headerlink" title="Test Cases"></a>Test Cases</h3><p>We have provided input and expected output for several randomly generated<br>testcases. Each of the input files has a filename “inputX.mtx” for some value<br>X. The corresponding solution has filename “outputX.txt”.<br>For example, if you fully and correctly implement the required parts of this<br>project, then the command .&#x2F;match -input testcases&#x2F;input5.mtx -output out.txt<br>-threads 1024 would produce a file named out.txt that’s identical to<br>testcases&#x2F;output5.txt. (You can also use a different number of threads than<br>1024, and should get the same output.)<br>Note that you can use the diff command to compare two text files. For example,<br>diff out.txt testcases&#x2F;output9.txt will either display a list of differences<br>between those two files, or display nothing if they are identical.</p>
+<h3 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h3><p>You can use cuda-gdb to help detect and debug errors in your GPU kernel<br>functions. Make sure to use the command set cuda memcheck on when you first<br>launch cuda-gdb.<br>Before debugging, make sure to compile your code with the make debug command.<br>This might make your code run slower, but will allow cuda-gdb to retrieve more<br>high-level information about any memory errors it detects.</p>
+<h3 id="GPUs-are-a-finite-resource"><a href="#GPUs-are-a-finite-resource" class="headerlink" title="GPUs are a finite resource!"></a>GPUs are a finite resource!</h3><p>You can run the program nvidia-smi to view the GPUs on your current machine,<br>including some information about which ones are currently in use. If the<br>project executable tries to run on a GPU device that is already used by many<br>users, then it may be unable to run correctly, getting stuck or throwing<br>unusual errors (e.g. “out of memory”).<br>We’ve added an optional argument to the program that lets you select the GPU<br>device to use. For example, if nvidia-smi tells you that there are four GPU<br>devices but devices 0, 1, and 2 are all in use, then you might run the match<br>program with the flag “-device 3” so that it will use device #3. However, be<br>aware that some of the computers in ilab that you can use have only one GPU.<br>If this isn’t sufficient to get the program working (i.e. there are no<br>available GPU devices), then you may need to switch to a different ilab<br>machine.</p>
+<h2 id="What-to-Submit"><a href="#What-to-Submit" class="headerlink" title="What to Submit"></a>What to Submit</h2><p>You should invoke make submit to generate the file submit_me.tar containing<br>your GPU code. This only generates the file; it does not automatically submit<br>it. You need to submit submit_me.tar to Sakai.<br>If you change your code after generating this tar file, don’t forget to<br>regenerate (and resubmit) the tar afterward.<br>If you complete the extra credit, then you should additionally submit your<br>3-page report in PDF format.<br>Please DO NOT submit any other code, executable, mtx files, matching results,<br>etc.</p>
+<h2 id="Extra-credit"><a href="#Extra-credit" class="headerlink" title="Extra-credit"></a>Extra-credit</h2><p>The extra credit part of this project concerns the parallel implementation of<br>finding the strongest neighbors (i.e. producing the strongNeighbor array in<br>Fig. 1).<br>If you choose to complete the extra-credit, you must design the parallel<br>algorithm for finding the maximal neighbor of each node. There are several<br>factors to consider include, but are not limited to:</p>
+<ul>
+<li>Load balancing. Each node has a different number of neighbors, so partitioning the work according to node may not be a good idea. </li>
+<li>Thread divergence. Each thread in each warp (i.e. each group of 32 consecutive threads) should perform the same operations, or else parallelism is reduced. </li>
+<li>Memory coalescing. A memory operation is more efficient when consecutive threads are accessing consecutive memory locations.<br>You can use as many GPU kernel functions as you feel are necessary, which<br>should all be placed inside the extra.cu file. You will call these kernels at<br>the appropriate place inside onewaywrapper.cu. If necessary, you are permitted<br>to define additional GPU arrays inside onewaywrapper.cu. Your implementation<br>will be invoked iff you use the -extra flag on the command-line when you run<br>the match program.<br>For full points on the extra credit, you need need to write a three-page<br>report including your algorithm, the implementation results, and evaluation.</li>
+</ul>
+<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions"></a>Questions</h2><p>Questions regarding this project can be posted on Sakai forum. Good luck!</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/12/23/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACS314EfficientParallelGraphMatching/">http://saferman.github.io/2021/12/23/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACS314EfficientParallelGraphMatching/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">CUDA代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/12/24/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS164Malloc/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Operating System代写：CS164 Malloc">
+                        
+                        <span class="card-title">Operating System代写：CS164 Malloc</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/12/23/Compiler%E4%BB%A3%E5%86%99%EF%BC%9ACS1167BasicTokenizer/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Compiler代写：CS1167 Basic Tokenizer">
+                        
+                        <span class="card-title">Compiler代写：CS1167 Basic Tokenizer</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Compiler%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Compiler代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

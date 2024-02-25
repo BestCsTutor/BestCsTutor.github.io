@@ -1,0 +1,1019 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CMPSC473 Writing A Dynamic Storage Allocator, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个动态的内存分配器(Dynamic Storage Allocator  1
+ )，并通过各种场景下的极端测试。![Dynamic Storage Allocator](http://www.ptinstitute.in/wp-con">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CMPSC473 Writing A Dynamic Storage Allocator | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CMPSC473 Writing A Dynamic Storage Allocator</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-06-23
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个动态的内存分配器(Dynamic Storage Allocator <a target="_blank" rel="noopener" href="https://sites.psu.edu/davidtso/dynamic-storage-allocator/" title="Dynamic Storage
+Allocator"> 1
+</a> )，并通过各种场景下的极端测试。<br>![Dynamic Storage Allocator](<a target="_blank" rel="noopener" href="http://www.ptinstitute.in/wp-">http://www.ptinstitute.in/wp-</a><br>content&#x2F;uploads&#x2F;2018&#x2F;05&#x2F;Screenshot-34-300x196.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><strong>IMPORTANT: You will be required to show a demo as part of this assignment.<br>The demo will show 3 parts:</strong><br><strong>1. Design comments at the top of mm.c</strong><br><strong>2. Code comments throughout mm.c</strong><br><strong>3. Demonstrate your heap consistency checker code running</strong><br><strong>See the rubric towards the end of the README for details on signing up for<br>the demo and expectations.</strong><br><strong>IMPORTANT: Read through the ENTIRE document. The heap consistency checker<br>description is meant to help you understand how consistency checking is a<br>critical debugging tool to help you find bugs in your code. The rubric is<br>long, but is meant to help you understand how to write good documentation.<br>There are many hints at the end for how to work on the assignment. The README<br>is long because it is meant to give you a lot of help and guidance with the<br>project, so please take the time to read ALL of it carefully.</strong><br>In this lab, you will be writing a dynamic storage allocator for C programs,<br>i.e., your own version of the <code>malloc</code> , <code>free</code> , and <code>realloc</code><br>functions. You are encouraged to explore the design space creatively and<br>implement an allocator that is correct, space efficient, and fast.<br>The only file you will be modifying is <code>mm.c</code> . <em>Modifications in other<br>files will not be used in the grading.</em> You will be implementing the following<br>functions:</p>
+<ul>
+<li><code>bool mm_init(void)</code></li>
+<li><code>void* malloc(size_t size)</code></li>
+<li><code>void free(void* ptr)</code></li>
+<li><code>void* realloc(void* oldptr, size_t size)</code></li>
+<li><code>bool mm_checkheap(int line_number)</code><br>You are encouraged to define other (static) helper functions, structures, etc.<br>to better structure your code.</li>
+</ul>
+<h2 id="Description-of-the-dynamic-memory-allocator-functions"><a href="#Description-of-the-dynamic-memory-allocator-functions" class="headerlink" title="Description of the dynamic memory allocator functions"></a>Description of the dynamic memory allocator functions</h2><ul>
+<li><code>mm_init</code> : Before calling <code>malloc</code> , <code>realloc</code> , <code>calloc</code> , or <code>free</code> , the application program (i.e., the trace-driven driver program that will evaluate your code) calls your <code>mm_init</code> function to perform any necessary initializations, such as allocating the initial heap area. You should NOT call this function. Our code will call this function before the other functions so that this gives you an opportunity to initialize your implementation. The return value should be true on success and false if there were any problems in performing the initialization. </li>
+<li><code>malloc</code> : The <code>malloc</code> function returns a pointer to an allocated block payload of at least <code>size</code> bytes. The entire allocated block should lie within the heap region and should not overlap with any other allocated chunk. If you are out of space and <code>mm_sbrk</code> is unable to extend the heap, then you should return NULL. Similar to how the standard C library (libc) always returns payload pointers that are aligned to 16 bytes, your malloc implementation should do likewise and always return 16-byte aligned pointers. </li>
+<li><code>free</code> : The <code>free</code> function frees the block pointed to by <code>ptr</code> . It returns nothing. This function is only guaranteed to work when the passed pointer ( <code>ptr</code> ) was returned by an earlier call to <code>malloc</code> , <code>calloc</code> , or <code>realloc</code> and has not yet been freed. If <code>ptr</code> is NULL, then <code>free</code> should do nothing. </li>
+<li><code>realloc</code> : The <code>realloc</code> function returns a pointer to an allocated region of at least <code>size</code> bytes with the following constraints. <ul>
+<li>if <code>ptr</code> is NULL, the call is equivalent to <code>malloc(size)</code></li>
+<li>if <code>size</code> is equal to zero, the call is equivalent to <code>free(ptr)</code></li>
+<li>if <code>ptr</code> is not NULL, it must have been returned by an earlier call to <code>malloc</code> , <code>calloc</code> , or <code>realloc</code> . The call to <code>realloc</code> changes the size of the memory block pointed to by <code>ptr</code> (the <em>old block</em> ) to <code>size</code> bytes and returns the address of the new block. Notice that the address of the new block might be the same as the old block, or it might be different, depending on your implementation, the amount of internal fragmentation in the old block, and the size of the <code>realloc</code> request.<br>The contents of the new block are the same as those of the old <code>ptr</code> block,<br>up to the minimum of the old and new sizes. Everything else is uninitialized.<br>For example, if the old block is 8 bytes and the new block is 12 bytes, then<br>the first 8 bytes of the new block are identical to the first 8 bytes of the<br>old block and the last 4 bytes are uninitialized. Similarly, if the old block<br>is 8 bytes and the new block is 4 bytes, then the contents of the new block<br>are identical to the first 4 bytes of the old block.<br>These semantics match the the semantics of the corresponding libc <code>malloc</code> ,<br><code>realloc</code> , and <code>free</code> functions. Run <code>man malloc</code> to view complete<br>documentation.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Heap-consistency-checker"><a href="#Heap-consistency-checker" class="headerlink" title="Heap consistency checker"></a>Heap consistency checker</h2><p><strong>IMPORTANT: The heap consistency checker will be graded to motivate you to<br>write a good checker, but the main purpose is to help you debug.</strong><br>Dynamic memory allocators are notoriously tricky beasts to program correctly<br>and efficiently. They are difficult to program correctly because they involve<br>a lot of untyped pointer manipulation and low-level manipulation of bits and<br>bytes. You will find it very helpful to write a heap checker <code>mm_checkheap</code><br>that scans the heap and checks it for consistency. The heap checker will check<br>for <em>invariants</em> which should always be true.<br>Some examples of what a heap checker might check are:</p>
+<ul>
+<li>Is every block in the free list marked as free? </li>
+<li>Are there any contiguous free blocks that somehow escaped coalescing? </li>
+<li>Is every free block actually in the free list? </li>
+<li>Do the pointers in the free list point to valid free blocks? </li>
+<li>Do any allocated blocks overlap? </li>
+<li>Do the pointers in a heap block point to valid heap addresses?<br>You should implement checks for any invariants you consider prudent. It<br>returns true if your heap is in a valid, consistent state and false otherwise.<br>You are not limited to the listed suggestions nor are you required to check<br>all of them. You are encouraged to print out error messages when the check<br>fails. You can use <code>dbg_printf</code> to print messages in your code in debug<br>mode. To enable debug mode, uncomment the line <code>#define DEBUG</code> .<br>To call the heap checker, you can use <code>mm_checkheap(__LINE__)</code> , which will<br>pass in the line number of the caller. This can be used to identify which line<br>detected a problem.</li>
+</ul>
+<h2 id="Support-routines"><a href="#Support-routines" class="headerlink" title="Support routines"></a>Support routines</h2><p>The <code>memlib.c</code> package simulates the memory system for your dynamic memory<br>allocator. You can invoke the following functions in <code>memlib.c</code> :</p>
+<ul>
+<li><code>void* mm_sbrk(int incr)</code> : Expands the heap by <code>incr</code> bytes, where <code>incr</code> is a positive non-zero integer. It returns a generic pointer to the first byte of the newly allocated heap area. The semantics are identical to the Unix <code>sbrk</code> function, except that <code>mm_sbrk</code> accepts only a non-negative integer argument. You must use our version, <code>mm_sbrk</code> , for the tests to work. Do NOT use <code>sbrk</code> . </li>
+<li><code>void* mm_heap_lo(void)</code> : Returns a generic pointer to the first byte in the heap. </li>
+<li><code>void* mm_heap_hi(void)</code> : Returns a generic pointer to the last byte in the heap. </li>
+<li><code>size_t mm_heapsize(void)</code> : Returns the current size of the heap in bytes. </li>
+<li><code>size_t mm_pagesize(void)</code> : Returns the system’s page size in bytes (4K on Linux systems). </li>
+<li><code>void* memset(void* ptr, int value, size_t n)</code> : Sets the first n bytes of memory pointed to by ptr to value. </li>
+<li><code>void* memcpy(void* dst, const void* src, size_t n)</code> : Copies n bytes from src to dst.<br>Not all of these functions will be needed (only mm_sbrk is truly necessary),<br>but they are provided in case you would like to use them.</li>
+</ul>
+<h2 id="Programming-Rules"><a href="#Programming-Rules" class="headerlink" title="Programming Rules"></a>Programming Rules</h2><ul>
+<li>You are not allowed to change any of the interfaces in <code>mm.c</code> . </li>
+<li>You are not allowed to invoke any memory-management related library calls or system calls. For example, you are not allowed to use <code>sbrk</code> , <code>brk</code> , or the standard library versions of <code>malloc</code> , <code>calloc</code> , <code>free</code> , or <code>realloc</code> . Instead of <code>sbrk</code> , you should use our provided <code>mm_sbrk</code> . </li>
+<li>Your code is expected to work in 64-bit environments, and you should assume that allocation sizes and offsets will require 8 byte (64-bit) representations. </li>
+<li>You are not allowed to use macros as they can be error-prone. The better style is to use static functions and let the compiler inline the simple static functions for you. </li>
+<li>You are limited to 128 bytes of global space for arrays, structs, etc. If you need large amounts of space for storing extra tracking data, you can put it in the heap area.</li>
+</ul>
+<h2 id="Evaluation-and-testing-your-code"><a href="#Evaluation-and-testing-your-code" class="headerlink" title="Evaluation and testing your code"></a>Evaluation and testing your code</h2><p>You will receive zero points if:</p>
+<ul>
+<li>You violate the academic integrity policy (sanctions can be greater than just a 0 for the assignment) </li>
+<li>You don’t show your partial work by periodically adding, committing, and pushing your code to GitHub </li>
+<li>You break any of the programming rules </li>
+<li>Your code does not compile&#x2F;build </li>
+<li>Your code crashes the grading script<br>Otherwise, your grade will be calculated as follows:</li>
+<li>Checkpoint 1: This part of the assignment simply tests the correctness of your code. Space utilization and throughput will not be tested in this checkpoint. Your grade will be based on the number of trace files that succeed. </li>
+<li>Checkpoint 2: This part of the assignment requires that your code is entirely functional and tests the space utilization (60%) and throughput (40%) of your code. Each metric will have a min and max target (i.e., goal) where if your utilization&#x2F;throughput is above the max, you get full score and if it is below the min, you get no points. Partial points are assigned proportionally between the min and max. Additionally, there is a required minimum utilization and throughput where you will get a 0 for the entire checkpoint if either metric is below the required minimum requirement. The performance goals in checkpoint 2 are significantly reduced compared to the final submission. <ul>
+<li>Space utilization (60%): The space utilization is calculated based on the peak ratio between the aggregate amount of memory used by the testing tool (i.e., allocated via <code>malloc</code> or <code>realloc</code> but not yet freed via <code>free</code> ) and the size of the heap used by your allocator. You should design good policies to minimize fragmentation in order to increase this ratio. </li>
+<li>Throughput (40%): The throughput is a performance metric that measures the average number of operations completed per second. <strong>As the performance of your code can vary between executions and between machines, your score as you’re testing your code is not guaranteed and is meant to give you a general sense of your performance.</strong><br>There will be a balance between space efficiency and speed (throughput), so<br>you should not go to extremes to optimize either the space utilization or the<br>throughput only. To receive a good score, you must achieve a balance between<br>utilization and throughput.</li>
+</ul>
+</li>
+<li>Final submission: This part of the assignment is graded similarly to Checkpoint 2, except that the grading curve has not been significantly reduced as is the case with Checkpoint 2. With the recommended design and optimizations, you should be able to get approximately 150 pts, and if your design performs better, it is possible to get up to 30 extra credit points. This is meant as a challenge for students who want to enhance their designs and experiment with inventing their own data structures and malloc designs. </li>
+<li>Heap checker demo and code comments: As part of the final submission, we will be reviewing your heap checker code as well as comments throughout your code. The week following the final due date, you will need to stop by TA office hours at your scheduled time to give a short 9 minute demo to explain your heap checker code, demonstrate that it works, and summarize your design and code. Your heap checker will be graded based on correctness, completeness, and comments. All comments (design, code, heap checker) should be understandable to a TA. The demo will show correctness. Your explanation of the heap checker and your malloc design will determine the degree to which your checker is checking invariants. See the next section for details on logistics for signing up for the demo and the grading rubric.<br>To test your code, first compile&#x2F;build your code by running: <code>make</code> . You<br>need to do this every time you change your code for the tests to utilize your<br>latest changes.<br>To run all the tests <em>after</em> building your code, run: <code>make test</code> .<br>To test a single trace file <em>after</em> building your code, run: <code>./mdriver -f traces/tracefile.rep</code> .<br>Each trace file contains a sequence of allocate, reallocate, and free commands<br>that instruct the driver to call your <code>malloc</code> , <code>realloc</code> , and <code>free</code><br>functions in some sequence.<br>Other command line options can be found by running: <code>./mdriver -h</code><br>To debug your code with gdb, run: <code>gdb mdriver</code> .</li>
+</ul>
+<h2 id="Rubric-for-demo"><a href="#Rubric-for-demo" class="headerlink" title="Rubric for demo"></a>Rubric for demo</h2><h3 id="LOGISTICS"><a href="#LOGISTICS" class="headerlink" title="LOGISTICS"></a>LOGISTICS</h3><p>As part of your malloc grade, you must demo and explain your final design,<br>code, and heap checker to a TA. You should be prepared to explain and demo<br>everything in about 5-6 minutes to allow for 2-3 minutes of TA questions and<br>discussion. The entire process should take no more than 9 minutes.<br>You must sign up for a time slot in Canvas to meet with a TA. Instructions for<br>how to sign up on Canvas can be found here.<br>You are only allowed to sign up for a single slot, and being late will cut<br>into your allotted time. All grading will be conducted during TA office hours<br>the week after the assignment due date, so please reserve your slot soon<br>before they fill up. If for some reason you cannot make any of the remaining<br>TA office hours, please send us a Canvas message with your availabilities.<br>This needs to be done early enough before the deadline so that we can figure<br>out how to accommodate. There is no guarantee that we can accommodate<br>scheduling issues after the assignment deadline, which may result in a 0 for<br>this part of the assignment. So please reserve your time slot soon and let us<br>know of any issues before the deadline.<br>Since the TAs will be grading the demos during office hours, any questions<br>about the course or next assignment should be sent as Canvas messages to all<br>the course staff or you can attend the instructor’s office hours.<br>The grading will <em>not</em> be determined immediately, since we’ll try to calibrate<br>the grading between TAs for consistency. So please do <em>not</em> ask the TAs for<br>your grade; it will not be finalized during the demo. There’s always going to<br>be some subjectivity, and I’ve already met with the TAs to try to form a<br>common baseline, and I’ve additionally provided a detailed rubric at the end<br>of this announcement. Thus, we believe the grading should be fair, and the TAs<br>will <em>not</em> be handling regrades as that takes far too much time that would<br>take away from their time to help with office hours for the next assignment.<br>If you feel adamant about the grading being unfair, the instructor will handle<br>all such issues (send the instructor a Canvas message), though any regrades<br>are final and could potentially lower your score.<br>Next is the grading rubric, which gives more details on what is considered a<br>quality solution and provisions for a bit of extra credit.</p>
+<h3 id="DESIGN-design-score-min-design-comments-design-explanation-4"><a href="#DESIGN-design-score-min-design-comments-design-explanation-4" class="headerlink" title="DESIGN: design_score &#x3D; min(design_comments, design_explanation) * 4"></a>DESIGN: design_score &#x3D; min(design_comments, design_explanation) * 4</h3><h4 id="Design-Comments"><a href="#Design-Comments" class="headerlink" title="Design Comments"></a>Design Comments</h4><p>You should place your design comments at the top of the file as specified in<br>the starter code.</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Well-written and easy to understand<br>Clear sections about the different design aspects including reasons behind the<br>design choices. May include ASCII diagrams for ease of understanding. This is<br>what one might expect in clearly documented production quality code. This<br>should be considered as a bonus if you impress the TAs.</li>
+<li>3 (meets expectations; full score) &#x3D; Understandable, but not easy to read and&#x2F;or slightly incomplete design description<br>Describes all the main design points in an understandable way, but some of the<br>less important parts of the design may be missing. The comments may be<br>difficult to read due to being too short or too long and verbose.</li>
+<li>2 (below expectations; partial credit) &#x3D; Difficult to understand or lacking in key design points<br>Describes some aspects of the design, but is incomplete and lacks some key<br>design aspects. The english may be difficult to comprehend, and there may be<br>some minor errors with how your design matches your implementation.</li>
+<li>1 (major issues) &#x3D; Minimal effort or incorrect<br>The design comments are not about the design or they significantly lack in<br>describing the design. Examples would include only describing briefly what the<br>design is without describing how the design works and the benefits&#x2F;drawbacks<br>of the design. This rating also applies to design comments that are<br>significantly different from your actual code.</li>
+<li>0 (missing) &#x3D; Missing file&#x2F;design comments<br>Did not write design comments.</li>
+</ul>
+<h4 id="Design-Explanation"><a href="#Design-Explanation" class="headerlink" title="Design Explanation"></a>Design Explanation</h4><p>You should explain your design to the TAs without reading from your comments.<br>You may draw some pictures if it helps, but you should keep your explanation<br>concise and focused on the main design points.</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Clear, succinct explanation of key design points and the benefits&#x2F;drawbacks of your approach </li>
+<li>3 (meets expectations; full score) &#x3D; Can explain what your design is and how it works and can reasonably answer the TA’s questions </li>
+<li>2 (below expectations; partial credit) &#x3D; Difficulty in explaining the key concepts in your design and&#x2F;or some difficulty in answering the TA’s questions </li>
+<li>1 (major issues) &#x3D; Cannot explain your design and&#x2F;or unable to answer the TA’s questions </li>
+<li>0 (missing) &#x3D; Did not show up for grading</li>
+</ul>
+<h3 id="CODE-code-score-min-code-comments-code-explanation-4"><a href="#CODE-code-score-min-code-comments-code-explanation-4" class="headerlink" title="CODE: code_score &#x3D; min(code_comments, code_explanation) * 4"></a>CODE: code_score &#x3D; min(code_comments, code_explanation) * 4</h3><h4 id="Code-Comments"><a href="#Code-Comments" class="headerlink" title="Code Comments"></a>Code Comments</h4><p>You should comment your code to describe assumptions and key concepts. It<br>should be reasonably complete and not simply repeat what your code is doing.<br>You should assume the reader can read C code, but may not understand how your<br>code is trying to implement the functionality.</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Well-written and easy to understand<br>Includes function comments with appropriate descriptions of the input&#x2F;output<br>as well as any assumptions about the input&#x2F;output and how the function should<br>be called. Additionally, key parts of the code and complex, hard-to-understand<br>parts of the code will be commented to provide additional clarity. This rating<br>should not be verbose and should not comment every line of code, as that would<br>make it hard to read. This is what one might expect in clearly documented<br>production quality code. This should be considered as a bonus if you impress<br>the TAs.</li>
+<li>3 (meets expectations; full score) &#x3D; Understandable, but not easy to read and&#x2F;or slightly incomplete<br>Comments are understandable and reasonably complete, but some parts may be<br>lacking some comments, or there may be too many comments, which degrades<br>readability. The comments should succinctly explain what the code is doing<br>conceptually without just repeating what the code is doing. For example, to<br>comment head &#x3D; NULL, you should <em>not</em> say:<br>&#x2F;&#x2F; Sets head to NULL<br>The code already clearly indicates that head is being set to NULL. Instead,<br>you should say something like:<br>&#x2F;&#x2F; Initializes global variables to reset the malloc data structure to its<br>initial state<br>This explains both what the code is doing and why the code is needed.</li>
+<li>2 (below expectations; partial credit) &#x3D; Difficult to understand or lacking in key design points<br>Includes basic comments about parts of the code, but is incomplete and lacks<br>comments in some key areas. Examples of poor comments includes repeating what<br>the code is doing. The english may be difficult to comprehend, and there may<br>be some minor errors with how your comments match your implementation.</li>
+<li>1 (major issues) &#x3D; Minimal effort or incorrect<br>Minimal comments or the comments significantly lack in describing the code.<br>This rating also applies to comments that are significantly different from<br>your actual code.</li>
+<li>0 (missing) &#x3D; Missing code comments<br>Did not write code comments beyond the starter code comments.</li>
+</ul>
+<h4 id="Code-Explanation"><a href="#Code-Explanation" class="headerlink" title="Code Explanation"></a>Code Explanation</h4><p>You should explain your code to the TAs without reading from your comments.<br>You may draw some pictures if it helps, but you should keep your explanation<br>concise and focused on the key parts of your code. You should describe how<br>your design is implemented in your various functions, as well as describing<br>some of the key functions in your code.</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Clear, succinct explanation of key parts of the code and some of the key challenges in making your code work correctly </li>
+<li>3 (meets expectations; full score) &#x3D; Can explain how your code works and can reasonably answer the TA’s questions </li>
+<li>2 (below expectations; partial credit) &#x3D; Difficulty in explaining the key parts in your code and&#x2F;or some difficulty in answering the TA’s questions </li>
+<li>1 (major issues) &#x3D; Cannot explain your code and&#x2F;or unable to answer the TA’s questions </li>
+<li>0 (missing) &#x3D; Did not show up for grading</li>
+</ul>
+<h3 id="HEAP-CHECKER-heap-checker-score-min-heap-checker-code"><a href="#HEAP-CHECKER-heap-checker-score-min-heap-checker-code" class="headerlink" title="HEAP CHECKER: heap_checker_score &#x3D; min(heap_checker_code,"></a>HEAP CHECKER: heap_checker_score &#x3D; min(heap_checker_code,</h3><p>heap_checker_demo) * 8</p>
+<h4 id="Heap-Checker-Code"><a href="#Heap-Checker-Code" class="headerlink" title="Heap Checker Code"></a>Heap Checker Code</h4><p>Your heap checker should check for many invariants in your code to help in<br>your debugging. Invariants are things you can test for that are always true in<br>a valid malloc data structure. Writing these tests will both help you in<br>debugging your code as well as improve your skills in writing test code. This<br>is an invaluable tool for detecting bugs early when they occur rather than<br>many malloc&#x2F;free calls in the future after a chain of memory corruptions.</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Reasonably complete in checking invariants and the heap checker code is easy to read<br>Includes checks that will test important invariants in your design. This will<br>depend on your design, and you should be able to articulate why your checks<br>can reasonably test the correctness of your data structure consistency.<br>Additionally, your heap checker code should be easy to read and be at the<br>quality level of production test code. This should be considered as a bonus if<br>you impress the TAs.</li>
+<li>3 (meets expectations; full score) &#x3D; Checks many invariants, but may be missing some useful checks<br>Includes many checks, but a few useful checks may be missing. This rating<br>would reflect an effective usage of the heap checker for debugging.</li>
+<li>2 (below expectations; partial credit) &#x3D; Only tests part of your design and lacks important checks<br>Includes basic checks for some aspects of your design, but lacks important<br>checks in key aspects of your design. Only implementing the suggested checks<br>in the handout would be consistent with this rating level. The handout only<br>provides a very small list of examples, whereas there are dozens of additional<br>checks that one should think about and implement.</li>
+<li>1 (major issues) &#x3D; Minimal effort or incorrect<br>The heap checker hardly contains any checks and&#x2F;or has major correctness<br>issues. This would also apply to heap checker code that does not build.</li>
+<li>0 (missing) &#x3D; Missing heap checker<br>Did not write a heap checker.</li>
+</ul>
+<h4 id="Heap-Checker-Demo"><a href="#Heap-Checker-Demo" class="headerlink" title="Heap Checker Demo"></a>Heap Checker Demo</h4><p>You should demo your heap checker usage by calling your heap checker in<br>appropriate places in your code and showing how you can use gdb to step<br>through the heap checker in a few instances of your code. You should explain<br>what your heap checker is doing as you go through the code to demonstrate that<br>your heap checker code is correct. Note that since your malloc code should be<br>correct, you do not need to introduce bugs for your heap checker to find. You<br>just need to demo that your heap check can successfully validate that your<br>malloc data structure is in a good state in a few scenarios (i.e., after some<br>malloc&#x2F;free calls so that you don’t have an empty heap).</p>
+<ul>
+<li>3.5 (above expectations; bonus points) &#x3D; Clear, succinct explanation of your heap checker and how you used it to find some of the most challenging bugs </li>
+<li>3 (meets expectations; full score) &#x3D; Can explain what your heap checker is checking for and the types of bugs that the checks are useful for detecting, and can reasonably answer the TA’s questions </li>
+<li>2 (below expectations; partial credit) &#x3D; Difficulty in explaining the heap checker and&#x2F;or some difficulty in answering the TA’s questions </li>
+<li>1 (major issues) &#x3D; Cannot explain your heap checker and&#x2F;or unable to answer the TA’s questions </li>
+<li>0 (missing) &#x3D; Did not show up for grading</li>
+</ul>
+<h3 id="TIMELINESS"><a href="#TIMELINESS" class="headerlink" title="TIMELINESS"></a>TIMELINESS</h3><p>You should be ready to go with your demo all set up. You should have your<br>linux environment and code setup with the right #defines uncommented so that<br>you can use gdb to show your heap checker in action. The entire demo,<br>including explaining your design, code, and heap checker, should take 5-6<br>minutes plus 2-3 minutes for TA questions&#x2F;discussion. The entire process<br>should take no more than 9 minutes. This part of your grade is primarily<br>providing a few free points for not causing delays in the grading, which may<br>also affect the TA’s ability to grade the other parts.</p>
+<ul>
+<li>2 (meets expectations) &#x3D; prepared and ready to go with your linux environment, code, and demo ready </li>
+<li>1 (below expectations) &#x3D; delays in getting set up </li>
+<li>0 (missing or major issues) &#x3D; did not show up or significant delays in setting up</li>
+</ul>
+<h2 id="Handin"><a href="#Handin" class="headerlink" title="Handin"></a>Handin</h2><p>Similar to the last assignment, we will be using GitHub for managing<br>submissions, and <strong>you must show your partial work by periodically adding,<br>committing, and pushing your code to GitHub</strong> . This helps us see your code if<br>you ask any questions on Canvas (please include your GitHub username) and also<br>helps deter academic integrity violations.<br>Additionally, please input the desired commit number that you would like us to<br>grade in Canvas. You can get the commit number from github.com. In your<br>repository, click on the commits link to the right above your files. Find the<br>commit from the appropriate day&#x2F;time that you want graded. Click on the<br>clipboard icon to copy the commit number. Note that this is a much longer<br>number than the displayed number. Paste your very long commit number and only<br>your commit number in this assignment submission textbox.</p>
+<h2 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h2><ul>
+<li><em>Refer to the lectures for an overview of a recommended malloc design.</em> While you are not required to use the design, our suggestions give you a good starting point. We recommend to eventually implement the segregated free list design, and a tuned version of that should get the majority of the points. We also recommend trying the footer optimization as that can help space utilization. </li>
+<li><em>Draw pictures.</em> Pictures are a great way of visualizing the memory layout, and you should make sure you draw complete and accurate pictures. Your pictures should be detailed enough to include example addresses, sizes, and content within the memory. </li>
+<li><em>Go through the malloc practice quiz until you understand it.</em> The practice quiz is meant to help you draw pictures of the memory. You can repeat the practice quiz until you truly understand what should be happening. </li>
+<li><em>Encapsulate your pointer arithmetic and bit manipulation in static helper functions.</em> Pointer arithmetic in your implementation can be confusing and error-prone because of all the casting that is necessary. You can reduce the complexity significantly by writing static helper functions for your pointer operations and bit manipulation. The compiler should inline these simple functions for you. </li>
+<li><em>Use clear names for indicating what a pointer points to.</em> There is a difference between whether a pointer points to the beginning of a block or if it points to the beginning of the user payload space. Using good variable&#x2F;parameter names will help avoid misinterpreting what a pointer points to. </li>
+<li><em>Write a good heap checker.</em> This will help detect errors much closer to when they occur. This is one of the most useful techniques for debugging data structures like the malloc memory structure. </li>
+<li><em>Avoid copying&#x2F;pasting code between functions.</em> Anytime you duplicate your code, you duplicate your bugs, and you duplicate your maintenance work for updating the code. If you think you need to copy&#x2F;paste code, then you should think about how to design your code with additional functions to avoid duplicating code. </li>
+<li><em>Design your code in modules that can be used as building blocks.</em> Malloc is fundamentally just a complex data structure built up of multiple data structures. You should design your code to be modular by separating out sets of related functions that perform a specific task. For example, you could isolate all linked list code and have a set of functions that simply manage a linked list. You can then embed the linked list in the memory blocks and call these functions to help insert&#x2F;remove without having all the insertion&#x2F;removal logic mixed together with all the malloc logic. That way, any code that splits and coalesces blocks can just reuse your common linked list code without worrying about whether there’s a linked list bug, and your linked list code would not need to worry about how it is used. </li>
+<li>_Use the<code>mdriver</code> <code>-f</code> option. _ During initial development, using tiny trace files will simplify debugging and testing. We have included some trace files ending in <code>-short.rep</code> that you can use for initial debugging. </li>
+<li><em>Use gdb; watchpoints can help with finding corruption.</em> <code>gdb</code> will help you isolate and identify out of bounds memory references as well as where in the code the SEGFAULT occurs. To assist the debugger, you may want to compile with <code>make debug</code> to produce unoptimized code that is easier to debug. To revert to optimized code, run <code>make release</code> for improved performance. Additionally, using watchpoints in gdb can help detect where corruption is occurring if you know the address that is being corrupted. </li>
+<li><em>The textbooks have detailed malloc examples that can help your understanding.</em> You are allowed to reference any code <em>within the textbooks</em> as long as you cite the source and only reference code that is physically printed in the textbook. However, looking for or using any code online <em>even if it is textbook related</em> is strictly forbidden. </li>
+<li><em>Use git to track your different versions.</em> <code>git</code> will allow you to track your code changes to help you remember what you’ve done in the past. It can also provide an easy way to revert to prior versions if you made a mistake. </li>
+<li>_Use the<code>mdriver</code> <code>-v</code> and <code>-V</code> options. _ These options allow extra debug information to be printed. </li>
+<li><em>Start early!</em> Unless you’ve been writing low-level systems code since you were 5, this will probably be some of the most difficult and sophisticated code you have written so far in your career. So start early, and good luck</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/06/23/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC473WritingADynamicStorageAllocator/">http://saferman.github.io/2022/06/23/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC473WritingADynamicStorageAllocator/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/06/23/C++%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC122MyArray/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="C++代写：CMPSC122 My Array">
+                        
+                        <span class="card-title">C++代写：CMPSC122 My Array</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/06/22/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS1101Gate/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Java代写：CS1101 Gate">
+                        
+                        <span class="card-title">Java代写：CS1101 Gate</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

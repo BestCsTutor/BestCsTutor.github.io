@@ -1,0 +1,919 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS261 Mini ELF Loader, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个ELF文件加载器，解析ELF文件并装载。  
+RequirementThis project serves as an expansion of the Mini-ELF utility from the firstproject,">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS261 Mini ELF Loader | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS261 Mini ELF Loader</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-03-07
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个ELF文件加载器，解析ELF文件并装载。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>This project serves as an expansion of the Mini-ELF utility from the first<br>project, and the goal is to reinforce the relationship between a compiled<br>executable and the standard Linux&#x2F;C memory model.<br>In this project, you will continue reading data from the Mini-ELF file by<br>first loading the program headers and then loading segments of the file into a<br>large virtual memory array.<br>For generic project instructions, refer to the project guide.<br>The project distribution contains a compiled solution to Project 1 (i.e.,<br>p1-check.o). If your Project 1 submission passed all of the tests for that<br>project, I recommend that you just delete this file and copy your p1-check.c<br>into the folder, modifying the Makefile appropriately (i.e., move p1-check.o<br>from OBJS to MODS). This will give you better debug information by compiling<br>with your solution rather than my precompiled (and stripped) solution. If<br>you’re not happy with your P1 solution, you may use the precompiled p1-check.o<br>provided to you, and you should use the Makefile as is.<br>IMPORTANT: The test suite is subject to change. Make sure you use the most<br>recent version. If you want to download just the most recent tests, I will<br>keep the following location on stu up-to-date so you can always pull the most<br>recent tests from here:</p>
+<h2 id="Command-line-parsing"><a href="#Command-line-parsing" class="headerlink" title="Command-line parsing"></a>Command-line parsing</h2><p>For this project, your program must parse command-line parameters according to<br>the following interface:<br>    Usage: y86 &lt;option(s)&gt; mini-elf-file<br>    Options are:<br>      -h     Display usage<br>      -H     Show the Mini-ELF header<br>      -a     Show all with brief memory<br>      -f     Show all with full memory<br>      -s     Show the program headers<br>      -m     Show the memory contents (brief)<br>      -M     Show the memory contents (full)<br>The -h and -H options behave identically to their counterparts in Project 1.<br>This project adds four additional options as described below. Flags can be<br>combined in a variety of combinations:<br>    $ y86 -H -s file.o<br>    $ y86 -sH -m file.o<br>    $ y86 -m -s file.o<br>The -a flag is equivalent to -H -s -m and the -f flag is equivalent to -H -s<br>-M.</p>
+<h2 id="Part-1-Mini-ELF-and-program-headers"><a href="#Part-1-Mini-ELF-and-program-headers" class="headerlink" title="Part 1: Mini-ELF and program headers"></a>Part 1: Mini-ELF and program headers</h2><p>As in the previous project, you will be working with a binary file using the<br>Mini-ELF structure. In the previous project, you read the first 16 bytes known<br>as the top-level Mini-ELF header elf_hdr_t. The Mini-ELF file contains several<br>program segments, each with its own header know as the program header of that<br>segment. In this project, you will read in the program headers based on the<br>information from the top-level Min-ELF header. Specifically, the<br>elf_hdr_t.e_num_phdr field tells you how many program segments&#x2F; program<br>headers you have and the elf_hdr_t.e_phdr_start tells you the byte offset into<br>the Min-ELF file where the first of the program headers starts. You will need<br>to seek to this file location (fseek() may be useful here) and read one<br>program header at a time into an elf_phdr_t struct.<br>The purpose of the program headers is to provide information on how to map<br>(i.e. load) the contents of a Mini-ELF executable file to memory when that<br>file is executed. Each header will have information that includes an offset, a<br>virtual address, and a size (see the expanded elf.h for more information). The<br>offset refers to the byte location in the Min-ELF file where the data of the<br>corresponding segment exists. The virtual address is where that segment data<br>will be loaded into the simulated Y86 virtual memory (see below). The size is<br>the number of bytes in that segment.<br>The actual reading of program headers should be implemented in the read_phdr<br>function. Note that this function reads in a single program header but Mini-<br>ELF files may have multiple program headers. Therefore, you will need to<br>create an array of them in your main function and call read_phdr multiple<br>times. The dump_phdrs function should print the full array of program headers.</p>
+<h2 id="Part-2-Y86-Virtual-Memory"><a href="#Part-2-Y86-Virtual-Memory" class="headerlink" title="Part 2: Y86 Virtual Memory"></a>Part 2: Y86 Virtual Memory</h2><p>In the remainder of these projects, we will be simulating a 64-bit<br>architecture called Y86. However, we will not simulate a ful 64-bit address<br>space because that much space would be excessive for our purposes. Rather, we<br>will use a memory space whose size is determined by a constant called MEMSIZE.<br>This constant is defined in y86.h to have a value of 0x1000, which in decimal<br>is 4096 (i.e. 4KB).<br>In your main module, you should simulate this memory by allocating space on<br>the heap for virtual memory (simulating real memory–it’s basically an array of<br>bytes). We have provided the memory_t type (declared in y86.h) that we<br>recommend using to store a pointer to your memory block. Because its type is a<br>uint8_t pointer, you can use standard array accessing (e.g., mem[8] to access<br>the byte at address 8).<br>After you have read in the program headers as described above, you will need<br>to use the information in those headers to read the program segments (code and<br>data) from the file into your virtual memory array. The actual loading should<br>be implemented in the read_segment function. The corresponding output function<br>is dump_memory, which should print the bytes in a specified region of the<br>virtual memory.</p>
+<h2 id="Output-specification"><a href="#Output-specification" class="headerlink" title="Output specification"></a>Output specification</h2><p>As in Project 1, the -H flag should cause your program to print the header:<br>    $ .&#x2F;y86 -H tests&#x2F;inputs&#x2F;simple.o<br>    00000000 01 00 00 01 10 00 02 00 58 00 70 00 45 4c 46 00<br>    Mini-ELF version 1<br>    Entry point 0x100<br>    There are 2 program headers, starting at offset 16 (0x10)<br>    There is a symbol table starting at offset 88 (0x58)<br>    There is a string table starting at offset 112 (0x70)<br>The header output above specifies that there are 2 program headers (therefore,<br>2 program segments). Each program header provides information about how to<br>copy the data of the corresponding segment from the Mini-ELF file into memory<br>segments. The -s flag should cause your program to print the segment<br>information (as encoded in its program header):<br>    $ .&#x2F;y86 -s tests&#x2F;inputs&#x2F;simple.o<br>    Segment Offset VirtAddr FileSize Type Flag<br>     00     0x0038 0x0100   0x0015   CODE R X<br>     01     0x004d 0x0200   0x000b   DATA RW<br>In this example, the first program header indicates that you should read 0x15<br>bytes (i.e., 21 bytes) from the Mini-ELF file starting at offset 0x38 into the<br>Y86 virtual memory starting at address 0x100. The program header also tells<br>you this segment is CODE and has the flags R and X (read and execute<br>permissions). The second segment starts at offset 0x4d in the Mini-ELF file,<br>is 0xb bytes (i.e., 11 bytes) in size, and should be loaded into memory<br>address 0x200. This segment is DATA and has RW (read and write) permissions.<br>Note that there is an extra space after “RW” for the second segment,<br>indicating that that segment is NOT executable. Make sure your output includes<br>this space.<br>The -m option should print the address ranges that actually contain data<br>loaded from the Mini-ELF file (i.e., the segments). In this output, the first<br>column is the memory address (in lower-case hexadecimal) of the first byte.<br>After that, you should print the contents of memory in hexadecimal format as<br>follows:<br>    $ .&#x2F;y86 -m tests&#x2F;inputs&#x2F;simple.o<br>    Contents of memory from 0100 to 0115:<br>      0100 30 f3 0f 00 00 00 20 31 40 13 fd ff ff ff 60 31<br>      0110 70 08 01 00 00<br>    Contents of memory from 0200 to 020b:<br>      0200 aa bb cc dd 00 00 00 dd 00 00 00<br>As in the first project, note the address at the beginning (now a 16-bit<br>address, in hex) as well as the extra space between sets of eight bytes. Your<br>output must match this format exactly.<br>The -M flag (again, note the capital) should cause your program to print the<br>entire 4KB contents of the Y86 memory, regardless of whether it has actual<br>data loaded from the Mini-ELF file. Any data not loaded should be zero.<br>Example output (note the omission of some lines for brevity):<br>    $ .&#x2F;y86 -M tests&#x2F;inputs&#x2F;simple.o<br>    Contents of memory from 0000 to 1000:<br>      0000 00 00 00 00 00 00 00 00 00 00<br>      0010 00 00 00 00 00 00 00 00 00 00<br>      0020 00 00 00 00 00 00 00 00 00 00<br>      … [some lines omitted]<br>      00f0 00 00 00 00 00 00 00 00 00 00<br>      0100 30 f3 0f 00 00 00 20 31 40 13<br>      0110 70 08 01 00 00 00 00 00 00 00<br>      0120 00 00 00 00 00 00 00 00 00 00<br>      … [some lines omitted]<br>      01f0 00 00 00 00 00 00 00 00 00 00<br>      0200 aa bb cc dd 00 00 00 dd 00 00<br>      0210 00 00 00 00 00 00 00 00 00 00<br>      … [some lines omitted]<br>When flags are combined, you should always print the header first (if<br>requested), followed by the segments (if requested), then the contents of<br>memory. For instance, the following example should the output for the -a flag<br>(which as noted above is equivalent to -H -s -m):<br>    $ .&#x2F;y86 -a tests&#x2F;inputs&#x2F;simple.o<br>    00000000 01 00 00 01 10 00 02 00 58 00 70 00 45 4c 46 00<br>    Mini-ELF version 1<br>    Entry point 0x100<br>    There are 2 program headers, starting at offset 16 (0x10)<br>    There is a symbol table starting at offset 88 (0x58)<br>    There is a string table starting at offset 112 (0x70)<br>      Segment Offset VirtAddr FileSize Type Flag<br>       00     0x0038 0x0100   0x0015   CODE R X<br>       01     0x004d 0x0200   0x000b   DATA RW<br>    Contents of memory from 0100 to 0115:<br>      0100 30 f3 0f 00 00 00 20 31 40 13 fd ff ff ff 60 31<br>      0110 70 08 01 00 00<br>    Contents of memory from 0200 to 020b:<br>      0200 aa bb cc dd 00 00 00 dd 00 00 00</p>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><p>Here are the required functions that you must implement in p2-load.c. We will<br>use unit tests to exercise this portion of your submission.</p>
+<ul>
+<li>bool parse_command_line_p2( int argc, char **argv, bool *header, bool *segments, bool *membrief, bool *memfull, char **file );<br>As in Project 1, set the boolean pointed to by the parameter header to true if<br>the -H option is passed. Additionally, set the boolean pointed to by segments<br>to true if -s was passed. Set membrief or memfull to true based on whether -m<br>or -M was passed; it is invalid to pass both. If the command line is invalid,<br>return false; if it is valid, return true. Also, the user must pass exactly<br>one file name that should be returned using file, as in Project 1.</li>
+<li>bool read_phdr( FILE *file, uint16_t offset, elf_phdr_t *phdr );<br>Read a single Mini-ELF program header from the Mini-ELF file into the space<br>pointed to by phdr, starting at byte offset into the Mini-ELF file. If the<br>reading fails or it is not a valid program header, return false.</li>
+<li>void dump_phdrs( uint16_t numphdrs, elf_phdr_t phdr[] );<br>Print the Mini-ELF program headers passed in phdr array. There will be<br>numphdrs of them.</li>
+<li>bool load_segment( FILE <em>file, memory_t memory, elf_phdr_t phdr );<br>Read data from the Mini-ELF file into the virtual memory space starting at<br>address memory based on the information encoded in the program header phdr.<br>Note that memory_t is an alias for uint8_t</em>. As such, you can use memory[i] to<br>access the element stored at memory address i. Note also that there could be<br>zero-byte segments; for such segments there is no need to actually read<br>anything from the file.</li>
+<li>void dump_memory( memory_t memory, uint16_t start, uint16_t end );<br>Print the contents of memory starting at address start and ending just before<br>address end. For instance, if start&#x3D;5 and end&#x3D;8, then you will print the bytes<br>at addresses 5, 6, and 7.<br>In addition, you must implement main() inside main.c such that your program<br>behaves as described above. We will use integration tests to exercise this<br>portion of your submission. Make sure you use the functions from p2-load.o in<br>main.c –do not re-invent the wheel!</li>
+</ul>
+<h2 id="Error-checking"><a href="#Error-checking" class="headerlink" title="Error checking"></a>Error checking</h2><p>Robust software proactively checks for potential errors and responds<br>appropriately when an error occurs. Failure to build robust software leads to<br>security breaches, lost sales, and other problems; this failure is not<br>acceptable. Our grading procedures will try to break your code. The following<br>list is a sample (not complete) of the types of errors we may test:</p>
+<ul>
+<li>Passing NULL values in pointer parameters </li>
+<li>Passing names of files that do not exist or have permission restrictions that prevent reading </li>
+<li>Passing invalid command-line options </li>
+<li>Not passing a file name </li>
+<li>Passing the name of a file whose size is too small to contain the expected data </li>
+<li>Passing a file that contains an invalid header </li>
+<li>Passing a file with program headers that do not match the rest of the file </li>
+<li>Passing a file with invalid program headers<br>If the given file cannot be opened or contains invalid Mini-ELF data, your<br>program should print the error message “Failed to read file” followed by a<br>newline and exit with the EXIT_FAILURE code defined in stdlib.h.<br>The above list is not necessarily exhaustive, and you should think carefully<br>about what sort of errors might occur so that you can prevent them or perform<br>additional error checking as needed. In particular, we will also use valgrind<br>to detect memory leaks. Failure to respond appropriately will result in grade<br>reductions.</li>
+</ul>
+<h2 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h2><p>Work incrementally. First, update your command-line parsing routine from P1<br>and verify that it works. Then implement read_phdr and dump_phdrs and verify<br>that they work. Finally, use the information that you now have from the<br>program headers to implement load_segment and dump_memory.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>The following requirements are necessary to earn a grade of ‘A’ for this<br>project:</p>
+<ol>
+<li>Read the program headers from the file </li>
+<li>Print the segment information from the program headers </li>
+<li>Load the segment contents into a dynamically allocated memory array </li>
+<li>Print the full memory contents according if passed -M </li>
+<li>Print the brief memory contents according if passed -m </li>
+<li>Accept all valid command-line options </li>
+<li>Handle error checking appropriately </li>
+<li>Reject invalid command-line arguments<br>Completing steps 1-6 are required to earn a grade of ‘B’ while completing only<br>steps 1-4 will yield a maximum grade of ‘C’. Note that these are the maximum<br>grades you can earn. Inadequate error checking, failure to adhere to the<br>coding standards, or deviations from the submit procedures will result in<br>grade reductions as described in the project guide.<br>Failure to submit code that compiles on stu.cs.jmu.edu will result in an<br>automatic grade of 0. In particular, you SHOULD NOT modify the included header<br>files; your code must compile without errors or warnings against the original<br>headers.<br>Caution: No test suite is fully exhaustive, and the test suite distributed<br>with this program is no exception. Be aware that we may test your code with<br>new test cases created after the submission deadline. These test cases will<br>not substantively change the project specification, but they may exercise your<br>program more thoroughly than the current test suite does. You should treat the<br>given test suite as providing your maximum possible base grade, and you should<br>always anticipate how your program may fail to adhere to the project spec in<br>ways that the initial test suite does not test.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/03/07/C%E4%BB%A3%E5%86%99%EF%BC%9ACS261MiniELFLoader/">http://saferman.github.io/2018/03/07/C%E4%BB%A3%E5%86%99%EF%BC%9ACS261MiniELFLoader/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/03/09/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS326DistanceVectorRouting/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Python代写：CS326 Distance Vector Routing">
+                        
+                        <span class="card-title">Python代写：CS326 Distance Vector Routing</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-03-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/03/04/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3023Kakuro/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="C++代写：COMP3023 Kakuro">
+                        
+                        <span class="card-title">C++代写：COMP3023 Kakuro</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-03-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：EECS665 Compiler Construction, 留学生CS|辅导|代写">
+    <meta name="description" content="使用 [ Flex ](https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-generator&amp;#x2F; “Flex”) 实现一个名为dmc的编译器。![Flex](https">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：EECS665 Compiler Construction | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：EECS665 Compiler Construction</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 [ Flex ](<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-">https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-</a><br>generator&#x2F; “Flex”) 实现一个名为dmc的编译器。<br>![Flex](<a target="_blank" rel="noopener" href="https://media.geeksforgeeks.org/wp-">https://media.geeksforgeeks.org/wp-</a><br>content&#x2F;uploads&#x2F;how_flex_is_used.jpeg)</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In this project, you will begin construction of dmc, the compiler for our new<br>language, named (sigh) “Drewno Mars”. We will continue to build on the<br>codebase started in this project throughout the semester until we have a<br>fully-functioning compiler. For this first assignment, you will implement the<br>scanner module using the scanner-generator Flex.<br>The scanner of dmc will transform character sequences from an input file into<br>a token stream. The ultimate intention is that the input file will contain<br>what the user expects to be valid Drewno Mars source code (though it may be<br>invalid &#x2F; contain errors). Of course, the scanner only cares if the input<br>contains valid tokens so don’t expect that input will correspond to a valid<br>program or try to identify errors beyond those listed below. In later<br>projects, the token stream will be consumed internally as part of the<br>compiler’s frontend, but for now the code should dump the token stream in text<br>format, and report any errors to stderr.<br>The main “action” of the project will be building a lexical specification (a<br>.l file) that recognizes tokens and reports errors according to the format<br>listed below.</p>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><p>This section contains information that affects how your project will be<br>graded. It should be considered mandatory reading.</p>
+<h3 id="YOUR-SUBMISSION"><a href="#YOUR-SUBMISSION" class="headerlink" title="YOUR SUBMISSION"></a>YOUR SUBMISSION</h3><p>You should submit a single tarred-and-zipped directory containing source code<br>and a makefile such that the following invocations build and execute your<br>code:<br>    make<br>    .&#x2F;dmc &lt;infile.dm&gt; -t &lt;tokens.txt&gt; 2&gt; &lt;errors.txt&gt;<br>Where</p>
+<ul>
+<li>is an input file to the compiler (described in detail below). </li>
+<li>is the file to which the token stream will be written in the required output format (described in detail below). </li>
+<li>is the file to which the required error messages will be written in the required error message format (described in detail below).<br>You should include a file named TEAM.txt in your tarball with each person who<br>worked on the project included in the following format. (lastname1,firstname1)<br>(lastname2,firstname2) You may work with a partner for the project. If you do,<br>include both names. Otherwise, include only your name in TEAM.txt.</li>
+</ul>
+<h3 id="INPUT-FORMAT"><a href="#INPUT-FORMAT" class="headerlink" title="INPUT FORMAT"></a>INPUT FORMAT</h3><p>You should expect the input to be a file containing ASCII characters. The<br>lexical details of Drewno Mars are presented in the lexical details section of<br>the language specification. That document should serve as a complete guide for<br>all of the tokens you need to recognize.<br>Whitespace separates tokens and changes the character counter, but should<br>otherwise be ignored (except inside a string literal).<br>If you are not sure which token kind matches which token, ask!</p>
+<h3 id="OUTPUT-FORMAT"><a href="#OUTPUT-FORMAT" class="headerlink" title="OUTPUT FORMAT"></a>OUTPUT FORMAT</h3><p>The token stream should be output with 1 token per line in the form<br>    <tokenspec> [<l>,<c>]<br>Where  is the name of the token for all tokens except for:</p>
+<ul>
+<li>string literals (STRINGLITERAL), which will be of the form STRINGLIT:  where  is the string lexeme matched (including quotation marks). Newline and tab specifiers should be printed literally. </li>
+<li>integer literals (INTLITERAL), which will be of the form INTLIT:  where  is the integer lexeme matched. </li>
+<li>Identifiers (ID), which will be of the form ID:  where  is the lexeme matched.</li>
+</ul>
+<h3 id="ERRORS-AND-WARNINGS"><a href="#ERRORS-AND-WARNINGS" class="headerlink" title="ERRORS AND WARNINGS"></a>ERRORS AND WARNINGS</h3><p>The scanner should handle the following errors (  and  should be replaced by<br>the position of the first line and character of the error, respectively. &lt;2<br>and &lt;2 should be replaced by the position of the last line and character of<br>the error, respectively.)<br>Illegal characters: Issue the error message: <code>FATAL [&lt;l1&gt;,&lt;c1&gt;-&lt;l2&gt;,&lt;c2&gt;]: Illegal character &lt;ch&gt;</code> (where  is the illegal character) and resume lexing<br>after the character.<br>Unterminated string literals: A string literal is considered to be<br>unterminated if there is a newline or end-of-file before the closing quote.<br>Issue the error message: <code>FATAL [&lt;l1&gt;,&lt;c1&gt;-&lt;l2&gt;,&lt;c2&gt;]: Unterminated string literal detected</code> and continue past the unterminated string literal. Start<br>looking for the next token after the newline.<br>Bad escape sequences in string literals: This case occurs if a string inclues<br>a bad escape sequence; i.e., a backslash followed by a q (since \q isn’t part<br>of Drewno Mars). Issue the error message: <code>FATAL [&lt;l1&gt;,&lt;c1&gt;-&lt;l2&gt;,&lt;c2&gt;]: String literal with bad escape seqeunce detected</code> and ignore the string<br>literal and start looking for the next token after the closing quote.<br>Bad escape sequences in unterminated string literals: If the string literal<br>has a bad escape sequence and is unterminated, issue the error message <code>FATAL [&lt;l1&gt;,&lt;c1&gt;-&lt;l2&gt;,&lt;c2&gt;]: Unterminated string literal with bad escaped sequence detected</code> Start looking for the next token after the newline. Note that a<br>string literal that has a newline immediately after a backslash should be<br>treated as having a bad escaped character and being unterminated. For example,<br>given:<br>    “very bad string <br>    abc<br>the scanner should report an unterminated string literal with a bad escaped<br>character on line 1, and an identifier on line 2.</p>
+<h3 id="Integer-literals-overflow"><a href="#Integer-literals-overflow" class="headerlink" title="Integer literals overflow"></a>Integer literals overflow</h3><p>If an integer literal is larger than the 32-bit INT_MAX of C (i.e. 2147483647)<br>issue the error message <code>FATAL [&lt;l1&gt;,&lt;c1&gt;-&lt;l2&gt;,&lt;c2&gt;]: Integer literal overflow.</code><br>Note that because negative numbers are lexed as two tokens, underflow is not<br>reported.</p>
+<h3 id="Line-Column-numbers"><a href="#Line-Column-numbers" class="headerlink" title="Line&#x2F;Column numbers"></a>Line&#x2F;Column numbers</h3><p>For unterminated string literals, bad string literals, and bad integer<br>literals, the line and column numbers used in the error message should<br>correspond to the position of the first character in the string&#x2F;integer<br>literal.</p>
+<h2 id="Advice"><a href="#Advice" class="headerlink" title="Advice"></a>Advice</h2><p>This section contains tips and guidance. It may be helpful, but it’s optional<br>reading.</p>
+<h3 id="GETTING-STARTED"><a href="#GETTING-STARTED" class="headerlink" title="GETTING STARTED"></a>GETTING STARTED</h3><p>It would be super cool and totally possible to complete this project from<br>scratch, using only your own code. However, you may choose to use the “starter<br>code”. This code contains the basic structure of a reasonable solution for the<br>project. The starter code is provided here: p1.tgz<br>Hopefully, you can see what this code does by looking at it (it would be good<br>practice to poke around), but there is also some documentation about these<br>files written on the Project 1 doc page.</p>
+<h3 id="FLEX"><a href="#FLEX" class="headerlink" title="FLEX"></a>FLEX</h3><p>Setup: If you want to set up Flex on your own machine, it’s available in<br>Ubuntu via apt install flex. If you are working on an EECS Linux machine, it<br>will already be installed.<br>Docs: If you need more guidance with Flex for generating lexers, check out the<br>on-line Flex reference manual, and&#x2F;or the class Flex notes for information<br>about writing a Flex specification.<br>Gotchas: Flex-generated scanners have some behaviors that can appear<br>surprising to beginners. A couple of things to remember:</p>
+<ul>
+<li>Scanners start greedily consuming characters from the end of the last match until no longer token can possibly be produced. If there are multiple tokens that could all be of that same longest length, the rule that appears earliest in the Flex file is used. Thus, you should make sure your reserved keywords appear in your Flex file before your identifiers to ensure keywords pre-empt identifiers. </li>
+<li>Token “kinds” (i.e., values to be returned by the scanner) are defined in the file frontend.hh, and you can see them in action in scanner.cpp, For example, the kind for the token to be returned when an integer literal is recognized is INTLITERAL and the token to be returned when the reserved word int is recognized is INT. </li>
+<li>Note that code telling Flex to return the special EOF token on end-of-file has already been included in the file Drewno Mars.l – you don’t have to include a specification for that token.</li>
+</ul>
+<h2 id="What-the-Scanner-Should-Do"><a href="#What-the-Scanner-Should-Do" class="headerlink" title="What the Scanner Should Do"></a>What the Scanner Should Do</h2><p>The main job of the scanner is to identify and return the next token. The<br>value to be returned includes:</p>
+<ul>
+<li>The token “kind” (e.g., INTLITERAL). Token kinds are defined in the file frontend.hh. </li>
+<li>The line number in the input file on which the token starts. </li>
+<li>The number of the character on that line at which the token starts. </li>
+<li>For identifiers, integer literals, and string literals: the actual value (a String, an int, or a String, respectively). For a string literal, the value should include the double quotes that surround the string, as well as any backslashes used inside the string as part of an “escaped” character.<br>Your scanner will return this information by creating a new Token object in<br>the action associated with each regular expression that defines a token (the<br>Token type is defined externally; you don’t need to look at that definition).<br>A Token includes a field of type int for the token kind, and a field of store<br>auxilary information about the token (its line, column, and value - if it<br>needs to store a value). The given .l file already includes an example of how<br>to call the Token (subclass) constructors. The given tokens.cpp file has<br>example code that accesses the fields of a Token.<br>In your compiler, the Token will actually be subclassed, with a value()<br>function to get the actual value; that type is defined in lexer.l. Every<br>TokenVal includes a linenum field, and a charnum field. Subtypes of Token with<br>more fields will be used for the values associated with identifier, integer<br>literal, and string literal tokens. These subtypes, IntLitToken, IDToken, and<br>StrLitToken are also defined in Drewno Mars.l.<br>You should keep track of the line and character number, but it’s not really<br>that hard. Line counting is already done for you in the sample file, and<br>column counting can be done by adjusting the charNum variable according to the<br>amount of characters consumed. The code in Drewno Mars.l does this for some of<br>the patterns that it defines, and you should be able to figure out how to do<br>the same thing for the new patterns that you add.<br>The Flex scanner also provides a macro yytext that returns the actual text<br>that matches a regular expression. You will find it useful to use this method<br>in the actions you write in your Flex specification.<br>Note that, for the integer literal token, you will need to convert a string<br>(the value scanned) to an int (the value to be returned). You should use code<br>like the following:<br>double d &#x3D; std::stod(yytext); &#x2F;&#x2F; convert String to double<br>&#x2F;&#x2F; INSERT CODE HERE TO CHECK FOR BAD VALUE – SEE ERRORS AND WARNINGS BELOW<br>int k &#x3D; atoi(yytext) &#x2F;&#x2F; convert to int<br>—|—</li>
+</ul>
+<h3 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h3><p>A good practice is to write test cases for your project, as discussed in the<br>Flex Lab. You should run your test suite by invoking the command<br>    make test<br>which runs the test rule in the Makefile (which should, in turn, invoke each<br>element of the test suite).<br>To test that your scanner correctly handles an unterminated string literal<br>with end-of-file before the closing quote, you will need to create a file that<br>does NOT end in a newline, which many editors do automatically.<br>On a Linux machine, you can tell that there is no final newline by typing: cat<br>eof.txt or od -a eof.txt od will print the newline explicitly. For cat, you<br>should see your command-line prompt at the end of the last line of the output<br>instead of at the beginning of the following line for cat, and the file will<br>not display a newline.<br>In order to create a file with no final newline, you can issue the command<br>    echo -n “Hello world” &gt; no_newline.txt<br>Which will create a file “no_newline.txt” containing the text “Hello world”<br>with no newline afterwards. You may also want to create a file with a quote,<br>which can be done using<br>    echo -n “&quot;Hello world” &gt; no_newline.txt</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/08/28/C++%E4%BB%A3%E5%86%99%EF%BC%9AEECS665CompilerConstruction/">http://saferman.github.io/2020/08/28/C++%E4%BB%A3%E5%86%99%EF%BC%9AEECS665CompilerConstruction/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/08/29/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS6300BasicJavaCodingAndJUnit/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Java代写：CS6300 Basic Java Coding And JUnit">
+                        
+                        <span class="card-title">Java代写：CS6300 Basic Java Coding And JUnit</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/27/C++%E4%BB%A3%E5%86%99%EF%BC%9APIC10ALinesweeper/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="C++代写：PIC10A Linesweeper">
+                        
+                        <span class="card-title">C++代写：PIC10A Linesweeper</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

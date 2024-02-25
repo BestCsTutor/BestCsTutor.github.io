@@ -1,0 +1,934 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CSCI561 Path Planning For Skier, 留学生CS|辅导|代写">
+    <meta name="description" content="使用BFS, UCS和  A* ，解决滑雪最短路径问题。
+GuidelinesThis is a programming assignment. You will be provided sample inputs andoutputs (">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CSCI561 Path Planning For Skier | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CSCI561 Path Planning For Skier</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-02-01
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用BFS, UCS和 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A*_search_algorithm" title="A*"> A* </a><br>，解决滑雪最短路径问题。<br><img src="https://pngimg.com/uploads/skiing/skiing_PNG12.png" alt="skier"></p>
+<h2 id="Guidelines"><a href="#Guidelines" class="headerlink" title="Guidelines"></a>Guidelines</h2><p>This is a programming assignment. You will be provided sample inputs and<br>outputs (see below). Please understand that the goal of the samples is to<br>check that you can correctly parse the problem definitions and generate a<br>correctly formatted output. The samples are very simple and it should not be<br>assumed that if your program works on the samples it will work on all test<br>cases. There will be more complex test cases and it is your task to make sure<br>that your program will work correctly on any valid input. You are encouraged<br>to try your own test cases to check how your program would behave in some<br>complex special case that you might think of. Since each homework is checked<br>via an automated A.I. script, your output should match the specified format<br>exactly. Failure to do so will most certainly cost some points. The output<br>format is simple and examples are provided below. You should upload and test<br>your code on vocareum.com, and you will also submit it there. You may use any<br>of the programming languages provided by vocareum.com.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Your code will be tested as follows: Your program should not require any<br>command-line argument. It should read a text file called “input.txt” in the<br>current directory that contains a problem definition. It should write a file<br>“output.txt” with your solution to the same current directory. Format for<br>input.txt and output.txt is specified below. End-of-line character is LF<br>(since vocareum is a Unix system and follows the Unix convention).<br>The grading A.I. script will, 50 times:</p>
+<ul>
+<li>Create an input.txt file, delete any old output.txt file. </li>
+<li>Run your code. </li>
+<li>Check correctness of your program’s output.txt file. </li>
+<li>If your outputs for all 50 test cases are correct, you get 100 points. </li>
+<li>If one or more test case fails, you get 100 - 2xN points where N is the number of failed test cases.<br>Note that if your code does not compile, or somehow fails to load and parse<br>input.txt, or writes an incorrectly formatted output.txt, or no output.txt at<br>all, or OuTpUt.TxT, you will get zero points. Anything you write to stdout or<br>stderr will be ignored and is ok to leave in the code you submit (but it will<br>likely slow you down). Please test your program with the provided sample files<br>to avoid any problem.</li>
+</ul>
+<h2 id="Project-description"><a href="#Project-description" class="headerlink" title="Project description"></a>Project description</h2><p>In this project, we look at the problem of path planning in a different way<br>just to give you the opportunity to deepen your understanding of search<br>algorithms and modify search techniques to fit the criteria of a realistic<br>problem. To give you a context for how search algorithms can be utilized, we<br>invite you to a Ski Resort. However, this is not a ski resort for the faint of<br>heart. In this resort, there are no carved-out slopes and skiers must plan<br>their own path to the lodge at the bottom of the mountain. The terrain is<br>treacherous and the success of reaching the lodge depends on the level of the<br>skier. We are invited to develop an algorithm to find the optimal path to<br>reach our destination (and to a cup of hot cocoa) based on a particular<br>objective.<br>The input of our program includes a topographical map of the mountain resort,<br>plus some information about where our skier starts their journey, the position<br>of the lodge and some other quantities that control the quality of the<br>solution. The mountain can be imagined as a surface in a 3-dimensional space,<br>and a popular way to represent it is by using a mesh-grid. The E value<br>assigned to each cell represents the elevation of that location or whether it<br>contains a tree we need to navigate around. At each cell, the skier can move<br>to one of 8 possible neighbor cells: North, North-East, East, South-East,<br>South, South-West, West, and North-West. Actions are assumed to be<br>deterministic and error-free (the skier will always end up at the intended<br>neighbor cell).<br>The skier cannot go over trees that are high enough to not have been covered<br>with snow, nor go up a slope unless they have enough speed or stamina.<br>Therefore, the value E in each cell can advise us on whether we can take that<br>route (in case of tree and hills) or how much stamina moving into that cell<br>will cost the skier if they move into it.</p>
+<h3 id="Search-for-the-optimal-paths"><a href="#Search-for-the-optimal-paths" class="headerlink" title="Search for the optimal paths"></a>Search for the optimal paths</h3><p>Our task is to lead the skier from their start position to the ski lodge,<br>where they can celebrate a good ski day with a cup of hot chocolate. If we had<br>a very advanced skier that can go across any land without a problem, usually<br>the shortest geometrical path is defined as the optimal path; however, since<br>our skiers might be at different levels (we will define this as stamina), our<br>objective is to avoid high trees as well as very steep areas, unless we have<br>gained some momentum first. Thus, we want to minimize the path from A to B<br>under those constraints. Our goal is, roughly, finding the shortest path among<br>the safe paths. What defines the safety of a path is whether there are trees<br>we can’t cross and the elevation of the cells along that path.</p>
+<h3 id="Problem-definition-details"><a href="#Problem-definition-details" class="headerlink" title="Problem definition details"></a>Problem definition details</h3><p>You will write a program that will take an input file that describes the land,<br>the starting point, potential lodges we can relax in, and some other<br>characteristics for our skier. For each lodge location, you should find the<br>optimal (shortest) safe path from the starting point to that target lodge. A<br>path is composed of a sequence of elementary moves. Each elementary move<br>consists of moving the skier from their current position to one of its 8<br>neighbors. To find the solution you will use the following algorithms:</p>
+<ul>
+<li>Breadth-first search (BFS) </li>
+<li>Uniform-cost search (UCS) </li>
+<li>A* search (A*).<br>Your algorithm should return an optimal path, that is, with shortest possible<br>journey cost. Journey cost is further described below and is not equal to<br>geometric path length. If an optimal path cannot be found, your algorithm<br>should return “FAIL” as further described below.</li>
+</ul>
+<h3 id="Terrain-map"><a href="#Terrain-map" class="headerlink" title="Terrain map"></a>Terrain map</h3><p>We assume a terrain map for the mountain is specified as follows:<br>A matrix with H rows (where H is a strictly positive integer) and W columns (W<br>is also a strictly positive integer) will be given, with a value E (an integer<br>number, to avoid rounding problems) specified in every cell of the WxH map. If<br>E is a negative integer, this means there is a tree of height |E| in that<br>cell. If E is a positive integer, the value represents the elevation of that<br>cell. For example:<br>    10 20 -30<br>    12 13 40<br>is a map with W&#x3D;3 columns and H&#x3D;2 rows, and each cell contains an E value (in<br>arbitrary units). By convention, we will use North (N), East (E), South (S),<br>West (W) as shown above to describe motions from one cell to another. In the<br>above example, elevation E in the North-West (NW) corner of the map is 10, and<br>it is 40 in the South-East (SE) corner, which means our skier will spend more<br>stamina to move into the SE corner than the NW corner.<br>Every skier will have a stamina value S that determines whether they can climb<br>up certain elevations. A move from E &#x3D; 20 to E &#x3D; 40 is only allowed if a<br>skier’s stamina is higher than or equal to 40 - 20 &#x3D; 20. Important Note:<br>Stamina remains as a constant value.<br>Notice that there is a tree of height 30 in the NE corner. If a cell contains<br>a tree, there are a few factors that determine whether a move into that cell<br>is allowed:</p>
+<ul>
+<li>If your current E is higher than or equal to tree height |E|, you are allowed to move into the cell. In this case, we imagine the tree is covered with snow of height |E|. Therefore, if our tree is height 30 as above, it would be allowed to move into that cell from the cell with elevation 40, but not from others. </li>
+<li>If your current E is lower than the tree height |E|, a move into that cell is not allowed from your current cell. Note that your stamina (or momentum) does not change whether a move like this is allowed.<br>To help us distinguish between your three algorithm implementations, you must<br>follow the following conventions for computing operational path length:</li>
+<li>Breadth-first search (BFS)<br>In BFS, each move from one cell to any of its 8 neighbors counts for a unit<br>path cost of 1. You do not need to worry about the elevation levels or about<br>the fact that moving diagonally (e.g., NorthEast) is actually a bit longer<br>than moving along the North to South or East to West directions. However, you<br>still need to make sure the move is allowed by checking how steep the move is<br>(depends on the skier’s stamina) or whether a tree is involved. Therefore, any<br>allowed move from one cell to an adjacent cell costs 1.</li>
+<li>Uniform-cost search (UCS)<br>When running UCS, you should compute unit path costs in 2D. Assume that cells’<br>center coordinates projected to the 2D ground plane are spaced by a 2D<br>distance of 10 North-South and East-West. That is, a North or South or East or<br>West move from a cell to one of its 4-connected neighbors incurs a unit path<br>cost of 10, while a diagonal move to a neighbor incurs a unit path cost of 14<br>as an approximation to 10 when running UCS. You still need to make sure the<br>move is allowed, in the same way you did for BFS.</li>
+<li>A* search (A*).<br>When running A*, you will have modified rules for allowed moves AND you should<br>compute an approximate integer unit path cost for each move according to how<br>the elevation of the terrain changes. We will explain these rules using<br>elevations Ecurr (current cell elevation), Enext (potential next cell<br>elevation), and Eprev (previous cell elevation), as well as stamina S (given<br>as input) and momentum M (defined below).<br>Allowed moves for A*: For running A*, we modify whether a move is allowed by<br>considering momentum (M), that is whether we gained some speed by going down<br>in elevation in our most recent move. If we are currently at a cell with<br>Ecurr, whether we are allowed to go into a cell Enext is determined by whether<br>our momentum M going from Eprev to Ecurr can assist us.<br>That is, when we are going down from Eprev to Ecurr and then up from Ecurr to<br>Enext, momentum M is &gt; 0 and will possibly assist us in reaching cells with<br>higher Enext elevations. If the next move is going up in elevation (Enext &gt;<br>Ecurr), a move will only be allowed if (Enext &lt;&#x3D; Ecurr + S + M). For BFS&#x2F;UCS,<br>this rule was (Enext &lt;&#x3D; Ecurr + S). M &#x3D; 0 initially at the starting position.<br>Note how in all cases other than going down from Eprev to Ecurr and then up<br>from Ecurr to Enext, momentum M is 0 according to the above definition. Note<br>that momentum does not accumulate across multiple moves. Only the latest Eprev<br>to Ecurr are considered when computing M.<br>If a tree is involved, the rules to determine whether a move is allowed do not<br>change from the BFS&#x2F;UCS cases. If you are allowed to move into a cell with a<br>tree, it acts as land with elevation |E| from then on.<br>Path cost for A*: You should also compute an approximate integer unit path<br>cost for each move for A*, which is now approximately 3D. The cost of a move<br>is computed by considering both the horizontal move distance as in the UCS<br>case (unit cost of 10 when moving North to South or East to West, and unit<br>cost of 14 when moving diagonally) and the change in elevation levels of the<br>land. The cost C for the move is hence defined as follows:<br>C &#x3D; (Horizontal Move Distance) + (Elevation Change Cost)<br>Thus, intuitively, the elevation change cost is how much we are going uphill,<br>possibly minus how much momentum we have from going downhill on the previous<br>move.<br>Examples:</li>
+<li>If our previous cell was Eprev &#x3D; 20 and our current cell is Ecurr &#x3D; 8, we have M &#x3D; 12. If our stamina is 30, we are allowed to go into a cell with Enext up to Ecurr + M + S &#x3D; 8 + 12 + 30 &#x3D; 50. Assume we choose a cell with Enext &#x3D; 25. If we’re moving diagonally, our path cost becomes: 14 (Move Distance) + (25 - 8 - 12 &#x3D; 5) (Elevation Change Cost) &#x3D; 19. </li>
+<li>If our previous cell was Eprev &#x3D; 20 and our current cell is Ecurr &#x3D; 25, we have M &#x3D; 0. If our stamina is 15, we are allowed to go into, for example, a cell with Enext &#x3D; 35 (since 35 - 25 [ 0 + 15). If we’re moving South, our path cost becomes: 10 (Move Distance) + (35 - 25) (Elevation Change Cost) &#x3D; 20. </li>
+<li>If our current cell is Ecurr &#x3D; 40 and our next cell is Enext &#x3D; 15, the move is allowed since we are going downhill. If we’re moving East, our path cost becomes: 10 (Move Distance) + (0) (Elevation Change Cost) &#x3D; 10. </li>
+<li>If our previous cell was Eprev &#x3D; 12 and our current cell is Ecurr &#x3D; -5, we have M &#x3D; 7, since we treat tree cells as |E| elevation once we move into them. If our stamina is 5, we can go into, for example, a cell with Enext &#x3D; 30 (since 30 - 12 [ 7 + 5). If we’re moving SW, our path cost becomes: 14 (Move Distance) + (30 - 5 - 7) (Elevation Change Cost) &#x3D; 32.<br>Remember: In addition to computing the path cost, you also need to design an<br>admissible heuristic for A* for this problem.<br>Input: The file input.txt in the current directory of your program will be<br>formatted as follows:</li>
+<li>First line: Instruction of which algorithm to use, as a string: BFS, UCS or A* </li>
+<li>Second line: Two strictly positive 32-bit integers separated by one space character, for “W H” the number of columns (width) and rows (height), in cells, of the map. </li>
+<li>Third line: Two positive 32-bit integers separated by one space character, for “X Y” the coordinates (in cells) of the starting position for our skier. 0 X W-1 and 0 Y H-1 (that is, we use 0-based indexing into the map; X increases when moving East and Y increases when moving South; (0,0) is the North West corner of the map). Starting point remains the same for each of the N lodge sites below and will never contain a tree. </li>
+<li>Fourth line: Positive 32-bit integer number for the stamina S of the skier which determines how advanced our skier is. S will be used to compute allowed moves if we’re moving into a non-tree cell. </li>
+<li>Fifth line: Strictly positive 32-bit integer N, the number of lodges on the mountain. </li>
+<li>Next N lines: Two positive 32-bit integers separated by one space character, for “X Y” the coordinates (in cells) of each lodge site. 0 X W-1 and 0 Y H-1 (that is, we again use 0-based indexing into the map). These N target lodge sites are not related to each other, so you will run your search algorithm on each lodge site and write the result to the output as specified below. We will never give you a lodge site that is the same as the starting point. They will never contain a tree.<br>Next H lines: W 32-bit integer numbers separated by any numbers of spaces for<br>the M values of each of the W cells in each row of the map. Each number can<br>represent the following cases:<ul>
+<li>E &gt;&#x3D; 0, snowy mountain slope with elevation E </li>
+<li>E &lt; 0, tree of height |E| that might be covered with snow depending on the elevation we approach it from<br>For example:<br>A*<br>8 6<br>4 4<br>2 1<br>6 3<br>-10 40 34 21 42 37 18   7<br>-20 10  5 27 -6  5  2   0<br>-30  8 17 -3 -4 -1  0   4<br>-25 -4 12 14 -1  9  6   9<br>-15 -9 46  6 25 11 31 -21<br>-5  -6 -3 -7  0 25 53 -42<br>In this example, on an 8-cells-wide by 6-cells-high grid, we start at location<br>(4, 4) highlighted in green above, where (0, 0) is the North West corner of<br>the map. The maximum stamina that the skier has is 5 (in arbitrary units which<br>are the same as for the E values of the map). We have 2 possible lodge sites,<br>at locations (2, 1) and (6, 3), both highlighted in red above. The map of the<br>land is then given as six lines in the file, with eight E values in each line,<br>separated by spaces. The negative values are trees.<br>Output: The file output.txt which your program creates in the current<br>directory should be formatted as follows:</li>
+</ul>
+</li>
+<li>N lines: Report the paths in the same order as the lodge sites were given in the input.txt file. Write out one line per target lodge. Each line should contain a sequence of X,Y pairs of coordinates of cells visited by the skier to travel from the starting point to the corresponding lodge for that line. Only use a single comma and no space to separate X,Y and a single space to separate successive X,Y entries. If no solution was found (lodge was unreachable by the skier from the given starting point), write a single word FAIL in the corresponding line. Our skier needs a rescue in this case.<br>For example, output.txt may contain:<br>4,4 3,3 2,2 2,1<br>4,4 5,3 6,3<br>Here the first line is a sequence of five X,Y locations which trace the path<br>from the starting point (4,4) to the first settling site (1,1). Note how both<br>the starting location and the settling site location are included in the path.<br>The second line is a sequence of three X,Y locations which trace the path from<br>the starting point (4,4) to the second possible settling site (6,3).<br>With the starting point shown in green, the lodge sites in red, and each<br>traversed cell in between in yellow. Note how one could have thought of a<br>perhaps shorter path: 4,4 4,3 3,2 2,1 (general lower |E| values). But this was<br>not allowed, since once we get to position 4,3 we are blocked by the tree in<br>3,2.</li>
+</ul>
+<h3 id="Notes-and-hints"><a href="#Notes-and-hints" class="headerlink" title="Notes and hints"></a>Notes and hints</h3><ul>
+<li>Please name your program “homework.xxx” where ‘xxx’ is the extension for the programming language you choose (“py” for python, “cpp” for C++11, and “java” for Java). </li>
+<li>Likely (but no guarantee) we will create 15 BFS, 15 UCS, and 20 A* text cases. </li>
+<li>Your program will be killed after some time if it appears stuck on a given test case, to allow us to grade the whole class in a reasonable amount of time. We will make sure that the time limit for a given test case is at least 10x longer than it takes for the reference algorithm written by the TA to solve that test case correctly. </li>
+<li>There is no limit on input size, number of target lodges, etc. other than specified above (32-bit integers, etc.). However, you can assume that all test cases will take [ 30 secs to run on a regular laptop. </li>
+<li>If several optimal solutions exist, any of them will count as correct. </li>
+<li>Actual test cases used for grading will be significantly more complex than the 3 examples shown below (e.g., that could have 500x500 maps or bigger). The examples below are mostly to make sure you can correctly parse the inputs and produce correctly formatted outputs.</li>
+</ul>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><p>For this input.txt:<br>    BFS<br>    2 2<br>    0 0<br>    1 1<br>    0   -10<br>    -10 -20<br>the only possible correct output.txt is:<br>    FAIL</p>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h3><p>For this input.txt:<br>    UCS<br>    5 3<br>    0 0<br>    4 1<br>    1 5   1  -1 -2<br>    6 2   4  10  3<br>    9 8 -10 -20 40<br>one possible correct output.txt is:<br>    0,0 1,0 2,0 3,0 4,1</p>
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h3><p>For this input.txt:<br>    A*<br>    5 4<br>    0 1<br>    4 3<br>    20 2 1 -2 -10<br>    -8 1 10 2 -20<br>    9 -1 4 15  11<br>    6 -5 1  1  -1<br>one possible correct output.txt is:<br>    0,1 1,1 2,2 3,3 4,3</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/02/01/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561PathPlanningForSkier/">http://saferman.github.io/2019/02/01/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561PathPlanningForSkier/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/02/01/AI%E4%BB%A3%E5%86%99%EF%BC%9ACMPT317N-QueensProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="AI代写：CMPT317 N-Queens Problem">
+                        
+                        <span class="card-title">AI代写：CMPT317 N-Queens Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-02-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/01/31/Java%E4%BB%A3%E5%86%99%EF%BC%9ACMSC131FlagsoftheWorld/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Java代写：CMSC131 Flags of the World">
+                        
+                        <span class="card-title">Java代写：CMSC131 Flags of the World</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-01-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

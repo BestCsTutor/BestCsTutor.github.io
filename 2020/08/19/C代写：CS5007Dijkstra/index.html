@@ -1,0 +1,936 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS5007 Dijkstra, 留学生CS|辅导|代写">
+    <meta name="description" content="代写数据结构作业，首先完成位运算的小练习，然后实现  Dijkstra
+算法。![DijkstraAlgorithm](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Di">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS5007 Dijkstra | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS5007 Dijkstra</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写数据结构作业，首先完成位运算的小练习，然后实现 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" title="Dijkstra&#39;s algorithm"> Dijkstra
+</a><br>算法。<br>![Dijkstra<br>Algorithm](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/DijkstraDemo.gif/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/DijkstraDemo.gif/220px-</a><br>DijkstraDemo.gif)</p>
+<h2 id="OBJECTIVES"><a href="#OBJECTIVES" class="headerlink" title="OBJECTIVES"></a>OBJECTIVES</h2><ul>
+<li>Practice bit manipulation </li>
+<li>Implement Dijkstra’s </li>
+<li>Read files in </li>
+<li>Work with graph models</li>
+</ul>
+<h2 id="SUMMARY-OVERVIEW"><a href="#SUMMARY-OVERVIEW" class="headerlink" title="SUMMARY&#x2F;OVERVIEW"></a>SUMMARY&#x2F;OVERVIEW</h2><p>In this assignment, you’ll actually implement Dijkstra’s. But first, you’ll<br>play around with bits in C.</p>
+<h2 id="RELEVANT-READING"><a href="#RELEVANT-READING" class="headerlink" title="RELEVANT READING"></a>RELEVANT READING</h2><ul>
+<li>Yale Notes, Graphs.</li>
+</ul>
+<h2 id="DETAILS"><a href="#DETAILS" class="headerlink" title="DETAILS"></a>DETAILS</h2><h3 id="PART-0-CHECK-OUT-DATA-FILES-AND-COPY-INTO-YOUR-REPO"><a href="#PART-0-CHECK-OUT-DATA-FILES-AND-COPY-INTO-YOUR-REPO" class="headerlink" title="PART 0: CHECK OUT DATA FILES AND COPY INTO YOUR REPO"></a>PART 0: CHECK OUT DATA FILES AND COPY INTO YOUR REPO</h3><p>The data files for this assignment are in the CS 5007 resources repo. Check it<br>out (clone&#x2F;pull into it’s own folder&#x2F;local repo), and copy the a5 folder over<br>to your own personal repo.</p>
+<h3 id="PART-1-BIT-MANIPULATION"><a href="#PART-1-BIT-MANIPULATION" class="headerlink" title="PART 1: BIT MANIPULATION"></a>PART 1: BIT MANIPULATION</h3><p>When starting to work with bit manipulation, it’s helpful to have a way to<br>print out the bits of a value.<br>Side note: unsigned means the bits represent an positive integer between 0 and<br>2n, where n is the number of bits. Typically, a 16-bit integer is stored in<br>2’s-complement form, which gives it a range that is positive and negative,<br>centered around 0.<br>Make sure the following code makes sense to you.<br>    void displayBits(unsigned value) {<br>      unsigned c;<br>      &#x2F;&#x2F; Take 1, shift it all the way to the fileft.<br>      unsigned displayMask &#x3D; 1 &lt;&lt; 15;<br>      printf(“%3c%7u &#x3D; “, value, value);<br>      for (c&#x3D;1; c&lt;&#x3D;16; c++) {<br>        &#x2F;&#x2F; putchar prints a character on the screen<br>        &#x2F;&#x2F; ‘value &amp; displayMask’ gets the relevant bit<br>        putchar(value &amp; displayMask ? ‘1’ : ‘0’);<br>        &#x2F;&#x2F; Shift value over one<br>        value &lt;&lt;&#x3D; 1;<br>        &#x2F;&#x2F; Put a space in for easy reading<br>        if (c % 8 &#x3D;&#x3D; 0) {<br>          putchar(‘ ‘);<br>        }<br>      }<br>      putchar(‘\n’);<br>    }<br>—|—<br>To print out the bit values, we’re defining a bit mask (displayMask) that<br>determines if the bit in the first spot on the fileft is 1 or not. When it’s<br>AND’d with the original value, the output will be 1 if the fileft most bit is<br>1, or 0 otherwise.<br>After a bit is printed, the value is bit-shifted fileft, meaning all bits are<br>shifted over one, and the right-most bit is filled in with a 0.<br>The table below shows the mask that never changes throughout the call to the<br>function, and how the value changes throughout the loop, when the original<br>value is ‘B’ (or 173) (as shown in the first line).<br>Implement the following functions</p>
+<h4 id="unsigned-int-packCharacters-char-a-char-b"><a href="#unsigned-int-packCharacters-char-a-char-b" class="headerlink" title="unsigned int packCharacters(char a, char b)"></a>unsigned int packCharacters(char a, char b)</h4><p>The fileft shift operator ( <code>&lt;&lt;</code> ) can be used to pack two character values<br>into a 2-byte unsigned integer variable. Write a function packCharacters that<br>takes two characters as parameters, and returns a 16 bit integer that is<br>holding the packed characters.<br>A Hint: To pack two characters into an unsigned integer variable, assign the<br>first character to the to the unsigned variable, shift the unsigned variable<br>fileft by 8 bit positions, and combine the unsigned variable with the second<br>character using the bitwise inclusive OR operator. The function should print<br>the characters in their bit format before and after they are packed into the<br>unsigned integer to prove that the characters are in fact packed correctly in<br>the unsigned variable.<br>Example: Printing the output of packCharacters(‘B’, ‘i’) should result in:<br>    01000010 01101001</p>
+<h4 id="void-unpackCharacters-unsigned-int-packedInt"><a href="#void-unpackCharacters-unsigned-int-packedInt" class="headerlink" title="void unpackCharacters(unsigned int packedInt)"></a>void unpackCharacters(unsigned int packedInt)</h4><p>Using the right shift operator, the bitwise AND ( <code>&amp;&amp;</code> ) operator, and a<br>mask, write function unpackCharacters that takes the unsigned integer from<br>above and unpacks it into two characters. This is the reverse operation of the<br>packCharacters function above. As a note: 65280 &#x3D; 11111111 00000000. This<br>might be helpful as a mask for this function. Print the input integer and<br>output characters.</p>
+<h4 id="int-power2-int-num-int-pow"><a href="#int-power2-int-num-int-pow" class="headerlink" title="int power2(int num, int pow)"></a>int power2(int num, int pow)</h4><p>Left shifting an unsigned integer by 1 bit is equivalent to multiplying the<br>value by 2. Write function power^2 that takes two integer arguments, number<br>and pow and calculates (number * 2^pow). Use the shift operator to calculate<br>the result. The program should print the values as integers and as bits.</p>
+<h3 id="PART-2-IMPLEMENTING-DJIKSTRA’S"><a href="#PART-2-IMPLEMENTING-DJIKSTRA’S" class="headerlink" title="PART 2: IMPLEMENTING DJIKSTRA’S"></a>PART 2: IMPLEMENTING DJIKSTRA’S</h3><p>In this part of the assignment, you’ll implement Dijkstra’s algorithm. There<br>are two parts to this: first, you need to read in the graph. Then, you need to<br>design your own data structures and implement Dijkstra’s to answer some<br>questions.<br>We’re providing you with three data files to use:</p>
+<ul>
+<li>miles.csv: a .csv (comma seperated values) file that stores the distance in miles between two cities in matrix form. </li>
+<li>nodes.csv: a .csv file that names all the nodes (cities) and their IDs </li>
+<li>edges.csv: a .csv file that species all the edges between two cities and their time.<br>Please note: Dijkstra’s <em>is</em> a common algorithm, and a classic intro algorithm<br>to implement. You can surely find implementations and information online.<br>However, we’re assigning this because implementing it is valuable to <em>YOU</em>,<br>particularly when you give it a good shot on your own before relying on<br>looking at other implementations.<br>In that vein, we encourage you to focus on trying to do this part all your<br>own. If you do refer to resources online, please note that in your source file<br>(in the notes at the top).</li>
+</ul>
+<h4 id="File-Processing"><a href="#File-Processing" class="headerlink" title="File Processing"></a>File Processing</h4><p>Now, you haven’t read in files yet. Here’s a snippet of code that reads a file<br>in character by character:<br>    #include<br>    void readFile() {<br>      FILE *cfPtr;<br>      if ((cfPtr &#x3D; fopen(“sample.txt”, “r”)) &#x3D;&#x3D; NULL) {<br>        printf(“File could not be opened\n”);<br>      } else {<br>        char c;<br>        while (!feof(cfPtr)) {<br>          c &#x3D; fgetc(cfPtr);<br>          printf(“%c\n”, c);<br>        }<br>      }<br>    }<br>    int main() {<br>     readFile();<br>     return 0;<br>    }<br>—|—<br>Other functions that might be helpful:</p>
+<ul>
+<li>char *fgets(char *line, int maxchars, FILE *fp) that reads a line from a file </li>
+<li>int fscanf(FILE*, char *format, …) that reads a formatted line from a file</li>
+</ul>
+<h4 id="Graphs-as-a-matrix-and-answering-distance-questions"><a href="#Graphs-as-a-matrix-and-answering-distance-questions" class="headerlink" title="Graphs as a matrix and answering distance questions"></a>Graphs as a matrix and answering distance questions</h4><p>You’ll be able to answer questions about the distance between two cities by<br>using the miles.csv file. It contains the distance between two cities as a<br>matrix: read in this file as a matrix (two-dimensional array), and implement<br>Dijkstra’s using this matrix.<br>No example of the file because it’s very large :)<br>A value of -1 means there is no edge between those cities.</p>
+<h4 id="Graphs-as-an-adjacency-list-and-time-questions"><a href="#Graphs-as-an-adjacency-list-and-time-questions" class="headerlink" title="Graphs as an adjacency list and time questions"></a>Graphs as an adjacency list and time questions</h4><p>Answer the questions about time using the nodes.csv and edges.csv files.<br>Implement your graph as an adjacency list, and implement Dijkstra’s using this<br>kind of graph representation.<br>The nodes represent locations. The file looks something like:<br>    0001,Aberdeen<br>    0002,Abilene<br>    0003,Akron<br>    0004,Albany<br>    0005,Albuquerque<br>    0006,Alexandria<br>The edges represent the time between cities. It looks something like this:<br>    Abilene_TX Akron_OH 12 52 59<br>    Abilene_TX Albany_GA 9 25 59<br>    Abilene_TX Albany_OR 25 21 43<br>    Abilene_TX Alexandria_VA 15 34 14<br>    Abilene_TX Alexandria_LA 2 52 50<br>    Abilene_TX Alhambra_AZ 5 19 53<br>    Abilene_TX Alhambra_CA 11 17 29<br>    Abilene_TX Alief_TX 2 07 42<br>    Abilene_TX Aliso_Viejo_CA 11 18 08<br>    Abilene_TX Allentown_PA 17 16 12<br>The columns are: source city, dest city, hours, mins, seconds to get from<br>source city to dest city.</p>
+<h4 id="QUESTIONS-TO-ANSWER"><a href="#QUESTIONS-TO-ANSWER" class="headerlink" title="QUESTIONS TO ANSWER"></a>QUESTIONS TO ANSWER</h4><ul>
+<li>What is the shortest path from Seattle_WA to Boston_MA? Please print out the path and the total distance. </li>
+<li>What is the fastest path from Seattle_WA to Boston_MA? Please print out the path and the total time. </li>
+<li>What is the shortest path from Minneapolis_MN to Ann Arbor_MI? Please print out the path and the total distance. </li>
+<li>What is the fastest path from Ann Arbor_MI to Minneapolis_MN? Please print out the path and the total time.</li>
+</ul>
+<h4 id="Sample-output-can-be-formatted-differently"><a href="#Sample-output-can-be-formatted-differently" class="headerlink" title="Sample output (can be formatted differently)"></a>Sample output (can be formatted differently)</h4><pre><code>Seattle to Boston: 3,742.2 miles
+Seattle -&gt; Minneapolis -&gt; Ann Arbor -&gt; Boston (this is not the path; it&#39;s just representative)
+</code></pre>
+<h2 id="PART-3-CHECK-STYLE-ISSUES"><a href="#PART-3-CHECK-STYLE-ISSUES" class="headerlink" title="PART 3: CHECK STYLE ISSUES"></a>PART 3: CHECK STYLE ISSUES</h2><p>Please be sure to follow the Google C++ Style Guide for your C code.<br>Since you used clint for the last assignment, it is still available for you to<br>use this assignment. If you followed the directions last time, you DO NOT need<br>to copy clint.py to your a5 directory this time. Run clint as such:<br>    bash% clint.py a5.c<br>No style-checking tool is perfect, but you should try to clean up any problems<br>that clint detects unless clint ags something that is definitely not a problem<br>in this particular context (but be sure you have very good reasons to ignore<br>any warnings).</p>
+<h2 id="SUBMISSION-DETAILS"><a href="#SUBMISSION-DETAILS" class="headerlink" title="SUBMISSION DETAILS"></a>SUBMISSION DETAILS</h2><p>In your class git repo, we want to see a directory called “a5”. In that<br>folder, we want to see:</p>
+<ul>
+<li>a5_bits.c (for Part 1) </li>
+<li>a5_matrix.c (implementing Dijkstra’s using a matrix graph rep) </li>
+<li>a5_list.c (implementing Dijkstra’s using an adjacency list rep) </li>
+<li>a5.h </li>
+<li>Makefile </li>
+<li>The data files we provided you<br>We do NOT want to see:</li>
+<li>Any other files </li>
+<li>Any executable file (e.g., fsort) </li>
+<li>back up files (.DS_Store, foobar.c~, …)<br>Make sure your repo is tagged! It must be tagged a5-final, and pushed before<br>the assignment deadline.<br>Makefile: For this assignment, create your own Makefile.</li>
+<li>We will test your code by running make run; your run target should compile your code (if needed) and run the executable, printing out the answers to the questions noted above. </li>
+<li>Also include a target memcheck, so that when we run make memcheck, it compiles your code (if needed) and runs valgrind on the appropriate executable, generating the memory report.<br>Please make notes about other resources you have used for this assignment.<br>It might be helpful to have a README.md that describes any resources you’ve<br>used and why. It could be a good place to show the output of your code as well<br>(we will run your code, but it’s usually good to have a note about how to run<br>it and what to expect as the output. Think of this as a practice of writing up<br>what you did, why, and what you found out).</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/08/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACS5007Dijkstra/">http://saferman.github.io/2020/08/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACS5007Dijkstra/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/08/19/C++%E4%BB%A3%E5%86%99%EF%BC%9AENSC251CPUSimulator/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="C++代写：ENSC251 CPU Simulator">
+                        
+                        <span class="card-title">C++代写：ENSC251 CPU Simulator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/19/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS9223ProgrammingforBigData/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java代写：CS9223 Programming for Big Data">
+                        
+                        <span class="card-title">Java代写：CS9223 Programming for Big Data</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

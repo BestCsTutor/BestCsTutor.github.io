@@ -1,0 +1,907 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CS516 Parallelizing Single Source Shortest Path on GPU, 留学生CS|辅导|代写">
+    <meta name="description" content="使用CUDA库，代写Single Source Shortest Path算法，代码需要能在GPU上运行。  
+RequirementIn this project, you will parallelize single source s">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CS516 Parallelizing Single Source Shortest Path on GPU | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CS516 Parallelizing Single Source Shortest Path on GPU</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-06-06
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用CUDA库，代写Single Source Shortest Path算法，代码需要能在GPU上运行。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this project, you will parallelize single source shortest path (SSSP)<br>algorithm on GPUs. A SSSP algorithm finds the shortest path between two<br>vertices in a graph. It is an important and also an interesting problem that<br>admit many potential algorithmic choices. SSSP can find its uses in many<br>applications including route planning, AI, 3D modeling, and social networks<br>[2].<br>In this project, both undergraduate and graduate students need to implement<br>two versions of parallel SSSP in CUDA. Every graduate student needs to<br>implement a third version, however, it is optional to undergraduate students.<br>You need to submit both code and report. The code comprises 60% and the report<br>comprises 40% of project 2 grade. We will provide real world graphs. You need<br>to evaluate your implementations on each of the graph and report the results<br>for different stages of computation.<br>You will receive 0 credit if we cannot compile&#x2F;run your code on ilab machines<br>or if your code fails correctness tests. All grading will be done on ilab<br>machines.<br>The interface of your implemented code needs to meet the requirements defined<br>in Section 3.2. We have provided sample code package for you to start with.<br>The following three sections describe the three different versions of SSSP.</p>
+<h2 id="Bellman-ford-Algorithm"><a href="#Bellman-ford-Algorithm" class="headerlink" title="Bellman-ford Algorithm"></a>Bellman-ford Algorithm</h2><p>Before describing Bellman-ford algorithm, we will describe the input file<br>format and some necessary data structures for the shortest path algorithm.<br>The input file is a plain text file that contains only edges. Each line in the<br>input file corresponds to an edge in the graph and has at least two vertex<br>indices separated by space or tab. The first number specifies the start point<br>of the edge of interest and the second one specifies the end point (the node<br>that is pointed to in the edge). The third number (optional) contains the<br>weight of the edge, if not specified, you need to set the edge weight to 1 by<br>default.<br>An example graph and edge list is provided in Figure 1 (a) and (b)<br>respectively. The source node by default is always the node with the index 0<br>in the graph. Note that the edge list in the input file is not necessarily<br>always sorted by starting node index or destination node index. You might need<br>to sort the list of edges yourself after reading in the edge list. A potential<br>data structure you can use (after sorting the edge list by starting node<br>index) is presented in Figure 1 (b), in which the outgoing edges from a node v<br>is represented as a range of edges from index A[v] to A[v+1]-1 in the edge<br>list E. You can also sort the edges by the destination node index, and<br>represent contiguous segments of incoming edges each of which corresponding to<br>edges pointing to the same node. This is similar to the compressed sparse row<br>(CSR) format for sparse matrices.<br>The sequential bellman-ford algorithm checks all edges at every iteration and<br>updates a node if the current estimate of its distance from the source node<br>can be reduced. The number of iterations is at most the same as the number of<br>vertices if no negative cycle exists.<br>The sequential bellman-ford algorithm is easy to implement, but not as<br>efficient as the Dijkstra’s algorithm. However, it is amenable to<br>parallelization. The first two required versions of parallel implementations<br>are both based on the bellman-ford algorithm. An example for the bellman-ford<br>algorithm is presented in Figure 1 (c). In this example, it takes four<br>iterations before the distance value of every node in the graph stops<br>changing. The node values at the beginning of every iteration is provided in<br>Figure 1.<br>In the parallel bellman-ford algorithm, we exploit the parallelism of edge<br>processing at every iteration. For example, in Figure 1 (c), each of the seven<br>edges is checked at every iteration, we can distribute these 7 edges evenly to<br>different processors such that each processor is responsible for the same<br>number of edges.<br>The prev node list array distance prev and current node list array distance<br>cur in Listing 2 represent respectively the result from the last iteration and<br>the updated result at the end of the current iteration. Every iteration here<br>corresponds to one kernel invocation (Line 19 at Listing 2). This is an out-<br>of-core implementation, which means once these nodes are updated, their<br>distance is not immediately visible to other co-running threads in the same<br>kernel invocation. We switch the pointers to these two arrays in Line 21 of<br>Listing 2 before calling the kernel in the next iteration.</p>
+<h2 id="What-to-Report"><a href="#What-to-Report" class="headerlink" title="What to Report?"></a>What to Report?</h2><ul>
+<li>Execution configuration: you need to report results for the five following block size and block number configurations: (256, 8), (384, 5), (512, 4), (768, 2), (1024, 2). The edge list will be evenly divided to different thread warps. </li>
+<li>Edge list organization: You need to report the running time for the three cases: when the edge order is when the edge list is sorted by source node, and when the edge list is sorted by destination node. </li>
+<li>In-core configuration: you need to implement the in-core method and report the running time for all graphs. Note that in Listing 2, we used two arrays for the node list, one represents the state before the iteration and the other represents the state after the iteration. You will need to use one single array “distance”, and remove distance prev &amp; distance cur such that the original two lines:<br>You need to make other changes correspondingly, for example, the parameters to<br>the kernel function need to be updated, the code to swap the two pointers need<br>to be removed. The code to check if any node is updated needs to updated.<br>You also need to report the running time of every graph when the edge order is<br>when the edge list is sorted by starting node, and when the edge list is<br>sorted by destination node.</li>
+<li>Using shared memory: you will need to implement a segment-scan type method and report the running time. You will only need to run the segscan method on the edge list sorted by destination index, in which the incoming edges for the same node can be processed by consecutive threads (or iterations). You will only need to use the out-of-core processing mechanism. Since finding the minimum of a segment of values is similar to computing the sum of a segment of values, you are required to use the similar segment scan code in project 1 to find the minimum distance for every segment before you atomically update using atomicMin.<br>The CUDA atomic intrinsic functions are provided here: [<br><a target="_blank" rel="noopener" href="http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#atomic-">http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#atomic-</a><br>functions ](<a target="_blank" rel="noopener" href="http://docs.nvidia.com/cuda/cuda-c-programming-">http://docs.nvidia.com/cuda/cuda-c-programming-</a><br>guide&#x2F;index.html#atomic-functions)</li>
+</ul>
+<h2 id="Work-Efficient-Algorithm"><a href="#Work-Efficient-Algorithm" class="headerlink" title="Work Efficient Algorithm"></a>Work Efficient Algorithm</h2><p>We can improve Implementation 1 by reducing the edges that need to be<br>processed at each iteration.<br>For any directed edge, if the starting point of the edge (the did not change,<br>it will not affect the pointed-to end of the edge (the destination node on the<br>other end). Thus, we can skip this edge when performing the comparison and<br>updating “if (distance[u] + w [ distance[v]) …” computation.<br>In this implementation, you will need to filter out the edges whose starting<br>point did not change in the last iteration and only keep the edges that might<br>lead to a node distance update. We refer to the edges that need to be checked<br>as to-process edges. To achieve this, you can use a parallel prefix sum<br>operation.<br>Recall that the (exclusive) prefix sum is an operation that scans a sequence<br>numbers of x0, x1, x2, …, xn, and obtain a second sequence numbers of y0, y1,<br>… yn such that: y0 &#x3D; 0, y1 &#x3D; x0, y2 &#x3D; x0 + x1, and so on. Similar to the<br>summation peration, the prefix sum operation can be performed within<br>logarithmic time steps [1]. Assuming xi stores the number of to-process edges<br>identified by warp i and T stores all the to-process edges, yi gives the total<br>number of to-process edges gathered by warps from warp0, warp1, .., warpi, and<br>thus gives the index of the first to-process edge found by warp i in the list<br>T . That is, the first to-process edge detected by warp i will be stored at<br>T[yi]. An example is given in Figure 2.<br>You may implement the prefix sum operation for gathering to-process stages in<br>three steps. In this project, we assume that the total number of threads will<br>not be greater than 2048. We also assume that one thread warp will gather to-<br>process edges from a contiguous range of edges from the edge list L, such that<br>the warp i will process the range from index (L.length&#x2F;warp num) <em>i to index<br>L.length&#x2F;warp num</em> (i+1) - 1 (inclusive).</p>
+<ol>
+<li>Every warp counts the number of edges that need to be processed in its assigned edge range. x[warpid] specifies the number of to-process edges that are identified by warp warpid. Specifically you can use warp voting functions for fast identification of the to-process edges for threads in the same warp. The “unsigned int ballot(int predicate)” function in CUDA returns a value with the N-th bit set, where N is the lane index in the warp if the predicate is nonzero. If you combine the ballot function with popc function, you can count the number of threads in a warp which have the predicate set to non-zero. In our example, you can use “mask &#x3D; ballot(current edge.src &#x3D;&#x3D; changed); count &#x3D; popc(mask);” to get count, which is the number of lanes in the warp that has seen the predicate (current edge.src &#x3D;&#x3D; changed) set to true. More information about the ballot function can be found here: <a target="_blank" rel="noopener" href="https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-optimized-filtering-warp-aggregated-atomics/"> https://devblogs.nvidia.com/parallelforall/cuda-pro-tip-optimized-filtering-warp-aggregated-atomics/ </a></li>
+<li>Since we assume the total number of threads is 2048, the number of warps is 64. In this step, we launch a kernel that has the same number of threads as the number of warps in the last step (and the block number is 1). At this step, we perform a block level parallel prefix sum to get the offset of every warp’s first to-process edge in the final to-process edge list T . </li>
+<li>We let every warp copy its identified to-process edge index to the array T . If a warp’s offset is y[i], and it has detected k to-process edges (not necessarily contiguous). Specifically, you can also use the ballot and the integer intrinsic functions to help you determine the index of the to-process edge in the final list T.<br>More details about the integer intrinsic functions can be found here: <a target="_blank" rel="noopener" href="http://docs.nvidia.com/cuda/cuda-math-api/group"><br>http://docs.nvidia.com/cuda/cuda-math-api/group
+</a> CUDA MATH INTRINSIC<br>INT.html<br>Note that we will focus on improving performance of the computation stage not<br>the performance of the filtering stage. You can implement the filtering stage<br>in different ways as long as the relative ordering of the to-process edges is<br>the same as they are in the complete list L.<br>After filtering out the edges that do not need to be considered, you will<br>evenly distribute the toprocess edges among different thread warps and perform<br>the same iterative process as described in Implementation 1.</li>
+</ol>
+<h3 id="What-to-Report-1"><a href="#What-to-Report-1" class="headerlink" title="What to Report?"></a>What to Report?</h3><ul>
+<li>Use the same execution configuration as specified in Implementation 1. </li>
+<li>You need to report the running time for the computation stage and the filtering stage separately. </li>
+<li>You need to report the results for the edge list sorted by starting point, sorted by destination, for the out-of-core and in-core processing kernel. </li>
+<li>You need to perform data analysis, summarize what you have observed and discuss (reason about) the differences in various configurations.</li>
+</ul>
+<h2 id="A-Further-Optimization-Optional-to-Undergraduate-Students"><a href="#A-Further-Optimization-Optional-to-Undergraduate-Students" class="headerlink" title="A Further Optimization (Optional to Undergraduate Students)"></a>A Further Optimization (Optional to Undergraduate Students)</h2><p>In the third implementation, you will design and implement your optimization<br>strategy. The optimization should be locality optimization, priority queue<br>based optimization, or a combination of both. You will need to specify clearly<br>which optimization you have applied. Your implementation does not necessarily<br>need to always run faster than the first two implementations. However, you<br>will need to describe why you think your proposed optimization might help, and<br>provide some intuition, i.e., use a small example.<br>Similar to the previous two implementations, you only have to optimize the<br>time for the computation stage, not the filtering stage or other overhead for<br>the optimization approach. You will still have to report the filtering time or<br>the overhead.<br>Here we provide some heuristics on locality optimization and priority queue<br>based optimization that you can use.</p>
+<h3 id="Locality-Optimization"><a href="#Locality-Optimization" class="headerlink" title="Locality Optimization"></a>Locality Optimization</h3><p>You can use graph partition method to divide one kernel invocation into<br>multiple kernel invocations for last level cache performance optimization. The<br>GPU we have on ilab cluster (in Hill 120) each has 256KB last level cache. Not<br>the entire data set can fit into cache at one time. Therefore, we can divide<br>one kernel (if there is sufficient workload) into multiple kernels such that<br>each kernel’s (frequently-used) data set size fit into cache.<br>To partition the workload, we partition the edges of the graph. We will<br>provide a balanced graph edge partition library for you, and details will be<br>released later in piazza. Note that the provided library only performs<br>balanced partition, if you want to keep partition the tasks into variable size<br>components, you might need to perform hierarchical partitioning, for instance,<br>use bisection at one time, and only split the individual sub-partition that<br>you want to split.<br>Note this optimization may only apply to implementation 1, since only in<br>implementation 1, the edges to be processed in every original kernel<br>invocation are the same.</p>
+<h3 id="Priority-Queue"><a href="#Priority-Queue" class="headerlink" title="Priority Queue"></a>Priority Queue</h3><p>In our first two implementations in this project, we treat every edge as<br>having the same priority. The Dijkstra’s algorithm and the near-far tile<br>method [2] let edges that potentially point to smaller distance nodes have<br>higher priority. The basic idea is to maintain a priority queue. At one time,<br>we take the first n tasks from the priority queue, process them, which further<br>generates new tasks that can be inserted into the priority queue (which might<br>require some reordering operations in the queue or deletion of tasks in the<br>queue).<br>If choosing the priority queue based approach, you will need to try at least<br>one heuristic for the priority function. The near-far tile method uses the<br>distance as the heuristic, that is, the edges in the work list that come from<br>the nodes which are bound by a distance have higher priority.<br>Another potential heuristic you can try is to set the nodes that have the<br>least number of un-updated predecessors nodes as having high priority.<br>Specifically, if a node’s all predecessors nodes have been updated in previous<br>iteration(s), this node will have higher priority and the incoming edges to<br>these nodes will be placed at the beginning of the priority queue. Next we<br>place the edges that point to these nodes that just have only one un-updated<br>(immediate) predecessor nodes in the queue - here an immediate predecessor<br>node points to the node of interest. And next the edges that point to the<br>nodes with two un-updated (immediate) predecessor nodes. Note that when<br>ordering the edges in the list based on the priority order, the list should be<br>the actual work-efficient work list, that is, we don’t consider any edge whose<br>starting point has not been changed.<br>In this exploration, you can maintain the priority queue (insertion and<br>deletion) in GPU or CPU. As mentioned before, our focus at this project is not<br>how to reduce the cost of parallel priority queue implementation. Rather we<br>would like to explore heuristics that will lead to a good parallel SSSP<br>implementation. Once you discover a good heuristics, you can try to improve<br>the parallelization of priority queue on GPUs, which is not required in this<br>project (but can be a good topic for your project 3).</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/06/06/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS516ParallelizingSingleSourceShortestPathonGPU/">http://saferman.github.io/2018/06/06/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS516ParallelizingSingleSourceShortestPathonGPU/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/06/08/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS313BricksGame/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Java代写：CS313 Bricks Game">
+                        
+                        <span class="card-title">Java代写：CS313 Bricks Game</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-06-08
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/06/04/Java%E4%BB%A3%E5%86%99%EF%BC%9ACITS10012048/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Java代写：CITS1001 2048">
+                        
+                        <span class="card-title">Java代写：CITS1001 2048</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

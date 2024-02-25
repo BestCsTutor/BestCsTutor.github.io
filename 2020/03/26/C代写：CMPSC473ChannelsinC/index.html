@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CMPSC473 Channels in C, 留学生CS|辅导|代写">
+    <meta name="description" content="用C实现类似Go语言中的  Channels 机制。![Go](https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/220px-Go_Logo">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CMPSC473 Channels in C | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CMPSC473 Channels in C</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用C实现类似Go语言中的 <a target="_blank" rel="noopener" href="https://tour.golang.org/concurrency/2" title="Channels"> Channels </a><br>机制。<br>![Go](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/220px-</a><br>Go_Logo_Blue.svg.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Note that the assignment is due at noon. Concurrent programming is hard -<br>start early.<br>A channel is a model for synchronization via message passing. Messages may be<br>sent over a channel by a thread (Sender) and other threads which have a<br>reference to this channel can receive them (Receivers). A channel can have<br>multiple senders and receivers referencing it at any point of time. Channels<br>are used as a primitive to implement various other concurrent programming<br>constructs. For example, channels are heavily used in Google’s Go programming<br>language and are very useful frameworks for high-level concurrent programming.<br>In this lab you will be writing your own version of a channel which will be<br>used to communicate among multiple clients. A client can either write onto the<br>channel or read from it. Keep in mind that multiple clients can read and write<br>simultaneously from the channel. You are encouraged to explore the design<br>space creatively and implement a channel that is correct and not exceptionally<br>slow or inefficient. Performance is not the main concern in this assignment<br>(functionality is the main concern), but your implementation should avoid<br>inefficient designs that sleep for any fixed time or unnecessarily waste CPU<br>time.<br>There are multiple variations to channels, such as whether the send&#x2F;receive is<br>blocking or non-blocking. In blocking mode, receivers always block until there<br>is data to receive, whereas in non-blocking mode, they simply return.<br>Similarly, with senders, in blocking mode, if the buffer is full, senders wait<br>until some receiver has retrieved a value and there is available space in the<br>buffer whereas in non-blocking mode, they simply leave without sending. In<br>this lab, you will support both blocking and non-blocking send&#x2F;receive<br>functions.<br>Another variation to channels would be if a channel is buffered (i.e., channel<br>buffer <code>size &gt; 0</code> ) or unbuffered (i.e., channel buffer size &#x3D; 0). In the<br>buffered case, the sender blocks only until the value has been copied to the<br>buffer. On the other hand, if the channel is unbuffered, the sender blocks<br>until the receiver has received the value. In this lab, you will only be<br>responsible for supporting buffered channels. Supporting unbuffered channels<br>is extra credit and is especially difficult when implementing select. The<br>amount of extra credit is really small for the amount and difficulty of work<br>involved, and correctly implementing the unbuffered version for select is<br>probably 2-3 times the work of the entire buffered assignment.<br>The only files you will be modifying are channel.c and channel.h and<br>optionally linked_list.c and linked_list.h. You should NOT make any changes in<br>any file besides these four files. You will be implementing the following<br>functions, which are described in channel.c and channel.h:</p>
+<ul>
+<li>channel_t* channel_create(size_t size) </li>
+<li>enum channel_status channel_send(channel_t* channel, void* data) </li>
+<li>enum channel_status channel_receive(channel_t* channel, void** data) </li>
+<li>enum channel_status channel_non_blocking_send(channel_t* channel, void* data) </li>
+<li>enum channel_status channel_non_blocking_receive(channel_t* channel, void** data) </li>
+<li>enum channel_status channel_close(channel_t* channel) </li>
+<li>enum channel_status channel_destroy(channel_t* channel) </li>
+<li>enum channel_status channel_select(select_t* channel_list, size_t channel_count, size_t* selected_index)<br>The enum channel_status is a named enumeration type that is defined in<br>channel.h. Rather than using an int, which can be any number, enumerations are<br>integers that should match one of the defined values. For example, if you want<br>to return that the function succeeded, you would just return SUCCESS.<br>You are encouraged to define other (static) helper functions, structures, etc.<br>to help structure the code in a better way.</li>
+</ul>
+<h2 id="Support-routines"><a href="#Support-routines" class="headerlink" title="Support routines"></a>Support routines</h2><p>The buffer.c and buffer.h files contain the helper constructs for you to<br>create and manage a buffered channel. These functions will help you separate<br>the buffer management from the concurrency issues in your channel code. Please<br>note that these functions are NOT thread-safe. You are welcome to use any of<br>these functions, but you should not change them.</p>
+<ul>
+<li>buffer_t* buffer_create(size_t capacity)<br>Creates a buffer with the given capacity.</li>
+<li>enum buffer_status buffer_add(buffer_t* buffer, void* data)<br>Adds the value into the buffer. Returns BUFFER_SUCCESS if the buffer is not<br>full and value was added. Returns BUFFER_ERROR otherwise.</li>
+<li>enum buffer_status buffer_remove(buffer_t* buffer, void** data)<br>Removes the value from the buffer in FIFO order and stores it in data. Returns<br>BUFFER_SUCCESS if the buffer is not empty and a value was removed. Returns<br>BUFFER_ERROR otherwise.</li>
+<li>void buffer_free(buffer_t* buffer)<br>Frees the memory allocated to the buffer.</li>
+<li>size_t buffer_capacity(buffer_t* buffer)<br>Returns the total capacity of the buffer.</li>
+<li>size_t buffer_current_size(buffer_t* buffer)<br>Returns the current number of elements in the buffer.<br>We have also provided the optional interface for a linked list in<br>linked_list.c and linked_list.h. You are welcome to implement and use this<br>interface in your code, but you are not required to implement it if you don’t<br>want to use it. It is primarily provided to help you structure your code in a<br>clean fashion if you want to use linked lists in your code. Linked lists may<br>NOT be needed depending on your design, so do not try to force it into your<br>solution. You can add&#x2F;change&#x2F;remove any of the functions in linked_list.c and<br>linked_list.h as you see fit.</li>
+</ul>
+<h2 id="Programming-rules"><a href="#Programming-rules" class="headerlink" title="Programming rules"></a>Programming rules</h2><p>You are not allowed to take any of the following approaches to complete the<br>assignment:</p>
+<ul>
+<li>Spinning in a polling loop to implement blocking calls </li>
+<li>Sleeping for any fixed amount of time; instead, use cond_wait or sem_wait </li>
+<li>Trying to change the timing of your code to hide bugs such as race conditions </li>
+<li>Using global variables in your code<br>You are only allowed to use the pthread library, the POSIX semaphore library,<br>basic standard C library functions (e.g., malloc&#x2F;free), and the provided code<br>in the assignment for completing your implementation. If you think you need<br>some library function, please contact the course staff to determine the<br>eligibility. You can find a reference&#x2F;tutorial for the pthread library at: <a target="_blank" rel="noopener" href="https://computing.llnl.gov/tutorials/pthreads/"><br>https://computing.llnl.gov/tutorials/pthreads/
+</a><br>You can find a reference&#x2F;tutorial for the POSIX semaphore library.<br>Looking at documentation (e.g., for these libraries, for tools, etc.) is fine,<br>but as stated in the academic integrity policy, looking online for any hints<br>about implementing channels is disallowed.</li>
+</ul>
+<h2 id="Evaluation-and-testing-your-code"><a href="#Evaluation-and-testing-your-code" class="headerlink" title="Evaluation and testing your code"></a>Evaluation and testing your code</h2><p>You will receive zero points if:</p>
+<ul>
+<li>You violate the academic integrity policy (sanctions can be greater than just a 0 for the assignment) </li>
+<li>You break any of the programming rules </li>
+<li>Your code does not compile&#x2F;build </li>
+<li>Your code crashes the grading script </li>
+<li>You don’t show your partial work by periodically adding, committing, and pushing your code to GitHub<br>Your code will be evaluated for correctness, properly handling<br>synchronization, and ensuring it does not violate any of the programming rules<br>(e.g., do not spin or sleep for any period of time). We have provided many<br>tests, but we reserve the right to add additional tests during the final<br>grading, so you are responsible for ensuring your code is correct, where a<br>large part of correctness is ensuring you don’t have race conditions,<br>deadlocks, or other synchronization bugs. To run the supplied test cases,<br>simply run the following command in the project folder:<br>make test<br>make test will compile your code in release mode and run the grade.py script,<br>which runs a combination of the following tests to autograde your assignment:</li>
+<li>After running the make command in your project, two executable files will be created. The default executable, channel, is used to run test cases in the normal mode. The test cases are located in test.c, and you can find the list of tests at the bottom of the file. If you want to run a single test, run the following: <code>./channel [test_case_name] [iters]</code> where <code>[test_case_name]</code> is the test name and <code>[iters]</code> is the number of times to run the test. If you do not provide a test name, all tests will be run. The default number of iterations is 1. </li>
+<li>The other executable, channel_sanitize, will be used to help detect data races in your code. It can be used with any of the test cases by replacing .&#x2F;channel with <code>./channel_sanitize.</code> <code>./channel_sanitize [test_case_name] [iters]</code><br>Any detected data races will be output to the terminal. You should implement<br>code that does not generate any errors or warnings from the data race<br>detector.</li>
+<li>Valgrind is being used to check for memory leaks, report uses of uninitialized values, and detect memory errors such as freeing a memory space more than once. To run a valgrind check by yourself, use the command: <code>valgrind -v --leak-check=full ./channel [test_case_name] [iters]</code><br>Note that channel_sanitize should not be run with valgrind as the tools do not<br>behave well together. Only the channel executable should be used with<br>valgrind. Valgrind will issue messages about memory errors and leaks that it<br>detects for you to fix them. You should implement code that does not generate<br>any valgrind errors or warnings.<br>IMPORTANT: Note that any test FAILURE may result in the sanitizer or valgrind<br>reporting thread leaks or memory leaks. This is expected since test failures<br>will cause the test to prematurely end without cleaning up any threads or<br>memory. Thus, you should first fix the test failure.</li>
+</ul>
+<h2 id="Handin"><a href="#Handin" class="headerlink" title="Handin"></a>Handin</h2><p>Similar to the last assignment, we will be using GitHub for managing<br>submissions, and you must show your partial work by periodically adding,<br>committing, and pushing your code to GitHub. This helps us see your code if<br>you ask any questions on Canvas (please include your GitHub username) and also<br>helps deter academic integrity violations.<br>Additionally, please input the desired commit number that you would like us to<br>grade in the Canvas assignment. You can get the commit number from github.com.<br>In your repository, click on the commits link to the left above your files.<br>Find the commit from the appropriate day&#x2F;time that you want committed. Click<br>on the clipboard icon to copy the commit number. Note that this is a much<br>longer number than the displayed number. Paste your very long commit number<br>and only your commit number in this assignment submission textbox.</p>
+<h2 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h2><ul>
+<li>Carefully read the output from the sanitizer and valgrind tools and think about what they’re trying to say. Usually, they’re printing call stacks to tell you which locations have race conditions, or which locations allocate some memory that was being accessed in the race condition, or which locations allocate some memory that is being leaked, etc. These tools are tremendously useful, which is why we’ve set them up for you for this assignment. </li>
+<li>While the tools are very useful, they are not perfect. Some race conditions are rare and don’t show up all the time. A reasonable approach to debugging these race condition bugs is to try to identify the symptoms of the bug and then read your code to see if you can figure out the sequence of events that caused the bug based on the symptoms. </li>
+<li>Debugging with gdb is a useful way of getting information about what’s going on in your code. To compile your code in debug mode (to make it easier to debug with gdb), you can simply run: make debug<br>It is important to realize that when trying to find race conditions, the<br>reproducibility of the race condition often depends on the timing of events.<br>As a result, sometimes, your race condition may only show up in non-debug<br>(i.e., release) mode and may disappear when you run it in debug mode. Bugs may<br>sometimes also disappear when running with gdb or if you add print statements.<br>Bugs that only show up some of the time are still bugs, and you should fix<br>these. Do not try to change the timing to hide the bugs.</li>
+<li>If your bug only shows up outside of gdb, one useful approach is to look at the core dump (if it crashes). Here’s a link to a tutorial on how to get and use core dump files: <a target="_blank" rel="noopener" href="https://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html"> http://yusufonlinux.blogspot.com/2010/11/debugging-core-using-gdb.html </a></li>
+<li>If your bug only shows up outside of gdb and causes a deadlock (i.e., hangs forever), one useful approach is to attach gdb to the program after the fact. To do this, first run your program. Then in another command prompt terminal run: ps aux<br>This will give you a listing of your running programs. Find your program and<br>look at the PID column. Then within gdb (may require sudo) run: attach [PID]<br>where you replace [PID] with the PID number that you got from ps aux. This<br>will give you a gdb debugging session just like if you had started the program<br>with gdb.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/03/26/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC473ChannelsinC/">http://saferman.github.io/2020/03/26/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC473ChannelsinC/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/27/R%E4%BB%A3%E5%86%99%EF%BC%9ACSC120EuclideanMinimumWeightMatching/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="R代写：CSC120 Euclidean Minimum Weight Matching">
+                        
+                        <span class="card-title">R代写：CSC120 Euclidean Minimum Weight Matching</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/R%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">R代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/24/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS104RationalProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="C++代写：CS104 Rational Problem">
+                        
+                        <span class="card-title">C++代写：CS104 Rational Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

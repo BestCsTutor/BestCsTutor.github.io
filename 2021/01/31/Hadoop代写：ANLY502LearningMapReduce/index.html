@@ -1,0 +1,941 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Hadoop代写：ANLY502 Learning MapReduce, 留学生CS|辅导|代写">
+    <meta name="description" content="工程性质的作业，需要在AWS上使用EMR搭建一个Hadoop集群，然后编写MapReduce程序对数据进行分析。  
+Required skills and technologies
+YARN 
+Hadoop 
+MapReduceIn th">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Hadoop代写：ANLY502 Learning MapReduce | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Hadoop代写：ANLY502 Learning MapReduce</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Hadoop%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Hadoop代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-01-31
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>工程性质的作业，需要在AWS上使用EMR搭建一个Hadoop集群，然后编写MapReduce程序对数据进行分析。  </p>
+<h2 id="Required-skills-and-technologies"><a href="#Required-skills-and-technologies" class="headerlink" title="Required skills and technologies"></a>Required skills and technologies</h2><ul>
+<li>YARN </li>
+<li>Hadoop </li>
+<li>MapReduce<br>In this assignment you will learn the basics of MapReduce. You will do this<br>with four exercises:</li>
+</ul>
+<ol>
+<li>We will rework the filtering exercise of Assignment 1 on Hadoop MapReduce using Hadoop’s “Streaming” API. We will do this with a mapper that filters out the lines that are not wanted, and a reducer that simply copies from input to output. </li>
+<li>We will then perform the classic “word count” exercise, which creates a histogram of all the words in a text document. The mapper will map single lines to individual words, and the reducer will count the number of words. </li>
+<li>We will perform a logfile analysis, using web logs from from the website <a target="_blank" rel="noopener" href="https://forensicswiki.org/"> https://forensicswiki.org/ </a> between TKDATE and TKDATE. We will generate a report of the number of web “hits” for each month in the period under analysis. </li>
+<li>We will then introduce the concept of the combiner, which is a reducer that runs on each mapper before the keys are combined globally. We will use the combiner to implement an efficient “top-10” pattern that computes the top-10 on each node, minimizing the amount of data that is transfered.</li>
+</ol>
+<h2 id="Part-1-Creating-your-first-EMR-cluster"><a href="#Part-1-Creating-your-first-EMR-cluster" class="headerlink" title="Part 1: Creating your first EMR cluster."></a>Part 1: Creating your first EMR cluster.</h2><ol>
+<li>If you VMs from Assignment #1 are still running, log into them and make sure that the git repositories are committed and pushed back to your git server. (Be sure to use git status to see if there are any files that need to be added to the git repository with git add.) </li>
+<li>Log into the Amazon Web Services console and make sure that your prevous VMs are shut down. </li>
+<li>Log into the Elasitic Map Reduce console and create a cluster. Below we walk you through the “Quick options.” </li>
+<li>Log to S3 </li>
+<li>Create a cluster for Core Hadoop. </li>
+<li>Use m3.xlarge with 3 instances (1 master and 2 core nodes) </li>
+<li>Use your existing EC2 key pair (hopefully you still have access to the private key!) </li>
+<li>Click on <code>AWS CLI export</code> and copy the command line into the file q1.txt in this directory. Answer the questions in the file. </li>
+<li>Log into the head end node ssh. Note: git will not be installed on the EMR cluster, but python 3.4 is installed by default! (We just discovered this, and we’re thrilled!) </li>
+<li>Run the command <code>df -h</code> to see the drives attached to your virtual machine. </li>
+<li>Review the YARN Commands on the Apache Hadoop website. Run the <code>yarn version</code> command to see which version of YARN you are using. Run the <code>yarn node -list</code> comkmand to see the nodes that are installed on your cluster.<br>Yea! You are now ready to use MapReduce!</li>
+</ol>
+<h2 id="Part-2-Basic-Filtering-with-Map-Reduce"><a href="#Part-2-Basic-Filtering-with-Map-Reduce" class="headerlink" title="Part 2: Basic Filtering with Map Reduce"></a>Part 2: Basic Filtering with Map Reduce</h2><p>In this section we will replicate the filtering project of Assignment #1, but<br>we’ll do it with Hadoop Streaming. (To see how Hadoop Streaming has been<br>modified for Amazon Map Reducer, please review the Amazon EMR documentation)<br>Because of the minimal amount of computation done, these tasks are entirely<br>I&#x2F;O-bound.<br>We have given you a program called run.py. This Python program is specially<br>created for this course. It both runs the Hadoop Streaming job and writes time<br>results into a data file. There is also a symbolic link to run.py called<br>p2_python.py. When you run the command p2_python.py, it will default to using<br>the program q2_mapper.py as the mapper and q2_reducer.py as the reducer, but<br>you can change these with the <code>--mapper</code> and <code>--reducer</code> arguments. The<br>program uses <code>--input</code> to specify the input S3 file&#x2F;prefix, or HDFS<br>file&#x2F;directory. The <code>--output</code> option specifies where the output is stored.<br>You can specify other things as well; use <code>python34 run.py --help</code> to get a<br>list of the options.<br>We have also give you two starting Python programs: q2_mapper.py and<br>q2_reducer.py. These programs implement wordcount. You need to change them to<br>implement a filtered counting!</p>
+<ol>
+<li>Run a Hadoop Streaming job using a modified version of the provided q2_mapper.py and q2_reducer.py that outputs the number of lines that have the <code>fnard:-1 fnok:-1 cark:-1 gnuck:-1</code> pattern. The input to the Hadoop Streaming job is an S3 filename.<br>* You can run the Hadoop Streaming job two ways: <ul>
+<li>Using the provided run.py Python script as explained above, or, </li>
+<li>Manually running the hadoop command as explained in class using the following as an example:<br> hadoop jar &#x2F;usr&#x2F;lib&#x2F;hadoop&#x2F;hadoop-streaming-2.7.3-amzn-1.jar <br> -files q2_mapper.py,q2_reducer.py <br> -input [[input-file]] -output [[output-location]] <br> -mapper q2_mapper.py <br> -reducer q2_reducer.py</li>
+</ul>
+</li>
+<li>Run the program on the file quazyilx1.txt and verify that you get the same result that you got in Assignment 1. </li>
+<li>Run the program on the file quazyilx2.txt, a 19.4GB file, and note the answer. </li>
+<li>Run the program on the file quazyilx3.txt, a 39.5GB file, and note the answer. </li>
+<li>You did the above problems with your cluster with 1 master node and 2 core nodes. The master node controls your cluster, hold HDFS files, and can run jobs. The core nodes holds HDFS files and run jobs. Amazon’s EMR allows you to dynamically add (or remove) core and task instances. As you add more core and task instances, your jobs will run faster, up to a particular point. Add a core node and recompute the amount of time it takes to run the job on quazyilx1.txt, quazyilx2.txt and quazyilx3.txt. </li>
+<li>Repeat the experiment with 2 and 4 Task nodes. The prototype run.py program that we have given you computes the clock time that the job took and records the number of nodes in an output file. We have also created a symbolic link called q2_python.py that points to run.py. When the q2_python.py link is given to the Python language, the run.py sees the name that it has been called with and stores the results in a file called q2_results.txt. The <code>--plot</code> option of the program should read this file and plots it using matplotlib. However, currently it doesn’t. Instead, there is a program called grapher.py that generates a plot with fake data that is hard-coded into the file. We will modify the program to do the plotting by the end of the first weekend of the problem set, but you can do it yourself if you wish the experience!<br>To use this program, you will need to either install matplotlib on your head-<br>end, or else you will need to commit the results to your private git<br>repository, pull the results to a system that has matplotlib installed, and<br>generate the plot there.<br>Turn in the files q2_results.txt, q2_plot.png and q2_plot.pdf, showing how the<br>speed of this system responds to increases in the number of nodes.</li>
+</ol>
+<h2 id="Part-3-HDFS"><a href="#Part-3-HDFS" class="headerlink" title="Part 3: HDFS"></a>Part 3: HDFS</h2><p>As in Part 2, these steps are entirely I&#x2F;O bound. However this time you are<br>able to control the I&#x2F;O performance of your system.</p>
+<ol>
+<li>Resize your cluster and remove all of the Task nodes. You now have 3 nodes: 1 master and 2 core. </li>
+<li>Copy the file quazyilx3.txt to your local HDFS system. </li>
+<li>The program q3_python.py is another link to the program (run.py) but stores its results in the file q3_results.txt. Run the program and compute how long it takes to run. </li>
+<li>When you copied the file quazyilx3.txt to your HDFS system, it was split into blocks and stored on three different systems. Delete the file in HDFS and resize your cluster so that it has 5 Core nodes. Copy the file quazyilx3.txt back to your HDFS system; now it will be stored on 5 nodes. Re-run (q3_python.py) and see how the time that the program takes changes. </li>
+<li>Delete the file quazyilx3.txt again, resize your cluster to have 10 Core nodes, copy the file quazyilx3.txt back to your cluster, and re-run (q3_python.py). This determines how long the process takes with the file stored on 5 HDFS nodes.<br>Commit your results to your git repository and push the repository to your git<br>server. Shut down your cluster when you are done.</li>
+</ol>
+<h2 id="Part-4-Logfile-analysis"><a href="#Part-4-Logfile-analysis" class="headerlink" title="Part 4: Logfile analysis"></a>Part 4: Logfile analysis</h2><p>The file forensicswiki.2012.txt is a year’s worth of Apache logs for the<br>forensicswiki website. Each line of the log file correspondents to a single<br>HTTP GET command sent to the web server. The log file is in the Combined Log<br>Format.<br>If you look at the first few lines of the log file, you should be able to<br>figure out the format.<br>At this point, you should understand why this command works.<br>Our goal in this part is to write a map&#x2F;reduce programs using Python3.4 and<br>Hadoop Streaming that will report the number of hits for each month. For<br>example, if there were 10,000 hits in the month January 2010 and 20,000 hits<br>in the month February 2010, your output should look like this:<br>    <pre> 2010-01 10000 2010-02 20000 ... </pre><br>Where 10000 and 20000 are replaced by the actual number of hits in each month.<br>Here are some hints to solve the problem:<br>Your mapper should read each line of the input file and output a key&#x2F;value<br>pair in the form YYYY-MM\t1 where YYYY-MM is the year and the month of the log<br>file, \t is the tab character, and 1 is the number one.</p>
+<ul>
+<li>Your reducer should tally up the number of hits for each key and output the results. </li>
+<li>Once the results are stored in in HDFS, you can output the results the hdfs dfs -cat command piped into a Unix sort. </li>
+<li>Store the output in the file q4_monthly.txt .<br>Turn in q4_mapper.py, q4_reducer.py, and q4_run.py in addition to<br>q4_monthly.txt.</li>
+</ul>
+<h2 id="Part-5-EXTRA-CREDIT-Finding-the-top-10-hits"><a href="#Part-5-EXTRA-CREDIT-Finding-the-top-10-hits" class="headerlink" title="Part 5: EXTRA CREDIT Finding the top-10 hits"></a>Part 5: EXTRA CREDIT Finding the top-10 hits</h2><ol>
+<li>Extract the URL and generate a histogram of the total number of HTTP transactions (“hits”) for each URL. </li>
+<li>Now modify this program so that it only records the top 10 hits. Do this in two steps:<br>* 2a. Write a top-10 combiner that performs a data reduction at each node, keeping track of the top-10, and outputing the most popular 10 with a single key to the reducer.<br>* 2b. Write a top-10 reducer that reads the top-10 from each of the combiners, determines the top-10, and stores it in a single file in HDFS or S3.<br>Provide an output file that has the top-10. This file should be called<br>q5_top_10.txt and have the following format:<br>COUNT <tab> URL<br>The file should be sorted by COUNT, with the largest first.<br>Turn in q5_mapper.py, q5_reducer.py, q5_combiner.py and q5_run.py in addition<br>to q5_top_10.txt.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/01/31/Hadoop%E4%BB%A3%E5%86%99%EF%BC%9AANLY502LearningMapReduce/">http://saferman.github.io/2021/01/31/Hadoop%E4%BB%A3%E5%86%99%EF%BC%9AANLY502LearningMapReduce/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Hadoop%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Hadoop代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/02/01/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS330PasswordSelectionandCracking/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Security代写：CS330 Password Selection and Cracking">
+                        
+                        <span class="card-title">Security代写：CS330 Password Selection and Cracking</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/30/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2750SVGParser/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="C代写：CIS2750 SVG Parser">
+                        
+                        <span class="card-title">C代写：CIS2750 SVG Parser</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

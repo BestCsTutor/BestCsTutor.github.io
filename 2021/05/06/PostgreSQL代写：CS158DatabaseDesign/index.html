@@ -1,0 +1,934 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="PostgreSQL代写：CS158 Database Design, 留学生CS|辅导|代写">
+    <meta name="description" content="设计实现一个使用  PostgreSQL 数据库的小型Web服务器。![PostgreSQL](https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_ele">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>PostgreSQL代写：CS158 Database Design | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">PostgreSQL代写：CS158 Database Design</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">PostgreSQL代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-05-06
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>设计实现一个使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PostgreSQL" title="PostgreSQL"> PostgreSQL </a><br>数据库的小型Web服务器。<br>![PostgreSQL](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/220px-</a><br>Postgresql_elephant.svg.png)</p>
+<h2 id="Preparation-create-table-users"><a href="#Preparation-create-table-users" class="headerlink" title="Preparation create table users("></a>Preparation create table users(</h2><p>In this assignment you will run a small webserver with a web page that queries<br>a local postgres database. To begin with, create the following table in your<br>local database (schema public):<br>    create table users(<br>      name       varchar(20) not null,<br>      pwd        varchar(20) not null,<br>      permission varchar(20),<br>      constraint pk_users primary key(name)<br>    );<br>    insert into users values (‘johndoe’, ‘pa55word’, ‘read’);<br>    insert into users values (‘admin’, ‘hArd2gu3ss’, ‘read,write’);<br>    insert into users values (‘janedoe’, ‘top5ecret’, ‘read’);<br>—|—<br>Next create a new login role app with password foobar, and grant it access<br>with the query:<br>    CREATE USER “app” WITH PASSWORD ‘foobar’;<br>    GRANT USAGE ON SCHEMA public TO “app”;<br>    GRANT SELECT ON TABLE users TO “app”;<br>—|—<br>The program generating the page is written in python, and requires some setup.  </p>
+<ol>
+<li>If you don’t have python installed yet, do that first. See <a target="_blank" rel="noopener" href="https://www.python.org/downloads/"><br>https://www.python.org/downloads/ </a> .<br>Windows users should chose python 2.7 (for ease of installing a suitable C++<br>compiler later), and may need to add the python directories<br>(C:\Python27;C:\Python27\Scripts or similar) to their system path manually.</li>
+<li>Install the python module psycopg2 for connecting to postgres, by running<br>one of<br> python -m pip install psycopg2-binary<br> python3 -m pip install psycopg2-binary<br>Note that packages for python 2 and 3 are installed separately. You’ll need<br>psycopg2 installed for the version you are running login.py with, which is<br>python 3 by default (configured at the top of login.py). More detailed<br>installation instructions by OS can be found at the end of this document. A<br>documentation of the module can be found at <a target="_blank" rel="noopener" href="http://initd.org/psycopg/docs/"> http://initd.org/psycopg/docs/
+</a> .<br>On stream you will find two files available for download: login.html and<br>login.py. Place login.html into a directory of your choice (in the following<br>it will be assumed that this is your working directory). Then create a<br>subdirectory cgi-bin and place login.py in there.<br>Finally you need to setup a web server to serve your script. Python already<br>includes an HTTP server module, which can be used for this task by running one<br>of the following commands (in the directory where login.html is located), for<br>python 2 or 3 respectively:<br> python -m CGIHTTPServer 8247<br> python -m http.server –cgi 8247<br> python3 -m http.server –cgi 8247<br>Python’s http server will try to execute any script it finds in cgi-bin and<br>send its output to port 8247. Linux and OS&#x2F;X users need to ensure login.py has<br>execution permission. This can be done with the command<br> chmod a+x login.py<br>If you now point your browser at <a target="_blank" rel="noopener" href="http://localhost:8247/login.html"> http://localhost:8247/login.html
+</a> , you should see a login page. When you<br>enter a username and password, request will be handled by login.py which<br>checks the course database for a matching user name and password, and grants<br>or denies access accordingly.</li>
+</ol>
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h2><ol>
+<li>You are to first run SQL injection attacks on the given code, then modify<br>it to prevent them. When designing your attacks, don’t assume that you know<br>anyone’s password.</li>
+</ol>
+<ul>
+<li>(a) Design a string that, when entered into the password field, will grant you access, regardless of what name is entered. Do not modify login.html or login.py for this. </li>
+<li>(b) Design another string that, when entered into the password field, will cause the webpage to return the admin password instead of permissions. Tip: Remember the UNION operator. </li>
+<li>(c) Modify login.py to prevent SQL injection attacks. Tip: Check the psycopg2 documentation.</li>
+</ul>
+<ol start="2">
+<li>Consider table reservations below, storing restaurant bookings.<br> CREATE TABLE reservations(<br>  customer  varchar(20) NOT NULL,<br>  res_date  data NOT NULL,<br>  res_start time NOT NULL,<br>  res_end   time NOT NULL,<br>  CONSTRAINT pk_reservations PRIMARY KEY (customer, res_date)<br> );<br>—|—<br>Some sample data for testing purposes is given below:<br> INSERT INTO reservations VALUES<br> (‘Alice’, ‘2020-04-01’, ‘11:00’, ‘16:00’),<br> (‘Bob’, ‘2020-04-01’, ‘11:00’, ‘12:15’),<br> (‘Eve’, ‘2020-04-01’, ‘12:15’, ‘15:00’),<br> (‘Jim’, ‘2020-04-01’, ‘11:00’, ‘13:00’),<br> (‘Joe’, ‘2020-04-01’, ‘14:00’, ‘15:30’),<br> (‘Ron’, ‘2020-04-02’, ‘13:00’, ‘15:00’)<br>—|—</li>
+</ol>
+<ul>
+<li>(a) Opening hours are from 8am to 10pm each day. Add a constraint to ensure that reservation times are sensible. </li>
+<li>(b) Create a database function res count which takes as input a date and time and returns the number of reservations active at the given date and time. Include reservations starting at the given time, but exclude those ending at it. </li>
+<li>(c) Due to Covid-19 restrictions, at most 3 reservations may be active at any point in time. Create a view fully booked which lists all maximal time periods (res date, res start, res end) during which no further reservations are possible. Hint: Identify for each start time where maximal permitted reservations are reached the minimal end time at which they drop below that number again. Then eliminate non-maximal intervals.</li>
+</ul>
+<ol start="3">
+<li>Create a website which lets a user enter a day range for making a<br>reservation, then displays a list of all time periods where the maximal number<br>of permitted reservations has already been reached. The user should then be<br>able to enter reservation details to make a booking. When storing this booking<br>in the database, you must ensure that the limit of 3 concurrent reservations<br>is not exceeded.<br>Feel free to use login.html and login.py as starting points, but rename them<br>to reservation.html and reservation.py to avoid confusion when marking. For<br>processing reservation requests, create a new file reservation insert.py.<br>Tip: Use [input type&#x3D;”date” …] in reservation.html for entering start and end<br>dates. To format the query result for display, you can use an html table.<br>Submit your source code, web page and answers (the “special password strings”)<br>via stream. Include your name and student ID.</li>
+</ol>
+<h2 id="Detailed-Setup-Instructions"><a href="#Detailed-Setup-Instructions" class="headerlink" title="Detailed Setup Instructions"></a>Detailed Setup Instructions</h2><h3 id="Linux-Ubuntu"><a href="#Linux-Ubuntu" class="headerlink" title="Linux (Ubuntu)"></a>Linux (Ubuntu)</h3><p>Python should already be installed. The module psycopg2 requires libpq-dev to<br>be installed first:<br>    sudo apt-get install libpq-dev<br>Afterwards installation proceeds using the following command:<br>    sudo python3 -m pip install psycopg2-binary<br>Note: The login.py script uses the python3 interpreter by default.</p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>For installing python and pip (which comes with python since version 2.7.9)<br>see <a target="_blank" rel="noopener" href="http://docs.python-guide.org/en/latest/starting/install/win/"> http://docs.python-guide.org/en/latest/starting/install/win/
+</a><br>Installing the psycopg2 module:</p>
+<ul>
+<li>Install a VisualC++ compiler for python, available at <a target="_blank" rel="noopener" href="https://aka.ms/vcpython27"> http://aka.ms/vcpython27 </a> . </li>
+<li>Now the module can be installed by running one of<br>python -m pip install psycopg2-binary<br>python3 -m pip install psycopg2-binary<br>If you’re unsure where to enter these commands, search for command line,<br>command prompt or terminal and educate yourself a little. The ] symbol is not<br>part of the commands.</li>
+</ul>
+<h3 id="OS-X"><a href="#OS-X" class="headerlink" title="OS&#x2F;X"></a>OS&#x2F;X</h3><p>OS&#x2F;X offers a nice package manager and development environment (similar to<br>linux), but not out of the box. Hence, we begin by installing XCode, which<br>provides compilers and libraries needed for any serious coding as well as a<br>development environment, and homebrew, a package manager for easy installs.</p>
+<ul>
+<li>Install XCode, available here: <a target="_blank" rel="noopener" href="https://developer.apple.com/xcode/download/"> https://developer.apple.com/xcode/download/ </a><br>Note: It’s a large download (several GB). You can try to skip this step as I’m<br>not 100% certain it’s needed for the following steps, but chances are you’ll<br>want it anyway in the long run.</li>
+<li>Install homebrew, available here: <a target="_blank" rel="noopener" href="http://brew.sh/"> http://brew.sh </a> . </li>
+<li>Install Python - do this even if your system already has it installed, as by default essential tools such as pip (python package installer) are not included (if the command pip works, you can skip this step): <code>brew install python</code></li>
+<li>Install the psycopg2 module: <code>python3 -m pip install psycopg2-binary</code></li>
+</ul>
+<h2 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h2><p>Below are some potential fixes for errors you might encounter:</p>
+<ul>
+<li>Python.h: No such file or directory - install the python-dev package. </li>
+<li>“POST &#x2F;cgi-bin&#x2F;login.py HTTP&#x2F;1.1” 200 - env: python3: No such file or directory - change the first line in login.py from #!&#x2F;usr&#x2F;bin&#x2F;env python3 to #!&#x2F;usr&#x2F;bin&#x2F;env python. </li>
+<li>Symbol not found: PyCodecInfo GetIncrementalDecoder - close and re-open the terminal. </li>
+<li>“POST &#x2F;cgi-bin&#x2F;login.py HTTP&#x2F;1.1” 200 -: No such file or directory (under linux or OS&#x2F;X) - you may have accidentally introduced windows line-endings (\r) or other funny characters. A tool like dos2unix can fix this.<br>Other common errors which probably mean you haven’t been following<br>instructions:</li>
+<li>localhost refused to connect (in browser) - you forgot to start the web server </li>
+<li>“GET &#x2F;login.html? HTTP&#x2F;1.1” 404 - start the web server in the directory where login.html is located </li>
+<li>login.py is displayed in the browser, not executed - don’t open login.html by double-clicking it (this will open it as a file), your browser bar should read <a target="_blank" rel="noopener" href="http://localhost:8247/login.html"> http://localhost:8247/login.html </a> and <a target="_blank" rel="noopener" href="http://localhost:8247/cgi-bin/login.py"> http://localhost:8247/cgi-bin/login.py </a> respectively. </li>
+<li>Import Error: No module named psycopg2 - psycopg2 hasn’t been installed correctly. You can see installed packages with the command: <code>python3 -m pip list</code></li>
+<li>psycopg2.ProgrammingError: relation “users” does not exist - You didn’t create the table or forgot to grant schema access to the newly created user</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/05/06/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACS158DatabaseDesign/">http://saferman.github.io/2021/05/06/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACS158DatabaseDesign/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">PostgreSQL代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/05/06/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP282TuringMachine/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="C++代写：COMP282 Turing Machine">
+                        
+                        <span class="card-title">C++代写：COMP282 Turing Machine</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/05/05/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS5200DatabaseManagement/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Database代写：CS5200 Database Management">
+                        
+                        <span class="card-title">Database代写：CS5200 Database Management</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

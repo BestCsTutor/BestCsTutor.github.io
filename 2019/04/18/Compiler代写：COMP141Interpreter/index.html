@@ -1,0 +1,987 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Compiler代写：COMP141 Interpreter, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个特定语言的解析器。  
+GoalOver the course of the three phases, we will construct an interpreter for asmall imperative language">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Compiler代写：COMP141 Interpreter | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Compiler代写：COMP141 Interpreter</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Compiler%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Compiler代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-04-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个特定语言的解析器。  </p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>Over the course of the three phases, we will construct an interpreter for a<br>small imperative language. For the current phase you will construct the<br>evaluator module.</p>
+<h2 id="Scanner-Specification"><a href="#Scanner-Specification" class="headerlink" title="Scanner Specification"></a>Scanner Specification</h2><p>There are five types of tokens in our language, defined by the following<br>regular expressions.<br>    IDENIFIER &#x3D; ([a-z] | [A-Z])([a-z] | [A-Z] | [0-9])*<br>    NUMBER &#x3D; [0-9]+<br>    PUNCTUATION&#x3D;+ | - | * | &#x2F; | ( | ) | :&#x3D; | ;<br>    KEYWORD&#x3D;if | then | else | endif | while | do | endwhile | skip<br>The following rules define how separation between tokens should be handled.</p>
+<ul>
+<li>White space is not allowed in any token, so white space always terminates a token and separates it from the next token. Except for indicating token boundaries, white space is ignored. </li>
+<li>The principle of longest substring should always apply. </li>
+<li>Any character that does not fit the pattern for the token type currently being scanned immediately terminates the current token and begins the next token. The exception is white space, in which case the first rule applies.</li>
+</ul>
+<h2 id="Parser-Specification"><a href="#Parser-Specification" class="headerlink" title="Parser Specification"></a>Parser Specification</h2><p>Grammar of the language is defined as follows:<br>    statement → basestatement { ; basestatement }<br>    basestatement → assignment | ifstatement | whilestatement | skip<br>    assignmet → IDENTIFIER :&#x3D; expression<br>    ifstatement → if expression then statement else statement endif<br>    whilestatement → while expression do statement endwhile<br>    expression → term { + term }<br>    term → factor { - factor }<br>    factor → piece { &#x2F; piece }<br>    piece → element { * element }<br>    element → ( expression ) | NUMBER | IDENTIFIER<br>Note that statement is the starting nonterminal.</p>
+<h2 id="Abstract-syntax-trees"><a href="#Abstract-syntax-trees" class="headerlink" title="Abstract syntax trees"></a>Abstract syntax trees</h2><p>Consider the following details regarding the generated abstract syntax tree.</p>
+<ul>
+<li>All binary operations (numerical, sequencing and assignment) must denote a tree with two subtrees, and the operator at the root. </li>
+<li>All parentheses must be dropped in the abstract syntax trees. </li>
+<li>If-statements must be represented by a tree with three subtrees, where the first subtree is correspond- ing to the expression, the second subtree is corresponding to the statement after then keyword, and the third subtree is corresponding to the statement after else keyword. The root of the tree must indicate that this is an if-statement. Therefore, the keywords if, then, else, and endif must be dropped in the generated abstract syntax tree. </li>
+<li>While-statements must be represented by a tree with two subtrees, where the first subtree is corre- spoding to the expression, and the second subtree is corresponding to the statement within the while loop. The root of the tree must indicate that this is a while-statement. Therefore, the keywords while, do, and endwhile must be dropped from the abstract syntax tree. </li>
+<li>All of the nonterminals must also be dropped in the abstract syntax tree.</li>
+</ul>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>Consider the following program in this language. Let’s call this program prog:<br>    z :&#x3D; 0;<br>    x :&#x3D; 3;<br>    y :&#x3D; 0;<br>    while x-y do<br>      z :&#x3D; z + y;<br>      y :&#x3D; y + 1<br>    endwhile<br>—|—  </p>
+<h2 id="Evaluator-Specification"><a href="#Evaluator-Specification" class="headerlink" title="Evaluator Specification"></a>Evaluator Specification</h2><p>Evaluator consists of two major data structures:</p>
+<ol>
+<li>a tree that represents the partially evaluated program, t </li>
+<li>a mapping that represents the memory (i.e., it maps identifiers to values), m<br>The AST resulted from the parsing phase must be passed to the evaluator,<br>initially. Evaluator studies this tree in pre-order fashion, and in each step<br>modifies the tree. Along with the modification of the tree, the memory is<br>updated (through assignments). Memory can be implemented by dictionaries,<br>where the dictionary keys are the identifiers and the dictionary values are<br>the mapped values.<br>Consider the following for the implementation of the evaluator:</li>
+</ol>
+<ul>
+<li>Each subtree representing an expression must be evaluated to return a value. That value must be substituted with the whole subtree that corresponds to the expression. </li>
+<li>Identifiers retain the value at the time of assignment (when they appear on the RHS of the assign- ment). </li>
+<li>Identifiers must be held in the memory. </li>
+<li>Memories are maps or dictionaries from identifiers to values. </li>
+<li>IdentifiersareaddedtothememorywhentheyappearforthefirsttimeontheLHSofanassignment. </li>
+<li>The mapped value for an identifier (retained in memory) is set by an assignment. </li>
+<li>There is not any scoping in this language, i.e., all identifiers are global (i.e., they are accessible from any point in the program). </li>
+<li>Values evaluate as expected, e.g., 56 evaluates to number 56, and 26 evaluates to number 26. </li>
+<li>Identifiers get their value from look-up in the memory. </li>
+<li>Operators are applied to the values, returned by their subtrees. </li>
+<li>Operators evaluate as expected2, i.e., <ul>
+<li><pre><code>  * denotes numerical addition. 
+</code></pre>
+</li>
+<li><pre><code>  * denotes numerical multiplication. 
+</code></pre>
+</li>
+<li><pre><code>  * denotes numerical subtraction. There are no negative numbers in this language. Refer to lexical structure for clarification. 
+</code></pre>
+</li>
+<li>&#x2F; denotes division on nonnegative integers, e.g., 3&#x2F;2 evaluates to 1.</li>
+</ul>
+</li>
+<li>Statements are evaluated as follows: <ul>
+<li>Assignment: Evaluate RHS expression, store result in memory entry for the LHS identifier. Assignment adds an entry to the memory if there does not exist any memory entry for the LHS identifier. Finally, remove the subtree that corresponds to the assignment. </li>
+<li>If statement: Evaluate the expression first. If the expression evaluates to a positive number then evaluate subtree that corresponds to the statement after then. If the expression evaluates to 0 then evaluate subtree that corresponds to the statement after else. Finally, remove the subtree that corresponds to the if statement. </li>
+<li>While loop: Clone the subtree that corresponds to the expression, as an independent tree. Eval- uate that cloned subtree. <ul>
+<li>If it evaluates to a positive number then substitute the whole while loop subtree with a sequencing subtree, where the left child corresponds to the statement in the body of the while loop, and the right child of sequencing operator corresponds to the original while loop. </li>
+<li>If it evaluates to 0 then remove the whole subtree that corresponds to the while loop. Finally remove the cloned subtree.</li>
+</ul>
+</li>
+<li>Skip: Remove the subtree that corresponds to skip. (There is nothing to do for this statement). </li>
+<li>Sequencing: First evaluate the statement on the LHS of sequencing operator ;. Next, evalu- ate the statement on the RHS of the sequencing operator ;. Finally, remove the subtree that corresponds to sequencing.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example-evaluation"><a href="#Example-evaluation" class="headerlink" title="Example evaluation"></a>Example evaluation</h2><p>Refer to the document that discusses a step-by-step evaluation for prog.</p>
+<h2 id="Language-Selection"><a href="#Language-Selection" class="headerlink" title="Language Selection"></a>Language Selection</h2><ul>
+<li>You can build your interpreter in any language that you like. </li>
+<li>For more obscure languages, you will be responsible for providing instructions detailing how the program should be compiled or interpreted. Check with the instructor for the level of detail necessary for a particular language.</li>
+</ul>
+<h2 id="Input-and-Output-Requirements"><a href="#Input-and-Output-Requirements" class="headerlink" title="Input and Output Requirements"></a>Input and Output Requirements</h2><p>Your full program (scanner module, parser module and evaluator) must read from<br>an input file and write an output file. These files should be passed to the<br>program as an argument in the command line. For example, if your parser is a<br>python program in parser.py, we will test it using a command like:<br>    python interpreter.py test_input.txt test_output.txt<br>The interpreter’s output should be sent to the output file. The output should<br>include:</p>
+<ol>
+<li>The list of tokens produced by the scanner. </li>
+<li>The abstract syntax tree produced by the parser. </li>
+<li>The state of the memory at the end of the interpreted program. There is no need to output the state of memory in each intermediary step. Final state of the memory suffices.</li>
+</ol>
+<h3 id="Example-output-of-interpreter"><a href="#Example-output-of-interpreter" class="headerlink" title="Example output of interpreter"></a>Example output of interpreter</h3><pre><code>Tokens:
+IDENTIFIER z
+PUNCTUATION :=
+NUMBER 0
+PUNCTUATION ;
+IDENTIFIER x
+PUNCTUATION :=
+NUMBER 3
+PUNCTUATION ;
+IDENTIFIER y
+PUNCTUATION :=
+NUMBER 0
+PUNCTUATION ;
+KEYWORD while
+IDENTIFIER x
+PUNCTUATION -
+IDENTIFIER y
+KEYWORD do
+IDENTIFIER z
+PUNCTUATION :=
+IDENTIFIER z
+PUNCTUATION +
+IDENTIFIER y
+PUNCTUATION ;
+IDENTIFIER y
+PUNCTUATION :=
+IDENTIFIER y
+PUNCTUATION +
+NUMBER 1
+PUNCTUATION ;
+KEYWORD endwhile
+</code></pre>
+<h2 id="Error-Handling-Requirements"><a href="#Error-Handling-Requirements" class="headerlink" title="Error Handling Requirements"></a>Error Handling Requirements</h2><p>If your scanner encounters an error while processing an input line, it should<br>abort in a graceful manner. An error message and the input line that caused<br>the error should be printed in the output file. After the error is reported,<br>the program should shut down.<br>If the parser encounters an error, it should abort in a graceful manner. An<br>error message and the token that caused the error should be printed in the<br>output file. After the error is reported, the program should shut down.<br>If the evaluator encounters an error, e.g., when it wants to evaluate 2 &#x2F; 0,<br>it should report a simple error message and shut down. There is no need to be<br>explicit about the reason for error.</p>
+<h2 id="Submission-Format-Requirements"><a href="#Submission-Format-Requirements" class="headerlink" title="Submission Format Requirements"></a>Submission Format Requirements</h2><p>Your submission should include the source code for your scanner module, parser<br>module and test driver, along with a text file containing instructions for<br>building and running your program. Every source code file should have your<br>name and the phase number in a comment at the top of the file. The instruction<br>file must at least identify the compiler that you used for testing your<br>program.<br>Submit an archive file (.zip) containing the code and instruction file.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/04/18/Compiler%E4%BB%A3%E5%86%99%EF%BC%9ACOMP141Interpreter/">http://saferman.github.io/2019/04/18/Compiler%E4%BB%A3%E5%86%99%EF%BC%9ACOMP141Interpreter/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Compiler%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Compiler代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/04/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC355ExploreABigFile/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="C代写：CMPSC355 Explore A Big File">
+                        
+                        <span class="card-title">C代写：CMPSC355 Explore A Big File</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-04-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/04/17/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS420DatabaseSchema/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Database代写：CS420 Database Schema">
+                        
+                        <span class="card-title">Database代写：CS420 Database Schema</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-04-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

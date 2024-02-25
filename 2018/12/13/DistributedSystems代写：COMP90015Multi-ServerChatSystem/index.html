@@ -1,0 +1,954 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Distributed Systems代写：COMP90015 Multi-Server Chat System, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction代写一个分布式的聊天室应用程序，和常见的聊天室应用不同的是，这个作业的每一个Client，是由两部分组成：常规的Client以及一个Server，这样就能实现多人的群聊功能。  
+SynopsisThe assign">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Distributed Systems代写：COMP90015 Multi-Server Chat System | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Distributed Systems代写：COMP90015 Multi-Server Chat System</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Distributed-Systems%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Distributed Systems代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-12-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>代写一个分布式的聊天室应用程序，和常见的聊天室应用不同的是，这个作业的每一个Client，是由两部分组成：常规的Client以及一个Server，这样就能实现多人的群聊功能。  </p>
+<h2 id="Synopsis"><a href="#Synopsis" class="headerlink" title="Synopsis"></a>Synopsis</h2><p>The assignment is about creating a “chat” application. The chat system<br>consists of two main distributed components: chat servers and chat clients,<br>which may run on different hosts in the network. The architecture of the<br>system is presented in the following diagram.<br>Chat clients are Java programs that can connect to a single chat server; this<br>server can be any of the servers available in the system. Chat clients can be<br>used to send requests for creating, deleting, joining and quitting a chat<br>room. They can also be used to send requests to see the list of available chat<br>rooms in the system and the list of client identities currently connected to a<br>given chat room. Finally, they can be used to send chat messages to other chat<br>clients connected to the same chat room.<br>Chat servers are Java programs accepting multiple incoming TCP connections<br>from chat clients. There are multiple servers working together to serve chat<br>clients. The number of servers is fixed and does not change once the system is<br>active. Each server is responsible for managing a subset of the system’s chat<br>rooms. In particular, a server manages only those chat rooms that were created<br>locally after receiving a request from a client. In order to join a particular<br>chat room, clients must be connected to the server managing that chat room. As<br>a result, clients are redirected between servers when a client wants to join a<br>chat room managed by a different server. Chat servers are also responsible for<br>broadcasting messages received from clients to all other clients connected to<br>the same chat room.<br>In this assignment, the chat client program is provided to you and you need to<br>design and implement the chat server program.</p>
+<h2 id="Chat-Client"><a href="#Chat-Client" class="headerlink" title="Chat Client"></a>Chat Client</h2><p>The chat client executable jar file is provided to you, there is no need to<br>implement your own. A chat client is executed as follows:<br>    java -jar client.jar -h server_address [-p server_port] -i identity [-d]<br>Square brackets are used to indicate optional arguments.</p>
+<ul>
+<li>server_address corresponds to the ip address or hostname of the server to which the client is connecting to. </li>
+<li>server_port corresponds to the port in which the server is listening for incoming client connections. The default server_port is 4444. </li>
+<li>identity corresponds to the client’s identity (i.e. username) which must be unique in the entire system. If the identity already exists, the server will send a message to the client indicating the error and will then close the connection. If the identity doesn’t exist, a connection is established and the server places the client on its MainHall chat room. More details on this are given later. </li>
+<li>The -d option can be used to start the client in debug mode. This means that all the received and sent messages will be printed on the standard output.<br>The client user interface is command-line based and reads input from the<br>standard input. Each line of input is terminated by a new line and is<br>interpreted by the client as either a command or a message. If the line of<br>input starts with a hash character “#” then it is interpreted as a command,<br>otherwise it is interpreted as a message that should be broadcasted by the<br>chat server to other clients in the same chat room. The list of commands<br>supported by chat clients is as follows:<br>#list<br>#who<br>#createroom roomid<br>#joinroom roomid<br>#deleteroom roomid<br>#quit</li>
+</ul>
+<p>Pressing Ctrl-C terminate chat clients and works similar to #quit.<br>A client may receive messages at anytime, and these will be written to the<br>standard output as soon as they are received, even if the client is in the<br>middle of typing a message.</p>
+<h2 id="Chat-Server"><a href="#Chat-Server" class="headerlink" title="Chat Server"></a>Chat Server</h2><p>A chat server listens for incoming connection requests from clients. It is<br>capable of accepting and managing multiple client connections simultaneously.<br>A chat server must store locally (there is no need to use persistent storage,<br>data may be stored in memory):</p>
+<ul>
+<li>A list of all the existing chat rooms in the system, including those managed by other servers. </li>
+<li>A list of all the client identities currently connected to that server.<br>Communications in a chat server can be categorized into two main groups:<br>Communication with chat clients and Communication with other chat servers.</li>
+</ul>
+<h3 id="Communication-with-chat-clients"><a href="#Communication-with-chat-clients" class="headerlink" title="Communication with chat clients"></a>Communication with chat clients</h3><p>A chat server is primarily responsible for managing all the clients currently<br>connected to it and for broadcasting chat messages. To achieve this, TCP<br>connections between clients and servers are established and remain active<br>throughout the duration of the client-server interaction. That is, the<br>connection is only closed when:</p>
+<ul>
+<li>The identity of the client already exists, </li>
+<li>The client quits the system, </li>
+<li>The client program is abruptly terminated (e.g. using Ctrl-C), </li>
+<li>The client is redirected to a different server.<br>In any of above cases, it is the responsibility of the server to remove the<br>identity of the client, the client’s chat room (if any), associated thread(s),<br>the TCP connection with client (if any), after sending the appropriate<br>protocol message to the client (if required).</li>
+</ul>
+<h3 id="Communications-among-chat-servers"><a href="#Communications-among-chat-servers" class="headerlink" title="Communications among chat servers"></a>Communications among chat servers</h3><p>To maintain consistency among servers’ data, such as ensuring the global<br>uniqueness of client identities and chat rooms, servers need to communicate<br>with each other to reach consensus. To achieve this, servers use a protocol<br>that consists of two phases:</p>
+<ul>
+<li>The lock (voting) phase, in which a coordinating server sends a lock request, lockidentity or lockroomid, to all other servers which in turn reply with their vote to either allow or deny the creation of the new identity&#x2F;chat room, based on their local data (local list of client identities and list of chat rooms). </li>
+<li>The release (commit) phase, in which the coordinating server decides whether to allow (if all servers voted to allow) or to deny (if at least one server voted to deny) the creation of the new identity&#x2F;chat room. Regardless of the result, the coordinating server notifies the result to all the other servers by sending them a releaseidentity or releaseroomid message.<br>Servers communicate with each other using TCP connections. There is no need<br>for these connections to remain active throughout the lifetime of the system,<br>and instead, they should be established and destroyed as required.</li>
+</ul>
+<h3 id="Chat-Rooms"><a href="#Chat-Rooms" class="headerlink" title="Chat Rooms"></a>Chat Rooms</h3><p>A chat room is a place in which clients can exchange chat messages. Each<br>server initially has a chat room called MainHall-serverid. When a client<br>initially connects to a server, it is placed in the MainHall chat room of that<br>server.<br>The following rules regarding chat rooms must be enforced by a chat server:</p>
+<ul>
+<li>Each client is only allowed to be a member of one chat room at a time. </li>
+<li>It is the chat server’s job to broadcast messages to all the chat clients in a room. </li>
+<li>Clients who are members of a chat room must be connected to the server managing that chat room. </li>
+<li>If a client creates a chat room, then that chat room will be managed by the server that the client is connected to. </li>
+<li>A chat client is able to owns one chat room at a time. </li>
+<li>Each server must maintain a list of globally available chat rooms and a list of its locally managed chat rooms. </li>
+<li>If a client joins a room managed by the server it is connected to, then the server simply places the client in the corresponding room. If the room is managed by another server, then the server sends a message to the client redirecting it to the server managing that chat room. </li>
+<li>Only the owner of a chat room (i.e., the client that created the chat room) can delete a chat room. </li>
+<li>If a client deletes a chat room, the members of the room are moved to the MainHall of the server. The<br>server will send a message to all the corresponding clients informing them<br>they have changed rooms.</li>
+<li>A chat room is deleted if the owner client quits or disconnects abruptly. The remaining members of the chat room are moved into the MainHall of the server.<br>The protocol (including all the messages and their format) that the chat<br>server must follow is specified later in the project specification.</li>
+</ul>
+<h3 id="JSON-Format"><a href="#JSON-Format" class="headerlink" title="JSON Format"></a>JSON Format</h3><p>All communication in the system takes place by exchanging messages<br>encapsulated in JSON format passing through TCP connections.</p>
+<ul>
+<li>All messages will be sent as JSON objects with a newline (“\n”) to delimit objects. </li>
+<li>A JSON library must be used to marshal and unmarshal JSON objects. Do not implement JSON (un)marshaling yourself. </li>
+<li>All data written to the TCP connection must be UTF8 encoded.</li>
+</ul>
+<h3 id="Executing-a-chat-server"><a href="#Executing-a-chat-server" class="headerlink" title="Executing a chat server"></a>Executing a chat server</h3><p>Chat servers should be executable exactly as follows:<br>    java -jar server.jar -n serverid -l servers_conf</p>
+<ul>
+<li>serverid is the name of the server, </li>
+<li>servers_conf is the path to a text file containing the configuration of servers.<br>Each line of the configuration file contains the following “tab” delimited<br>data:<br>serverid    server_address    clients_port    coordination_port</li>
+<li>serverid is the name of the server, </li>
+<li>server_address is the ip address or hostname of the server, </li>
+<li>clients_port is the port used to communicate with clients, </li>
+<li>coordination_port is the port used by the server to communicate with other servers.<br>A sample configuration file looks like:<br>s1  localhost   4444   5555<br>s2  localhost   4445   5556<br>s3  192.168.1.2 4444   5000</li>
+<li>Each server will find its own confguiration in the configuration file using serverid. </li>
+<li>Use command line argument parsing (e.g. using the args4j library or your choice). </li>
+<li>Clients can connect to servers only after all the servers have been started.</li>
+</ul>
+<h2 id="Chat-Protocol"><a href="#Chat-Protocol" class="headerlink" title="Chat Protocol"></a>Chat Protocol</h2><p>The chat protocol specifies exactly how the client-server and server-server<br>communication happen.</p>
+<ul>
+<li>Your solution must implement the protocol exactly as stated. </li>
+<li>Incomplete implementation and deviation from the protocol will result in dedcution of marks.</li>
+</ul>
+<h3 id="New-Identity"><a href="#New-Identity" class="headerlink" title="New Identity"></a>New Identity</h3><p>The client sends a newidentity request with its identity immediately after<br>connecting to the server.<br>The identity must be an alphanumeric string starting with an upper or lower<br>case character. It must be at least 3 characters and no more than 16<br>characters long.<br>If the identity is not in use by any of local clients of the server or is not<br>locked by any other server, then server sends a lockidentity message to all<br>the other servers.</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>The client can ask for the list of chat rooms in the system with the command<br>“#list”. The command is sent to server as a JSON message.</p>
+<h3 id="Who"><a href="#Who" class="headerlink" title="Who"></a>Who</h3><p>The client can ask for the list of clients in the current chat room using the<br>command “#who”.</p>
+<h3 id="Create-Room"><a href="#Create-Room" class="headerlink" title="Create Room"></a>Create Room</h3><p>A connected client can create a chat room by using the command “#createroom<br>roomid”, if and only if the client is not the owner of another chat room. When<br>a client successfully creates a room, it should automatically join the room.<br>The roomid must be an alphanumeric string starting with an upper or lower case<br>character. It must be at least 3 characters and no more than 16 characters<br>long.</p>
+<h3 id="Join-Room"><a href="#Join-Room" class="headerlink" title="Join Room"></a>Join Room</h3><p>The client can join other rooms if he&#x2F;she is not the owner of the current chat<br>room by using the command “#joinroom roomid”.</p>
+<h3 id="Delete-Room"><a href="#Delete-Room" class="headerlink" title="Delete Room"></a>Delete Room</h3><p>If the client is the owner of the chat room, he&#x2F;she can delete the room by<br>using the command “#deleteroom roomid”.</p>
+<h3 id="Quit"><a href="#Quit" class="headerlink" title="Quit"></a>Quit</h3><p>The client can send a quit message at any time by using the command “#quit”.</p>
+<h3 id="Abrupt-disconnections-by-clients"><a href="#Abrupt-disconnections-by-clients" class="headerlink" title="Abrupt disconnections by clients"></a>Abrupt disconnections by clients</h3><p>If a client gets disconnected (e.g. if the TCP connection is broken), then the<br>server treats this as if the client had sent a quit message.<br>The server should send appropriate messages to other clients in the system and<br>deletes the client’s identity and his&#x2F;her chat room.</p>
+<h2 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h2><p>In this project, we need not to consider failure handling for servers. We<br>assume that chat servers do not fail or crash.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/12/13/DistributedSystems%E4%BB%A3%E5%86%99%EF%BC%9ACOMP90015Multi-ServerChatSystem/">http://saferman.github.io/2018/12/13/DistributedSystems%E4%BB%A3%E5%86%99%EF%BC%9ACOMP90015Multi-ServerChatSystem/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Distributed-Systems%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Distributed Systems代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/12/22/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACOM5725HospitalSystemDatabaseandDataInterface/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="PostgreSQL代写：COM5725 Hospital System Database and Data Interface">
+                        
+                        <span class="card-title">PostgreSQL代写：COM5725 Hospital System Database and Data Interface</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-12-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">PostgreSQL代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/12/11/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS2360PatternMatchingwithaWildCard/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Java代写：CS2360 Pattern Matching with a Wild Card">
+                        
+                        <span class="card-title">Java代写：CS2360 Pattern Matching with a Wild Card</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-12-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

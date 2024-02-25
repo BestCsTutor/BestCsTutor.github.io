@@ -1,0 +1,943 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：ISYS1078 Indexing, 留学生CS|辅导|代写">
+    <meta name="description" content="代写信息检索系统中的索引以及查询部分。  
+IntroductionIn this assignment, you will implement an inverted index and use it to storeterm occur">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：ISYS1078 Indexing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：ISYS1078 Indexing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-03-20
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写信息检索系统中的索引以及查询部分。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will implement an inverted index and use it to store<br>term occurrence information. You will need to design and implement appropriate<br>data structures, write your data to disk, and be able to read it back.<br>This assignment is intended to give you practical programming experience for<br>implementing core information retrieval functionality, and to deepen your<br>understanding of the inverted index data structure.<br>The “Information Retrieval” blackboard contains further announcements and a<br>discussion board for this assignment. Please be sure to check these on a<br>regular basis - it is your responsibility to stay informed with regards to any<br>announcements or changes.</p>
+<h2 id="Assignment-Teams"><a href="#Assignment-Teams" class="headerlink" title="Assignment Teams"></a>Assignment Teams</h2><p>This assignment should be carried out in groups of two. It is up to you to<br>form a team.<br>Please choose your team carefully, as you will need to work with the same<br>person on Assignment 2, which builds on Assignment 1.</p>
+<h2 id="General-Requirements"><a href="#General-Requirements" class="headerlink" title="General Requirements"></a>General Requirements</h2><p>This section contains information about the general requirements that your<br>assignment must meet. Please read all requirements carefully before you start.</p>
+<ul>
+<li>You must implement your programs in Java, C, C++, PHP, or Python. Your programs should be well written, using good coding style and including appropriate use of comments. Your markers will look at your source code, and coding style may form part of the assessment of this assignment. </li>
+<li>The submitted programs must be your own code. You should not use existing external libraries that implement advanced data structures. Where libraries (or in the case of scripting languages, built-in features beyond simple low-level data types) are used for data structures such as hash tables, they must be clearly attributed, and it is up to you to demonstrate a clear understanding of how the library is implemented in the discussion in your assignment report. </li>
+<li>You must include a plain text file called “README.txt” with your submission.<br>This file should include the name and student ID of all team members at the<br>top. It needs to clearly explain how to compile and run your programs on<br>(titan|saturn|jupiter).csit.rmit.edu.au. The clarity of the instructions and<br>useability of your programs may form part of the assessment of this<br>assignment.</li>
+<li>Paths should not be hard-coded. </li>
+<li>Where your programs need to create auxiliary files, these should be stored in the current working directory. </li>
+<li>Parts of this assignment will include a written report, this may be in plain text or<br>PDF format.</li>
+<li>Please ensure that your submission follows the file naming rules specified in the tasks below. File names are case sensitive, i.e. if it is specified that the file name is gryphon, then that is exactly the file name you should submit; Gryphon, GRYPHON, griffin, and anything else but gryphon will be rejected.</li>
+</ul>
+<h2 id="Programming-Tasks"><a href="#Programming-Tasks" class="headerlink" title="Programming Tasks"></a>Programming Tasks</h2><p>Individual documents are wrapped in [DOC] … [&#x2F;DOC] tags. These indicate the<br>beginning and end of each individual document in the collection file.<br>The [DOCNO] … [&#x2F;DOCNO] tags contain a unique identifier for the document. You<br>will need to keep track of this to refer to documents in the collection.<br>The [HEADLINE] … [&#x2F;HEADLINE] and [TEXT] … [&#x2F;TEXT] tags contains the text<br>content of the document. This is the actual content of the document that you<br>will need to index.<br>Your task is to write two programs. The first will index the collection,<br>gather appropriate term distribution statistics, and write the index data to<br>disk. The second program will load the index data, accept text terms as input,<br>and return the appropriate term distribution statistics for each term.</p>
+<h2 id="Indexing"><a href="#Indexing" class="headerlink" title="Indexing"></a>Indexing</h2><p>Your indexing program must be called index and accept a number of optional<br>commandline arguments. The invocation specification should be:<br>    % .&#x2F;index [-p] [sourcefile]<br>(or equivalent invocation in another programming language) where the optional<br>flag -p will print the terms being indexed, and the mandatory argument<br>[sourcefile] is the collection to be indexed. These are described in more<br>detail below.<br>Note that your implementations must be efficient, making use of appropriate<br>algorithms and data structures. This will be part of the assessment criteria.</p>
+<h3 id="Parsing-Module"><a href="#Parsing-Module" class="headerlink" title="Parsing Module"></a>Parsing Module</h3><p>Your first task is to parse the data, tokenising and extracting content terms,<br>and removing any punctuation and excess markup tags. Punctuation consists of<br>any symbols that are not letters or numbers. You will need to carefully<br>consider issues of token normalisation (for example, how to deal with acronyms<br>and hyphenated words).<br>All content terms should be case-folded to lower-case as they are indexed.<br>Your program must be called index, and should accept an optional command-line<br>argument -p. This flag indicates that your program should print all content<br>terms, in the same order as in the original document, to the standard output<br>stream, stdout. If the flag is not specified, your program should produce no<br>output to standard out. An example of how your program might be run.<br>    % .&#x2F;index -p &#x2F;Students&#x2F;Courses&#x2F;ISYS1078&#x2F;<br>(or equivalent invocation). As your parser encounters each new document, you<br>will need to assign an ordinal number as a document identifier. These can be<br>assigned sequentially (i.e. the first document is 0, the second is 1, and so<br>on). This is how the documents will be referred to in the inverted list<br>information (see below).<br>You also need to track the unique document identifier specified in the [DOCNO]<br>tags, and how these map to the integer identifiers that you assign. Your<br>program should therefore always write an output file to disk, called map,<br>which contains this mapping information. Auxiliary files such as this must be<br>written to the current working directory.</p>
+<h3 id="Stopping-Module"><a href="#Stopping-Module" class="headerlink" title="Stopping Module"></a>Stopping Module</h3><p>Stopping is the process of excluding words that have grammatical functions,<br>but contain no meaning themselves, from consideration during indexing.<br>Examples of such stopwords are the, of, and and.<br>Extend your program index with a module to stop the input terms. Your program<br>should accept an optional command-line argument, -s [stoplist], where stoplist<br>is a file of stopwords that are to be excluded from indexing. An example of<br>how your program should be invoked is:<br>    % .&#x2F;index [-s [stoplist]] [-p] [sourcefile]<br>Note that the -p option must still be available; when it is specified, your<br>program should print all content terms that are not stopwords to the standard<br>output stream.<br>An efficient lookup structure to store the content of the [stoplist] file is a<br>hash table.<br>It is up to you to choose a suitable hash function for text strings. You will<br>be asked to explain your implementation in the report (see below).</p>
+<h3 id="Indexing-Module"><a href="#Indexing-Module" class="headerlink" title="Indexing Module"></a>Indexing Module</h3><p>Extend your program index to build an inverted index. The inverted index needs<br>to store term occurrence information for all content terms that occur in the<br>file that is being indexed. For each term t, you need to store:</p>
+<ul>
+<li>The document frequency, ft , a count of the number of documents in the collection in which term t occurs. </li>
+<li>An inverted list for term t, which consists of postings of the form [ d, fd,t ] where: <ul>
+<li>d is the document in which t occurs </li>
+<li>fd,t is the within-document frequency, a count of how often t occurs in document d<br>For example, if the term insomnia occurs in two documents in the collection,<br>twice in document 10, and three times in document 23, then the inverted list<br>would be:<br>insomnia: 2 [10, 2] [23, 3]<br>Note: the punctuation symbols are only used to make the list human-readable.<br>The actual internal representation of the inverted list would just store a<br>sequence of integers, represented appropriately, for example 2 10 2 23 3. Your<br>stored lists must not include the extra punctuation between items. See the<br>lecture notes for further details on the inverted index and inverted lists.<br>You can assume that you will be working with collections that are small enough<br>to fit in main memory.<br>When your index program has finished constructing the inverted lists for each<br>unique term that occurs in the collection, the data should be written to disk.<br>Your program should write three data files:</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>lexicon, containing each unique term that occurs in the collection and a “pointer” to the inverted list for that term </li>
+<li>invlists, which contains the inverted list information, consisting only of numerical data </li>
+<li>map, which contains the mapping information from document id numbers (as used in the inverted lists) to the actual document names<br>These files must be written to the current working directory.<br>Since the lexicon and inverted lists are stored separately, your lexicon file<br>will need to include information about the file offset position in invlists<br>where the inverted list for the corresponding term occurs. Your program should<br>not simply read the invlists file sequentially from the start each time it is<br>accessed.<br>It is up to you to design the particulars of the implementation. However,<br>please read the next section on Querying carefully first, as this is likely to<br>have implications for how you store your data. You will be asked to explain<br>your implementation in a report (see below).</li>
+</ol>
+<h2 id="Querying"><a href="#Querying" class="headerlink" title="Querying"></a>Querying</h2><p>Write a program called search that loads your index data, and searches it to<br>retrieve the inverted lists for particular terms. An example of how your<br>program should be invoked is:<br>    % .&#x2F;search [lexicon] [invlists] [map] [queryterm 1] […[queryterm N]]<br>(or equivalent invocation) where [lexicon], [invlists] and [map] are the<br>inverted index files that your index program created. The program will also<br>receive a variable number of query terms (but at least one query term) as<br>command-line arguments. Each of these terms should be looked up in the<br>lexicon, and the appropriate inverted list data fetched from the inverted list<br>file. For each queryterm, you need to print the following information to<br>standard out:</p>
+<ul>
+<li>The current query term; </li>
+<li>The document frequency ft ; </li>
+<li>A list of each document in which the term occurs (using the identifier from the [DOCNO] field, which you can look up in your map file), and the within-document frequency fd,t .<br>An example of how your program might be run is as follows:<br>% .&#x2F;search lexicon invlists map insomnia<br>(or equivalent invocation). If the term insomnia occurs in two documents,<br>twice in document FT911-22 and three times in document FT911-2032 then the<br>output should be:<br>insomnia<br>FT911-22 2<br>FT911-2032 3<br>Your implementation should follow these specifications:</li>
+<li>The lexicon and the map should be loaded into memory when your program is invoked, and stored using an efficient look-up data structure such as a hash table. </li>
+<li>The invlists data should not be pre-fetched into memory. Instead, the inverted list data should be read from disk as each query term is processed. That is, your program should read only that section of the invlists file that corresponds to the list data for a particular term. </li>
+<li>The output of your program must follow the format given in the example above, and must not produce any additional output beyond what is specified in the assignment requirements.</li>
+</ul>
+<h2 id="Report"><a href="#Report" class="headerlink" title="Report"></a>Report</h2><p>Create a file called report.txt or report.pdf and answer the questions below.<br>Remember to clearly cite any sources (including books, research papers, course<br>notes, etc.) that you referred to while designing aspects of your programs.<br>The answers in your report should not include pasted extracts from your source<br>code (the source code will be submitted separately, as part of the<br>assignment). However, you may wish to make use of pseudo-code to explain<br>particular concepts, algorithms, or implementation choices, if needed.</p>
+<h3 id="Index-Construction"><a href="#Index-Construction" class="headerlink" title="Index Construction"></a>Index Construction</h3><p>Explain your inverted index implementation. As part of your explanation you<br>need to clearly describe how you:</p>
+<ul>
+<li>gather term information while your index program is parsing the collection </li>
+<li>tokenise terms, including how you deal with punctuation and markup tags, and handle acronyms and hyphenated words </li>
+<li>merge the information together for the final lexicon and invlists files<br>This explanation should be around a page in length, but no longer than one and<br>a half pages.</li>
+</ul>
+<h3 id="Stoplist"><a href="#Stoplist" class="headerlink" title="Stoplist"></a>Stoplist</h3><p>Briefly explain how you implemented your stoplist module, including the hash<br>function that you used, and why it is appropriate. This explanation should be<br>around half a page in length.</p>
+<h3 id="Index-Search"><a href="#Index-Search" class="headerlink" title="Index Search"></a>Index Search</h3><p>Explain your index search implementation. As part of your explanation you need<br>to clearly describe:</p>
+<ul>
+<li>the data structures you used for your lexicon when it is held in memory </li>
+<li>how you look up corresponding term occurrence information in your invlists file<br>This explanation should be around a page in length, but no longer than one and<br>a half pages.</li>
+</ul>
+<h3 id="Index-Size"><a href="#Index-Size" class="headerlink" title="Index Size"></a>Index Size</h3><p>How large is your inverted index? How does this compare with the size of the<br>original collection? Why is it larger&#x2F;smaller than the original collection?</p>
+<h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><p>This assignment requires you to design and implement a large indexing system<br>for text documents. In this section, you should briefly outline any known<br>limitations or bugs in your approach or implementation. For example, perhaps<br>you noticed that your code will crash in certain conditions, and despite your<br>best efforts you just couldn’t figure out why. Or, perhaps due to time<br>constraints you were forced to make a less than ideal design decision.<br>Please be up-front in listing known issues, and demonstrate your understanding<br>of IR system requirements by explaining what you think an “ideal” system might<br>do in addition (or instead).</p>
+<h3 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a>Contributions</h3><p>In this section, you should provide details about what each team member<br>contributed to the submitted assignment materials. Note that both team members<br>will receive the same mark. However, you must include this section.</p>
+<h2 id="Optional-Extension"><a href="#Optional-Extension" class="headerlink" title="Optional Extension"></a>Optional Extension</h2><p>ONLY attempt this section if you have completed all previous sections of the<br>assignment. If you submit a solution to this extension exercise, you will need<br>to submit two versions of your code, one without compression (i.e. all<br>previous sections of the assignment), and one with compression (i.e.<br>incorporating the following requirements). You MUST clearly explain in your<br>README.txt file which files correspond to which part of the assignment, as<br>well as how each should be compiled and run.</p>
+<ol>
+<li>Extend your index program so that the inverted lists are compressed using variablebyte coding before they are written to disk, and decompressed after being read from disk. </li>
+<li>Extend your report to include a subsection called Compression, and explain your implementation of the chosen compression scheme. What is the size of your inverted index using compression? How does this compare to the uncompressed inverted index? Write no more than half a page.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/03/20/Python%E4%BB%A3%E5%86%99%EF%BC%9AISYS1078Indexing/">http://saferman.github.io/2019/03/20/Python%E4%BB%A3%E5%86%99%EF%BC%9AISYS1078Indexing/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/03/22/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC401IndexRandomandDictionary/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Python代写：CSC401 Index Random and Dictionary">
+                        
+                        <span class="card-title">Python代写：CSC401 Index Random and Dictionary</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-03-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/03/19/C++%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC121LionPath/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="C++代写：CMPSC121 Lion Path">
+                        
+                        <span class="card-title">C++代写：CMPSC121 Lion Path</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-03-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS540 Neural Networks, 留学生CS|辅导|代写">
+    <meta name="description" content="实现两层前馈神经网络(  Neural Networks
+), 其中有两个隐藏层节点和一个输出节点。
+Problem 1. Neural NetworksThe figure below shows a 2-layer, feed-forw">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS540 Neural Networks | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS540 Neural Networks</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-11
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现两层前馈神经网络( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Artificial_neural_network" title="Neural Networks"> Neural Networks
+</a><br>), 其中有两个隐藏层节点和一个输出节点。<br><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Neuron3.png" alt="Neural
+Networks"></p>
+<h2 id="Problem-1-Neural-Networks"><a href="#Problem-1-Neural-Networks" class="headerlink" title="Problem 1. Neural Networks"></a>Problem 1. Neural Networks</h2><p>The figure below shows a 2-layer, feed-forward neural network with two hidden-<br>layer nodes and one output node. x1 and x2 are the two inputs. For the<br>following questions, assume the learning rate is &#x3D; 0.1. Each node also has a<br>bias input value of +1. Assume there is a sigmoid activation function at the<br>hidden layer nodes and at the output layer node. A sigmoid activation node, xi<br>is the ith incoming input value, and n is the number of incoming edges to the<br>node.</p>
+<ul>
+<li>(a) Calculate the output values at nodes h1, h2 and of this network for input {x1 &#x3D; 0, x2 &#x3D; 1}. Each unit produces as its output the real value computed by the unit’s associated sigmoid function. Show all steps in your calculation. </li>
+<li>(b) Compute one (1) step of the backpropagation algorithm for a given example with input {x1 &#x3D; 0, x2 &#x3D; 1} and target output y &#x3D; 1. The network output is the real-valued output of the sigmoid function., where O is the real-valued network output of that example at the output node, and y is the integer- valued target output for that example. Compute the updated weights for both the hidden layer and the output layer (there are nine updated weights in total (i.e., the three incoming weights to node h1, the three incoming weights to node h2 and the three incoming weights to node ) by performing ONE step of gradient descent. Show all steps in your calculation.</li>
+</ul>
+<h2 id="Problem-2-Constraint-Satisfaction-Problems"><a href="#Problem-2-Constraint-Satisfaction-Problems" class="headerlink" title="Problem 2. Constraint Satisfaction Problems"></a>Problem 2. Constraint Satisfaction Problems</h2><p>Consider the following graph representing 7 countries on a map that needs to<br>be colored using three different colors, 1, 2 and 3, so that no adjacent<br>countries have the same color. Adjacencies are represented by edges in the<br>graph. We can represent this problem as a CSP where the variables are the<br>countries and the values are the colors.</p>
+<ul>
+<li>(a) What are the domains of all the variables after applying Forward Checking inference with variables ordered alphabetically (from A to G) and values ordered increasingly (from 1 to 3), assuming you start with each variable having all possible values except it is known that A has value 1 and E has value 2? </li>
+<li>(b) Apply the Backtracking Search algorithm (Figure 6.5 in the textbook) with Forward Checking inference (Section 6.3.2), assuming you start with each variable having all possible values. Variables and values are chosen following alphabetical ordering of the variables (A to G) and increasing order of the values (1 to 3), respectively. Show your result as a search tree where each node in the tree shows each variable with its set of possible values. Arcs in the search tree should be labeled with an assignment of a selected value to a selected variable. If a solution is found, show the final coloring of the map. The search tree only needs to show nodes and arcs until a single solution is found. </li>
+<li>(c) What are the domains of all the variables after applying Arc-Consistency(AC-3) inference (Figure 6.3) with variables ordered alphabetically and values ordered increasingly, assuming you start with each variable having all possible values except it is known that A has value 1, B has value 1, and C has value 2? List all the possible outcomes.</li>
+</ul>
+<h2 id="Problem-3-Back-Propagation-for-Handwritten-Digit-Recognition"><a href="#Problem-3-Back-Propagation-for-Handwritten-Digit-Recognition" class="headerlink" title="Problem 3. Back-Propagation for Handwritten Digit Recognition"></a>Problem 3. Back-Propagation for Handwritten Digit Recognition</h2><p>In this problem you are to write a program that builds a 2-layer, feed-forward<br>neural network and trains it using the back-propagation algorithm. The problem<br>that the neural network will handle is a multi-class classification problem<br>for recognizing images of handwritten digits. All inputs to the neural network<br>will be numeric. The neural network has one hidden layer. The network is fully<br>connected between consecutive layers, meaning each unit, which we’ll call a<br>node, in the input layer is connected to all nodes in the hidden layer, and<br>each node in the hidden layer is connected to all nodes in the output layer.<br>Each node in the hidden layer and the output layer will also have an extra<br>input from a “bias node” that has constant value +1. So, we can consider both<br>the input layer and the hidden layer as containing one additional node called<br>a bias node. All nodes in the hidden layer (except for the bias node) should<br>use the ReLU activation function, while all the nodes in the output layer<br>should use the Softmax activation function. The initial weights of the network<br>will be set randomly (already implemented in the skeleton code). Assuming that<br>input examples (called instances in the code) have m attributes (hence there<br>are m input nodes, not counting the bias node) and we want h nodes (not<br>counting the bias node) in the hidden layer, and o nodes in the output layer,<br>then the total number of weights in the network is (m +1)h between the input<br>and hidden layers, and (h+1)o connecting the hidden and output layers. The<br>number of nodes to be used in the hidden layer will be given as input.<br>You are only required to implement the following methods in the classes NNImpl<br>and Node:<br>    public class Node {<br>      public void calculateOutput()<br>      public void calculateDelta()<br>      public void updateWeight(double learningRate)<br>    }<br>    public class NNImpl {<br>      public int predict(Instance inst);<br>      public void train();<br>      private double loss(Instance inst);<br>    }<br>—|—  </p>
+<ul>
+<li>void calculateOutput()<br>calculates the output at the current node and stores that value in a member<br>variable called outputValue</li>
+<li>void calculateDelta()<br>calculates the delta value, at the current node and stores that value in a<br>member variable called delta</li>
+<li>void updateWeight(double learningRate)<br>updates the weights between parent nodes and the current node using the<br>provided learning rate</li>
+<li>int predict (Instance inst)<br>calculates the output (i.e., the index of the class) from the neural network<br>for a given example</li>
+<li>void train()<br>trains the neural network using a training set, fixed learning rate, and<br>number of epochs (provided as input to the program). This function also prints<br>the total Cross-Entropy loss on all the training examples after each epoch.</li>
+<li>double loss(Instance inst): calculates the Cross-Entropy loss from the neural network for a single instance. This function will be used by train()</li>
+</ul>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>The dataset we will use is called Semeion. It contains 1,593 binary images of<br>size 16 x 16 that each contain one handwritten digit. Your task is to classify<br>each example image as one of the three possible digits: 6, 8 or 9. If desired,<br>you can view an image using the supplied python code called view.py Usage is<br>described at the beginning of this file (this is entirely optional if you want<br>to view what an image in the dataset looks like. In other words, it has<br>nothing to do with your implementation in Java).<br>Each dataset will begin with a header that describes the dataset: First, there<br>may be several lines starting with “&#x2F;&#x2F;“ that provide a description and<br>comments about the dataset. The line starting with “**” lists the digits. The<br>line starting with “ ##” lists the number of attributes, i.e., the number of<br>input values in each instance (in our case, the number of pixels). You can<br>assume that the number of classes will always be 3 for this homework because<br>we are only considering 3-class classification problems. The first output node<br>should output a large value when the instance is determined to be in class 1<br>(here meaning it is digit 6). The second output node should output a large<br>value when the instance is in class 2 (i.e., digit 8) and, similarly, the<br>third output node corresponds to class 3 (i.e., digit 9). Following these<br>header lines, there will be one line for each instance, containing the values<br>of each attribute followed by the target&#x2F;teacher values for each output node.<br>For example, if the last 3 values for an instance are: 0 0 1 then this means<br>the instance is the digit 9. We have written the dataset loading part for you<br>according to this format, so do not change it.</p>
+<h2 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h2><p>We have created four classes to assist your coding, called Instance, Node,<br>NNImpl and NodeWeightPair. Their data members and methods are commented in the<br>skeleton code. An overview of these classes is given next.<br>The Instance class has two data members: ArrayList[Double] attributes and<br>ArrayList[Integer] classValues. It is used to represent one instance (aka<br>example) as the name suggests. attributes is a list of all the attributes (in<br>our case binary pixel values) of that instance (all of them are double) and<br>classValues is the class (e.g., 1 0 0 for digit 6) for that instance.<br>The most important data member of the Node class is int type. It can take the<br>values 0, 1, 2, 3 or 4. Each value represents a particular type of node. The<br>meanings of these values are:</p>
+<ul>
+<li>0: an input node </li>
+<li>1: a bias node that is connected to all hidden layer nodes </li>
+<li>2: a hidden layer node </li>
+<li>3: a bias node that is connected to all output layer nodes </li>
+<li>4: an output layer node<br>Node also has a data member double inputValue that is only relevant if the<br>type is 0. Its value can be updated using the method <code>void setInput(doubleinputValue)</code> . It also has a data member <code>ArrayList&lt;NodeWeightPair&gt;</code> parents, which is a list of all the nodes that are<br>connected to this node from the previous layer (along with the weight<br>connecting these two nodes). This data member is relevant only for types 2 and</li>
+</ul>
+<ol start="4">
+<li>The neural network is fully connected, which means that all nodes in the<br>input layer (including the bias node) are connected to each node in the hidden<br>layer and, similarly, all nodes in the hidden layer (including the bias node)<br>are connected to the node in the output layer. The output of each node in the<br>output layer is stored in double outputValue. You can access this value using<br>the method <code>double getOutput()</code> which is already implemented. You only need<br>to complete the method <code>void calculateOutput()</code> . This method should<br>calculate the output activation value at the node if it’s of type 2 or 4. The<br>calculated output should be stored in outputValue. The value is determined by<br>the definition of the activation function (ReLU or Softmax), which depends on<br>the type of node (type 2 means ReLU, type 4 means Softmax).<br>NodeWeightPair has two data members, Node and weight. These should be self-<br>explanatory. NNImpl is the class that maintains the whole neural network. It<br>maintains lists of all input nodes ( <code>ArrayList&lt;Node&gt; inputNodes</code> ), hidden<br>layer nodes ( <code>ArrayList&lt;Node&gt; hiddenNodes</code> ), and output layer nodes ( <code>ArrayList&lt;Node&gt; outputNodes</code> ). The last node in both the input layer and the<br>hidden layer is the bias node for that layer. Its constructor creates the<br>whole network and maintains the links. So, you do not have to worry about that<br>as it’s already implemented in the skeleton code. As mentioned before, you<br>must implement these three methods here. The data members <code>ArrayList&lt;Instance&gt; trainingSet, double learningRate</code> and <code>int maxEpoch</code><br>will be required for this. To train the network, implement the back-<br>propagation algorithm given in the textbook (Figure 18.24) or in the lecture<br>slides. Implement it by updating all the weights in the network after each<br>instance (as is done in the algorithm in the textbook), so you will be doing a<br>form of Stochastic Gradient Descent for training. Use Cross-Entropy loss as<br>the loss function at the output nodes for the back- propagation algorithm.<br>Details about Cross-Entropy loss are available at [ <a target="_blank" rel="noopener" href="http://ml-/">http://ml-</a><br>cheatsheet.readthedocs.io&#x2F;en&#x2F;latest&#x2F;loss_functions.html ](<a target="_blank" rel="noopener" href="http://ml-/">http://ml-</a><br>cheatsheet.readthedocs.io&#x2F;en&#x2F;latest&#x2F;loss_functions.html) Finally, remember to<br>change the input values of each input layer node (except the bias node) when<br>using each new training instance to train the network.</li>
+</ol>
+<h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><p>Based on the outputs of the output nodes, <code>int predict(Instance inst)</code><br>classifies the instance as the index of the output node with the maximum<br>value. For example, if one instance has outputs [0.1, 0.3, 0.6], this instance<br>will be classified as digit 9. If there are multiple maximum values, the<br>smallest digit will be predicted. For example, if the outputs are [0.4 0.4<br>0.2], then the instance should be classified as 6.</p>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>We will test your program on multiple training and testing sets, and the<br>format of testing commands will be:<br>    java DigitClassifier <numHidden> <learnRate> <maxEpoch> <trainFile> <testFile><br>where trainFile, and testFile are the names of training and testing datasets,<br>respectively. numHidden specifies the number of nodes in the hidden layer<br>(excluding the bias node at the hidden layer). learnRate and maxEpoch are the<br>learning rate and the number of epochs that the network will be trained,<br>respectively. To facilitate debugging, we are providing you with sample<br>training data and testing data in the files train1.txt and test1.txt. We are<br>also providing you the file testcases.txt which contains three example test<br>cases. The outputs for these three test cases are also provided. A sample test<br>command is<br>    java DigitClassifier 5 0.01 100 train1.txt test1.txt<br>You are not responsible for handling parsing of the training and testing<br>datasets, creating the network, or printing test dataset results on console.<br>We have written the class DigitClassifier for you, which will load the data<br>and pass it to the method you are implementing. Do NOT modify any IO code. As<br>part of our testing process, we will unzip the java files you submit to<br>Canvas, call javac DigitClassifier.java to compile your code, and then call it<br>with above command, with parameters of our choice.</p>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>Hand in your modified versions of NNImpl.java and Node.java that include your<br>implementation of the back-propagation algorithm. Also submit any additional<br>helper .java files required to run your program (including the provided ones<br>in the skeleton). Do not submit any other files including the data files (no<br>.class or .txt files). Also, all the .java files should be zipped as <code>&lt;wiscNetID&gt;-HW4-P3.zip</code> for submission to Canvas.</p>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<li>Use the <code>Collections.shuffle(list,random)</code> function on the training data with the random object available in the class only once before every epoch while implementing the <code>void train()</code> function. For the purpose of this homework, we fixed the random object to a certain value. Therefore, you should not worry about what random is. You only have to make sure that the shuffling given above happens once before every epoch. </li>
+<li>After each epoch of training and weight updating, print the cumulative Cross-Entropy loss on the entire training set in the format shown in the sample output. This should be done in the <code>train()</code> function. Use 3 decimal double precision using <code>%.3e</code> to get the required formatting of the sample output. </li>
+<li>Do not include package statements in your final submission (i.e., do not include statements in the java files that start with the keyword package). </li>
+<li>You only need to implement the above-mentioned methods and you must not change any other existing function implementations. However, you are free to add any helper methods you’d like to implement these methods. </li>
+<li>Make sure your implementation can run under 30 seconds for a maxEpoch of 100 and 10 hidden units, otherwise it will timeout by the grading script. </li>
+<li>To better understand how backpropagation and weight updating work in detail, you can look at the following tutorial. Note, however, that the example in this tutorial uses a different loss function; therefore, the computations made in the tutorial will not be exactly the same as in this homework.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/11/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS540NeuralNetworks/">http://saferman.github.io/2023/01/11/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS540NeuralNetworks/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/11/C++%E4%BB%A3%E5%86%99%EF%BC%9AECS50Converter/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="C++代写：ECS50 Converter">
+                        
+                        <span class="card-title">C++代写：ECS50 Converter</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-11
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/08/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS413DataSecurity/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Java代写：CS413 Data Security">
+                        
+                        <span class="card-title">Java代写：CS413 Data Security</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

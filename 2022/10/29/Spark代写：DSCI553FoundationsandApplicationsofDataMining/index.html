@@ -1,0 +1,941 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spark代写：DSCI553 Foundations and Applications of Data Mining, 留学生CS|辅导|代写">
+    <meta name="description" content="使用Yelp的数据集，完成不同类型的协作过滤推荐系统，并且熟悉  Locality Sensitive Hashing (LSH)
+ 算法。![Locality Sensitive Hashing (LSH)](https://ars.el">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Spark代写：DSCI553 Foundations and Applications of Data Mining | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Spark代写：DSCI553 Foundations and Applications of Data Mining</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Spark代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-29
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用Yelp的数据集，完成不同类型的协作过滤推荐系统，并且熟悉 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing" title="Locality Sensitive
+Hashing (LSH)"> Locality Sensitive Hashing (LSH)
+</a> 算法。<br>![Locality Sensitive Hashing (LSH)](<a target="_blank" rel="noopener" href="https://ars.els-/">https://ars.els-</a><br>cdn.com&#x2F;content&#x2F;image&#x2F;1-s2.0-B9780128001615000037-f03-06-9780128001615.jpg)</p>
+<h2 id="Overview-of-the-Assignment"><a href="#Overview-of-the-Assignment" class="headerlink" title="Overview of the Assignment"></a>Overview of the Assignment</h2><p>In Assignment 3, you will complete two tasks. The goal is to familiarize you<br>with Locality Sensitive Hashing (LSH), and different types of collaborative-<br>filtering recommendation systems. The dataset you are going to use is a subset<br>from the Yelp dataset used in the previous assignments.</p>
+<h2 id="Assignment-Requirements"><a href="#Assignment-Requirements" class="headerlink" title="Assignment Requirements"></a>Assignment Requirements</h2><h3 id="Programming-Language-and-Library-Requirements"><a href="#Programming-Language-and-Library-Requirements" class="headerlink" title="Programming Language and Library Requirements"></a>Programming Language and Library Requirements</h3><ul>
+<li>a. You must use Python to implement all tasks. You can only use standard python libraries (i.e., external libraries like numpy or pandas are not allowed). There will be a 10% bonus for each task (or case) if you also submit a Scala implementation and both your Python and Scala implementations are correct. </li>
+<li>b. You are required to only use the Spark RDD to understand Spark operations. You will not receive any points if you use Spark DataFrame or DataSet.</li>
+</ul>
+<h3 id="Programming-Environment"><a href="#Programming-Environment" class="headerlink" title="Programming Environment"></a>Programming Environment</h3><p>Python 3.6, JDK 1.8, Scala 2.12, and Spark 3.1.2<br>We will use these library versions to compile and test your code. There will<br>be no point if we cannot run your code on Vocareum. On Vocareum, you can call<br><code>spark-submit</code> located at &#x2F;opt&#x2F;spark&#x2F;spark-3.1.2-binhadoop3.2&#x2F;bin&#x2F;spark-<br>submit <code>. (*Do not use the one at</code> &#x2F;home&#x2F;local&#x2F;spark&#x2F;latest&#x2F;bin&#x2F;spark-submit<br>(2.4.4))</p>
+<h3 id="Write-your-own-code"><a href="#Write-your-own-code" class="headerlink" title="Write your own code"></a>Write your own code</h3><p>Do not share your code with other students!!<br>We will combine all the code we can find from the Web (e.g., GitHub) as well<br>as other students’ code from this and other (previous) sections for plagiarism<br>detection. We will report all the detected plagiarism.</p>
+<h2 id="Yelp-Data"><a href="#Yelp-Data" class="headerlink" title="Yelp Data"></a>Yelp Data</h2><p>In this assignment, the datasets you are going to use.<br>We generated the following two datasets from the original Yelp review dataset<br>with some filters. We randomly took 60% of the data as the training dataset,<br>20% of the data as the validation dataset, and 20% of the data as the testing<br>dataset.</p>
+<ul>
+<li>a. yelp_train.csv: the training data, which only include the columns: user_id, business_id, and stars. </li>
+<li>b. yelp_val.csv: the validation data, which are in the same format as training data. </li>
+<li>c. We are not sharing the test dataset. </li>
+<li>d. other datasets: providing additional information (like the average star or location of a business)</li>
+</ul>
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h2><p>Note: This Assignment has been divided into 2 parts on Vocareum. This has been<br>done to provide more computational resources.</p>
+<h3 id="Task-1-Jaccard-based-LSH"><a href="#Task-1-Jaccard-based-LSH" class="headerlink" title="Task 1: Jaccard based LSH"></a>Task 1: Jaccard based LSH</h3><p>In this task, you will implement the Locality Sensitive Hashing algorithm with<br>Jaccard similarity using yelp_train.csv.<br>In this task, we focus on the “0 or 1” ratings rather than the actual<br>ratings&#x2F;stars from the users. Specifically, if a user has rated a business,<br>the user’s contribution in the characteristic matrix is 1. If the user hasn’t<br>rated the business, the contribution is 0. You need to identify similar<br>businesses whose <code>similarity &gt;= 0.5</code> .<br>You can define any collection of hash functions that you think would result in<br>a consistent permutation of the row entries of the characteristic matrix. Some<br>potential hash functions are:<br>    f(x)&#x3D; (ax + b) % m or f(x) &#x3D; ((ax + b) % p) % m<br>where p is any prime number and m is the number of bins. Please carefully<br>design your hash functions.<br>After you have defined all the hashing functions, you will build the signature<br>matrix. Then you will divide the matrix into b bands with r rows each, where <code>b x r = n</code> (n is the number of hash functions). You should carefully select a<br>good combination of b and r in your implementation ( <code>b &gt; 1</code> and <code>r &gt; 1</code><br>). Remember that two items are a candidate pair if their signatures are<br>identical in at least one band.<br>Your final results will be the candidate pairs whose original Jaccard<br>similarity is <code>&gt;= 0.5</code> . You need to write the final results into a CSV file<br>according to the output format below.<br>Input format: (we will use the following command to execute your code)<br>    Python: spark-submit task1.py <input_file_name> <output_file_name><br>    Scala: spark-submit –class task1 hw3.jar <input_file_name> <output_file_name><br>Param: input_file_name: the name of the input file (yelp_train.csv), including<br>the file path.<br>Param: output_file_name: the name of the output CSV file, including the file<br>path.<br>Output format:<br>IMPORTANT: Please strictly follow the output format since your code will be<br>graded automatically. We will not regrade because of formatting issues.</p>
+<ul>
+<li>a. The output file is a CSV file, containing all business pairs you have found. The header is “business_id_1, business_id_2, similarity”. Each pair itself must be in the alphabetical order. The entire file also needs to be in the alphabetical order. There is no requirement for the number of decimals for the similarity value.</li>
+</ul>
+<h3 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h3><p>We will compare your output file against the ground truth file using precision<br>and recall metrics.<br>    Precision &#x3D; true positives &#x2F; (true positives + false positives)<br>    Recall &#x3D; true positives &#x2F; (true positives + false negatives)<br>The ground truth file has been provided in the Google drive, named as<br>“pure_jaccard_similarity.csv”. You can use this file to compare your results<br>to the ground truth as well.<br>The ground truth dataset only contains the business pairs (from the<br>yelp_train.csv) whose Jaccard similarity <code>&gt;=0.5</code> . The business pair itself<br>is sorted in the alphabetical order, so each pair only appears once in the<br>file (i.e., if pair (a, b) is in the dataset, (b, a) will not be there).<br>In order to get full credit for this task you should have precision <code>&gt;= 0.99</code> and recall <code>&gt;= 0.97</code> . If not, then you will get only partial credit based<br>on the formula:<br>    (Precision &#x2F; 0.99) * 0.4 + (Recall &#x2F; 0.97) * 0.4<br>Your runtime should be less than 100 seconds. If your runtime is more than or<br>equal to 100 seconds, you will not receive any point for this task.</p>
+<h3 id="Task2-Recommendation-System"><a href="#Task2-Recommendation-System" class="headerlink" title="Task2: Recommendation System"></a>Task2: Recommendation System</h3><p>In task 2, you are going to build different types of recommendation systems<br>using the yelp_train.csv to predict the ratings&#x2F;stars for given user ids and<br>business ids. You can make any improvement to your recommendation system in<br>terms of speed and accuracy. You can use the validation dataset (yelp_val.csv)<br>to evaluate the accuracy of your recommendation systems, but please don’t<br>include it as your training data.<br>There are two options to evaluate your recommendation systems. You can compare<br>your results to the corresponding ground truth and compute the absolute<br>differences. You can divide the absolute differences into 5 levels and count<br>the number for each level as following:<br>    &gt;&#x3D;0 and &lt;1: 12345<br>    &gt;&#x3D;1 and &lt;2: 123<br>    &gt;&#x3D;2 and &lt;3: 1234<br>    &gt;&#x3D;3 and &lt;4: 1234<br>    &gt;&#x3D;4: 12<br>This means that there are 12345 predictions with <code>&lt; 1</code> difference from the<br>ground truth. This way you will be able to know the error distribution of your<br>predictions and to improve the performance of your recommendation systems.<br>Additionally, you can compute the RMSE (Root Mean Squared Error) by using<br>following formula.<br>Where Predi is the prediction for business i and Ratei is the true rating for<br>business i. n is the total number of the business you are predicting.<br>In this task, you are required to implement:</p>
+<ul>
+<li>Case 1: Item-based CF recommendation system with Pearson similarity </li>
+<li>Case 2: Model-based recommendation system </li>
+<li>Case 3: Hybrid recommendation system</li>
+</ul>
+<h4 id="Item-based-CF-recommendation-system"><a href="#Item-based-CF-recommendation-system" class="headerlink" title="Item-based CF recommendation system"></a>Item-based CF recommendation system</h4><p>Please strictly follow the slides to implement an item-based recommendation<br>system with Pearson similarity.</p>
+<h4 id="Model-based-recommendation-system"><a href="#Model-based-recommendation-system" class="headerlink" title="Model-based recommendation system"></a>Model-based recommendation system</h4><p>You need to use XGBregressor(a regressor based on the decision tree) to train<br>a model. You need to use this API <a target="_blank" rel="noopener" href="https://xgboost.readthedocs.io/en/latest/python/python_api.html"><br>https://xgboost.readthedocs.io/en/latest/python/python_api.html
+</a> , the<br>XGBRegressor inside the package xgboost.<br>Please choose your own features from the provided extra datasets and you can<br>think about it with customer thinking. For example, the average stars rated by<br>a user and the number of reviews most likely influence the prediction result.<br>You need to select other features and train a model based on that. Use the<br>validation dataset to validate your result and remember don’t include it into<br>your training data.</p>
+<h4 id="Hybrid-recommendation-system"><a href="#Hybrid-recommendation-system" class="headerlink" title="Hybrid recommendation system."></a>Hybrid recommendation system.</h4><p>Now that you have the results from previous models, you will need to choose a<br>way from the slides to combine them together and design a better hybrid<br>recommendation system.<br>Here are two examples of hybrid systems:</p>
+<h5 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h5><p>You can combine them together as a weighted average, which means.<br>The key idea is: the CF focuses on the neighbors of the item and the model-<br>based RS focuses on the user and items themselves. Specifically, if the item<br>has a smaller number of neighbors, then the weight of the CF should be<br>smaller. Meanwhile, if two restaurants both are 4 stars and while the first<br>one has 10 reviews, the second one has 1000 reviews, the average star of the<br>second one is more trustworthy, so the modelbased RS score should weigh more.<br>You may need to find other features to generate your own weight function to<br>combine them together.</p>
+<h5 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h5><p>You can combine them together as a classification problem:<br>Again, the key idea is: the CF focuses on the neighbors of the item and the<br>model-based RS focuses on the user and items themselves. As a result, in our<br>dataset, some item-user pairs are more suitable for the CF while the others<br>are not. You need to choose some features to classify which model you should<br>choose for each item-user pair.<br>If you train a classifier, you are allowed to upload the pre-trained<br>classifier model named “model.md” to save running time on Vocareum. You can<br>use pickle library, joblib library or others if you want. Here is an example:<br><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/model_persistence.html"> https://scikit-learn.org/stable/modules/model_persistence.html
+</a> .<br>You also need to upload the training script named “train.py” to let us verify<br>your model.<br>Some possible features (other features may also work):</p>
+<ul>
+<li>Average stars of a user, average stars of business, the variance of history review of a user or a business. </li>
+<li>Number of reviews of a user or a business. </li>
+<li>Yelp account starting date, number of fans. </li>
+<li>The number of people think a users’ review is useful&#x2F;funny&#x2F;cool. Number of compliments (Be careful with these features. For example, sometimes when I visit a horrible restaurant, I will give full stars because</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>You need to submit following files on Vocareum with exactly the same name:</p>
+<ul>
+<li>a. Four Python scripts: <ul>
+<li>task1.py </li>
+<li>task2_1.py </li>
+<li>task2_2.py </li>
+<li>task2_3.py</li>
+</ul>
+</li>
+<li>b. [OPTIONAL] hw3.jar and Four Scala scripts: <ul>
+<li>task1.scala </li>
+<li>task2_1.scala </li>
+<li>task2_2.scala </li>
+<li>task2_3.scala</li>
+</ul>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/10/29/Spark%E4%BB%A3%E5%86%99%EF%BC%9ADSCI553FoundationsandApplicationsofDataMining/">http://saferman.github.io/2022/10/29/Spark%E4%BB%A3%E5%86%99%EF%BC%9ADSCI553FoundationsandApplicationsofDataMining/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Spark代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/29/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108RentABike/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Python代写：CSC108 Rent A Bike">
+                        
+                        <span class="card-title">Python代写：CSC108 Rent A Bike</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/27/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS440ConfigurationSpacePlanning/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="AI代写：CS440 Configuration Space Planning">
+                        
+                        <span class="card-title">AI代写：CS440 Configuration Space Planning</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,907 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CS162 Shell, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个简易的Shell程序，实现cd, pwd, exec等基础命令，此外还要重定向I&amp;#x2F;O输入输出，以及信号处理。In this homework, you’ll be building a shell, similar to ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CS162 Shell | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CS162 Shell</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-01-03
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个简易的Shell程序，实现cd, pwd, exec等基础命令，此外还要重定向I&#x2F;O输入输出，以及信号处理。<br>In this homework, you’ll be building a shell, similar to the Bash shell you<br>use on your CS 162 Virtual Machine. The purpose of a shell is to allow users<br>to run and manage programs. The operating system kernel provides well-<br>documented interfaces for building shells. By building your own shell, you’ll<br>become more familiar with these interfaces and you’ll probably learn more<br>about other shells as well.</p>
+<h2 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h2><p>Log in to your Vagrant Virtual Machine and run:<br>    $ cd ~&#x2F;code&#x2F;personal&#x2F;<br>    $ git pull staff master<br>    $ cd hw1<br>We have added starter code for your shell and a simple Makefile in the hw1<br>directory. It includes a string tokenizer, which splits a string into words.<br>In order to run the shell:<br>    $ make<br>    $ .&#x2F;shell<br>In order to terminate the shell after it starts, either type exit or press<br>CTRL-D.</p>
+<h2 id="Add-support-for-cd-and-pwd"><a href="#Add-support-for-cd-and-pwd" class="headerlink" title="Add support for cd and pwd"></a>Add support for cd and pwd</h2><p>The skeleton code for your shell has a dispatcher for “built-in” commands.<br>Every shell needs to support a number of built-in commands, which are<br>functions in the shell itself, not external programs. For example, the exit<br>command needs to be implemented as a built-in command, because it exits the<br>shell itself. So far, the only two built-ins supported are ?, which brings up<br>the help menu, and exit, which exits the shell.<br>Add a new built-in pwd that prints the current working directory to standard<br>output. Then, add a new built-in cd that takes one argument, a directory path,<br>and changes the current working directory to that directory.<br>Once you’re done, push your code to the autograder. In your VM:<br>    $ git add shell.c<br>    $ git commit -m “Finished adding basic functionality into the shell.”<br>    $ git push personal master<br>You should commit your code periodically and often so you can go back to a<br>previous version of your code if you want to.</p>
+<h2 id="Program-execution"><a href="#Program-execution" class="headerlink" title="Program execution"></a>Program execution</h2><p>If you try to type something into your shell that isn’t a built-in command,<br>you’ll get a message that the shell doesn’t know how to execute programs.<br>Modify your shell so that it can execute programs when they are entered into<br>the shell. The first word of the command is the name of the program. The rest<br>of the words are the command-line arguments to the program.<br>For this step, you can assume that the first word of the command will be the<br>full path to the program. So instead of running wc, you would have to run<br>&#x2F;usr&#x2F;bin&#x2F;wc. In the next section, you will implement support for simple<br>program names like wc. But you can pass some autograder tests by only<br>supporting full paths.<br>You should use the functions defined in tokenizer.c for separating the input<br>text into words. You do not need to support any parsing features that are not<br>supported by tokenizer.c. Once you implement this step, you should be able to<br>execute programs like this:<br>    $ .&#x2F;shell<br>    0: &#x2F;usr&#x2F;bin&#x2F;wc shell.c<br>          77     262    1843 shell.c<br>    1: exit<br>When your shell needs to execute a program, it should fork a child process,<br>which calls one of the exec functions to run the new program. The parent<br>process should wait until the child process completes and then continue<br>listening for more commands.</p>
+<h2 id="Path-resolution"><a href="#Path-resolution" class="headerlink" title="Path resolution"></a>Path resolution</h2><p>You probably found that it was a pain to test your shell in the previous part<br>because you had to type the full path of every program. Luckily, every program<br>(including your shell program) has access to a set of “environment variables”,<br>which is structured as a hashtable of string keys to string values. One of<br>these environment variables is the PATH variable. You can print the PATH<br>variable of your current environment on your Vagrant VM: (use bash for this,<br>not your homemade shell!)<br>    $ echo $PATH<br>    &#x2F;usr&#x2F;local&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;sbin:&#x2F;bin:…<br>When bash or any other shell executes a program like wc, it looks for a<br>program called “wc” in each directory on the PATH environment variable and<br>runs the first one that it finds. The directories on the path are separated<br>with a colon.<br>Modify your shell so that it uses the PATH variable from the environment to<br>resolve program names. Typing in the full pathname of the executable should<br>still be supported. Do not use “execvp”. The autograder looks for “execvp”,<br>and you won’t receive a grade if that word is found. Use execv instead and<br>implement your own PATH resolution.</p>
+<h2 id="Input-Output-Redirection"><a href="#Input-Output-Redirection" class="headerlink" title="Input&#x2F;Output Redirection"></a>Input&#x2F;Output Redirection</h2><p>When running programs, it is sometimes useful to provide input from a file or<br>to direct output to a file. The syntax “[process] &gt; [file]” tells your shell<br>to redirect the process’s standard output to a file. Similarly, the syntax<br>“[process] &lt; [file]” tells your shell to feed the contents of a file to the<br>process’s standard input.<br>Modfiy your shell so that it supports redirecting stdin and stdout to files.<br>You do not need to support redirection for shell built-in commands. You do not<br>need to support stderr redirection or appending to files (e.g. “[process] &gt;&gt;<br>[file]”). You can assume that there will always be spaces around special<br>characters &lt; and &gt;. Be aware that the “&lt; [file]” or “&gt; [file]” are NOT passed<br>as arguments to the program.</p>
+<h2 id="Signal-Handling-and-Terminal-Control"><a href="#Signal-Handling-and-Terminal-Control" class="headerlink" title="Signal Handling and Terminal Control"></a>Signal Handling and Terminal Control</h2><p>Most shells let you stop or pause processes with special key strokes. These<br>special keystrokes, such as Ctrl-C or Ctrl-Z, work by sending signals to the<br>shell’s subprocesses. For example, pressing CTRL-C sends the SIGINT signal<br>which usually stops the current program, and pressing CTRL-Z sends the SIGTSTP<br>signal which usually sends the current program to the background. If you try<br>these keystrokes in your shell, the signals are sent directly to the shell<br>process itself. This is not what we want since, for example, attempting to<br>CTRL-Z a subprocess of your shell will also stop the shell itself. We want to<br>have the signals affect only the subprocesses that our shell creates.<br>Before we explain how you can achieve this effect, let’s discuss some more<br>operating system concepts.</p>
+<h3 id="Process-groups"><a href="#Process-groups" class="headerlink" title="Process groups"></a>Process groups</h3><p>We have already established that every process has a unique process ID (pid).<br>Every process also has a (possibly non-unique) process group ID (pgid) which,<br>by default, is the same as the pgid of its parent process. Processes can get<br>and set their process group ID with getpgid(), setpgid(), getpgrp(), or<br>setpgrp().<br>Keep in mind that, when your shell starts a new program, that program might<br>require multiple processes to function correctly. All of these processes will<br>inherit the same process group ID of the original process. So, it may be a<br>good idea to put each shell subprocess in its own process group, to simplify<br>your bookkeeping. When you move each subprocess into its own process group,<br>the pgid should be equal to the pid.</p>
+<h3 id="Foreground-terminal"><a href="#Foreground-terminal" class="headerlink" title="Foreground terminal"></a>Foreground terminal</h3><p>Every terminal has an associated “foreground” process group ID. When you type<br>CTRL-C, your terminal sends a signal to every process inside the foreground<br>process group. You can change which process group is in the foreground of a<br>terminal with “tcsetpgrp(int fd, pid_t pgrp)”. The fd should be 0 for<br>“standard input”.</p>
+<h3 id="Overview-of-signals"><a href="#Overview-of-signals" class="headerlink" title="Overview of signals"></a>Overview of signals</h3><p>Signals are asynchronous messages that are delivered to processes. They are<br>identified by their signal number, but they also have somewhat human-friendly<br>names that all start with SIG. Some common ones include:</p>
+<ul>
+<li>SIGINT - Delivered when you type CTRL-C. By default, this stops the program. </li>
+<li>SIGQUIT - Delivered when you type CTRL-. By default, this also stops the program, but programs treat this signal more seriously than SIGINT. This signal also attempts to produce a core dump of the program before exiting. </li>
+<li>SIGKILL - There is no keyboard shortcut for this. This signal stops the program forcibly and cannot be overridden by the program. (Most other signals can be ignored by the program.) </li>
+<li>SIGTERM - There is no keyboard shortcut for this either. It behaves the same way as SIGQUIT. </li>
+<li>SIGTSTP - Delivered when you type CTRL-Z. By default, this pauses the program. In bash, if you type CTRL-Z, the current program will be paused and bash (which can detect that you paused the current program) will start accepting more commands. </li>
+<li>SIGCONT - Delivered when you run fg or fg %NUMBER in bash. This signal resumes a paused program. </li>
+<li>SIGTTIN - Delivered to a background process that is trying to read input from the keyboard. By default, this pauses the program, since background processes cannot read input from the keyboard. When you resume the background process with SIGCONT and put it in the foreground, it can try to read input from the keyboard again. </li>
+<li>SIGTTOU - Delivered to a background process that is trying to write output to the terminal console, but there is another foreground process that is using the terminal. Behaves the same as SIGTTIN by default.<br>In your shell, you can use kill -XXX PID, where XXX is the human-friendly<br>suffix of the desired signal, to send any signal to the process with process<br>id PID. For example, kill -TERM PID sends a SIGTERM to the process with<br>process id PID.<br>In C, you can use the signal function to change how signals are handled by the<br>current process. The shell should basically ignore most of these signals,<br>whereas the shell’s subprocesses should respond with the default action.<br>Beware: forked processes will inherit the signal handlers of the original<br>process. Reading man 2 signal and man 7 signal will provide more information.<br>Be sure to check out the SIG_DFL and SIG_IGN constants. For more information<br>about how signals work, please work through the tutorial here.<br>Your task is to ensure that each program you start is in its own process<br>group. When you start a process, its process group should be placed in the<br>foreground. Stopping signals should only affect the foregrounded program, not<br>the backgrounded shell.</li>
+</ul>
+<h2 id="Background-processing"><a href="#Background-processing" class="headerlink" title="Background processing"></a>Background processing</h2><p>So far, your shell waits for each program to finish before starting the next<br>one. Many shells allow you run a command in the background by putting an “&amp;”<br>at the end of the command line. After the background program is started, the<br>shell allows you to start more processes without waiting for background<br>process to finish.<br>Modify your shell so that it runs commands that end in an “&amp;” in the<br>background. You only need to support background processing for programs, not<br>built-in commands. Once you’ve implemented this feature, you should be able to<br>run programs in the background with a command such as “&#x2F;bin&#x2F;ls &amp;”.<br>You should also add a new built-in command wait, which waits until all<br>background jobs have terminated before returning to the prompt.<br>You can assume that there will always be spaces around the &amp; character. You<br>can assume that, if there is a &amp; character, it will be the last token on that<br>line.</p>
+<h2 id="Optional-Foreground-Background-Switching"><a href="#Optional-Foreground-Background-Switching" class="headerlink" title="Optional: Foreground&#x2F;Background Switching"></a>Optional: Foreground&#x2F;Background Switching</h2><p>Most shells allow for running processes to be toggled between running in the<br>foreground versus in background. You can optionally add two built-in commands<br>to support this:</p>
+<ul>
+<li>“fg [pid]” – Move the process with id pid to the foreground. The process should resume if it was paused. If pid is not specified, then move the most recently launched process to the foreground. </li>
+<li>“bg [pid]” – Resume a paused background process. If pid is not specified, then resume the most recently launched process.<br>You should keep a list of all programs you’ve started, whether they are in the<br>foreground or background. Inside this list, you should also keep a “struct<br>termios” to store the terminal settings of each program.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/01/03/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS162Shell/">http://saferman.github.io/2018/01/03/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS162Shell/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/01/16/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS3110EXPRChecker/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Java代写：CS3110 EXPR Checker">
+                        
+                        <span class="card-title">Java代写：CS3110 EXPR Checker</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-01-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/01/01/C%E4%BB%A3%E5%86%99%EF%BC%9ACS101BinaryArithmetic/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="C代写：CS101 Binary Arithmetic">
+                        
+                        <span class="card-title">C代写：CS101 Binary Arithmetic</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-01-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

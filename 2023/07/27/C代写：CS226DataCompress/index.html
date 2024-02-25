@@ -1,0 +1,961 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS226 Data Compress, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Huffman压缩算法，需要使用Huffman Trees, Stacks, Priority Queues.  
+Introduction
+You’re trying to take something that can be des">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS226 Data Compress | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS226 Data Compress</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-27
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Huffman压缩算法，需要使用Huffman Trees, Stacks, Priority Queues.  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><blockquote>
+<p>You’re trying to take something that can be described in many, many<br>sentences and pages of prose, but you can convert it into a couple lines of<br>poetry and you still get the essence, so that’s compression. The best code<br>is poetry.<br> – Satya Nadella<br>When David Huffman was a graduate student in a class at MIT, the professor<br>gave the class an unsolved problem: How to construct an optimal static<br>encoding of information. The young Huffman came back a few days later with his<br>solution, and that solution changed the world. Data compression is now used in<br>all aspects of communication. David Huffman joined the faculty of MIT in 1953,<br>and in 1967 he joined the faculty of University of California, Santa Cruz as<br>one of its earliest members and helped to found its Computer Science<br>Department, where he served as chairman from 1970 to 1973. He retired in 1994,<br>and passed away in 1999.<br>The key idea is called entropy, originally defined by Claude Shannon in 1948.<br>Entropy is a measure of the amount of information in a, say, set of symbols.<br>If we define I (x) &#x3D; log2 Pr[x] to be the information content of a symbol,<br>then the entropy of the set X &#x3D; {x 1 , . . . , x n } is<br>It should be easy to see that the optimal static encoding will assign the<br>least number of bits to the most common symbol, and the greatest number of<br>bits to the least common symbol.<br>Your task will be to find a Huffman encoding for the contents of a file, and<br>use it to compress that file. You must also be able to reconstruct the<br>original file from its compressed encoding.<br>In order to do this, you will need to:</p>
+</blockquote>
+<ol>
+<li>Compute a histogram of the file, in other words, count the number of occurrences of each byte in the file. </li>
+<li>Construct the Huffman tree that represents this histogram, in order to do this you will use a priority queue. </li>
+<li>Construct the code for each symbol, in order to do this you will use a stack and perform a traversal of the Huffman tree. </li>
+<li>Emit an encoding of the Huffman tree to a file, in order to do this you will perform a post-order traversal of the Huffman tree. </li>
+<li>Emit an encoding of the original file to the compressed file, in order to do this you will use bit vectors with two additional operations: append and optionally concatenate. </li>
+<li>Read the tree from the compressed file, in order to do this you will use a stack. </li>
+<li>Decode the compressed bit stream into an identical copy of the original file. In order to do this, you will use the bits (0 means left, 1 means right) to guide your traversal of a reconstructed Huffman tree.</li>
+</ol>
+<h3 id="Stacks"><a href="#Stacks" class="headerlink" title="Stacks"></a>Stacks</h3><blockquote>
+<p>I will, in fact, claim that the difference between a bad programmer and a<br>good one is whether he considers his code or his data structures more<br>important. Bad programmers worry about the code. Good programmers worry<br>about data structures and their relationships.<br> – Linus Torvalds<br>You will be using stacks in at least two instances in this assignment,<br>consequently you will need several different types of nodes. You may, for<br>example, want a stack of treeNode and a stack of uint32_t, or even better a<br>stack of bits if you are trying to be extra clever (so, let me give you some<br>code for that).<br>Below is the generic interface for a stack.<br>    #ifndef _STACK_H<br>    #define _STACK_H<br>    #include &lt;stdint.h&gt;<br>    #include &lt;stdbool.h&gt;<br>    typedef uint32_t item; &#x2F;&#x2F; You will need to change this<br>    typedef struct stack<br>    {<br>      uint32_t size; &#x2F;&#x2F; How big?<br>      uint32_t top;  &#x2F;&#x2F; Where’s the top?<br>      item *entries; &#x2F;&#x2F; Array to hold it (via calloc)<br>    } stack;<br>    stack *newStack();        &#x2F;&#x2F; Constructor<br>    void   delStack(stack *); &#x2F;&#x2F; Destructor<br>    item pop (stack *);       &#x2F;&#x2F; Returns the top item<br>    void push(stack *, item); &#x2F;&#x2F; Adds an item to the top<br>    bool empty(stack *);      &#x2F;&#x2F; Is it empty<br>    bool full (stack *);      &#x2F;&#x2F; Is it full?<br>    #endif<br>—|—<br>The code for each type of stack will be identical, except for the type of<br>items being operated on. Unlike some languages with templates or generics, you<br>will need to have code for each type. You could try to be exceedingly clever<br>and use (void *), but again, I caution you against that approach.</p>
+</blockquote>
+<h3 id="Priority-Queues"><a href="#Priority-Queues" class="headerlink" title="Priority Queues"></a>Priority Queues</h3><blockquote>
+<p>Data dominates. If you’ve chosen the right data structures and organized<br>things well, the algorithms will almost always be self-evident. Data<br>structures, not algorithms, are central to programming.<br> – Rob Pike<br>In order to construct the Huffman tree, you will want to use a data structure<br>called a priority queue. A priority queue is like a regular queue in that you<br>remove items from the tail, but differs in that when you remove an item it is<br>always the smallest (or largest) item. This implies that the enqueue operation<br>does not simply insert at the head. Of course, the dequeue operation could<br>search for the smallest item each time, but that is a bad idea. Note that the<br>definition does not say what the order in the rest of the queue must be, only<br>that the dequeue operation will return the smallest item.<br>    #ifndef _QUEUE_H<br>    #define _QUEUE_H<br>    #include &lt;stdint.h&gt;<br>    #include &lt;stdbool.h&gt;<br>    typedef treeNode item; &#x2F;&#x2F; treeNode defined in huffman.h<br>    typedef struct queue<br>    {<br>      uint32_t size;       &#x2F;&#x2F; How big is it?<br>      uint32_t head, tail; &#x2F;&#x2F; Front and rear locations<br>      item *Q;             &#x2F;&#x2F; Array to hold it (via calloc)<br>    } queue;<br>    queue *newQueue(uint32_t size); &#x2F;&#x2F; Constructor<br>    void   delQueue(queue *q);      &#x2F;&#x2F; Destructor<br>    bool empty(queue *q);           &#x2F;&#x2F; Is it empty?<br>    bool full (queue *q);           &#x2F;&#x2F; Is it full?<br>    bool enqueue(queue *q, item  i); &#x2F;&#x2F; Add an item<br>    bool dequeue(queue *q, item *i); &#x2F;&#x2F; Remove from the rear<br>    #endif<br>—|—  </p>
+</blockquote>
+<h3 id="Huffman-Trees"><a href="#Huffman-Trees" class="headerlink" title="Huffman Trees"></a>Huffman Trees</h3><blockquote>
+<p>It’s easy to make mistakes that only come out much later, after you’ve<br>already implemented a lot of code. You’ll realize “Oh I should have used a<br>different type of data structure.” Start over from scratch.<br> – Guido van Rossum<br>A Huffman tree is a full binary tree where the leaves represent the symbols to<br>be encoded, and the interior nodes provide a path from the root to the leaves.<br>The path is labeled with 0 for left, and 1 for right. The most common symbol<br>(the one with the highest count in the histogram) should have the shortest<br>path; the least common symbol the longest path.<br>The process of creating a Huffman tree is surprisingly simple. First, compute<br>your histogram. Next, using treeNode *newNode(uint8_t s, bool l, uint64_t c)<br>enqueue a node for each entry in the histogram into the priority queue.<br>Third, repeat until the priority queue is empty: dequeue two nodes from the<br>priority queue. Join them under a new node, and insert that node into the<br>priority queue. If there is only one node remaining in the priority queue,<br>then that is the root of the Huffman tree.<br>    #ifndef _HUFFMAN_H<br>    #define _HUFFMAN_H<br>    #include &lt;stdint.h&gt;<br>    #include &lt;stdbool.h&gt;<br>    #ifndef NIL<br>    #define NIL (void *) 0<br>    #endif<br>    typedef struct DAH treeNode;<br>    struct DAH<br>    {<br>      uint8_t  symbol;<br>      uint64_t count;<br>      bool     leaf;<br>      treeNode *left, *right;<br>    };<br>    &#x2F;&#x2F; New node, with symbols, leaf or not, a count associated with it<br>    treeNode *newNode(uint8_t s, bool l, uint64_t c);<br>    &#x2F;&#x2F; Dump a Huffman tree onto a file<br>    void dumpTree(treeNode *t, int file);<br>    &#x2F;&#x2F; Build a tree from the saved tree<br>    treeNode *loadTree(uint8_t savedTree[], uint16_t treeBytes);<br>    &#x2F;&#x2F; Step through a tree following the code<br>    int32_t stepTree(treeNode *root, treeNode **t, uint32_t code);<br>    &#x2F;&#x2F; Parse a Huffman tree to build codes<br>    void buildCode(treeNode *t, code s, code table[256]);<br>    &#x2F;&#x2F; Delete a tree<br>    void *delTree(treeNode *t);<br>    static inline void delNode(treeNode *h) { free(h); return; }<br>    static inline int8_t compare(treeNode *l, treeNode *r)<br>    {<br>      return l-&gt;count - r-&gt;count; &#x2F;&#x2F; l &lt; r if negative, 1 &#x3D; r if 0, …<br>    }<br>    treeNode *join(treeNode *l, treeNode *r); &#x2F;&#x2F; Join two subtrees<br>    #endif<br>—|—<br>The function treeNode *join(treeNode *l, treeNode *r) takes two nodes, which<br>may be either leaves or interior nodes, and creates a new internal node with<br>its count set to the sum of the counts of the two child nodes.<br>When you are creating the code for each symbol, you will want to use a stack<br>as defined in code.h, it provides a lovely little stack of bits. You will see<br>that as you traverse the Huffman tree, you want to push 0 when you go to the<br>left child and push 1 when you go to the right. Consequently, when you return<br>from either child, you will want to perform a pop. As soon as you reach any<br>leaf node during the traversal, the current state of the stack will represent<br>the code for the symbol at the leaf node.<br>    #ifndef _CODE_H<br>    #define _CODE_H<br>    #include &lt;stdint.h&gt;<br>    #include &lt;stdbool.h&gt;<br>    typedef struct code<br>    {<br>      uint8_t bits[32];<br>      uint32_t l;<br>    } code;<br>    static inline code newCode()<br>    {<br>      code t;<br>      for (int i &#x3D; 0; i &lt; 32; i +&#x3D; 1) { t.bits[i] &#x3D; 0; }<br>      t.l &#x3D; 0;<br>      return t;<br>    }<br>    static inline bool pushCode(code *c, uint32_t k)<br>    {<br>      if (c-&gt;l &gt; 256)<br>      {<br>        return false;<br>      }<br>      else if (k &#x3D;&#x3D; 0)<br>      {<br>        c-&gt;bits[c-&gt;l &#x2F; 8] &amp;&#x3D; ~(0x1 &lt;&lt; (c-&gt;l % 8));<br>        c-&gt;l +&#x3D; 1;<br>      }<br>      else<br>      {<br>        c-&gt;bits[c-&gt;l &#x2F; 8] |&#x3D; (0x1 &lt;&lt; (c-&gt;l % 8));<br>        c-&gt;l +&#x3D; 1;<br>      }<br>      return true;<br>    }<br>    static inline bool popCode(code *c, uint32_t *k)<br>    {<br>      if (c-&gt;l &#x3D;&#x3D; 0)<br>      {<br>        return false;<br>      }<br>      else<br>      {<br>        c-&gt;l -&#x3D; 1;<br>        *k &#x3D; ((0x1 &lt;&lt; (c-&gt;l % 8)) &amp; c-&gt;bits[c-&gt;l &#x2F; 8]) &gt;&gt; (c-&gt;l % 8);<br>        return true;<br>      }<br>    }<br>    static inline bool emptyCode(code *c) { return c-&gt;l &#x3D;&#x3D;   0; }<br>    static inline bool fullCode (code *c) { return c-&gt;l &#x3D;&#x3D; 256; }<br>    #endif<br>—|—<br>You may find it convenient to create a function appendCode for a bitVector<br>which can take in a code * and append that code to the bit vector.</p>
+</blockquote>
+<h2 id="Your-Task"><a href="#Your-Task" class="headerlink" title="Your Task"></a>Your Task</h2><p>You should construct both an encoder and a decoder. The encoder takes any file<br>and produces a compressed file. The decoder takes a compressed file and<br>produces an exact duplicate of the original file, down to each bit.</p>
+<h2 id="Specifics"><a href="#Specifics" class="headerlink" title="Specifics"></a>Specifics</h2><p>You will be pulling together most of the data structures that you learned this<br>quarter to finish this assignment. You will need at least two different<br>stacks, a priority queue, arrays, and of course, the Huffman tree.</p>
+<h3 id="Encoding"><a href="#Encoding" class="headerlink" title="Encoding"></a>Encoding</h3><p>Encoding is the concept of taking a source file and compressing it to reduce<br>its size. For this section, I will refer to the source file as sFile and the<br>output (compressed) file as oFile. To encode an sFile, follow these steps:</p>
+<ol>
+<li>Open the sFile, and read through it to construct your histogram. Your histogram could be a simple array of 256 uint32_t’s (because a byte can only hold 256 different values). </li>
+<li>Increment the count of element 0 and element 255 by one in the histogram. This is so that at the very minimum, the histogram will have two elements present. Do this regardless of what you read in. While doing this may result in a non-optimal Huffman Tree later on, it is a quick and clean solution to handling the case when a file has no bytes or has bytes of the same value. </li>
+<li>For each entry in the histogram where the count is greater than 0 (there should be at minimum two elements because of step 2), create a corresponding treeNode and insert this node into the priority queue. </li>
+<li>Use the priority queue to construct the Huffman tree. You do this by acquiring the two smallest elements in the queue, adding their count together and creating an internal node (leaf &#x3D;&#x3D; 0, symbol &#x3D;&#x3D; $). You then join the two elements you initially acquired as the parents of this new node using treeNode *join. Then you insert this new node back into the priority queue. You can use any symbol you like to represent an internal node, but I urge you to be consistent. </li>
+<li>Perform a post-order traversal of the Huffman tree (buildCode).<br>* (a) If the current node is a leaf, the current stack (code s) represents the path to the node, and so is the code for it. Save this stack into a table of variable length codes corresponding to each symbol (code table[256]).<br>* (b) If it is an interior node, push(0), and follow the left link.<br>* (c) After you return from the link, pop() the stack, and push(1), and follow the right link. </li>
+<li>Write out a uint32_t magic number onto the oFile. This number is 0xdeadd00d. This magic number identifies a file as one which has been compressed using your encoder. It is crucial that you use this magic number and nothing else. </li>
+<li>Write the length of the original file (in bytes) to the oFile as a uint64_t. This will help you debug when performing decoding and also allows you to acquire the size of the array you will need when constructing the original file from the compressed file. </li>
+<li>Write out the size of your tree (in bytes) to the oFile as a uint16_t. This size will be (3 * leafCount) - 1 (but never less than zero). </li>
+<li>Perform a post-order traversal of the Huffman tree to write the tree to the oFile. This should be a function called dumpTree and should write L followed by the byte of the symbol for each leaf, and I for interior nodes. You should not write a symbol for an interior node. </li>
+<li>Beginning at the start of the sFile, for each symbol copy the bits of the code for that symbol to the oFile. It may prove easier to append these bits to a long bit vector, and then write the bytes of the bit vector. </li>
+<li>Close both files. </li>
+<li>Make sure that you follow the order for creating the oFile. If you do not, it will not work.<br>* (a) Magic number (uint32_t): 0xdeadd00d.<br>* (b) Size of sFile file (uint64_t).<br>* (c) Size of Huffman tree (uint16_t): (3 * number of leaf nodes) - 1.<br>* (d) The Huffman tree using a post-order traversal.<br>* (e) The encoding of the original file.</li>
+</ol>
+<h3 id="Decoding"><a href="#Decoding" class="headerlink" title="Decoding"></a>Decoding</h3><p>Decoding is the concept of taking a compressed file and expanding it to match<br>the original file. For this section, I will refer to the source (compressed)<br>file as sFile and the uncompressed file as oFile. To decode a file, follow<br>these steps:</p>
+<ol>
+<li>Read in the magic number which should be the first 4 bytes of the sFile. In case this magic number does not match 0xdeadd00d, then an invalid sFile was passed into your program. Display a helpful error message and quit. </li>
+<li>Read in the next 8 bytes of the sFile. This should give you the exact size of oFile. Your file must be an exact copy of the original uncompressed file, so it cannot be any longer or any shorter. You can use this size to help you in debugging during the entire decoding phase. </li>
+<li>Read in the next 2 bytes of the sFile and call this treeSize. Next, allocate an array (savedTree) of uint8_t’s which is treeSize long. Read in the sFile for treeSize bytes into savedTree. This loads all the binary information of the tree into the array and you can use this array to reconstruct your Huffman tree. </li>
+<li>Reconstruct the Huffman tree using loadTree. You should use a stack to reconstruct the tree (recall it was written in post-order, so it is: leaf, leaf, parent).<br>* (a) Iterate over the contents of savedTree from 0 to treeSize.<br>* (b) If the element of the array is an L, then the next element will be the symbol for the leaf node. Use that symbol to create a node using newNode. Now, push this new node back onto the stack.<br>* (c) If the element of the array is an I, then you have encountered an interior node. At this point, you pop once to get the right child of the interior child and then pop again to acquire the left child. Now, create the interior node using join and then push the interior node back into the stack.<br>* (d) After you finish iterating the loop, pop one last time. This should give you back the root of your Huffman tree. </li>
+<li>Now, begin reading in a bit at a time from the sFile. You may do this by reading a single bit at a time or by reading the entire bit stream into a bit vector. For each bit you read, step through the tree using stepTree.<br>* (a) Begin at the root of the Huffman tree. If a bit of value 0 is read, then move into the left child of the tree. If a bit of 1 is read, then move into the right child of the tree.<br>* (b) In case after stepping you are at a leaf node, then return the symbol for that leaf node and reset your state to be back at the root. Output this symbol onto the oFile. Note: You may buffer these symbols into an array and then write out the entire array once at the end. Hint: The size of this array should be known to you because of step 2.<br>* (c) In case after stepping you are at an interior node, then simply return 1, signifying that a leaf node has not yet been reached.<br>* (d) Repeat until all bits in the sFile have been exhausted (Caution: there may very well be a few extra bits in the last byte, and those could make a symbol; emitting that symbol would be wrong). </li>
+<li>At this point, you should have a fully decompressed oFile which should exactly match the size of the original file. </li>
+<li>Close both files.</li>
+</ol>
+<h2 id="Expectations"><a href="#Expectations" class="headerlink" title="Expectations"></a>Expectations</h2><p>This project will be completed by groups of size at most two. That means you<br>can pick a parter, or do it alone. This is not pair programming!</p>
+<ul>
+<li>Partner1 will be responsible for the encoder. </li>
+<li>Partner2 will be responsible for the decoder. </li>
+<li>Both partners will collaborate to develop the relevant data structures. </li>
+<li>Both partners will submit exactly the same code. </li>
+<li>Each partner will submit their own README file. <ul>
+<li>Describe the design. </li>
+<li>Detail their contribution. </li>
+<li>Detail their partner’s contribution.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>You need to submit the usual items:</p>
+<ol>
+<li>Makefile </li>
+<li>encode.c </li>
+<li>decode.c </li>
+<li>huffman.c and huffman.h </li>
+<li>Any other files that are required to build your program.</li>
+</ol>
+<ul>
+<li>Your encoding program must be called encode. </li>
+<li>Your decoding program must be called decode. </li>
+<li>Both must accept the -i inputFile option. This option is not optional - in other words, you must specify an input file. </li>
+<li>Both must accept the -o outputFile option. This option is optional - in other words, it can write to stdout. </li>
+<li>Both must accept the -v flag to turn on verbose mode. This mode should print helpful information regarding the encoding&#x2F;decoding process (Eg: treeSize, size of compressed file, etc).</li>
+</ul>
+<h2 id="Strategy"><a href="#Strategy" class="headerlink" title="Strategy"></a>Strategy</h2><p>Let’s talk strategy.<br>First, develop the data structures that you will need. Draw pictures, work<br>them out, implement them, and test them. Test them again.<br>Second, work out the steps (we’ve told them to you already, but there may be<br>little details). Draw a diagram, think it through, and start putting the<br>pieces together.<br>For example, make a histogram. Try it. Does it work? Good. Make a Huffman tree<br>node, based on an entry in the histogram. Did that work? Good. Insert them one<br>by one into the priority queue. Pull one off the priority queue. Is it the<br>smallest one? Good. Try the next one. Did that work? Good. Write the join<br>function. Test it. . . .<br>There will be working versions of encode and decode in Professor Long’s<br>directory, and a file called secret.zzZ that you can try to decode.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/07/27/C%E4%BB%A3%E5%86%99%EF%BC%9ACS226DataCompress/">http://saferman.github.io/2023/07/27/C%E4%BB%A3%E5%86%99%EF%BC%9ACS226DataCompress/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/30/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108YBankAccountManagementSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Python代写：CSC108Y Bank Account Management System">
+                        
+                        <span class="card-title">Python代写：CSC108Y Bank Account Management System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/26/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS148WarehouseWars/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Python代写：CS148 Warehouse Wars">
+                        
+                        <span class="card-title">Python代写：CS148 Warehouse Wars</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

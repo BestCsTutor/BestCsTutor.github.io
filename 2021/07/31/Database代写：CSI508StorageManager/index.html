@@ -1,0 +1,910 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Database代写：CSI508 Storage Manager, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个  Storage Manager
+，用于管理文件中的数据对象。![StorageManager](https://www.researchgate.net/profile/Nikos_Hardavellas/publication">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Database代写：CSI508 Storage Manager | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Database代写：CSI508 Storage Manager</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Database代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-07-31
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Storage_Resource_Manager" title="Storage Manager"> Storage Manager
+</a><br>，用于管理文件中的数据对象。<br>![Storage<br>Manager](<a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Nikos_Hardavellas/publication/44795096/figure/fig2/AS:668912291155982@1536492526458/Main-">https://www.researchgate.net/profile/Nikos_Hardavellas/publication/44795096/figure/fig2/AS:668912291155982@1536492526458/Main-</a><br>components-of-a-storage-manager-Buffer-Pool-Manager-Latching.png)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this programming assignment, you need to implement a storage manager that<br>maintains a series of data objects in each data file. You first need to<br>install and run Eclipse on your machine and import the “storage manager”<br>project (see Appendix A). Please generate an API document (see Appendix B) and<br>then take a look at that document as well as the source code to familiarize<br>yourself with this assignment. This assignment provides you with a set of<br>incomplete classes (in particular, see SlottedPage, FileManager, and<br>BufferedFileManager which contain methods currently throwing an<br>UnsupportedOperationException). You will need to write code for these classes.<br>Your code will be graded by running a set of unit tests and then examining<br>your code (see SlottedPageTest and FileManagerTest which use JUnit, as well as<br>BufferedFileManagerTest which produces output messages). For details of<br>running these tests, refer to Appendix A. Note that passing unit tests does<br>NOT necessarily guarantee that your implementation is correct and efficient.<br>Please make sure that your code is correct and efficient so that it will not<br>cause any problem in many other cases not covered by the unit tests. If you<br>have questions, please contact the TA(s) or the instructor. The remainder of<br>this document describes the components that you need to implement.</p>
+<h2 id="Part-1-The-Slotted-Page-Structure"><a href="#Part-1-The-Slotted-Page-Structure" class="headerlink" title="Part 1. The Slotted Page Structure"></a>Part 1. The Slotted Page Structure</h2><p>The slotted page structure allows a storage manager to store variable-length<br>records (data objects) within a fixed size page (an in-memory copy of a disk<br>block). Each page is essentially a byte array that stores a header (at the<br>beginning) and a number of data objects (at the end). The header of a page<br>consists of (1) a 4-byte integer representing the number of entries in the<br>page for storing data objects, and (2) a series of 4-byte integers (one for<br>each data object) each of which represents where the corresponding data object<br>is stored within the page (i.e., the location of the corresponding data object<br>within the page). Each page has, between its header and data objects, a free<br>space where more data objects and header entries can be added. For further<br>details of the slotted page structure, refer to Section 10.5.2 of the<br>textbook. Upon a request to delete a data object from a page, the<br>corresponding header entry (for storing the location of the data object) is<br>simply set to -1 to indicate that there is no associated data object (the<br>actual object is NOT necessarily removed from the page).<br>In this part, you need to implement the following methods (your code needs to<br>pass all of the 5 tests in SlottedPageTest):</p>
+<ul>
+<li>add(Object o): adds the specified object o in the SlottedPage on which this method is invoked. This method must first save the object o in the free space of the SlottedPage by calling the save(Object o) method. This save(Object o) method returns an int value indicating the location at which the object o is saved in the SlottedPage. That int value must be stored at the right header entry of the SlottedPage so that the saved object o can be accessed in the future. For example, assume that object “123” is saved at location 2038 in the byte array of an empty SlottedPage. Then, the first 4 bytes of the byte array (i.e., the beginning of the header) must store an int value 1 to indicate that there is only one entry in the header (in response to the addition of object “123”). The next 4 bytes of the byte array (i.e., the 0th entry in the header) must store 2038 (i.e., the location at which “123” is saved). When an additional object “456” is saved at location 2028 in the byte array, the first 4 bytes of the header must store 2 (to indicate that there are two entries in the header) and the 1st entry (i.e., the entry after the 0th entry) in the header must store 2028 (i.e., the location at which “456” is saved). To find the number of entries that the SlottedPage currently has, use the entryCount() method. To set the number of entries in the header to an int value, use the setEntryCount(int count) method. To save location l at the ith entry in the header, call saveLocation(i, l). </li>
+<li>get(int index): returns the object at the specified index in the SlottedPage on which this method is invoked. For example, get(0) returns the object at index 0 (i.e., the object whose location is stored at the 0th entry in the header) and get(1) returns the object at index 1. This method must first find the location of the object at the specified index by calling the getLocation(int index) method. This getLocation(int index) method returns the int value stored at the header entry specified by index (i.e., the index-th header entry). If that location is -1, meaning that the object was removed from the SlottedPage, the method needs to return null. Otherwise, it needs to obtain the object by calling the toObject(byte[] b, int offset) method and then return that object. If the given index cannot match any of the entries in the SlottedPage (e.g., get(-1)), the method needs to throw an IndexOutOfBoundsException. </li>
+<li>remove(int index): removes the object at the specified index from the SlottedPage on which this method is invoked. This method must save -1 at the appropriate entry in the header. This method must also return the object removed (i.e., the object previously stored at the specified index). </li>
+<li>iterator(): returns an iterator over the objects (excluding those removed) stored in the SlottedPage on which this method is invoked. To find the number of entries in the current SlottedPage, use entryCount(). To get the object at each index, call get(int index). Note that get(int index) returns null if there is currently no object at the specified index due to the deletion of the previous object. Feel free to add an auxiliary class or data structure for this iterator() method. </li>
+<li>compact(): reorganizes the SlottedPage on which the method is invoked (in order to maximize the free space of that SlottedPage). This method is used by the save(Object o) method when the object to save cannot fit into the current free space of the SlottedPage. This method needs to move objects at the end of the SlottedPage in a manner that eliminates the space previously wasted by the objects removed from the SlottedPage.<br>Please make sure that your code passes all of the tests in SlottedPageTest. 2</li>
+</ul>
+<h2 id="Part-2-The-Basic-Storage-Manager-Implementation"><a href="#Part-2-The-Basic-Storage-Manager-Implementation" class="headerlink" title="Part 2. The Basic Storage Manager Implementation"></a>Part 2. The Basic Storage Manager Implementation</h2><p>In this part, you need to implement, in FileManager.java, a basic storage<br>manager that maintains a series of data objects in each data file without<br>buffering (i.e., reading&#x2F;writing SlottedPages directly from&#x2F;to data files).<br>The methods to complete are as follows (your code needs to pass all of the 5<br>tests in FileManagerTest):</p>
+<ul>
+<li>fileID(String fileName): returns an integer-type ID of the file specified by fileName. These IDs are consecutive integers that start from 0. For example, a FileManager may assign ID 0 to a file named “table0.dat” and ID 1 to a file named “table1.dat”. In this case, to access data objects stored in “table0.dat”, integer-type ID 0 needs to be used. Similarly, integer-type ID 1 must be used to access data objects stored in table1.dat. Such relationships from file names to integer-type IDs (e.g., “table0.dat” to 0 and “table1.dat” to 1) are stored in a map named fileName2ID. If the argument fileName of the method (i.e., fileID(String fileName)) is already registered in fileName2ID, the method needs to return the ID associated with fileName in fileName2ID (e.g., return 0 when fileName is “table0.dat”). Otherwise, the method needs to assign a new ID to the file specified by fileName. Furthermore, it needs to create a SlottedPageFile for accessing the data file specified by fileName and then register that SlottedPageFile in the id2file map (which associates each file ID with the corresponding SlottedPageFile). For details of SlottedPageFile, refer to SlottedPageFile.java. </li>
+<li>put(int fileID, Long location, Object o): puts object o at location location in the file specified by fileID. Here, location has a long-type value, whose first half (4 bytes corresponding to an integer) represents the ID of the page (e.g., page 0, page 1, etc.) and the second half represents the index within the page. For example, put(10, 0x00000001L, o) stores object o in page 0 of the file specified by ID 10 (i.e., the first disk block in the file) at index 1 within the page. On the other hand, put(10, 0x00010000L, o) stores object o in page 1 of the file specified by ID 10 (i.e., the second disk block in the file) at index 0 within the page. Given a long-type argument location, use first(location) to get the ID of the page and second(location) to get the index within the page. After finding an appropriate page p, call put(int index, Object o) on p to put the object in that page and then call the updated(p, fileID) method of FileManager to indicate that the page p is updated (then the updated(p, fileID) method of FileManager automatically writes the page to the appropriate data file). If the location argument has an appropriate value (e.g., its first half refers to page -1), then put(int fileID, Long location, Object o) needs to throw an InvalidLocationException. </li>
+<li>get(int fileID, Long location): returns the object at location location in the file specified by fileID. </li>
+<li>remove(int fileID, Long location): removes the object at location location from the file specified by fileID. </li>
+<li>iterator(int fileID): returns an iterator over all objects stored in the the file specified by fileID. This method needs to use page(int fileID, int pageID) of FileManager and iterator() of SlottedPage. Make sure this method efficiently uses the memory (e.g., does NOT put all of the objects in the memory first thereby incurring high space overhead and then return an iterator over these objects).<br>Please verify your code using the tests in FileManagerTest.</li>
+</ul>
+<h2 id="Part-3-Buffer-Management"><a href="#Part-3-Buffer-Management" class="headerlink" title="Part 3. Buffer Management"></a>Part 3. Buffer Management</h2><p>The FileManager class implemented in Part 2 directly accesses data files<br>(i.e., no buffering), causing disk seeks frequently. In this part, you need to<br>implement the BufferedFileManager class so that it extends the functionalities<br>of FileManager in a manner that benefits from buffering (i.e., frequently used<br>pages are kept in memory, thereby enabling fast read and write operations).<br>Furthermore, you need to implement a page eviction policy for the cases where<br>there are too many pages to keep in the main memory. The choice of eviction<br>policy is up to you. It is not necessary to do something sophisticated.<br>Describe your policy in the document that you submit.<br>When BufferedFileManager is implemented correctly, BufferedFileManagerTest<br>will produce some output as follows (the exact number of reads and writes may<br>vary depending on the buffering strategy; however, there should in general be<br>less reads and writes as the buffer size increases):<br>    buffer size: 4 pages<br>    1000 additions % [{name: table0.dat, reads: 0, writes: 38}]<br>    10 removals % [{name: table0.dat, reads: 10, writes: 48}]<br>    iteration over 990 elements % [{name: table0.dat, reads: 52, writes: 52}]<br>    shut down % [{name: table0.dat, reads: 52, writes: 52}]<br>    buffer size: 16 pages<br>    1000 additions % [{name: table0.dat, reads: 0, writes: 26}]<br>    10 removals % [{name: table0.dat, reads: 9, writes: 35}]<br>    iteration over 990 elements % [{name: table0.dat, reads: 48, writes: 51}]<br>    shut down % [{name: table0.dat, reads: 48, writes: 51}]<br>    buffer size: 64 pages<br>    1000 additions % [{name: table0.dat, reads: 0, writes: 0}]<br>    10 removals % [{name: table0.dat, reads: 0, writes: 0}]<br>    iteration over 990 elements % [{name:table0.dat, reads: 0, writes: 0}]<br>    shut down % [{name: table0.dat, reads: 0, writes: 42}]</p>
+<h2 id="Appendix-A-Installing-Eclipse-and-Importing-a-Java-Project"><a href="#Appendix-A-Installing-Eclipse-and-Importing-a-Java-Project" class="headerlink" title="Appendix A. Installing Eclipse and Importing a Java Project"></a>Appendix A. Installing Eclipse and Importing a Java Project</h2><ol>
+<li>Visit:<br><a target="_blank" rel="noopener" href="http://www.eclipse.org/downloads/"> http://www.eclipse.org/downloads/ </a></li>
+<li>From the web site, download the eclipse installer (those for Linux, Windows, and Mac OS X are available) and then choose “Eclipse IDE for Java Developers” and install it. </li>
+<li>After finishing installation, start Eclipse. </li>
+<li>When Eclipse runs for the first time, it asks the user to choose the workspace location. You may use the default location. </li>
+<li>In the menu bar, choose “File” and then “Import”. Next, select “General” and “Existing Projects into Workspace”. Then, click the “Browse” button and select the “storage manager.zip” file contained in this assignment package. </li>
+<li>Once the project is imported, you can choose one among SlottedPageTest.java, FileManagerTest.java, and BufferedFileManagerTest.java in the storage.test package and then run it by clicking the icon highlighted in</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/07/31/Database%E4%BB%A3%E5%86%99%EF%BC%9ACSI508StorageManager/">http://saferman.github.io/2021/07/31/Database%E4%BB%A3%E5%86%99%EF%BC%9ACSI508StorageManager/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Database代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/08/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4144ETLandOLAP/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Python代写：CSCI4144 ETL and OLAP">
+                        
+                        <span class="card-title">Python代写：CSCI4144 ETL and OLAP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/30/Security%E4%BB%A3%E5%86%99%EF%BC%9AECE544ThrustworthyComputing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Security代写：ECE544 Thrustworthy Computing">
+                        
+                        <span class="card-title">Security代写：ECE544 Thrustworthy Computing</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

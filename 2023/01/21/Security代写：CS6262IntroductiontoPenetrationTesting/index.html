@@ -1,0 +1,964 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Security代写：CS6262 Introduction to Penetration Testing, 留学生CS|辅导|代写">
+    <meta name="description" content="完成  Penetration Testing  相关练习，对目标VM进行渗透测试。![Metasploit](https://upload.wikimedia.org/wikipedia/en/thumb/c/ca/Metasploit-">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Security代写：CS6262 Introduction to Penetration Testing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Security代写：CS6262 Introduction to Penetration Testing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Security代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>完成 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Penetration_test" title="Penetration Test"> Penetration Testing </a> 相关练习，对目标VM进行渗透测试。<br>![Metasploit](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/en/thumb/c/ca/Metasploit-">https://upload.wikimedia.org/wikipedia/en/thumb/c/ca/Metasploit-</a><br>Community.png&#x2F;300px-Metasploit-Community.png)</p>
+<h2 id="The-goal-of-this-project"><a href="#The-goal-of-this-project" class="headerlink" title="The goal of this project"></a>The goal of this project</h2><p>Penetration testing is an important part of ensuring the security of a system.<br>This project provides an introduction to some of the common tools used in<br>penetration testing, while also exploring common vulnerabilities (such as<br>Shellshock and setUID bit exploits).<br>On September 24, 2014, a severe vulnerability in Bash, nicknamed Shellshock,<br>was identified. This vulnerability can exploit many systems and be launched<br>either remotely or from a local machine. In this project, you will gain a<br>better understanding of the Shellshock vulnerability by exploiting it to<br>attack a machine. The learning objective of this project is to get first-hand<br>experience on this interesting attack, understand how it works, and think<br>about the lessons that we can get out of this attack.</p>
+<h2 id="Environment-Setup"><a href="#Environment-Setup" class="headerlink" title="Environment Setup"></a>Environment Setup</h2><table>
+<thead>
+<tr>
+<th>Files Provided</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shellshock_server.ova</td>
+<td>The VM image</td>
+</tr>
+<tr>
+<td>assignment_questionnaire.txt</td>
+<td>Template for final submission.</td>
+</tr>
+<tr>
+<td>This project requires the use of virtual box and multiple VMs.</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="Installing-Virtual-Box"><a href="#Installing-Virtual-Box" class="headerlink" title="Installing Virtual Box"></a>Installing Virtual Box</h3><ol>
+<li>Install VirtualBox if it is not already installed. This project requires the latest version of VirtualBox 6.1.x. Using an earlier version of Virtual Box has been known to cause errors where the project VM freezes, so if you run into this, ensure you’re running on at least Virtual Box 6.1.0 or later. </li>
+<li>Download the Oracle Virtual Box Extension Pack (available for download at the same location as Virtual Box is). </li>
+<li>Import the Extension Pack under File-] Preferences-] Extensions </li>
+<li>In Virtual Box go to Tools -] Preferences -] Network. </li>
+<li>Select the small plus sign in the upper right corner of the network preferences box to create a new NAT network. Select the NAT network and select the small gear below the add button to edit it. In the box that appears, change the name to something related to the project. Then save it, and close the preferences.</li>
+</ol>
+<h3 id="Installing-the-Kali-Linux-VM"><a href="#Installing-the-Kali-Linux-VM" class="headerlink" title="Installing the Kali Linux VM"></a>Installing the Kali Linux VM</h3><ol>
+<li>Visit <a target="_blank" rel="noopener" href="http://old.kali.org/kali-images/kali-2021.2/kali-linux-2021-2-virtualbox-amd64/kali-linux2021.2-virtualbox-amd64.ova"> http://old.kali.org/kali-images/kali-2021.2/kali-linux-2021-2-virtualbox-amd64/kali-linux2021.2-virtualbox-amd64.ova </a></li>
+<li>Scroll down to “Kali Linux Virtual Box Images”, expand the tab, and select “Kali Linux VirtualBox 64-Bit”. You should be prompted to save the virtual machine, and then a download should begin. </li>
+<li>Import the Kali Linux VM to Virtual Box. Once you’ve imported the VM, you’ll likely need to go into the VM Settings and increase the number of CPUs if possible, as well as the RAM. Also enable 3-d acceleration, and set the zoom level to 300 (it makes it easier to read). </li>
+<li>Go to the new Kali VM’s settings. In the network tab change “Attached to:” from NAT to NAT<br>Network in the Adapter 1 tab. The name of the network should autofill to your<br>newly created network if you only have one, but if you have multiple NAT<br>networks, you’ll need to select the correct one.</li>
+<li>Repeat the process with the other VMs you want to communicate with the Kali VM. </li>
+<li>Start the Kali VM. The default username&#x2F;password is: kali&#x2F;kali. </li>
+<li>Ensure the guest additions are installed. If they’re not, go to devices-]insert guest additions CD). Then follow the instructions in the popup window to install the guest additions.. </li>
+<li>In the top Virtual box menu bar of the Kali VM, go to Devices -] Shared Folders -] Shared Folders Settings. </li>
+<li>Click Machine Folders to ensure it’s highlighted. Click the small add folder icon on the right of the screen. </li>
+<li>Select a path (in “Folder Path”) to a folder on your host machine that will act as the shared folder on the host. Give the folder a name, if it doesn’t autofill already. Check the “Auto-mount” box. Check the “Make Permanent” box. Click okay, and you should now see the folder under “Machine Folders”. </li>
+<li>In a terminal on the Kali VM, run: <code>sudo usermod -a -G vboxsf $(whoami)</code></li>
+<li>Now logout of the Kali VM and log back in (or just restart the Kali VM). The shared folder should be under: &#x2F;media&#x2F;sf_{shared folder name}</li>
+</ol>
+<h3 id="Vulnerable-machine"><a href="#Vulnerable-machine" class="headerlink" title="Vulnerable machine"></a>Vulnerable machine</h3><ol>
+<li>Download the project appliance via any of the following methods: </li>
+<li>Import the downloaded OVA into VirtualBox (File -] Import Appliance). Check the VM’s Network setting. Ensure Adapter 1 is set to NAT Network and the name of the NAT Network is the name you specified when creating the NAT Network in step 5. </li>
+<li>Try to connect to the VM server from the Kali. Start the VM in VirtualBox (as no login is needed, you can use headless start, accessible by selecting the “Headless Start” option under the “Start” drop down menu in Virtualbox). Once you find the IP of the VM in Task 1 below, navigate to the following URL. </li>
+<li>Notice that you don’t need the password to access the web content hosted on the VM server.<br>Instead of using a real server, it’s safer to perform the attack on an<br>emulated Apache HTTP Server VM. To be clear, you will not be logging into the<br>shellshock VM during this project. Once you configure the shellshock VM (by<br>following steps 17-20 above), you’ll be exploiting it externally, from the<br>Kali VM, by exploiting the Shellshock vulnerability.</li>
+</ol>
+<h2 id="Project-Tasks"><a href="#Project-Tasks" class="headerlink" title="Project Tasks"></a>Project Tasks</h2><h3 id="Task-1-Network-Scanning"><a href="#Task-1-Network-Scanning" class="headerlink" title="Task 1: Network Scanning"></a>Task 1: Network Scanning</h3><p>The first step in any penetration test is to gather information about the<br>network and servers you’ll be exploiting. In this task, you will perform<br>network scanning and answer a few questions based on your finding. On startup,<br>the shellshock VM listens to several ports for incoming messages.</p>
+<ol>
+<li>Find the IP address of the vulnerable VM on the NAT network. </li>
+<li>Find the port number of http traffic to the Apache web server on the VM. </li>
+<li>Find the list of open ports in the VM whose service name is shown as “unknown”. Hint: nmap can be used to scan open ports. Make sure to scan all ports! If you’re finding only one open port with the name “unknown”, you may not be using the right nmap command. </li>
+<li>Establish connection with each of the open ports with service name “unknown” that you found in question 2. Once connection is established, the server receives a unique integer answer message.<br>Hint: netcat can be used to listen to a particular port.</li>
+</ol>
+<h3 id="Task-2-Attack-CGI-Program"><a href="#Task-2-Attack-CGI-Program" class="headerlink" title="Task 2: Attack CGI Program"></a>Task 2: Attack CGI Program</h3><p>In this task, you will launch the Shellshock attack on a remote web server.<br>Many web servers enable CGI, which is a standard method used to generate<br>dynamic content on Web pages and Web applications. Many CGI programs are<br>written using a shell script. Therefore, before a CGI program is executed, the<br>shell program will be invoked first, and such an invocation can be triggered<br>by a user from a remote computer.<br>To access this CGI program from the Web, you need to first check the server VM<br>is running. Then, you can either use a browser by typing the following URL.<br>For this task, your goal is to launch the attack through this URL, such that<br>you can achieve something that you cannot do as a remote user. For example,<br>you can execute some file on the server, or look up some file located on the<br>server. When you successfully launch an attack, please execute the &#x2F;bin&#x2F;task2<br>program (which needs your GT username as the input) inside the VM. It will<br>generate the submission hash for you.<br>For students that want to verify their work, here’s an example correct<br>input&#x2F;output for &#x2F;bin&#x2F;task2.</p>
+<h3 id="Task-3-Reverse-Shell-with-Metasploit"><a href="#Task-3-Reverse-Shell-with-Metasploit" class="headerlink" title="Task 3: Reverse Shell with Metasploit"></a>Task 3: Reverse Shell with Metasploit</h3><p>Now you’ve successfully launched the Shellshock attack, and you can execute<br>commands on the server VM. However, during a penetration test, you likely<br>won’t have time to craft a payload for every exploit you use. And, what if the<br>server wasn’t in fact vulnerable to shellshock. How would you know if your<br>exploit failed because it was wrong, or because there wasn’t a vulnerability?<br>That’s where Metasploit comes in. Metasploit is a standard in the penetration<br>testing community. It allows pen testers to run precompiled exploits against a<br>host, using predefined payloads. For this project, we’re going to use<br>Metasploit to establish a reverse shell between your machine and the host<br>machine.<br>Let’s first see how Metasploit works by using it to scan the open tcp ports of<br>the shellshock_server VM. While this is a task better suited to tools like<br>nmap (as seen in Task 1), it serves as a good demonstration of how to use a<br>Metasploit module. If you’ve used Metasploit before, you can skip this<br>introduction and go directly to the Task 3 assignments section at the end.</p>
+<ol>
+<li>Begin by opening a new terminal on your Kali VM. In the new terminal type: msfconsole. After a moment, the Metasploit Framework console (msfconsole) will load. For this project, the msfconsole is the main way of accessing Metasploit. While there are other tools and command prompts associated with Metasploit, the msfconsole is suitable for the entirety of this project. </li>
+<li>For this example, we’re going to scan the ports of a host. You can use the results from task 1 to ensure Metasploit is behaving properly. In practice using a Metasploit module solely for the purpose of scanning ports on a host is a little overcomplicated, since nmap can do much more and takes less setup, but this does offer a good introduction to using a Metasploit module. </li>
+<li>A Metasploit module is the base of any task performed in Metasploit. It roughly consists of Ruby code that is written to perform a certain task (like exploit a certain vulnerability, or scan a certain kind of system). There are multiple different varieties of modules, but for our purposes we’ll focus on three of them: a. The Exploit modules: These are modules written to exploit a certain vulnerability. b. The Auxiliary modules: These are modules written to perform some task related to exploiting a system (like scanning). Within the auxiliary modules there are many different kinds of modules. We’ll be using the “scanner” modules for this example. c. Payloads: Calling these modules is a little misleading. They are the payloads (for example the shellcode) that are sent within the exploit. </li>
+<li>First, we have to find the correct module. We know it’s scanning the system, so let’s start by searching for “scanner” using the command (in the msfconsole) search scanner. Hmm that’s quite a few results (582 at the time of writing this).<br>The reason there are so many results is that “scanner” is a class of auxiliary<br>modules (as seen by there being so many modules beginning with<br>“auxiliary&#x2F;scanner”). So searching for “scanner” (or “scan”) will give<br>everything at all related to network or vulnerability scanning.</li>
+<li>So, we need to narrow our search. One way of doing this is with the “grep” command, which filters the output. Since we’re looking to scan the ports, lets try grep portscan search scanner to search for “portscan” within the search results from “scanner”. We get:<br>That seems a little better. Only 7 results. Since we’re scanning for open tcp<br>ports, let’s use: “auxiliary&#x2F;scanner&#x2F;portscan&#x2F;tcp”. In order to use a<br>metasploit module, you should run the command: use module_name<br>You should now see “auxiliary(scanner&#x2F;portscan&#x2F;tcp)” after “msf5” indicating<br>you are using the auxiliary(scanner&#x2F;portscan&#x2F;tcp) module.</li>
+<li>Now that we’re using the correct module, we have to set the correct options. Try running the command options. You should see something like:<br>While each of the options is marked as required, most of the pre-filled values<br>work for our purposes. The only one we need to change is RHOSTS. RHOSTS should<br>be the IP address of the host we want to scan. In this case, you should set it<br>to the IP address of the shellshock_server VM, that you found in part 1. You<br>can use the command: set rhosts IP_of_host. Now try running options again and<br>ensure the RHOST option is set to the right IP address.</li>
+<li>Now run run and you should see the same list of open ports that nmap showed. While “run” is usually used to run auxiliary exploits, the command “check” and “exploit” are often used to check and run exploit modules.<br>Now you’ve seen an example of how to use Metasploit. You’ll follow a similar<br>process when exploiting the shellshock vulnerability.</li>
+</ol>
+<h3 id="Task-3-Assignments"><a href="#Task-3-Assignments" class="headerlink" title="Task 3 Assignments"></a>Task 3 Assignments</h3><ol>
+<li>Find an exploit module that exploits the shellshock vulnerability on an Apache web server. Once you’ve found the module, place the module name in assignment_questionnaire.txt. </li>
+<li>Use show payloads to show the possible payloads for the module. Find a payload that spawns a reverse tcp shell. Place the full name of the payload in assignment_questionnaire.txt. </li>
+<li>Run the exploit and spawn a reverse shell on the VM. </li>
+<li>Run &#x2F;bin&#x2F;task3 in the resulting shell, then type cs6262 then your user ID. Report the hash value for your user ID in assignment_questionnaire.txt.<br>You’ll submit all of your answers for this section in<br>assignment_questionnaire.txt. You should keep the reverse shell running after<br>finishing Task 3, as you will need it in Task 4.</li>
+</ol>
+<h2 id="Task-4-Privilege-Escalation"><a href="#Task-4-Privilege-Escalation" class="headerlink" title="Task 4: Privilege Escalation"></a>Task 4: Privilege Escalation</h2><h3 id="Your-goal"><a href="#Your-goal" class="headerlink" title="Your goal"></a>Your goal</h3><p>You aim to upgrade the privilege for your command shell by exploiting the<br>setUID vulnerability. You will run <code>\bin\task4</code> as the higher privileged<br>user “shellshock_server”, not the default user “www-data”.</p>
+<h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>In Unix based systems, setUID is access rights flags that determine what users<br>can run a program. For instance, when users want to change their password,<br>they may run the passwd that requires root privilege. The setUID can help the<br>user run the passwd with temporarily elevated privileges. However, if setUID<br>is misused or setUID flags are misconfigured, it can cause a variety of<br>vulnerabilities such as information leakage, unwanted privilege escalation,<br>etc.</p>
+<h3 id="Assignments"><a href="#Assignments" class="headerlink" title="Assignments"></a>Assignments</h3><p>As a first step, type whoami in your shell. You should see “www-data” which is<br>your user ID. Now, run <code>\bin\task4 your\_userID</code> . You would see a<br>permission denied error. That is because <code>\bin\task4</code> is configured to allow<br>only the “shellshock_server” user to run it. So, you need to find a way to run<br>the task4 as the “shellshock_server” user. A feasible approach is to spawn a<br>shell running as a “shellshock_server” user, and run the task4 through it.<br>You goal is to find a program which:</p>
+<ol>
+<li>Hash a higher privilege than the default user. </li>
+<li>Can spawn a shell.<br>You may want to ransack <code>\usr\bin</code> for a program which has a higher<br>privilege than the default user, and run <code>\bin\task4 your\_userID</code> in the<br>shell spawned.<br>What is the vulnerable program? What command do you use to search it? What<br>command do you use to spawn a shell with the vulnerable program? And what is<br>the hash value from \bin\task4 your_gtid (similar to &#x2F;bin&#x2F;task2)? Please leave<br>your answers in assignment_questionnaire.txt.</li>
+</ol>
+<h2 id="Task-5-Password-Cracking"><a href="#Task-5-Password-Cracking" class="headerlink" title="Task 5: Password Cracking"></a>Task 5: Password Cracking</h2><p>An invaluable part of any penetration test is password cracking. While there<br>may be no known vulnerabilities in a system, a weak password could be just as<br>damaging in allowing an attacker to gain access to a system (or view sensitive<br>information once they gain access). We’re going to look at two kinds of weak<br>passwords in this task: passwords that are too short, and passwords that can<br>easily be guessed<br>To begin, start a Meterpreter shell (using a meterpreter shell payload)<br>through the Metasploit shellshock module in Task 3. A Meterpreter shell is<br>different from the reverse TCP shell in Task 3, as it allows you to run<br>metasploit specific commands on the vulnerable machine (like download).<br>Navigate to <code>\home\shellshock\_server\secret\_files\</code> . There are two<br>encrypted .pyc files here. task51.zip is encrypted with zip, while<br>task52.pyc.gpg is encrypted with gpg (a common file encryption tool in Linux).<br>Download these two files (task51.zip and task52.pyc.gpg) to your Kali VM using<br>the meterpreter.<br>We already know the developers of this web server aren’t very security savvy,<br>since they let a shellshock vulnerability plus a setUID exploit give a high<br>privilege shell on their machine. So, chances are they didn’t pick very secure<br>passwords for these secret files. Your goal in this task is to crack the<br>passwords of these two files using John the Ripper (a popular password<br>cracker) and cewl (a password scraper).<br>The command line tools used in Task 5 are located in &#x2F;usr&#x2F;sbin on the Kali VM.<br>In order to run them, you can either add &#x2F;usr&#x2F;sbin to the $PATH variable, or<br>write &#x2F;usr&#x2F;sbin&#x2F; before each command.<br>You should use zip2john and gpg2john to extract the password hashes from the<br>encrypted files. For task51.zip, try running John the Ripper incrementally.<br>Report your John the Ripper command in assignment_questionnaire.txt (whether<br>you also report your the zip2john and gpg2john commands is up to you, but they<br>won’t be graded).<br>For task52.pyc.gpg, try running John the Ripper incrementally again. Hmm it<br>seems to run forever.<br>That’s because John the Ripper is trying every possible combination of<br>characters. If the password is too long (among other things), John the Ripper<br>could run for years before it finds it.<br>But, just because the password is too long to be found incrementally, doesn’t<br>mean it can’t be cracked.<br>Take a look at the shellshock.cgi page in the browser. It looks like it gives<br>a link to a profile of the authors.<br>If the authors aren’t great at picking secure passwords, maybe the password is<br>something about them that we can guess from their profile page.<br>But, even if the password is on the profile page, it can still take a while to<br>guess by hand. What if the password was kItt3n$ or deVEL0p3r. It would be hard<br>to guess that, even if the word it was based on (like “kittens”, or<br>“developer”) was on the profile page.<br>Instead, let’s use a password scraper to create a custom wordlist for John the<br>Ripper. For this project, we suggest using cewl. cewl is a relatively simple<br>command line program that comes preinstalled on Kali, and creates password<br>wordlists off of webpages. Since we want to get every possible password<br>(including if the authors based the password off something on shellshock.cgi,<br>or one of the landing pages), you should run cewl on shellshock.cgi, with the<br>proper settings to ensure it follows the links all the way to profile.cgi (you<br>may need to tune the cewl parameters). Report your cewl command in<br>assignment_questionnaire.txt.<br>Then try running John the Ripper on task52.pyc.gpg with the wordlist (and the<br>default wordlist rules for testing different permutations of the words).<br>Report your John the Ripper command in assignment_questionnaire.txt.<br>Once you find the passwords, report them in assignment_questionnaire.txt. Then<br>decrypt the two files (using zip for task51.zip and gpg for task52.pyc.gpg)<br>and run python task51.pyc your_user_ID and python task52.pyc your_user_ID.<br>Report the resulting hash values for your user ID in<br>assignment_questionnaire.txt.</p>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>Please use Gradescope to submit the assignment files. The link to Gradescope<br>is found in Canvas under Courses tab Gradescope. In Gradescope under active<br>assignments click project 1 to upload your files.<br>The provided template “assignment_questionnaire.txt” marks where you should<br>add your answers for each question. Please DO NOT edit anything other than the<br>fields marked for your answers (or student ID) in<br>assignment_questionnaire.txt. Doing so may result in the autograder failing to<br>process your submission.<br>You should also include a “README” plain text file explaining how and why each<br>piece of your solution works. Including it makes grading easier if we cannot<br>reproduce your results. You may also include screenshots in your submission to<br>show proof. If you use any outside sources not mentioned in this writeup, then<br>the README would be a good place to mention them as well. Although there is no<br>specific format for the README, since it is not officially graded, we do offer<br>a sample format under sample-README.txt.</p>
+<h2 id="Reminders"><a href="#Reminders" class="headerlink" title="Reminders"></a>Reminders</h2><p>Please submit the files EXACTLY as requested to Canvas. DO NOT package them up<br>(e.g., as a ZIP file). Any deviations may result in a deduction of your grade.<br>There is a 5-point penalty for not following the submission format shown.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/21/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS6262IntroductiontoPenetrationTesting/">http://saferman.github.io/2023/01/21/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS6262IntroductiontoPenetrationTesting/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Security代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3020Synchronization/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java代写：COMP3020 Synchronization">
+                        
+                        <span class="card-title">Java代写：COMP3020 Synchronization</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/19/MachineLearning%E4%BB%A3%E5%86%99%EF%BC%9ACSCC11Classification/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Machine Learning代写：CSCC11 Classification">
+                        
+                        <span class="card-title">Machine Learning代写：CSCC11 Classification</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Machine-Learning%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Machine Learning代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

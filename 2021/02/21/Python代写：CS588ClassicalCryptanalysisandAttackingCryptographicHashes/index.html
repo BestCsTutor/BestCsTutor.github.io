@@ -1,0 +1,923 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS588 Classical Cryptanalysis and Attacking Cryptographic Hashes, 留学生CS|辅导|代写">
+    <meta name="description" content="了解密码学算法基础，进行Hash碰撞攻击实验。  
+IntroductionIn Section 1 of this lab, you will break two classical ciphers: thesubstitution ci">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS588 Classical Cryptanalysis and Attacking Cryptographic Hashes | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS588 Classical Cryptanalysis and Attacking Cryptographic Hashes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-02-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>了解密码学算法基础，进行Hash碰撞攻击实验。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In Section 1 of this lab, you will break two classical ciphers: the<br>substitution cipher and the Vigenere cipher.<br>In the rest of the lab, you will investigate vulnerabilities in widely used<br>cryptographic hash functions, including length-extension attacks and collision<br>vulnerabilities. In Section 2, we will guide you through attacking the<br>authentication capability of an imaginary server API. The attack will exploit<br>the length-extension vulnerability of hash functions in the MD5 and SHA<br>family. In Section 3, you will use a cutting-edge tool to generate different<br>messages with the same MD5 hash value (collisions). You will then investigate<br>how that capability can be exploited to conceal malicious behavior in<br>software.</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives:"></a>Objectives:</h2><ul>
+<li>Understand some of the vulnerabilities of classical cryptography. </li>
+<li>Understand how to apply basic cryptographic integrity primitives. </li>
+<li>Investigate how cryptographic failures can compromise the security of applications. </li>
+<li>Appreciate why you should use HMAC-SHA256 as a substitute for common hash functions.</li>
+</ul>
+<h2 id="Classical-Cryptanalysis"><a href="#Classical-Cryptanalysis" class="headerlink" title="Classical Cryptanalysis"></a>Classical Cryptanalysis</h2><h3 id="Breaking-the-Substitution-Cipher"><a href="#Breaking-the-Substitution-Cipher" class="headerlink" title="Breaking the Substitution Cipher"></a>Breaking the Substitution Cipher</h3><p>The following text was encrypted with a substitution cipher. (Spaces and<br>punctuation marks were preserved from the plaintext.)<br>    THVVWCZTQ!<br>    CZ WECQ YIAQQ, LFN JCII IVAHZ WEV DCPPVHVZYV MVWJVVZ VZYHLOWCFZ AZD ANWEVZWCYAWCFZ.<br>    WECQ RVQQATV CQ VZYHLOWVD JCWE A BVHL CZQVYNHV VZYHLOWCFZ QYEVRV. CDVAIIL, AZ<br>    VZYHLOWCFZ QYEVRV QEFNID AIIFJ FZIL ANWEFHCGVD OAHWCVQ, JEF XZFJ WEV XVL, WF HVAD<br>    WEV RVQQATV. EFJVBVH, LFN SNQW HVAD WEV RVQQATV JCWEFNW XZFJCZT WEV XVL. EVZYV,<br>    WEV VZYHLOWCFZ QYEVRV CQ CZQVYNHV.<br>Find the plaintext. Feel free to do this by hand, or with a computer program.<br>You can find tables of English letter frequencies on the web.</p>
+<h3 id="Breaking-the-Vigenere-Cipher"><a href="#Breaking-the-Vigenere-Cipher" class="headerlink" title="Breaking the Vigenere Cipher"></a>Breaking the Vigenere Cipher</h3><p>The one-time pad is a long sequence of random letters. These letters are<br>combined with the plaintext message to produce the ciphertext. To decipher the<br>message, a person must have a copy of the one-time pad to reverse the process.<br>A one-time pad should be used only once (hence the name) and then destroyed.<br>This is the first and only encryption algorithm that has been proven to be<br>unbreakable.<br>To encipher a message, you take the first letter in the plaintext message and<br>“add” it to the letter from the one-time pad. To decipher a message, you take<br>the ciphertext and “subtract” the letter from the one-time pad. By “adding”,<br>we mean the following:<br>Let A be the 0th letter in the alphabet. … Let Z be the 25th letter in the<br>alphabet. To “add” letter S (the 18th letter) and C (the 2nd letter), take:<br>    18 + 2 mod 26 &#x3D; 20<br>which gives us U (the 20th letter). To “subtract” letter U (the 20th letter)<br>and C (the 2nd letter), take:<br>    20 - 2 mod 26 &#x3D; 18<br>which gives us S (the 18th letter).<br>Here’s a larger example:<br>    plaintext    SECRETMESSAGE<br>    one-time pad CIJTHUUHMLFRU<br>    ciphertext   UMLKLNGLEDFXY<br>Dr. X was not paying attention in her security class, and decided to reuse the<br>same 5-letter “one-time pad” over and over to encipher her plaintext. The<br>result is shown below. (We’ve retained the punctuation in the message to make<br>codebreaking easier for you.)<br>    TWT CMGWI ZJ TWT AIOEAP XO QT DICJGP MN IWPMR ETCWOCH, SSUHTD, TAETCW, ACS<br>    PJFTREW, AVPTRSI JYVEPHZRAQAP WEPGNLEH PYH STXKYRTH, DLAAA YST QT GMOAPEID,<br>    PCO RO LPCVACID WHPAW MSHJP, FUI JASN EGZFAQAP GAJHP, WUEEZVTTS MC OPIS SR<br>    PUQMRBPEMOC, PYH PPGEMCJALVLN SPWCGXMMNV ISI PAPNI TD QP WEPGNLES, PYH TWT<br>    AIRHDYW OG ISMNVH ES BT HPMZTS.<br>Submit your python program and the deciphered message. You can use whatever<br>decipherment technique you want; feel free to read online to find ideas! (Just<br>make sure to cite your sources!)<br>NOTE: It turns out that this way of repeating the use of a “one-time pad” is<br>also known as a Vigenre cipher, after Blaise de Vigenere, who published his<br>description of the cipher before the court of Henry III of France, in 1586. It<br>has been used throughout history. For example, the Confederate States of<br>America used the Vigenere cipher during the American Civil War. The<br>Confederacy’s messages were far from secret and the Union regularly cracked<br>their messages. Throughout the war, the Confederate leadership primarily<br>relied upon three key phrases as their “key”: “Manchester Bluff”, “Complete<br>Victory” and, as the war came to a close, “Come Retribution”.</p>
+<h2 id="Length-Extension"><a href="#Length-Extension" class="headerlink" title="Length Extension"></a>Length Extension</h2><p>In most applications, you should use message authentication codes (MACs) such<br>as HMAC-SHA256 instead of plain cryptographic hash functions (e.g. the hash<br>functions MD5, SHA-1, or SHA-256) in the “key concatenated with message<br>construction”, that is<br>    H(k||m)<br>where H is the cryptographic hash function, k is the secret key, m is the<br>message, and || means concatenation. The above “key concatenated with message”<br>construction is not a good MAC and not a good pseudorandom function. This is<br>because cryptographic hashes sometimes fail to match our intuitive security<br>expectations.<br>One difference between hash functions and pseudorandom functions is that many<br>hashes are subject to length extension. All the hash functions we’ve discussed<br>use a design called the Merkle-Damgrd construction. Each is built around a<br>compression function f and maintains an internal state s, which is initialized<br>to a fixed constant. Messages are processed in fixed-sized blocks by applying<br>the compression function to the current state and current block to compute an<br>updated internal state. The result of the final application of the compression<br>function becomes the output of the hash function.<br>A consequence of this design is that if we know the hash of an n-block<br>message, we can find the hash of longer messages by applying the compression<br>function for each block bn+1 , bn+2 , … that we want to add. This process is<br>called length extension, and it can be used to attack many applications of<br>hash functions.</p>
+<h3 id="Experiment-with-Length-Extension-in-Python"><a href="#Experiment-with-Length-Extension-in-Python" class="headerlink" title="Experiment with Length Extension in Python"></a>Experiment with Length Extension in Python</h3><p>This component is intended to introduce length extension and familiarize you<br>with the Python MD5 module we will be using; you will not need to submit<br>anything for it.<br>To experiment with the idea of length extension attacks, we’ll use a Python<br>implementation of the MD5 hash function, though SHA-1 and SHA-256 are<br>vulnerable to length extension in the same way.<br>Consider the string “Use HMAC, not hashes”. We can compute its MD5 hash by<br>running:<br>    m &#x3D; “Use HMAC, not hashes”<br>    h &#x3D; md5()<br>    h.update(m)<br>    print h.hexdigest()<br>—|—<br>or, more compactly, print md5(m).hexdigest(). The output should be:<br>    3ecc68efa1871751ea9b0b1a5b25004d<br>MD5 processes messages in 512-bit blocks, so, internally, the hash function<br>pads m to a multiple of that length. The padding consists of the bit 1,<br>followed by as many 0 bits as necessary, followed by a 64-bit count of the<br>number of bits in the unpadded message. (If the 1 and count won’t fit in the<br>current block, an additional block is added.) You can use the function<br>padding(count ) in the pymd5 module to compute the padding that will be added<br>to a count -bit message.<br>Even if we didn’t know m, we could compute the hash of longer messages of the<br>general form m + padding(len(m)*8) + suffix by setting the initial internal<br>state of our MD5 function to MD5(m), instead of the default initialization<br>value, and setting the function’s message length counter to the size of m plus<br>the padding (a multiple of the block size). To find the padded message length,<br>guess the length of m and run bits &#x3D; (length_of_m + len(padding(length_of_m<br>*8)))*8.<br>The pymd5 module lets you specify these parameters as additional arguments to<br>the md5 object:<br>    h &#x3D; md5(state&#x3D;”3ecc68efa1871751ea9b0b1a5b25004d”.decode(“hex”), count&#x3D;512)<br>—|—<br>Now you can use length extension to find the hash of a longer string that<br>appends the suffix “Good advice”. Simply run:<br>    x &#x3D; “Good advice”<br>    h.update(x)<br>    print h.hexdigest()<br>—|—<br>to execute the compression function over x and output the resulting hash.<br>Verify that it equals the MD5 hash of m + padding(len(m)*8) + x. Notice that,<br>due to the length-extension property of MD5, we didn’t need to know the value<br>of m to compute the hash of the longer stringall we needed to know was m’s<br>length and its MD5 hash.</p>
+<h3 id="Conduct-a-Length-Extension-Attack"><a href="#Conduct-a-Length-Extension-Attack" class="headerlink" title="Conduct a Length Extension Attack"></a>Conduct a Length Extension Attack</h3><p>One example of when length extension causes a serious vulnerability is when<br>people mistakenly try to construct something like an HMAC by using hash(secret<br>k message). For example, Professor Goldberg has created a web application with<br>an API that allows client-side programs to perform an action on behalf of a<br>user by loading URLs of the form.<br>Using the techniques that you learned in the previous section and without<br>guessing the password, apply length extension to create a URL ending with<br>&amp;command3&#x3D;DeleteAllFiles that is treated as valid by the server API. You have<br>permission to use our server to check whether your command is accepted.<br>Hint: You might want to use the quote() function from Python’s urllib module<br>to encode non-ASCII characters in the URL.<br>Historical fact: In 2009, security researchers found that the API used by the<br>photo-sharing site Flickr suffered from a length-extension vulnerability<br>almost exactly like the one in this exercise.</p>
+<h3 id="What-to-submit-A"><a href="#What-to-submit-A" class="headerlink" title="What to submit A"></a>What to submit A</h3><p>Python 2.x script named len_ext_attack.py that:</p>
+<ol>
+<li>Accepts a valid URL in the same form as the one above as a command line argument. </li>
+<li>Modifies the URL so that it will execute the DeleteAllFiles command as the user. </li>
+<li>Successfully performs the command on the server and prints the server’s response.<br>You should make the following assumptions:</li>
+</ol>
+<ul>
+<li>The input URL will have the same form as the sample above, but we may change the server hostname, the path and the values of token, user, command1, and command2. These values may be of substantially different lengths than in the sample. </li>
+<li>The input URL may be for a user with a different password, but the length of the password will be unchanged. </li>
+<li>The server’s output might not exactly match what you see during testing.<br>You can base your code on the following Python snippet:<br>import httplib, urlparse, sys<br>url &#x3D; sys.argv[1]  <h1 id="Your-code-to-modify-url-goes-here"><a href="#Your-code-to-modify-url-goes-here" class="headerlink" title="Your code to modify url goes here"></a>Your code to modify url goes here</h1>parsedUrl &#x3D; urlparse.urlparse(url)<br>conn &#x3D; httplib.HTTPConnection(parsedUrl.hostname)<br>conn.request(“GET”, parsedUrl.path + “?” + parsedUrl.query)<br>print conn.getresponse().read()<br>—|—</li>
+</ul>
+<h2 id="MD5-Collisions"><a href="#MD5-Collisions" class="headerlink" title="MD5 Collisions"></a>MD5 Collisions</h2><p>MD5 was once the most widely used cryptographic hash function, but today it is<br>considered dangerously insecure. This is because cryptanalysts have discovered<br>efficient algorithms for finding collisionspairs of messages with the same MD5<br>hash value.<br>The first known collisions were announced on August 17, 2004 by Xiaoyun Wang,<br>Dengguo Feng, Xuejia Lai, and Hongbo Yu. Here’s one pair of colliding messages<br>they published:<br>Message 1:<br>    d131dd02c5e6eec4693d9a0698aff95c 2fcab58712467eab4004583eb8fb7f89<br>    55ad340609f4b30283e488832571415a 085125e8f7cdc99fd91dbdf280373c5b<br>    d8823e3156348f5bae6dacd436c919c6 dd53e2b487da03fd02396306d248cda0<br>    e99f33420f577ee8ce54b67080a80d1e c69821bcb6a8839396f9652b6ff72a70<br>Message 2:<br>    d131dd02c5e6eec4693d9a0698aff95c 2fcab50712467eab4004583eb8fb7f89<br>    55ad340609f4b30283e4888325f1415a 085125e8f7cdc99fd91dbd7280373c5b<br>    d8823e3156348f5bae6dacd436c919c6 dd53e23487da03fd02396306d248cda0<br>    e99f33420f577ee8ce54b67080280d1e c69821bcb6a8839396f965ab6ff72a70<br>Convert each group of hex strings into a binary file. (On Linux or Mac OS, run<br><code>$ xxd -r -p file.hex &gt; file</code> .)</p>
+<ol>
+<li>What are the MD5 hashes of the two binary files? Verify that they’re the same.<br>($ openssl dgst -md5 file1 file2)</li>
+<li>What are their SHA-256 hashes? Verify that they’re different.<br>($ openssl dgst -sha256 file1 file2)<br>This component is intended to introduce you to MD5 collisions; you will not<br>submit anything for it.</li>
+</ol>
+<h3 id="Generating-Collisions-Yourself"><a href="#Generating-Collisions-Yourself" class="headerlink" title="Generating Collisions Yourself"></a>Generating Collisions Yourself</h3><p>In 2004, Wang’s method took more than 5 hours to find a collision on a desktop<br>PC. Since then, researchers have introduced vastly more efficient collision<br>finding algorithms. You can compute your own MD5 collisions using a tool<br>written by Marc Stevens that uses a more advanced technique.<br>Note that installing Boost -particularly for Mac OS- can be quite troublesome,<br>therefore I suggest that, only for generating the files file1, file2 (and<br>col1, col2 in the next section), you move to a<br>Windows machine and run the executable. After that, resume work at a Linux or<br>Mac OS machine.</p>
+<ol>
+<li>Generate your own collision with this tool. How long did it take? ($ time fastcoll -o file1 file2) </li>
+<li>What are your files? To get a hex dump, run $ xxd -p file. </li>
+<li>What are their MD5 hashes? Verify that they’re the same. </li>
+<li>What are their SHA-256 hashes? Verify that they’re different.</li>
+</ol>
+<h3 id="What-to-submit"><a href="#What-to-submit" class="headerlink" title="What to submit"></a>What to submit</h3><p>A text file named generating_collisions.txt containing your answers on the<br>four questions.</p>
+<h3 id="A-Hash-Collision-Attack"><a href="#A-Hash-Collision-Attack" class="headerlink" title="A Hash Collision Attack"></a>A Hash Collision Attack</h3><p>The collision attack lets us generate two messages with the same MD5 hash and<br>any chosen (identical) prefix. Due to MD5’s length-extension behavior, we can<br>append any suffix to both messages and know that the longer messages will also<br>collide. This lets us construct files that differ only in a binary “blob” in<br>the middle and have the same MD5 hash.<br>We can leverage this to create two programs that have identical MD5 hashes but<br>wildly different behaviors. We’ll use Python, but almost any language would<br>do. Put the following three lines into a file called prefix:<br>    #!&#x2F;usr&#x2F;bin&#x2F;python<br>    # -<em>- coding: utf-8 -</em><br>    blob &#x3D; “””<br>    and put these three lines into a file called suffix:<br>    “””<br>    from hashlib import sha256<br>    print sha256(blob).hexdigest()<br>—|—<br>Extend this technique to produce another pair of programs, good and evil, that<br>also share the same MD5 hash. One program should execute a benign payload:<br>print “I come in peace.” The second should execute a pretend malicious<br>payload: print “Prepare to be destroyed!”</p>
+<h3 id="What-to-submit-1"><a href="#What-to-submit-1" class="headerlink" title="What to submit"></a>What to submit</h3><p>Two Python 2.x scripts named good.py and evil.py that have the same MD5 hash,<br>have different SHA-256 hashes, and print the specified messages.<br>Fact: Sadly, it turns out that the MD5 “key concatenated with message”<br>construction is sadly, still used all over the Internet in old network<br>protocols that have not been updated since the 1990s. (More on this later in<br>the course!) For instance, it is used to “authenticate” TCP connections, and<br>to “authenticate” connections in the Network Time Protocol (NTP). However,<br>modern network protocols no longer use this construction.</p>
+<h2 id="Writeup"><a href="#Writeup" class="headerlink" title="Writeup"></a>Writeup</h2><p>With reference to the construction of HMAC, explain how changing the design of<br>the API in Section 1.2 to avoid the length-extension vulnerability.</p>
+<h3 id="What-to-submit-2"><a href="#What-to-submit-2" class="headerlink" title="What to submit"></a>What to submit</h3><p>A text file named writeup.txt containing your answers.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/02/21/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS588ClassicalCryptanalysisandAttackingCryptographicHashes/">http://saferman.github.io/2021/02/21/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS588ClassicalCryptanalysisandAttackingCryptographicHashes/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/02/21/jQuery3%E6%95%99%E7%A8%8B(%E4%B8%89)%EF%BC%9AjQuery%E9%9B%86%E5%90%88/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="jQuery 3教程(三)：jQuery集合">
+                        
+                        <span class="card-title">jQuery 3教程(三)：jQuery集合</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/jQuery-3%E6%95%99%E7%A8%8B-%E4%B8%89/">
+                        <span class="chip bg-color">jQuery 3教程(三)</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/02/20/OpenMP%E4%BB%A3%E5%86%99%EF%BC%9ACS484MatrixTranspose/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="OpenMP代写：CS484 Matrix Transpose">
+                        
+                        <span class="card-title">OpenMP代写：CS484 Matrix Transpose</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OpenMP%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">OpenMP代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

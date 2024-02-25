@@ -1,0 +1,908 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS616 Complier, 留学生CS|辅导|代写">
+    <meta name="description" content="根据已有的Compiler框架，继续实现几个复杂的OS特性的功能，支持更多的语法。  
+Project BackgroundA central program for running a vast majority of software ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS616 Complier | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS616 Complier</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-12-24
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>根据已有的Compiler框架，继续实现几个复杂的OS特性的功能，支持更多的语法。  </p>
+<h2 id="Project-Background"><a href="#Project-Background" class="headerlink" title="Project Background"></a>Project Background</h2><p>A central program for running a vast majority of software is an operating<br>system. The operating system can abstract the underlying hardware upon which<br>these other, “user-level” programs run, to provide them with uniform access to<br>the hardware, along with providing many other services, from security through<br>process isolation to sharing of hardware through multiplexing, all facilitated<br>through common operating system features such as schedulers or virtual memory.<br>Unfortunately, because of the vast number of services provided by operating<br>systems and the complexity of implementing those services, existing operating<br>systems can be difficult to reason about or use as a basis for exploration of<br>new ideas and research.<br>Another complicating factor for operating systems running on processors made<br>by Intel is the requirement for backwards compatibility. For many years, Intel<br>processors were 32-bit systems using the so-called “x86” instruction set<br>architecture (ISA), and, as a consequence, a large amount of software has been<br>written for such processors. Within the past decade, then, as processors have<br>begun switching to 64-bit, backwards compatibility of the new “x86-64” ISA<br>with existing x86 programs has been a large goal, introducing complexity to<br>operating systems needing to manage these processors.<br>In light of these problems with modern operating systems, this Compliler<br>project will seek to implement a new operating system kernel from the ground<br>up with goals of mitigating those issues. That is, it will be compatible with<br>only x86-64 based Intel processors, and it will be designed and implemented in<br>such a way as to allow for relatively easy reasoning about it and relatively<br>easy extension, with the goal, from the reasoning angle, that operating system<br>can be used in future formal verification proofs.<br>In addition, there is one area in which further research and extension can be<br>done immediately. For the most part, most current operating systems mediate<br>all interactions between user programs and hardware devices, introducing<br>copying, security checking, and other overheads. One way to get around this is<br>by providing devices directly to user programs in user space, completely<br>eliminating the need for kernel mediation in many situations. Some prior work<br>has been done with network interface cards and storage controllers, so as a<br>first step for extension using this operating system as a basis, the network<br>interface card behavior will be reimplemented. However, this operating system<br>will also be designed such that the user-level hardware access can be<br>generalized to any new hardware device.<br>Overall, the goal of the Compliler operating system kernel is to provide a<br>well-designed basis for continued operating system development and reasoning,<br>with a first extension of development being the exposure of network interface<br>cards, in an API generalizable to other devices in the future, to user-space<br>programs.</p>
+<h2 id="Users"><a href="#Users" class="headerlink" title="Users"></a>Users</h2><h3 id="Continuing-Researchers"><a href="#Continuing-Researchers" class="headerlink" title="Continuing Researchers"></a>Continuing Researchers</h3><p>The first users of the system will be users of the code itself, doing further<br>work and research to extend it. They will require that all of the code be<br>designed and implemented in a relatively clean and extensible way, so that it<br>is possible to continue to make use of it. In addition, part of the future<br>research will be for completing formal verification proofs about the operating<br>system. This necessitates the design of the system be clean so that it will be<br>suited for the verification, as an increase in design complexity would<br>increase proof complexity.</p>
+<h3 id="Programmers-Desiring-User-Space-Device-Access"><a href="#Programmers-Desiring-User-Space-Device-Access" class="headerlink" title="Programmers Desiring User-Space Device Access"></a>Programmers Desiring User-Space Device Access</h3><p>Other users of the system are programmers wishing to make use of hardware<br>devices exposed to user-space. These are users who want to take advantage of<br>the extension mentioned in the Project Background, which will provide devices<br>into user-space. This has the potential to speed up the access to many<br>devices, so this project may attract programmers who wish to increase the<br>performance of their programs by making use of the feature.</p>
+<h2 id="Features-to-Be-Implemented"><a href="#Features-to-Be-Implemented" class="headerlink" title="Features to Be Implemented"></a>Features to Be Implemented</h2><h2 id="Functional-Features"><a href="#Functional-Features" class="headerlink" title="Functional Features"></a>Functional Features</h2><h3 id="Intel-x86-64-Compatibility"><a href="#Intel-x86-64-Compatibility" class="headerlink" title="Intel x86-64 Compatibility"></a>Intel x86-64 Compatibility</h3><h4 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h4><p>The Compliler operating system will run on 64-bit Intel x86-64 based<br>processors. Note that the operating system will not have to be compatible with<br>pure x86 programs.</p>
+<h4 id="Relevance-to-Users"><a href="#Relevance-to-Users" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will be relevant to all users of the system. Anyone who wishes to work<br>with, run, or program for the system will need to know on which compatible<br>processors it can be run.</p>
+<h3 id="Process-Scheduling"><a href="#Process-Scheduling" class="headerlink" title="Process Scheduling"></a>Process Scheduling</h3><h4 id="Description-1"><a href="#Description-1" class="headerlink" title="Description"></a>Description</h4><p>To run user processes, there must be a way to give them access to the CPU so<br>they can actually execute their instructions, necessitating services from the<br>operating system to schedule which ones will be run. Compliler will provide<br>such services, but the exact details of algorithmic implementation have no<br>requirements at this point.</p>
+<h4 id="Relevance-to-Users-1"><a href="#Relevance-to-Users-1" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will be relevant to all users of the system. For any user, including<br>programmers taking advantage of the network card extensions, to run a process<br>requires executing the process’s instructions, which requires the process to<br>be scheduled to run by the operating system.</p>
+<h3 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h3><h4 id="Description-2"><a href="#Description-2" class="headerlink" title="Description"></a>Description</h4><p>A virtual memory system will be implemented for Compliler, such that different<br>processes running on the system each have their own “virtual address space.”<br>This will help ensure isolation between processes so that they cannot<br>illegally access memory that is not their own, preventing errors in user<br>programs and in the operating system itself.</p>
+<h4 id="Relevance-to-Users-2"><a href="#Relevance-to-Users-2" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This feature has indirect relevance to all users of the system in that it will<br>prevent any “misbehaving’ processes from crashing or causing errors in other<br>programs or the system itself. Additionally, it is required for the network<br>interface card extensions of Compliler, relevant to the programmers wishing to<br>make use of that feature.</p>
+<h3 id="Direct-Control-of-a-Network-Interface-Card-by-a-Process"><a href="#Direct-Control-of-a-Network-Interface-Card-by-a-Process" class="headerlink" title="Direct Control of a Network Interface Card by a Process"></a>Direct Control of a Network Interface Card by a Process</h3><h4 id="Description-3"><a href="#Description-3" class="headerlink" title="Description"></a>Description</h4><p>For Compliler, an API will be provided that allows any user process to gain<br>control of a standard network interface card attached to the system, allowing<br>it to interact from user-space with the network.</p>
+<h4 id="Relevance-to-Users-3"><a href="#Relevance-to-Users-3" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will mostly be relevant to programmers wishing to make use of the NIC<br>device extensions, in that it is the first step towards providing user space<br>access to NICs.</p>
+<h3 id="Developer-API-for-Interacting-with-Network-Interface-Card"><a href="#Developer-API-for-Interacting-with-Network-Interface-Card" class="headerlink" title="Developer API for Interacting with Network Interface Card"></a>Developer API for Interacting with Network Interface Card</h3><h4 id="Description-4"><a href="#Description-4" class="headerlink" title="Description"></a>Description</h4><p>This requirement works in tandem with the above requirement. For after a<br>process can gain control of a NIC, Compliler will provide an API for<br>interacting with the network from user-space, namely through a library version<br>of a TCP&#x2F;IP stack.</p>
+<h4 id="Relevance-to-Users-4"><a href="#Relevance-to-Users-4" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will mostly be relevant to programmers wishing to make use of the NIC<br>device extensions, in that it is the requirement which will fully allow their<br>programs to interact with the network from user-space.</p>
+<h3 id="Benchmarking-Program"><a href="#Benchmarking-Program" class="headerlink" title="Benchmarking Program"></a>Benchmarking Program</h3><h4 id="Description-5"><a href="#Description-5" class="headerlink" title="Description"></a>Description</h4><p>A user-space application will be provided to test network performance. This<br>will serve as a way to benchmark the Compliler system against existing<br>systems. The measurable metric will most likely be throughput of requests per<br>second handled by a simple web server. The goal is to compare favorably to<br>existing systems considering the relative maturity of the project.</p>
+<h4 id="Relevance-to-Users-5"><a href="#Relevance-to-Users-5" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>The benchmark utility will be relevant to anyone interested in the<br>experimental success of the project. This includes the original team and<br>anyone judging the future potential of this operating system as a research<br>platform.</p>
+<h2 id="Non-Functional-Features"><a href="#Non-Functional-Features" class="headerlink" title="Non-Functional Features"></a>Non-Functional Features</h2><h3 id="Well-Understood-Security-Model"><a href="#Well-Understood-Security-Model" class="headerlink" title="Well-Understood Security Model"></a>Well-Understood Security Model</h3><h4 id="Description-6"><a href="#Description-6" class="headerlink" title="Description"></a>Description</h4><p>Security is a vast topic, particularly when it comes to operating systems, but<br>the security implications of the design and implementation of the operating<br>system should be well understood. This is particularly important when it comes<br>to the user-space access to the network interface cards. Because the kernel<br>will no longer lie between processes and the NICs, it is possible for<br>processes to freely access the data of others. There does exist specialized<br>NIC hardware which can prevent these issues by itself isolating processes, but<br>providing support for these devices is much too far outside the scope of this<br>project. Until a time in the future when that hardware can be more easily be<br>accommodated in the system, the security implications of allowing unmonitored<br>access to devices must be well-understood and well-documented.</p>
+<h4 id="Relevance-to-Users-6"><a href="#Relevance-to-Users-6" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will be relevant to all users. Continuing researchers must be aware of<br>the limitations in the system to correct them later. Programmers for the<br>system must be aware of the security implications of writing for the system.</p>
+<h3 id="Extensibility"><a href="#Extensibility" class="headerlink" title="Extensibility"></a>Extensibility</h3><h4 id="Description-7"><a href="#Description-7" class="headerlink" title="Description"></a>Description</h4><p>While Compliler will be developed for a specific processor architecture and<br>with a specific set of hardware components in mind, the operating system must<br>be designed and documented such that the techniques used could be applied to<br>add other hardware devices relatively easily.</p>
+<h4 id="Relevance-to-Users-7"><a href="#Relevance-to-Users-7" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This is mostly relevant to continuing researchers. They will be concerned with<br>actually implementing the extensions at later times.</p>
+<h3 id="Efficiency"><a href="#Efficiency" class="headerlink" title="Efficiency"></a>Efficiency</h3><h4 id="Description-8"><a href="#Description-8" class="headerlink" title="Description"></a>Description</h4><p>The primary purpose of exposing I&#x2F;O devices to user-level processes is to<br>reduce the overhead caused by making multiple I&#x2F;O calls that require the<br>processor to switch to kernel mode. Efficiency will be tested using the<br>Benchmarking Program described above.</p>
+<h4 id="Relevance-to-Users-8"><a href="#Relevance-to-Users-8" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This will mostly be relevant to programmers wishing to make use of the user-<br>space device extensions, as they will hope for their programs to be more<br>efficient by making use of the feature.</p>
+<h3 id="Licensing"><a href="#Licensing" class="headerlink" title="Licensing"></a>Licensing</h3><h4 id="Description-9"><a href="#Description-9" class="headerlink" title="Description"></a>Description</h4><p>Any existing open source code that is integrated into the operating system, to<br>reduce what needs to be done from scratch to save time, must not be<br>copyrighted under the GNU General Public License.</p>
+<h4 id="Relevance-to-Users-9"><a href="#Relevance-to-Users-9" class="headerlink" title="Relevance to Users"></a>Relevance to Users</h4><p>This is almost entirely relevant to the continuing researchers, in that it<br>dictates with what additional code they might eventually be working.</p>
+<h2 id="Features-Not-to-Be-Implemented"><a href="#Features-Not-to-Be-Implemented" class="headerlink" title="Features Not to Be Implemented"></a>Features Not to Be Implemented</h2><h3 id="Paging"><a href="#Paging" class="headerlink" title="Paging"></a>Paging</h3><p>Compliler will not require its memory to be paged, that is, swapped to<br>external storage. The computing system will be limited by its physical RAM<br>without the ability to present it as extended using swap space as in many<br>other operating systems. No design choices will be made that will prohibit<br>this feature from being implemented later.</p>
+<h3 id="File-System-Support"><a href="#File-System-Support" class="headerlink" title="File System Support"></a>File System Support</h3><p>Compliler will not provide file system support. That is, it will not provide a<br>way to save files on external storage. Virtual file system support, such as<br>providing access to devices through a file-like interface, will also not be<br>supported. No design choices will be made that will prohibit this feature from<br>being implemented later.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/12/24/C%E4%BB%A3%E5%86%99%EF%BC%9ACS616Complier/">http://saferman.github.io/2020/12/24/C%E4%BB%A3%E5%86%99%EF%BC%9ACS616Complier/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/12/27/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA48BananaVerify/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Python代写：CSCA48 Banana Verify">
+                        
+                        <span class="card-title">Python代写：CSCA48 Banana Verify</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/12/18/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3016FixedSortingNetwork/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Python代写：COMP3016 Fixed Sorting Network">
+                        
+                        <span class="card-title">Python代写：COMP3016 Fixed Sorting Network</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

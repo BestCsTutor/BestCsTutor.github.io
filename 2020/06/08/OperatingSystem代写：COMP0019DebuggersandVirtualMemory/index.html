@@ -1,0 +1,917 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：COMP0019 Debuggers and Virtual Memory, 留学生CS|辅导|代写">
+    <meta name="description" content="回答OS相关的问题，包括  Debuggers , Virtual Memory, Linux&amp;#x2F;Unit File I&amp;#x2F;O, Process Control, x86-64 Assembly,Concurrency等。!">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：COMP0019 Debuggers and Virtual Memory | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：COMP0019 Debuggers and Virtual Memory</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-06-08
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>回答OS相关的问题，包括 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Debugger" title="Debugger"> Debuggers </a><br>, Virtual Memory, Linux&#x2F;Unit File I&#x2F;O, Process Control, x86-64 Assembly,<br>Concurrency等。<br>![Debuggers](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Winpdb-1.3.6.png/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Winpdb-1.3.6.png/220px-</a><br>Winpdb-1.3.6.png)</p>
+<h2 id="Alternative-assessment"><a href="#Alternative-assessment" class="headerlink" title="Alternative assessment"></a>Alternative assessment</h2><p>Answer ALL questions (total 100 marks). Unless you have been granted a SoRA<br>specifically exempting you from typing, you should submit typed answers if at<br>all possible. Your submission MUST be in PDF format. You may draw figures e<br>lectronically. You m ay also draw figures b y h and i f y ou p refer, s o l<br>ong a s y ou c an s can t hem a nd i nclude t hem i n your answers document.<br>You must submit your answers to the entirety of this assessment as a single<br>PDF document, via the 0019 Moodle web page.<br>You may not discuss any of the content of this assessment nor any aspect of<br>your solution to any of the questions with any other person, with the<br>exception of asking clarification questions of the instructors as private<br>posts on the 0019 Moodle Alternative Assessment forum. (Please do not use<br>Piazza for questions about this paperthis is a constraint UCL has dictated.)<br>Communicating with anyone else, online or offline, about the content of this<br>assessment or how to solve it will be considered academic dishonesty, and<br>handled under UCL’s rules on examination irregularities.<br>As you work on this assessment, you may find it useful to refer to the<br>CS:APP&#x2F;3e textbook, the 2020 lecture note slides for COMP0019, your personal<br>notes taken during lectures, the 2020 COMP0019 lecture videos, the 2020 CW1 -<br>CW5 starter code and handouts, your own solutions to CW1 - CW5, the standard<br>Linux man pages, and all material posted to the 0019 Piazza forum.<br>GOOD LUCK !<br>Marks for each part of each question are indicated in square brackets<br>Calculators are permitted</p>
+<h2 id="Debuggers-and-Virtual-Memory-in-WeensyOS"><a href="#Debuggers-and-Virtual-Memory-in-WeensyOS" class="headerlink" title="Debuggers and Virtual Memory in WeensyOS"></a>Debuggers and Virtual Memory in WeensyOS</h2><p>In 0019 CW1, you used gdb, the debugger, to step through the binary bomb<br>executable, and to display the contents of the binary bomb’s memory while it<br>executed. Most students in 0019 also used gdb to debug C code during CW2 -<br>CW5, to step through their own solution code and observe the contents of<br>memory.<br>In Linux and UNIX, a debugger is an application that runs as one process and<br>facilitates stepping through the execution of a separate application (the one<br>the user wants to debug) that runs as a second, separate process. This<br>question concerns how operating systems provide support for debuggers, and<br>asks you to think about how one might incorporate support for debuggers into<br>WeensyOS, the operating system for which you implemented virtual memory<br>support in 0019 CW4.<br>When you ask a debugger like gdb to print the value of a variable in the<br>target application being debugged, the debugger computes the virtual address<br>of that variable in the target application’s virtual address space, and issues<br>a system call that asks the operating system to obtain the value at that<br>virtual address in the process with the process ID specified by the debugger<br>(which the debugger specifies as the process ID of the target process being<br>debugged). The system call returns the requested value at the target address<br>in the virtual address space of the target process. The debugger then prints<br>out the requested value for the user.<br>Consider how you could design and implement a new system call for WeensyOS for<br>this functionalityto let a debugger application running as a WeensyOS process<br>display a value stored at a virtual memory address in the virtual address<br>space of some other target WeensyOS process. Suppose the C function prototype<br>for this new WeensyOS system call is as follows:<br>    int debug_get_long(int processid, long *targetaddr, long *result);<br>—|—<br>where:</p>
+<ul>
+<li>processid is the WeensyOS process ID of the target process within whose virtual address space an 8-byte value should be retrieved; </li>
+<li>targetaddr is the virtual address within the target process’s virtual address space from which an 8-byte value should be retrieved; </li>
+<li>result is a pointer to a long in the calling process’s virtual address space, where the system call will store the requested value retrieved from the virtual address space of the target process; </li>
+<li>the int return value indicates whether the system call has completed successfully or with an error.<br>Design <code>debug_get_long()</code> for the WeensyOS kernel. Give your design in C<br>code, and comment your code thoroughly, explaining each significant step taken<br>in the code.<br>Assume that there is already a symbolic constant SYS DEBUG GET LONG that can<br>be used in the relevant switch statement in the WeensyOS kernel source to<br>dispatch to your code when an application invokes the debug get long() system<br>call. Provide the code for the system call starting with the relevant case<br>statement. (You may find it useful to recall how you added support for fork()<br>to the WeensyOS kernel in CW4.)<br>Hints: You will need to refamiliarize yourself with how process and kernel<br>page tables work in WeensyOS to solve this problem. For full marks, you will<br>need to include error-handling code that returns an error and avoids crashing<br>the kernel if the call to <code>debug_get_long()</code> provides an invalidtargetaddr<br>and processid, or an invalid combination of the two.<br>We will mark your answer by evaluating the correctness and completeness of<br>your design as expressed in code. This is a design exercise and not a<br>programming task: we won’t try to compile and run your code, or test it. We<br>will not deduct marks for minor syntax errors. Don’t try to compile and run<br>your code as you work on your solution; we are only asking you to write out<br>the code to make your design concrete, as a way of demonstrating your<br>understanding of virtual memory and how WeensyOS supports it.</li>
+</ul>
+<h2 id="Linux-UNIX-File-I-O-and-Process-Control"><a href="#Linux-UNIX-File-I-O-and-Process-Control" class="headerlink" title="Linux&#x2F;UNIX File I&#x2F;O and Process Control"></a>Linux&#x2F;UNIX File I&#x2F;O and Process Control</h2><p>Recall the notion of a file pointer in the Linux&#x2F;UNIX file input&#x2F;output (I&#x2F;O)<br>system calls, which tracks the current byte offset within a currently open<br>Linux&#x2F;UNIX filewhere in the bytes of the file to read or write next, when the<br>next read() or write() system call is issued. As discussed in 0019, when a<br>process has a file descriptor for a currently open file, modern Linux and UNIX<br>OSes track the file pointer for that file using state held in the kernel’s<br>memory.<br>Note: throughout this question, we are referring to the UNIX file I&#x2F;O system<br>calls, such as read() and write(), and not the C library’s buffered standard<br>I&#x2F;O file I&#x2F;O calls, such as fread() and fwrite().<br>By contrast, in an early version of UNIX, the various UNIX file I&#x2F;O system<br>calls maintained the file pointer for a currently open file in user-level<br>memory within the process’s virtual address space. When the file pointer<br>advanced (after a read() or write() system call on the file, using the exact<br>same API for these calls as in modern UNIX), the kernel would update the<br>file’s file pointer value in the user-level memory of the process that called<br>read() or write().<br>Note that in all versions of UNIX (the early version discussed above and<br>modern ones), output to a terminal always appends to the end of the terminal,<br>regardless of the file pointer value for the open file for that terminal.<br>Terminals were originally teletypes, one-character-at-time physical printers<br>onto paper, and modern terminals are windows in a windowing system; in both<br>cases, each successive write() always adds to the end of the terminal’s<br>output. When a shell is interactive (when it accepts commands from the user<br>interactively), its output goes to a terminal, and thus interactive shells<br>always append their output to the end of the terminal, regardless of the file<br>pointer value for the open file for that terminal.<br>Suppose you run a fully implemented sh0019 shell (that fully solves 0019 CW5)<br>according to the following scenario:</p>
+<ul>
+<li>You create a file &#x2F;tmp&#x2F;a that contains the string This is file A. </li>
+<li>You create a file &#x2F;tmp&#x2F;b that contains the string This is File B. </li>
+<li>In the current working directory, you create a shell script file named script containing the following two commands: <code>cat /tmp/a cat /tmp/b</code></li>
+<li>You start an interactive command-line sh0019 shell. At its command prompt, you run a second instance of your sh0019 shell and have it run the commands in the above shell script by typing the command: <code>sh0019 -q script &gt; outfile</code><ul>
+<li>a. Suppose you run sh0019 in the above scenario on the aforementioned early version of UNIX. Assume that sh0019 compiles and runs on this early version of UNIX, but experiences the early UNIX version’s different file pointer implementation described above. On this early version of UNIX that maintains the file pointer in memory within a process’s address space, what output results (and in what file)? Justify your answer by describing the sequence of process creation, program execution, and file I&#x2F;O system calls that occurs, and how the file pointer influences the output. </li>
+<li>b. What output does the same command give (and in what file) when run on a modern version of Linux, which maintains file pointers as described in the 0019 lectures and in CS:APP&#x2F;3e? Justify your answer by explaining what is different about modern Linux’s implementation of UNIX file I&#x2F;O operations, and how this implementation difference gives rise to the output.</li>
+</ul>
+</li>
+</ul>
+<h2 id="C-Compilation-and-x86-64-Assembly"><a href="#C-Compilation-and-x86-64-Assembly" class="headerlink" title="C Compilation and x86-64 Assembly"></a>C Compilation and x86-64 Assembly</h2><p>Consider the below disassembly of the compiled x86-64 object code for the C<br>function mystery(), as output by <code>objdump -S</code> :<br>    Disassembly of section .text:<br>    0000000000000000 <mystery>:<br>       0:   55                     pushq  %rbp<br>       1:   48 89 e5               movq   %rsp,%rbp<br>       4:   85 d2                  testl  %edx,%edx<br>       6:   7e 14                  jle    1c &lt;mystery+0x1c&gt;<br>       8:   89 d0                  movl   %edx,%eax<br>       a:   31 c9                  xorl   %ecx,%ecx<br>       c:   8b 14 8e               movl   (%rsi,%rcx,4),%edx<br>       f:   01 d2                  addl   %edx,%edx<br>      11:   01 14 8f               addl   %edx,(%rdi,%rcx,4)<br>      14:   48 ff c1               incq   %rcx<br>      17:   48 39 c8               cmpq   %rcx,%rax<br>      1a:   75 f0                  jne    c &lt;mystery+0xc&gt;<br>      1c:   5d                     popq   %rbp<br>      1d:   c3                     retq<br>a. How many arguments does the C function <code>mystery()</code> take, and what<br>evidence in the disassembly supports this conclusion?<br>b. Below is a skeleton for the C code that when compiled yields the above<br>assembly code. In your answers document, write out the skeleton and fill in<br>the missing code (where there are blanks in the skeleton) that matches the<br>above assembly code.</p>
+<h2 id="Concurrency-with-pthreads-on-x86-64"><a href="#Concurrency-with-pthreads-on-x86-64" class="headerlink" title="Concurrency with pthreads on x86-64"></a>Concurrency with pthreads on x86-64</h2><p>Consider the following C code, which starts four pthreads, each of which<br>increments each element of an array of unsigneds ten million times, and uses<br>C11 atomics for synchronization. Include files have been omitted in the<br>interest of brevity.<br>    void *threadfunc(void *arg)<br>    {<br>      _Atomic unsigned **x &#x3D; (_Atomic unsigned **) arg;<br>      for (int i &#x3D; 0; i !&#x3D; 10000000; i++) {<br>        for (int j &#x3D; 0; j &lt; 10; j++) {<br>          atomic_fetch_add(x[j], 1);<br>        }<br>      }<br>    }<br>    int main()<br>    {<br>      pthread_t th[4];<br>      _Atomic unsigned n[10];<br>      _Atomic unsigned *pn[10];<br>      for (int i &#x3D; 0; i &lt; 10; i++) {<br>        n[i] &#x3D; ATOMIC_VAR_INIT(0);<br>        pn[i] &#x3D; &amp;(n[i]);<br>      }<br>      for (int i &#x3D; 0; i &lt; 4; i++) {<br>        pthread_create(&amp;th[i], NULL, threadfunc, (void <em>) pn);<br>      }<br>      for (int i &#x3D; 0; i !&#x3D; 4; i++) {<br>        pthread_join(th[i], NULL);<br>      }<br>      for (int i &#x3D; 0; i &lt; 10; i++) {<br>        printf(“%u\n”, n[i]);<br>      }<br>    }<br>—|—<br>Rewrite the above code to instead use spin locks for synchronization. You may<br>not place a spin lock outside the outer for() loop in threadfunc(), as doing<br>so reduces concurrency among threads too much. Subject to that prohibition,<br>you must place spin lock(s) so as to ensure correct synchronization, and to<br>minimize the overhead of locking.<br>Omit include files. Use the spin lock API discussed in 0019 lecture,<br>summarized below for your reference. You need not provide code for the<br>implementation of <code>spin_lock()</code> or <code>spin_unlock()</code> .<br>    &#x2F;</em> allocate and initialize spin lock *&#x2F;<br>    atomic_flag spinlock &#x3D; ATOMIC_FLAG_INIT;<br>    int spin_lock(atomic_flag *lock); &#x2F;&#x2F; acquire spin lock<br>    int spin_unlock(atomic_flag *lock); &#x2F;&#x2F; release spin lock<br>—|—<br>How does the C compiler enforce atomicity on the x86-64 CPU instructions that<br>implement C11 atomic operations?<br>Which version of the code discussed in this exam question requires more C11<br>atomic operations for correct synchronization: the one in the exam question<br>paper, which directly invokes C11 atomics, or your answer that uses spin<br>locks? Justify your answer by referring to the relevant aspects of these two<br>versions of the code.</p>
+<h2 id="Designing-with-Concurrency-and-Virtual-Memory-under-Linux-UNIX"><a href="#Designing-with-Concurrency-and-Virtual-Memory-under-Linux-UNIX" class="headerlink" title="Designing with Concurrency and Virtual Memory under Linux&#x2F;UNIX"></a>Designing with Concurrency and Virtual Memory under Linux&#x2F;UNIX</h2><p>Unlike the preceding questions, this question is open-ended.<br>Your answer is expected not to exceed 1,000 words in length. It may include<br>any number of figures or tables (including zero!) to support the arguments you<br>make in your answer.<br>We would expect every figure and table you include to be discussed in the<br>text. The quantity of figures or tables you include does not in and of itself<br>influence your mark.<br>You have joined the development team for a main-memory database software<br>system implemented in C on Linux. This main-memory database, as the name<br>suggests, accepts read and write requests to the database contents, and stores<br>all data in the database in RAM only, in a single Linux process, within which<br>only one thread runs. A single write request can require writes to multiple<br>disjoint memory regions within the virtual address space of the database<br>process. When you join the project, the system provides no persistencei.e.,<br>none of the data is stored on non-volatile storage, such that if the machine<br>on which the database runs crashes, loses power, or reboots, the entire<br>database contents are lost.<br>You are given the task of implementing a simple form of persistence for this<br>main-memory database system. You are told to design and implement extensions<br>to the main-memory database that take a complete, consistent, persistent<br>snapshot of the current contents of the database in main memory. “Persistent”<br>means that the contents of the database should be written to non-volatile<br>storage: in this case, to a single file in the standard Linux filesystem<br>stored on a sufficiently large magnetic spinning disk. “Consistent” means that<br>the copy of the database written to disk must not reflect partially complete<br>write operations; for any given write to the database requested by a client, a<br>snapshot must contain all or none of the changes to the database requested in<br>that write operation. “Complete” means that at the time a snapshot operation<br>is initiated, all prior write operations that have completed in main memory<br>must be included in the copy of the database written to disk.<br>Your design must comply with the following criteria and goals (beyond the<br>“persistent,” “consistent,” and “complete” definitions above):</p>
+<ul>
+<li>The main-memory database must continue to process subsequent read and write requests that arrive during the taking of a snapshot; that is, your design may not pause the handling of read and write requests to the database while a snapshot completes. </li>
+<li>The main-memory database does not process multiple read or write requests (or a mix of the two) concurrently; it processes a single read or write request to completion in isolation before moving on to the next one. Your persistence extensions should not change this behavior. </li>
+<li>Once a snapshot is initiated, no changes to memory caused by writes requested after the snapshot began should be included in that snapshot. </li>
+<li>You may use multiple pthreads, multiple processes, or some combination of both in your design. </li>
+<li>You may use any of the pthread synchronization primitives described in the 0019 lectures on synchronization primitives. </li>
+<li>You may use any of the Linux system calls described in the 0019 lectures. </li>
+<li>You should aim to make your design both physical-memory efficient (i.e., minimize the quantity of RAM your design needs) and compute-efficient (i.e., minimize the number of CPU instructions or other execution time overheads your design introduces).<br>Assume there are four CPU cores in the Intel Core i7 CPU in the server where<br>the main-memory database runs. And assume that the mix of read and write<br>requests that the database receives over time is not known in advance, and<br>that an administrator’s request for a snapshot can arrive at any time.<br>Hint: you may find it useful to review CS:APP&#x2F;3e Sections 9.8.1. and 9.8.2,<br>which describe how Linux uses copy-on-write page mappings.<br>Describe your design in an essay (optionally including any figures or tables<br>you deem necessary), taking care to specify the Linux constructs, system<br>calls, synchronization primitives, etc., that you use, and how they fit<br>together in your design. You must also explain how your design meets the above<br>requirements, and why you believe your design meets the physical-memory and<br>compute efficiency goals described above.<br>There is no unique correct answer to this question. We expect that even<br>experts in Systems may produce different designs, and use different arguments<br>for why these designs meet the requirements and goals set out in the question.<br>In marking your answers, we will focus on your understanding of systems design<br>principles and constructs in C on Linux, and the tradeoffs inherent in the use<br>of different concurrency and synchronization techniques. That is, your mark<br>will reflect the examiners’ assessment of your ability to reason about the<br>material covered in 0019, and how well the logical arguments you make in<br>support of your design provide evidence of that understanding. Your answer to<br>this question will thus be marked according to the following criteria:</li>
+<li>the extent to which your answer demonstrates understanding of 0019 topics, including technical correctness of the written sentences and of the observations made; </li>
+<li>the completeness of the answer, in terms of whether it addresses all parts of the question as stated; </li>
+<li>the clarity and concision of the answer: we expect that your answer will be easily grasped by the 0019 examiners, and will not exceed 1,000 words. </li>
+<li>the quality of the insight offered in your answer, including originality and depth of discussion, soundness of the arguments made, and ability to make correct and insightful connections between designs, techniques, and systems programming primitives.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/06/08/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP0019DebuggersandVirtualMemory/">http://saferman.github.io/2020/06/08/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP0019DebuggersandVirtualMemory/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/06/10/Database%E4%BB%A3%E5%86%99%EF%BC%9ACMPT454BufferPool/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Database代写：CMPT454 Buffer Pool">
+                        
+                        <span class="card-title">Database代写：CMPT454 Buffer Pool</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-10
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/06/05/C%E4%BB%A3%E5%86%99%EF%BC%9ACMSC427GeometryProcessing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="C代写：CMSC427 Geometry Processing">
+                        
+                        <span class="card-title">C代写：CMSC427 Geometry Processing</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

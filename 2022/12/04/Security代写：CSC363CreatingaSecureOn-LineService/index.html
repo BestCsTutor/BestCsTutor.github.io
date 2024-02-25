@@ -1,0 +1,913 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Security代写：CSC363 Creating a Secure On-Line Service, 留学生CS|辅导|代写">
+    <meta name="description" content="思考如何对一个在线服务器进行加密传输以及身份认证(  Authentication
+ )。![Authentication](https://www.abacustechnologies.com/wp-content&amp;#x2F;upload">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Security代写：CSC363 Creating a Secure On-Line Service | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Security代写：CSC363 Creating a Secure On-Line Service</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Security代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-04
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>思考如何对一个在线服务器进行加密传输以及身份认证( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Authentication" title="Authentication"> Authentication
+</a> )。<br>![Authentication](<a target="_blank" rel="noopener" href="https://www.abacustechnologies.com/wp-">https://www.abacustechnologies.com/wp-</a><br>content&#x2F;uploads&#x2F;2019&#x2F;10&#x2F;blog-mfa-how-it-works.jpg)</p>
+<h2 id="Assignment-1-Creating-a-Secure-On-Line-Service"><a href="#Assignment-1-Creating-a-Secure-On-Line-Service" class="headerlink" title="Assignment #1: Creating a Secure On-Line Service"></a>Assignment #1: Creating a Secure On-Line Service</h2><p>The purpose of this assignment is to get you thinking about how to compose<br>different security concepts to create an on-line service with authentication<br>and encryption.</p>
+<h2 id="Do-This-First"><a href="#Do-This-First" class="headerlink" title="Do This First"></a>Do This First</h2><p>Immediately after pulling <code>p1</code> from Bitbucket, you should start a container,<br>navigate to the <code>p1</code> folder, and type <code>chmod +x solutions/*.exe</code> . This<br>command only needs to be run once. It will make sure that certain files from<br>the assignment have their executable bit set.</p>
+<h2 id="Assignment-Details"><a href="#Assignment-Details" class="headerlink" title="Assignment Details"></a>Assignment Details</h2><p>During the warm-up assignment, we reviewed many powerful concepts. We saw how<br>to load a file from disk as a byte stream, and how to send byte streams to<br>disk as new files. We saw how to use RSA and AES encryption. We saw how to<br>send bytes over the network and how to receive them. In this assignment, we<br>are going to start putting those ideas together to build an on-line service.<br>As with any service, we will have two separate programs: a client and a<br>server. For now, the server will only handle authentication. The server will<br>manage a “directory” of users. Each user can store up to 1MB of data as their<br>“profile file”.<br>Our focus is on security, and we have two goals. The first is to ensure that<br>users cannot make unauthorized accesses. To that end, we will have a<br>registration mechanism by which users can get an account on the system. A user<br>will have permission to read any other user’s profile file, and to get a list<br>of all user names. A user will also have permission to change her&#x2F;his own<br>profile file.<br>The second security goal is to make sure that communications between the<br>client and server are secure. Any intermediary who intercepts a transmission<br>should not be able to decipher it to figure out what is being communicated.<br>Note that this is not “end-to-end encryption”, because we are not storing<br>encrypted data on the server. When you have finished this assignment, you<br>should have a good sense for what additional effort it would take to achieve<br>end-to-end encryption.<br>The final requirement of the service is that it has a rudimentary form of<br>persistence, wherein the entire directory gets saved to disk in response to<br>specific client requests. This is not a great long-term strategy, but it will<br>be sufficient for now.<br>Note that the server will not be concurrent yet. It need only handle one<br>client at a time.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>Your git repository contains a significant portion of the code for the final<br>solution to this assignment. The <code>p1/common/</code> folder has variants of many of<br>the useful functions that we created for assignment 0. The <code>p1/client/</code><br>folder has code that is specific to the client, and the <code>p1/server/</code> folder<br>has code that is specific to the server. You should be able to type <code>make</code><br>from the <code>p1/</code> folder to build all of the code, and you should be able to<br>run the basic tests for the assignment by typing the following from the <code>p1</code><br>folder:<br>    python3 scripts&#x2F;p1.py<br>—|—<br>Of course, none of the tests will pass yet. It will print some errors, and<br>then the script will crash.<br>To start understanding the low-level details of how the client and server are<br>supposed to work, you should read the <code>common/protocol.h</code> file. This file<br>documents the protocol for client&#x2F;server interaction. Note that the encryption<br>procedure we use is very carefully designed, and very easy to get wrong. There<br>are two tricky parts:</p>
+<ul>
+<li>The first is that the client needs to put information into the right “blocks” of its message. As you write your code, it will become apparent why we have defined the <code>rblock</code> as we have. As a hint, you might want to consider how you would allocate a buffer for the <code>ablock</code> if you didn’t know its size. </li>
+<li>The second is that AES encryption is very fickle. When you AES-encrypt data, you must make sure to properly handle the last block. You should not be using a file as a temporary storage place for the data you encrypt&#x2F;decrypt. Consequently, you will need to redesign the AES encryption code from assignment 0.</li>
+</ul>
+<h2 id="Tips-and-Reminders"><a href="#Tips-and-Reminders" class="headerlink" title="Tips and Reminders"></a>Tips and Reminders</h2><p>The code that we provide makes use of a number of C++ features. You should be<br>sure you understand the way we use <code>std::vector</code> . In particular, you should<br>know the difference between a declaration like <code>std::vector&lt;uint8_t&gt; v(1024)</code> and the two-instruction sequence <code>std::vector&lt;uint8_t&gt; v; v.reserve(1024)</code><br>. Also, note that our use of <code>std::vector</code> can introduce unnecessary<br>copying, which should be optimized out in an advanced implementation. On the<br>other hand, some copying is necessary. Our use of <code>const vector&lt;uint8_t&gt;&amp;</code><br>parameters helps to show you where copying needs to happen.<br>While the collections ( <code>std::vector</code> , <code>std::list</code> , etc.) use the heap,<br>if you are using them well, you shouldn’t have to directly interact with the<br>heap very much in this assignment. The reference solution calls <code>new</code> only<br>four times, and two of those times are for managing command-line arguments.<br>There are five calls to <code>delete</code> , but we provide three of them for you.<br>Still, you are expected to ensure your program does not have memory leaks, and<br>to use <code>valgrind</code> to be sure.<br>As you read through the details of this assignment, keep in mind that<br>subsequent assignments will build upon this… so as you craft a solution, be<br>sure to think about how to make it maintainable. C++ has many features that<br>make it easy to extend your code. The <code>auto</code> keyword is one. In-line<br>initialization of arrays is another.<br><strong>Start Early</strong> . Just reading the code and understanding what is happening<br>takes time. If you start reading the assignment early, you’ll give yourself<br>time to think about what is supposed to be happening, and that will help you<br>to figure out what you will need to do.<br>When it comes time to implement functions in the client and server, you will<br>probably want to proceed in the following order: KEY, REG, SAV, BYE, ALL, SET,<br>GET. Note that the test script accepts optional <code>CLIENT</code> , <code>SERVER</code> , and<br><code>VERBOSE</code> arguments. The first two will switch to using the solution<br>executables for the client and server, respectively. The <code>VERBOSE</code> argument<br>will cause the script to print more information about what it is doing, so<br>that you can issue the same server and client commands from separate screen<br>sessions in a single terminal.<br>As always, please be careful about not committing unnecessary files into your<br>repository.<br>Your programs should never require keyboard input. In particular, the client<br>should get all its parameters from the command line.<br>Your server should <strong>not</strong> store plain-text passwords in the file.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>The <code>scripts</code> folder has four python scripts that exercise the main portions<br>of the assignment: basic authentication, file-based persistence, AES<br>encryption, and RSA encryption. These scripts use specialized <code>Makefiles</code><br>that integrate some of the solution code with some of your code, so that you<br>can get partial credit when certain portions of your code work. Note that<br>these <code>Makefiles</code> are very strict: they will crash on any compiler warning.<br>You should <em>not</em> turn off these warnings unless you really need that; they are<br>there to help you. If your code does not compile with these scripts, you will<br>not receive any credit. If you have partial solutions and you do not know how<br>to coerce the code into being warning-free, you should ask the professor.<br>We will also visually inspect your code to ensure you are using salts and<br>passwords correctly, not accidentally creating TOCTOU vulnerabilities, and so<br>forth. While it is our intention to give partial credit, <em>no credit will be<br>given for code that does not compile without warnings.</em> We also reserve the<br>right to deduct points for especially poorly written code. In particular, if<br>you decide to move functions between files, or add files, or do other things<br>that break the scripts in the grading folder, then you will lose at least 10%.<br>If you think some change is absolutely necessary, speak with the professor<br>first.<br>Please be sure to use your tools well. For example, Visual Studio Code (and<br>emacs, and vim) have features that auto-format your code. You should use these<br>features, so that your code is legible.<br>Broadly speaking, there are five graded components:</p>
+<ul>
+<li>Is the AES cryptography implemented correctly? </li>
+<li>Do the client and server use RSA cryptography correctly? </li>
+<li>Are requests being authenticated properly </li>
+<li>Is persistence implemented according to <code>format.h</code></li>
+<li>Is the implementation of passwords secure and correct?<br>Remember that the scripts can take VERBOSE, SERVER, and CLIENT arguments.<br>VERBOSE causes scripts to print output that will be useful when you try to run<br>the client and server manually. SERVER and CLIENT cause the scripts to use the<br>reference solution for the server and client, respectively. You should use<br>these to be sure that your implementations are correct.<br>Note, too, that the graded components are intentionally vague: you need to<br>start thinking about what it means for code to be “correct”. There are many<br>criteria that cannot be established through unit testing.</li>
+</ul>
+<h2 id="Notes-About-the-Reference-Solution"><a href="#Notes-About-the-Reference-Solution" class="headerlink" title="Notes About the Reference Solution"></a>Notes About the Reference Solution</h2><p>In the following subsections, you will find some details about the reference<br>solution. Note that you should not change any files other than the six that<br>are listed below.</p>
+<h3 id="common-my-crypto-cc"><a href="#common-my-crypto-cc" class="headerlink" title="common/my_crypto.cc"></a><code>common/my_crypto.cc</code></h3><p>This will probably give more students trouble than any other part of the<br>assignment, because the OpenSSL documentation is a bit spotty. The body of <code>aes_crypt_message()</code> is about 20 lines of code. Knowing when and how to call<br><code>EVP_CipherFinal_ex</code> is important. Doing a <code>CipherUpdate</code> on a zero-byte<br>block before calling <code>CipherFinal</code> is a bit easier, in terms of the logic,<br>than not. The code from the tutorial is a good guide, but since that code<br>works on files, it will need some modification.</p>
+<h3 id="server-parsing-cc"><a href="#server-parsing-cc" class="headerlink" title="server/parsing.cc"></a><code>server/parsing.cc</code></h3><p>In the reference solution, the file is about 120 lines long. There is one<br>helper function:<br>    &#x2F;&#x2F;&#x2F; Helper method to check if the provided block of data is a kblock<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param block The block of data<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @returns true if it is a kblock, false otherwise<br>    bool is_kblock(vec &amp;block);<br>—|—<br>In the reference solution, the <code>parse_request()</code> function has about 70 lines<br>of code. It employs some nice code-saving techniques, like using an array of<br>functions when dispatching to the right command:<br>    &#x2F;&#x2F; Iterate through possible commands, pick the right one, run it<br>    vector<string> s &#x3D; {REQ_REG, REQ_BYE, REQ_SAV, REQ_SET, REQ_GET, REQ_ALL};<br>    decltype(handle_reg) *cmds[] &#x3D; {handle_reg, handle_bye, handle_sav,<br>                                    handle_set, handle_get, handle_all};<br>    for (size_t i &#x3D; 0; i &lt; s.size(); ++i)<br>      if (cmd &#x3D;&#x3D; s[i])<br>        return cmds[i](sd, storage, aes_ctx, ablock);<br>—|—  </p>
+<h3 id="client-requests-cc"><a href="#client-requests-cc" class="headerlink" title="client/requests.cc"></a><code>client/requests.cc</code></h3><p>In the reference solution, the file is about 310 lines long. It uses these two<br>functions to save a small number of lines of repeated code.<br>    &#x2F;&#x2F;&#x2F; Pad a vec with random characters to get it to size sz<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param v  The vector to pad<br>    &#x2F;&#x2F;&#x2F; @param sz The number of bytes to add<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @returns true if the padding was done, false on any error<br>    bool padR(vec &amp;v, size_t sz)<br>—|—<br>    &#x2F;&#x2F;&#x2F; Check if the provided result vector is a string representation of ERR_CRYPTO<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param v The vector being compared to RES_ERR_CRYPTO<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @returns true if the vector contents are RES_ERR_CRYPTO, false otherwise<br>    bool check_err_crypto(const vec &amp;v);<br>—|—<br>In addition, this function is very useful for simplifying <code>client_get()</code> and<br><code>client_all()</code> :<br>    &#x2F;&#x2F;&#x2F; If a buffer consists of OKbbbbd+, where bbbb is a 4-byte binary integer<br>    &#x2F;&#x2F;&#x2F; and d+ is a string of characters, write the bytes (d+) to a file<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param buf      The buffer holding a response<br>    &#x2F;&#x2F;&#x2F; @param filename The name of the file to write<br>    void send_result_to_file(const vec &amp;buf, const string &amp;filename);<br>—|—<br>The reference solution also has a handful of functions that handle assembling<br>the client’s request. You are not required to write helper functions, but you<br>will probably find that they make it easier to build the client requests.<br>Here’s the declaration for one of the helper files in the reference solution<br>(the corresponding definition is only 5 lines):<br>    &#x2F;&#x2F;&#x2F; Create unencrypted ablock contents from two strings<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param s1 The first string<br>    &#x2F;&#x2F;&#x2F; @param s2 The second string<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @return A vec representing the two strings<br>    vector<uint8_t> ablock_ss(const string &amp;s1, const string &amp;s2);<br>—|—<br>The most important helper function is this one. You’ll probably want to<br>implement something similar:<br>    &#x2F;&#x2F;&#x2F; Send a message to the server, using the common format for secure messages,<br>    &#x2F;&#x2F;&#x2F; then take the response from the server, decrypt it, and return it.<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; Many of the messages in our server have a common form (@rblock.@ablock):<br>    &#x2F;&#x2F;&#x2F;   - @rblock padR(enc(pubkey, “CMD”.aeskey.length(@msg)))<br>    &#x2F;&#x2F;&#x2F;   - @ablock enc(aeskey, @msg)<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param sd  An open socket<br>    &#x2F;&#x2F;&#x2F; @param pub The server’s public key, for encrypting the aes key<br>    &#x2F;&#x2F;&#x2F; @param cmd The command that is being sent<br>    &#x2F;&#x2F;&#x2F; @param msg The contents of the @ablock<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @returns a vector with the (decrypted) result, or an empty vector on error<br>    vector<uint8_t> send_cmd(int sd, RSA *pub, const string &amp;cmd, const vector<uint8_t> &amp;msg);<br>—|—<br>The reference implementation is about 60 lines. You won’t want to write it at<br>first… figure out how to do REG and SET, and then you’ll know what needs to go<br>in it. Note that the function will help with REG, BYE, SAV, SET, GET, and ALL.<br>For example, here’s the body of <code>req_get()</code> when the helper functions are<br>done:<br>    auto res &#x3D; send_cmd(sd, pubkey, REQ_GET, ablock_sss(user, pass, getname));<br>    send_result_to_file(res, getname + “.file.dat”);<br>—|—<br>(Yes, just 2 lines… the hard work is in <code>send_cmd</code> and <code>send_result_to_file</code> ).</p>
+<h3 id="server-responses-cc"><a href="#server-responses-cc" class="headerlink" title="server/responses.cc"></a><code>server/responses.cc</code></h3><p>This file has one function for each of the requests that a client can make.<br>Each function receives unencrypted data, validates it, sends a request to the<br><code>Storage</code> object, and then transmits a response to the client.<br>You may want to write a few helper functions here, too, especially for<br>extracting the parts of a request. The reference solution takes about 310<br>lines of code to complete this file. There is a fair bit of copy-and-paste<br>from one command to the next.</p>
+<h3 id="server-my-storage-cc"><a href="#server-my-storage-cc" class="headerlink" title="server/my_storage.cc"></a><code>server/my_storage.cc</code></h3><p>In the reference solution, this file is about 330 lines (this count includes<br>the 150 lines that are given in the handout). <code>persist()</code> and <code>load()</code><br>take the most code by far, because file I&#x2F;O is tedious in C++. The other<br>methods are relatively straightforward. You should not need to add any<br>additional fields to the <code>MyStorage</code> class.</p>
+<h3 id="server-sequentialmap-h"><a href="#server-sequentialmap-h" class="headerlink" title="server/sequentialmap.h"></a><code>server/sequentialmap.h</code></h3><p>In subsequent assignments, you will need to implement your own concurrent hash<br>map. In this assignment, we use the <code>SequentialMap</code> template as a wrapper<br>around <code>std::list</code> . This may seem cumbersome, but it means that later on,<br>your code in <code>storage.cc</code> won’t have to change: you will just replace the<br>sequential map with a concurrent hash map that has the same interface.<br>If you are not familiar with <code>std::list</code> , <code>http://cppreference.com/</code> is<br>an excellent resource. Google will usually send you directly to the correct<br>page. Note that some of the methods of <code>SequentialMap</code> won’t be used in this<br>assignment. If you figure them out now, then the second assignment will be<br>easier. If you skip them, you will not lose points, but you will miss out on<br>the opportunity to be more prepared for the rest of the semester.</p>
+<h2 id="Collaboration-and-Getting-Help"><a href="#Collaboration-and-Getting-Help" class="headerlink" title="Collaboration and Getting Help"></a>Collaboration and Getting Help</h2><p>Students may work in teams of 2 for this assignment. If you plan to work in a<br>team, you must notify Prof. Spear by September 6th, so that we can set up your<br>repository access. If you do not send a notification until after that date, we<br>will deduct 10 points. If you are working in a team, you should <strong>pair<br>program</strong> for the entire assignment. After all, your goal is to learn<br>together, not to each learn half the material.<br>If you require help, you may seek it from any of the following sources:</p>
+<ul>
+<li>The professors and TAs, via office hours or Piazza </li>
+<li>The Internet, as long as you use the Internet as a read-only resource and do not post requests for help to online sites.<br>If you are familiar with <code>man</code> pages, please note that the easiest way to<br>find a man page is via Google. For example, typing <code>man printf</code> will<br>probably return <code>https://linux.die.net/man/3/printf</code> as one of the first<br>links. It is fine to use Google to find man pages.<br>StackOverflow is a wonderful tool for professional software engineers. It is a<br>horrible place to ask for help as a student. You should feel free to use<br>StackOverflow, but only as a <em>read only</em> resource. In this class, you should<br><strong>never</strong> need to ask a question on StackOverflow.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/12/04/Security%E4%BB%A3%E5%86%99%EF%BC%9ACSC363CreatingaSecureOn-LineService/">http://saferman.github.io/2022/12/04/Security%E4%BB%A3%E5%86%99%EF%BC%9ACSC363CreatingaSecureOn-LineService/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Security代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/05/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSE403AConcurrentKeyValueStore/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Operating System代写：CSE403 A Concurrent Key/Value Store">
+                        
+                        <span class="card-title">Operating System代写：CSE403 A Concurrent Key/Value Store</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/02/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS2230BuildaSpellchecker/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java代写：CS2230 Build a Spellchecker">
+                        
+                        <span class="card-title">Java代写：CS2230 Build a Spellchecker</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

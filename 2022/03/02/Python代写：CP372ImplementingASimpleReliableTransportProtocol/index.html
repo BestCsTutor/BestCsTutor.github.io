@@ -1,0 +1,943 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CP372 Implementing A Simple Reliable Transport Protocol, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个可靠传输，如  TCP  协议。![TCP](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_diagram_fixed_new.svg/250">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CP372 Implementing A Simple Reliable Transport Protocol | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CP372 Implementing A Simple Reliable Transport Protocol</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-03-02
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个可靠传输，如 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" title="TCP"> TCP </a> 协议。<br>![TCP](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_diagram_fixed_new.svg/250px-">https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_diagram_fixed_new.svg/250px-</a><br>Tcp_state_diagram_fixed_new.svg.png)</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><ul>
+<li>Implementing a reliable transport protocol </li>
+<li>Getting to see in practice how a reliable transport protocol such as TCP is working</li>
+</ul>
+<h2 id="Submission-Instruction"><a href="#Submission-Instruction" class="headerlink" title="Submission Instruction"></a>Submission Instruction</h2><ul>
+<li>Submit only sender.py and receiver.py and common.py files. They should Change the names: sender.py.txt, receiver.py.txt, and common.py.txt respectively. You must follow this submission instruction or you will get a zero. </li>
+<li>Do not submit any other files. Do not zip the files.</li>
+</ul>
+<h2 id="Instructions"><a href="#Instructions" class="headerlink" title="Instructions"></a>Instructions</h2><ul>
+<li>Download startSTP.zip. It contains the files you need for this assignment </li>
+<li>You should not change any other files. All the changes must be done within sender.py or receiver.py or common.py. </li>
+<li><h2 id="When-you-first-run-the-code-you-get-the-output-that-is-shown-python-main-py-Network-Simulator-Enter-the-packet-loss-probability-0-0-for-no-loss-0-Enter-the-packet-corruption-probability-0-0-for-no-corruption-0Initializing-Network-SimulatorInitializing-sender-A-12345Initializing-receiver-B-67890-average-0-5033190011370157-—————————————A-Sending-the-data-aaaaaaaaaaaaaaaaaaaa"><a href="#When-you-first-run-the-code-you-get-the-output-that-is-shown-python-main-py-Network-Simulator-Enter-the-packet-loss-probability-0-0-for-no-loss-0-Enter-the-packet-corruption-probability-0-0-for-no-corruption-0Initializing-Network-SimulatorInitializing-sender-A-12345Initializing-receiver-B-67890-average-0-5033190011370157-—————————————A-Sending-the-data-aaaaaaaaaaaaaaaaaaaa" class="headerlink" title="When you first run the code, you get the output that is shown&gt; python main.py&gt; Network Simulator&gt; Enter the packet loss probability (0.0 for no loss): 0&gt; Enter the packet corruption probability (0.0 for no corruption): 0Initializing Network SimulatorInitializing sender: A: 12345Initializing receiver: B: 67890 average &#x3D; 0.5033190011370157     —————————————A: Sending the data aaaaaaaaaaaaaaaaaaaa"></a>When you first run the code, you get the output that is shown<br>&gt; python main.py<br>&gt; Network Simulator<br>&gt; Enter the packet loss probability (0.0 for no loss): 0<br>&gt; Enter the packet corruption probability (0.0 for no corruption): 0<br>Initializing Network Simulator<br>Initializing sender: A: 12345<br>Initializing receiver: B: 67890 average &#x3D; 0.5033190011370157     —————————————<br>A: Sending the data aaaaaaaaaaaaaaaaaaaa</h2><h2 id="A-Sending-the-data-bbbbbbbbbbbbbbbbbbbb"><a href="#A-Sending-the-data-bbbbbbbbbbbbbbbbbbbb" class="headerlink" title="A: Sending the data bbbbbbbbbbbbbbbbbbbb"></a>A: Sending the data bbbbbbbbbbbbbbbbbbbb</h2><h2 id="A-Sending-the-data-cccccccccccccccccccc"><a href="#A-Sending-the-data-cccccccccccccccccccc" class="headerlink" title="A: Sending the data cccccccccccccccccccc"></a>A: Sending the data cccccccccccccccccccc</h2><h2 id="A-Sending-the-data-dddddddddddddddddddd"><a href="#A-Sending-the-data-dddddddddddddddddddd" class="headerlink" title="A: Sending the data dddddddddddddddddddd"></a>A: Sending the data dddddddddddddddddddd</h2>A: Sending the data eeeeeeeeeeeeeeeeeeee<br>do not schedule: the maximum number of messages is scheduled<br>you will see that the simulator is generating a set of events (FROMAPP events<br>as explained below). The number of events will be equal to the number of<br>messages you passed to the simulator (5 in this case). It means that the<br>application layer on the sender side is sending the message to its transport<br>layer, but nothing more is there unless you implement the rest. Look at the<br>sample outputs provided (output1, output2, output3) for how your output should<br>look like. The outputs are explained in more detail in this document.</li>
+<li>Your output should match exactly the given output. They are printed by the simulator that I have developed or the code I provided. Make sure you do not have extra printing in your sender and receiver code when submitting. When developing and debugging your code, you need to put lots of print statements. Remember to comment them out or remove them before submitting.</li>
+</ul>
+<h2 id="The-procedures-you-will-write"><a href="#The-procedures-you-will-write" class="headerlink" title="The procedures you will write"></a>The procedures you will write</h2><p>In this programming assignment, you will be writing the sending and receiving<br>transport-level code for implementing a simple reliable data transfer<br>protocol: It is named: the Alternating-bit protocol &#x2F; stop-and-wait protocol&#x2F;<br>rdt3.0 in the textbook<br>In a real system, the reliable transport protocol functionality is implemented<br>inside the operating system. Since we don’t have standalone machines (with an<br>OS that you can modify), your code will have to execute in a simulated<br>environment. The simulator provides the programming interface to your<br>procedures, i.e., the code that would call your entities from above<br>(application layer) and from below (network layer). Stopping&#x2F;starting of<br>timers are also simulated, and timer interrupts will cause your timer handling<br>procedures to be activated.<br>The procedures you will write are for the sending entity (A) and the receiving<br>entity (B). You will implement them in sender.py and receiver.py. Only<br>unidirectional transfer of data (from A to B) is required. Of course, the B<br>side will have to send packets to A to acknowledge receipt of data. Your<br>procedures are to be implemented in the form of the procedures described<br>below. These procedures will be called by (and will call) procedures that I<br>have written which simulate a network environment. The overall structure of<br>the simulated environment is shown in the following figure:<br>The functions you will write are detailed below. Such functions in real-life<br>would be part of the operating system, and would be called by other functions<br>in the operating system.</p>
+<h2 id="Sender-side-A-side"><a href="#Sender-side-A-side" class="headerlink" title="Sender side (A side)"></a>Sender side (A side)</h2><ul>
+<li>output(Message), where message is an object of type Message, containing data to be sent to the B-side(receiver side). This function will be called whenever the upper layer (application layer) at the sending side (A) has a message to send. It is the job of your protocol to ensure that the data in such a message is delivered in-order, and correctly, to the receiving side upper layer. </li>
+<li>input(packet), where packet is an object of type Packet. This function will be called whenever a packet sent from the B-side (i.e., as a result of a udtSend() being done by a B-side procedure) arrives at the A-side. packet is the (possibly corrupted) packet sent from the B-side. Note that since you are implementing the unidirectional transfer of data from A to B, the B-side only sends acknowledgement to the other side. </li>
+<li>timerInterrupt() This function will be called when A’s timer expires (thus generating a timer interrupt). You’ll probably want to use this function to control the retransmission of packets. See startTimer() and stopTimer() below for how the timer is started and stopped. </li>
+<li>init() This function will be called once, before any of your other A-side functions are called. It can be used to do any required initialization.<br>The receiver side</li>
+<li>input(packet), where packet is an object of type packet. This function will be called whenever a packet sent from the A-side (i.e., as a result of a udtSend being done by an A-side procedure) arrives at the B-side. packet is the (possibly corrupted) packet sent from the A-side. </li>
+<li>init() This function will be called once, before any of your other B-side functions are called. It can be used to do any required initialization.<br>You are to write the function, output(), input(), timerInterrupt(), init() on<br>the sender sides and input(), init() which together will implement a stop-and-<br>wait (i.e., the alternating bit protocol, which is referred to as rdt3.0 in<br>the text). You will implement the unidirectional transfer of data from the<br>A-side to the B-side. Your protocol should use ACK messages as explained in<br>the protocol description. You will implement other helper functions as listed<br>in the supplied code.</li>
+</ul>
+<h2 id="Software-Interfaces"><a href="#Software-Interfaces" class="headerlink" title="Software Interfaces"></a>Software Interfaces</h2><p>The procedures described above are the ones that you will write. The following<br>functions can be called by the sender or receiver functions:</p>
+<ul>
+<li>starttimer(calling_entity,increment), where calling_entity is either 12345 (for starting the A-side timer, as defined in common.py) or 67890 (for starting the B side timer), and increment is a float value indicating the amount of time that will pass before the timer interrupts. A’s timer should only be started (or stopped) by A-side functions. You don’t need to have a timer on the B-side since you are implementing unidirectional transfer of data from A to B timer. To give you an idea of the appropriate increment value to use: a packet sent into the network takes an average of 5 time units to arrive at the other side when there are no other messages in the medium. </li>
+<li>stoptimer(calling_entity), where calling_entity is either A (for stopping the A-side timer) or B (for stopping the B side timer). </li>
+<li>udtSend(calling_entity,packet), where calling_entity is either A (for the A-side send) or B (for the B side send), and packet is an object of type Packet. Calling this function will cause the packet to be sent into the network, destined for the other entity. </li>
+<li>deliverData(calling_entity,message), where calling_entity is either A (for A-side delivery to application layer) or B (for B-side delivery to application layer), and message is an object of type Message. With unidirectional data transfer, you would only be calling this with calling_entity equal to B (delivery to the B-side). Calling this function will cause data to be passed up to the application layer.</li>
+</ul>
+<h2 id="The-simulated-network-environment"><a href="#The-simulated-network-environment" class="headerlink" title="The simulated network environment"></a>The simulated network environment</h2><p>A call to procedure udtSend() sends packets into the medium (i.e., into the<br>network layer). On both the sender and receiver side, input() is called when a<br>packet is to be delivered from the medium to your protocol layer.<br>The medium is capable of corrupting and losing packets. It will not reorder<br>packets. When you compile your procedures and my procedures together and run<br>the resulting program, you will be asked to specify values regarding the<br>simulated network environment:</p>
+<ul>
+<li>Number of messages to simulate. My simulator (and your functions) will stop as soon as this number of messages have been passed down from application layer, regardless of whether or not all of the messages have been correctly delivered. Thus, you need no to worry about undelivered or unACK’ed messages still in your sender when the emulator stops. Note that if you set this value to 1, your program will terminate immediately, before the message is delivered to the other side. Thus, this value should always be greater than 1. </li>
+<li>Loss. You are asked to specify a packet loss probability. A value of 0.1 would mean that one in ten packets (on average) are lost. </li>
+<li>Corruption. You are asked to specify a packet corruption probability. A value of 0.2 would mean that one in five packets (on average) are corrupted. Note that the contents of the payload, sequence, ack, or checksum fields can be corrupted. Your checksum should thus include the data, sequence, and ack fields. </li>
+<li>Average time between messages from the sender’s application layer. You can set this value to any non-zero, positive value. Note that the smaller the value you choose, the faster packets will be arriving to your sender.<br>You should choose a very large value for the average time between messages<br>from the sender’s application layer, so that your sender is never called while<br>it still has an outstanding, unacknowledged message it is trying to send to<br>the receiver. I’d suggest you choose a value of 1000. You should also perform<br>a check in your sender to make sure that when output() is called, there is no<br>message currently in transit. If there is, you can simply ignore (drop) the<br>data being passed to the output() function.</li>
+<li>Trace Setting a tracing value of 1 or 2 will print out useful information about what is going on inside the emulation (e.g., what’s happening to packets and timers). A tracing value of 0 will turn this off. A tracing value greater than 2 will display all sorts of odd messages that are for the simulator. A tracing value of 2 may be helpful to you in debugging your code. You should keep in mind that real implementers do not have underlying networks that provide such nice information about what is going to happen to their packets!</li>
+</ul>
+<h2 id="Sample-outputs"><a href="#Sample-outputs" class="headerlink" title="Sample outputs"></a>Sample outputs</h2><p>In addition to the simulator code, two sample outputs are provided. The number<br>of messages in each run that generated each file is 5.</p>
+<ul>
+<li>output1: loss probability&#x3D;0.0, corruption probability&#x3D;0.0 <ul>
+<li>shows a trace of protocol when the underlying layer is reliable (no loss or corruption) and tracing level is one.</li>
+</ul>
+</li>
+<li>output2: loss probability&#x3D;0.3, corruption probability&#x3D;0.0 <ul>
+<li>shows a trace of protocol when the loss probability is 0.1, corruption probability is zero, and tracing level is one.</li>
+</ul>
+</li>
+<li>output3: loss probability&#x3D;0.1, corruption probability&#x3D;0.3 <ul>
+<li>shows a trace of protocol when the loss probability is 0.1, corruption probability is zero, and tracing level is one.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Helpful-Hints"><a href="#Helpful-Hints" class="headerlink" title="Helpful Hints"></a>Helpful Hints</h2><p>Checksumming. You can use whatever approach for checksumming you want.<br>Remember that the sequence number and ack field can also be corrupted (if you<br>are curious you can find it in the simulator code). We would suggest a TCP-<br>like checksum, which consists of the sum of the (integer) sequence and ack<br>field values, added to a character-by-character sum of the payload field of<br>the packet (i.e., treat each character as if it were an integer and just add<br>them together). Checksum function should be implemented in common.py as it is<br>needed by both sender and receiver.<br>START SIMPLE. Set the probabilities of loss and corruption to zero and test<br>out your procedures. Better yet, design and implement your procedures for the<br>case of no loss and no corruption, and get them working first. Then handle the<br>case of one of these probabilities being non-zero, and then finally both being<br>non-zero.<br>Debugging. We’d recommend that you put LOTS of print statements in your code<br>while you’re debugging your procedures. Don’t forget to disable them before<br>you submit your code. I do not want any print statement by your code<br>Random Numbers. The simulator generates packet loss and errors using a random<br>number generator. Our past experience is that random number generators can<br>vary widely from one machine to another. Our simulation functions have a test<br>to see if the random number generator on your machine will work with our<br>code.You may need to modify the random number generation code in the simulator<br>we have supplied you. It is likely that random number generation on your<br>machine is different from what this simulator expects. When you run the code<br>it generates an average (line #5 in sample output). If this average is between<br>0.25 and 0.75, that is good.<br>Initial sequence number: You can assume that the three way handshake has<br>already taken place. You can hard-code an initial sequence number and<br>acknowledgement number into your sender and receiver. Make the initial<br>sequence number on sender to be zero and the initial acknowledgement number on<br>the receiver to be zero.<br>Timer when working with timer (calling startTimer and stopTimer) pass them a<br>float value not an integer value<br>Events in simulator. There are three events happening on the sender side:</p>
+<ul>
+<li>FROMAPP </li>
+<li>TIMERINTERRUPT </li>
+<li>FROMNETWORK<br>In response to FROMAPP event, output function is being called on the sender.<br>In response to TIMERINTERRUPT event, timerInterrupt function is being called<br>on the sender side. In response to FROMNETWORK event, input function is called<br>on the server side. On the receiver side only one event happens</li>
+<li>FROMNETWORK<br>In response to FROMNETWORK event, input function is being called on the<br>receiver side.</li>
+</ul>
+<h2 id="A-description-of-different-files-in-the-provided-code"><a href="#A-description-of-different-files-in-the-provided-code" class="headerlink" title="A description of different files in the provided code"></a>A description of different files in the provided code</h2><p>Common.py: include the definitions of classes: Packet, Message, Event,<br>EventType and EventList. You need to know about Packet and Message classes.<br>The rest are used by the simulator. In addition, the constant variables that<br>are needed within different files are defined here. For example, A, to<br>represent the sender entity and B to represent the receiver entity. When the<br>sender&#x2F;receiver objects are initialized (inside iniSimulator function of<br>NetworkSimulator.py), they are assigned the correct entity name. The<br>implementation of checksum function should could over here as it is used by<br>both sender and receiver.<br>main.py: It asks the user to enter the parameters needed to initialize the<br>simulator. You can hardcode some values when testing your code. It initializes<br>an object of type NetworkSimulator.<br>NetworkSimulator.py: The main code for simulator. It includes the<br>implementations for all the interfaces needed to communicate with application<br>layer and network layer. You should not change this code. When initialized, it<br>also creates the sender and receiver objects.The sender and receiver objects<br>are initialized from within the simulator. When the sender and receiver are<br>initialized, they are passed a reference to the current network simulator<br>object.<br>sender.py: The functions on the sending side should be implemented here. It<br>includes the declarations for some other auxiliary functions such as<br>isDuplicate, etc. that is needed in the functions you are going to implement.<br>Each sender&#x2F;receiver class has a member named networkSimulator. So each<br>sender&#x2F;receiver object has access to the simulator methods through this member<br>variable.<br>For example, if you want to call udtSend function from one of the methods in<br>sender&#x2F;receiver, you should call it like the following:<br>    self.networkSimulator.udtSend<br>—|—<br>To access a member variable from within a method of a class, you need to<br>precede that with the self keyword (python way of doing it)<br>In addition, each sender&#x2F;receiver has a member named entity which holds the<br>values A&#x2F; B. A is for the sender and B is for receiver. More details are<br>provided in the supplied codes.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/03/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACP372ImplementingASimpleReliableTransportProtocol/">http://saferman.github.io/2022/03/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACP372ImplementingASimpleReliableTransportProtocol/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/03/02/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSE510DatabaseManagementSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Java代写：CSE510 Database Management System">
+                        
+                        <span class="card-title">Java代写：CSE510 Database Management System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/03/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS301WebScraping/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Python代写：CS301 Web Scraping">
+                        
+                        <span class="card-title">Python代写：CS301 Web Scraping</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

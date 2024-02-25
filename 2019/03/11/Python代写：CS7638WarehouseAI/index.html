@@ -1,0 +1,1035 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS7638 Warehouse AI, 留学生CS|辅导|代写">
+    <meta name="description" content="实现搜索算法，引导机器人通过仓库，取货并将箱子运送到指定的放置区。算法使用  A*
+ 即可。
+IntroductionIn this project, you will implement search algorithms to navi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS7638 Warehouse AI | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS7638 Warehouse AI</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-03-11
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现搜索算法，引导机器人通过仓库，取货并将箱子运送到指定的放置区。算法使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A*_search_algorithm" title="A*"> A*
+</a> 即可。<br><img src="https://koenig-media.raywenderlich.com/uploads/2011/09/AStarPart1.jpg" alt="A*"></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this project, you will implement search algorithms to navigate a robot<br>through a warehouse to pick up and deliver boxes to a designated drop zone<br>area. The template code provides 3 classes, one for each part of the project:<br>DeliveryPlanner_Part[A, B, C]</p>
+<ul>
+<li>You may share code between part A, B, and C </li>
+<li>Your submission will consist of a single file: warehouse.py</li>
+</ul>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><ul>
+<li>The weighting for each part is: <ul>
+<li>Part A &#x3D; 40% </li>
+<li>Part B &#x3D; 40% </li>
+<li>Part C &#x3D; 20%</li>
+</ul>
+</li>
+<li>Within each part, each test case is equally weighted.</li>
+</ul>
+<h2 id="Part-A"><a href="#Part-A" class="headerlink" title="Part A"></a>Part A</h2><p>Your task is to pick up and deliver all boxes listed in the todo list. You<br>will do this by providing a list of motions that the testing suite will<br>execute in order to complete all the deliveries. Your algorithm should<br>determine the best path to take when completing this task.<br>DeliveryPlanner_PartA’s constructor must take five arguments: self, warehouse,<br>robot_position, todo, and box_locations. It must also have a method called<br>plan_delivery that takes 2 arguments: self and debug (set to False by<br>default).</p>
+<h3 id="Part-A-Input-Specifications"><a href="#Part-A-Input-Specifications" class="headerlink" title="Part A Input Specifications"></a>Part A Input Specifications</h3><p>warehouse will be a custom object used by the testing suite. For all intents<br>and purposes, you can think of it as a list of m lists, each inner list<br>containing n characters, corresponding to the layout of the warehouse. The<br>warehouse is an m x n grid. warehouse[i][j] corresponds to the spot in the ith<br>row and jth column of the warehouse, where the 0th row is the northern end of<br>the warehouse and the 0th column is the western end.<br>NOTE: In part A, your code will not know (nor should it depend on) the size of<br>the warehouse (n and m). You are only allowed to use the warehouse object<br>(WarehouseAccess) in the following 2 ways, if we find that your code is using<br>any other methods&#x2F;approaches to use or manipulate the warehouse object, you<br>will receive a 0 for part A (this may be done manually after the project is<br>due):</p>
+<ol>
+<li>You may access a particular cell in the warehouse using warehouse[i][j] </li>
+<li>You may overwrite the contents of a cell using warehouse[i][j] &#x3D; ‘[some symbol]’ (note that this is only for your convenience if needed)<br>The goal in part A is to not only find an optimal path to the goal, but to do<br>so in an efficient manner. Efficiency here means that your algorithm should<br>access (view) as few of the warehouse cells as possible. Accessing a<br>particular cell more than once will not hurt you as we will only tally the<br>unique cells that your algorithm accesses each test case. It is your<br>responsibility to make sure you are not using any other way to glean<br>information from the warehouse other than the 2 methods above. There are some<br>precautions in place to help notify you when you are improperly using the<br>warehouse object, however, these are not exhaustive. A few things to ask<br>yourself (if you answer yes to any of these, you are likely approaching the<br>problem incorrectly and likely going to receive a 0 for this part):</li>
+<li>Are you attempting to determine the size of the warehouse? </li>
+<li>Are you attempting to access an entire row of the warehouse (rather than a particular cell)? </li>
+<li>Are you accessing a private attribute (as indicated by a leading underscore) of the warehouse? </li>
+<li>Are you iterating through the warehouse in any way? </li>
+<li>Are you somehow gaining access to a warehouse cell’s contents without it being counted towards the viewed_cell_count? </li>
+<li>Are you attempting to copy the warehouse object&#x2F;data in any way?<br>The characters in each string will be one of the following:</li>
+</ol>
+<ul>
+<li>. (period) : traversable space. The robot may enter from any adjacent space. </li>
+<li><h1 id="hash-a-wall-The-robot-cannot-enter-this-space-All-warehouse-cases-will-be-surrounded-by-walls-Note-This-is-only-for-partA"><a href="#hash-a-wall-The-robot-cannot-enter-this-space-All-warehouse-cases-will-be-surrounded-by-walls-Note-This-is-only-for-partA" class="headerlink" title="(hash) : a wall. The robot cannot enter this space. All warehouse cases will be surrounded by walls(Note: This is only for partA)."></a>(hash) : a wall. The robot cannot enter this space. All warehouse cases will be surrounded by walls(Note: This is only for partA).</h1></li>
+<li>@ (dropzone) : the starting point for the robot and the space where all boxes must be delivered. The dropzone may be traversed like a . (period). </li>
+<li>[0-9a-zA-Z] (any alphanumeric character) : a box. At most one of each alphanumeric character will be present in the warehouse (meaning there will be at most 62 boxes). A box may not be traversed, but if the robot is adjacent to the box, the robot can pick up the box. Once the box has been lifted, the space that the lifted box previously occupied now functions as a . (period).<br>For example,<br>warehouse &#x3D; [‘#####’,<br>         ‘#1#2#’,<br>         ‘#.#.#’,<br>         ‘#..@#’,<br>         ‘#####’<br>        ]</li>
+</ul>
+<p>—|—<br>is a 5x5 warehouse.</p>
+<ul>
+<li>The dropzone is at the warehouse cell in row 3, column 3. </li>
+<li>Box 1 is located in the warehouse cell in row 1, column 1. </li>
+<li>Box 2 is located in the warehouse cell in row 1, column 3. </li>
+<li>There are walls within the warehouse at cells (row 1, column 2) and (row 2, column 2) and around the warehouse. </li>
+<li>The remaining five warehouse cells (which includes the dropzone) are traversable spaces.<br>The argument todo is a list of alphanumeric characters giving the order in<br>which the boxes must be delivered to the dropzone. For example, if todo &#x3D;<br>[‘1’,’2’] is given with the above example warehouse, then the robot must first<br>deliver box 1 to the dropzone, and then the robot must deliver box 2 to the<br>dropzone.</li>
+</ul>
+<h3 id="Part-A-Rules-Costs-for-Motions"><a href="#Part-A-Rules-Costs-for-Motions" class="headerlink" title="Part A Rules &amp; Costs for Motions"></a>Part A Rules &amp; Costs for Motions</h3><ul>
+<li>The robot may move in 8 directions (N, E, S, W, NE, NW, SE, SW) </li>
+<li>The robot may not move outside the warehouse. The warehouse does not “wrap” around (it is not cyclic). </li>
+<li>Two spaces are considered adjacent if they share an edge or a corner. </li>
+<li>The robot may pick up a box that is in an adjacent square. </li>
+<li>The robot may put a box down in an adjacent square, so long as the adjacent square is empty (. or @). </li>
+<li>While holding a box, the robot may not pick up another box. </li>
+<li>There are 4 kinds of motions that the robot can take: <ul>
+<li></li>
+<li>[ 2 ]: horizontal or vertical movement </li>
+<li>[ 3 ]: diagonal movement </li>
+<li>[ 4 ]: pick up box (regardless the direction) </li>
+<li>[ 2 ]: put down box (regardless the direction)</li>
+</ul>
+</li>
+<li>If a box is placed on the @ space, it is considered delivered and is removed from the warehouse, thus the @ space is still traversable after dropping a box on it. </li>
+<li>The warehouse will be arranged so that it is always possible for the robot to move to the next box on the todo list without having to rearrange any other boxes. </li>
+<li>The robot will end up in the same location when an illegal motion is performed. </li>
+<li>An illegal motion will incur a penalty cost of 100 in addition to the motion cost. </li>
+<li>Illegal motions include: <ul>
+<li>attempting to move to a nonadjacent, nonexistent, or occupied space </li>
+<li>attempting to pick up a nonadjacent or nonexistent box </li>
+<li>attempting to pick up a box while already holding one (attempting to put down a box while not holding one) </li>
+<li>attempting to put down a box on a nonadjacent, nonexistent, or occupied space (this means the robot may not drop a box on the drop zone while the robot is occupying the drop zone)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Part-A-Method-Return-Specifications"><a href="#Part-A-Method-Return-Specifications" class="headerlink" title="Part A Method Return Specifications"></a>Part A Method Return Specifications</h3><p>plan_delivery should return a list of moves that minimizes the total cost of<br>completing the task. Each move should be a string formatted as follows:</p>
+<ul>
+<li>‘move {d}’, where ‘{d}’ is replaced by the direction the robot should move: “n”, “e”, “s”, “w”, “ne”, “se”, “nw”, “sw” </li>
+<li>‘lift {x}’, where ‘{x}’ is replaced by the alphanumeric character of the box being picked up </li>
+<li>‘down {d}’, where ‘{d}’ is replaced by the direction the robot will put the box down<br>For example, for the values of warehouse and todo given previously (reproduced<br>below):<br>warehouse &#x3D; [‘#####’,<br>         ‘#1#2#’,<br>         ‘#.#.#’,<br>         ‘#..@#’,<br>         ‘#####’<br>        ]<br>todo &#x3D; [‘1’,’2’]<br>—|—</li>
+</ul>
+<p>plan_delivery might return the following:<br>    [‘move w’,<br>     ‘move nw’,<br>     ‘lift 1’,<br>     ‘move se’,<br>     ‘down e’,<br>     ‘move ne’,<br>     ‘lift 2’,<br>     ‘down s’]<br>—|—  </p>
+<h3 id="Part-A-Scoring"><a href="#Part-A-Scoring" class="headerlink" title="Part A Scoring"></a>Part A Scoring</h3><p>The testing suite will execute your plan and calculate the total cost:<br>student_cost. The score for each test case will be calculated by:<br>benchmark_cost &#x2F; student_cost. The benchmark will be greater than or equal to<br>the absolute minimum cost. You will receive a 0 in the following situations:</p>
+<ul>
+<li>your code views more warehouse cells than specified in the test case: viewed_cell_count_threshold </li>
+<li>your code takes longer than the prescribed time limit </li>
+<li>your method returns the wrong output format </li>
+<li>the boxes are not delivered in the correct order</li>
+</ul>
+<h2 id="Part-B"><a href="#Part-B" class="headerlink" title="Part B"></a>Part B</h2><p>In this part there are three main differences from part A:</p>
+<ul>
+<li>there will be only a single box for your robot to deliver </li>
+<li>the warehouse has an “uneven” floor which imposes an additional cost (range: 0 ~ 95 inclusive) </li>
+<li>the robot starting location is not provided DeliveryPlanner_PartB’s constructor must have four arguments: self, warehouse, warehouse_cost, and todo.</li>
+</ul>
+<h3 id="Part-B-Input-Specifications"><a href="#Part-B-Input-Specifications" class="headerlink" title="Part B Input Specifications"></a>Part B Input Specifications</h3><p>Same as part A but the only box in the warehouse will be: 1 (the single box to<br>be delivered).<br>Note: Test cases in the test suite will only contain the characters listed in<br>part A’s input Specifications section. There is a helper function<br>(_set_initial_state_from) that parses this initial input into an internal<br>warehouse state. This is the same internal state representation that is used<br>by the testing suite. You are NOT required to use this helper function and may<br>change it as you see fit, it is just provided for convenience. Note that the<br>testing suite uses an asterisk (*) to denote the current location of the robot<br>as it executes your plan. This asterisk is only used for internal purposes in<br>the testing suite so you will not see it present in the test cases. It is also<br>used to denote the robot’s location in some examples in this document.<br>For example:<br>    warehouse &#x3D; [‘1..’,<br>                 ‘.#.’,<br>                 ‘..@’]<br>—|—<br>The argument warehouse_cost is a list of lists such that indices i,j refer to<br>the floor cost at the row i and column j in the warehouse. For the case above,<br>the corresponding warehouse_cost could be:<br>    warehouse_cost &#x3D; [[ 0, 5, 2],<br>                      [10, w, 2],<br>                      [ 2, 10, 2]]<br>—|—<br>where w represents a wall. Note that the value of w has no consequence since<br>the robot can’t occupy a space containing a wall.<br>The argument todo is limited to a single box as follows:<br>    todo &#x3D; [‘1’]<br>—|—<br>There is no input for initial robot location because the robot may “wake up”<br>at any point in the warehouse and must be handed a “policy” so that no matter<br>where it is, it can retrieve the box. Further, because it may lift the box<br>from different squares depending on its starting location, it requires another<br>“policy” to deliver the box to the dropzone.</p>
+<ul>
+<li>Note: You must update your internal warehouse state in your code as this is not done for you.</li>
+</ul>
+<h3 id="Part-B-Rules-for-Motions"><a href="#Part-B-Rules-for-Motions" class="headerlink" title="Part B Rules for Motions"></a>Part B Rules for Motions</h3><p>Same as part A.</p>
+<h3 id="Part-B-Costs-for-Actions"><a href="#Part-B-Costs-for-Actions" class="headerlink" title="Part B Costs for Actions"></a>Part B Costs for Actions</h3><p>The total cost for an action consists of a summation of 2 parts:</p>
+<ul>
+<li>motion cost (same as part A) </li>
+<li>floor cost <ul>
+<li>movements: value of the destination cell the robot is moving into </li>
+<li>lift: value of the cell the box is located in prior to lifting </li>
+<li>down: value of the cell the box is being placed into<br>This means although you may incur less motion cost to move straight to a<br>target location, the additional floor cost along the way may be such that<br>taking a roundabout way will result in an overall lower cost.<br>For example the lowest cost route to box 1 is not [‘move e’, ‘move e’]:<br>warehouse &#x3D; [‘*..1’,<br>       ‘….’,<br>       ‘.##.’]</li>
+</ul>
+<p>warehouse_cost &#x3D; [[ 1, 95, 50, 1],<br>                  [ 1, 1, 1, 1],<br>                  [ 1, w, w, 1],]</p>
+</li>
+</ul>
+<p>—|—<br>Two example calculations for the total cost of an action using the example<br>grid above are:</p>
+<ul>
+<li>If the robot enters (0,1) from (0,0) then the total action cost will be: total action cost &#x3D; motion cost (horizontal movement) + floor cost (destination) &#x3D; 2 + 95 &#x3D; 97. </li>
+<li>If the robot enters (0,1) from (1,0) then the total action cost will be: total action cost &#x3D; motion cost (diagonal movement) + floor cost (destination) &#x3D; 3 + 95 &#x3D; 98.<br>Note that the floor cost to move into cell (0,1) is 95 regardless of the<br>direction the robot is entering from.<br>Three example calculations for the total action cost of illegal motions (i.e.<br>attempting to move into (or put down a box at) an occupied space or outside<br>the warehouse) are:</li>
+<li>If the robot attempts to move east from (2,0) then the total action cost will be: total action cost &#x3D; motion cost (horizontal movement) + illegal motion penalty cost &#x3D; 2 + 100 &#x3D; 102. </li>
+<li>If the robot attempts to move southeast from (2,0) then the total action cost will be: total action cost &#x3D; motion cost (diagonal movement) + illegal motion penalty cost &#x3D; 3 + 100 &#x3D; 103. </li>
+<li>If the robot attempts to put down a box to the southeast from (2,0) then the total action cost will be: total action cost &#x3D; motion cost (put down box) + illegal motion penalty cost &#x3D; 2 + 100 &#x3D; 102.<br>Note that the motion costs are still included in the case of illegal motions<br>even though they weren’t successful (the robot still exerted the energy).<br>Floor costs are only incurred when a motion is legally carried out. Floor<br>costs (of the box location) are incurred when legally lifting&#x2F;putting down<br>boxes.</li>
+</ul>
+<h3 id="Part-B-Method-Return-Specifications"><a href="#Part-B-Method-Return-Specifications" class="headerlink" title="Part B Method Return Specifications"></a>Part B Method Return Specifications</h3><p>plan_delivery should return two policies, each as a list of lists of strings<br>indicating the motion to take at each square on the grid. The format of the<br>commands is the same as in part A. The special command ‘-1’ should be placed<br>at any square for which there is no valid command, such as a wall.<br>For example, for the values of warehouse and todo given previously (reproduced<br>below):<br>    warehouse &#x3D; [‘1..’,<br>                 ‘.#.’,<br>                 ‘..@’]<br>—|—<br>plan_delivery might return the following two policies:<br>To Box Policy:<br>    [[‘B     ‘, ‘lift 1’ , ‘move w’ ]<br>     [‘lift 1’, ‘-1’     , ‘move nw’]<br>     [‘move n’, ‘move nw’, ‘move n’ ]]<br>—|—<br>Deliver Box Policy:<br>    [[‘move e’ , ‘move se’, ‘move s’]<br>     [‘move ne’, ‘-1’     , ‘down s’]<br>     [‘move e’ , ‘down e’ , ‘move n’]]<br>—|—<br>where: ‘B’ indicates the box location.<br>For the “Deliver Box Policy”, the dropzone includes a motion in the event the<br>robot starts on, lifts an adjacent box, and then must move off the dropzone to<br>deliver it.</p>
+<h3 id="Part-B-Scoring"><a href="#Part-B-Scoring" class="headerlink" title="Part B Scoring"></a>Part B Scoring</h3><p>The testing suite will pick a starting location for the robot and then execute<br>the motions specified by the “To Box Policy” until it finds and lifts the box.<br>Then it will use the “Deliver Box Policy” and, given the location of the robot<br>when it lifted the box, the appropriate commands are executed until the the<br>box is delivered to the dropzone. The total cost of the student delivery is<br>denoted as: student_cost. The score for each test case will be calculated the<br>same as part A.</p>
+<h2 id="Part-C"><a href="#Part-C" class="headerlink" title="Part C"></a>Part C</h2><p>In this part there is only one main difference from part B:</p>
+<ul>
+<li>move motions are stochastic<br>DeliveryPlanner_PartC’s constructor must have five arguments: self, warehouse,<br>warehouse_cost, todo, and stochastic_probs.<br>In part A and B we dealt with a deterministic robot. In real life however, we<br>are inevitably faced with stochasticity. As such, part C is about finding an<br>optimal policy based on stochastic robot motions.<br>Note: For this part you should find 2 individually optimal policies: pick up<br>and drop off. This means your main algorithm should be executed 2 times: once<br>to obtain the optimal policy to pick up the box and once to obtain the optimal<br>policy to deliver the box.</li>
+</ul>
+<h3 id="Part-C-Rules-for-Motions"><a href="#Part-C-Rules-for-Motions" class="headerlink" title="Part C Rules for Motions"></a>Part C Rules for Motions</h3><p>Rules for motions are almost the same as part A &amp; B. Instead of deterministic<br>movements however, the robot will move according to a probability distribution<br>defined by stochastic_probabilities. stochastic_probabilities will give you<br>the probability that the movement will be as_intended, slanted, or sideways as<br>depicted in the grids below. Since these are probabilities, the sum of all<br>possible outcomes will be one: 2 (sideways + slanted) + as_intended &#x3D; 1. Your<br>code should be able to handle any distribution provided to you in<br>stochastic_probabilities. as_intended will be strictly greater than 0% and<br>strictly less than 100%. The as_intended direction in the images below<br>indicates the intended movement by the robot. Note that slanted and sideways<br>are with respect to the intended movement direction.<br>Note that Example 2 and 3 above are the same since orientation does not matter<br>in this project, they are both provided to emphasize that the unintended<br>stochastic outcomes are with respect to the intended movement direction.<br>To understand the stochastic movement probability better, lets take a look at<br>a few concrete examples. Assume the movement probability distribution is given<br>as:</p>
+<ul>
+<li>as intended &#x3D; 70% </li>
+<li>slanted &#x3D; 10% </li>
+<li>sideways &#x3D; 5%<br>Do yourself a favor and validate that the sum of all possible outcomes for<br>this example is indeed one. The probability distribution showing the outcomes<br>of an intended movement of “move n” in 3 different scenarios are depicted<br>below:<br>Notice that in example #5, the two locations occupied by a wall prevent the<br>robot from moving into those spaces and therefore the robot stays in place 15%<br>(10% + 5% ) of the time. Similarly, any attempt to move outside the warehouse<br>will result in the robot staying in the same location (as seen in example #6).<br>Only directional movement is stochastic. The lift and down motions are<br>deterministic.</li>
+</ul>
+<h3 id="Part-C-Costs-for-Actions"><a href="#Part-C-Costs-for-Actions" class="headerlink" title="Part C Costs for Actions"></a>Part C Costs for Actions</h3><p>Same as part B, with the clarification that the cost incurred is the cost of<br>the motion actually performed. This may differ from the motion attempted<br>(intended), due to the stochastic nature of Part C.<br>For example, if the intended motion is a vertical movement, but the robot ends<br>up performing a slanted movement then the result will incur a diagonal<br>movement cost. Similarly, if the intended motion is a diagonal movement, but<br>the robot ends up performing a sideways movement then the result will incur a<br>diagonal movement cost.</p>
+<h3 id="Part-C-Output-Specifications"><a href="#Part-C-Output-Specifications" class="headerlink" title="Part C Output Specifications"></a>Part C Output Specifications</h3><p>Same as part B.</p>
+<h2 id="Part-C-Scoring"><a href="#Part-C-Scoring" class="headerlink" title="Part C Scoring"></a>Part C Scoring</h2><p>TL;DR: for each correct policy (to-box and to-dropzone) you will earn 0.5<br>points for a total of 1 point per test case. More details about the scoring<br>are below, but not required to complete the project.<br>A random number generator will be seeded in order to produce deterministic<br>(consistent) results. The testing suite will initialize a robot at robot_init.<br>The student policy is then used to express the intended motion at each step.<br>The performed motion (stochastic movement or deterministic lift&#x2F;down) is<br>recorded at each step. Note that the performed motion may not be the same as<br>the motion specified in your policy (intended motion) due to stochasticity.<br>The list of performed motions (actions) are recorded as:<br>student_performed_actions. Since the random number generator is seeded, a<br>particular policy will always produce the same list of performed motions. You<br>are given 0.5 points if student_performed_actions match the<br>correct_performed_actions.<br>Before starting the to-zone policy procedure, the testing suite will place the<br>robot at location robot_init2 and pick up the box. This is to allow you<br>partial credit to earn points for a correct to-dropzone policy even if you<br>failed the to-box policy.<br>Note that there is very little information that can be gleaned from analyzing<br>correct_performed_actions. This is not intended as a means of debugging for<br>the students, rather as a way to grade the policy. This means you aren’t given<br>a crutch that tells you exactly what your code should be outputting, instead<br>you must analyze your code by scrutinizing your implementation of the<br>algorithm and making sure to adhere to the warehouse rules laid out in this<br>document.</p>
+<h2 id="Environment-Test"><a href="#Environment-Test" class="headerlink" title="Environment Test"></a>Environment Test</h2><p>Before changing warehouse.py, test your environment using the following steps:</p>
+<ol>
+<li>From the command line run: python warehouse.py<br>* A list of moves for Part A test case 1 should be printed<br>* A “to_box_policy” and “deliver_policy” will be printed for part B, test case 1<br>* A “to_box_policy” and “to-zone_policy” will be printed for part C, test case 1 </li>
+<li>From the command line run: python testing_suite_PartA.py [or B, C, or full]<br>* A list of test cases and their score should show that test case 1 passed and the remaining failed.<br>* There are more notes in testing_suite_partA.py to discuss how to run and debug</li>
+</ol>
+<h2 id="Visualization"><a href="#Visualization" class="headerlink" title="Visualization"></a>Visualization</h2><p>There is an ASCII based visualization which will print the warehouse state and<br>other important data to the console. This can be set by using the VERBOSE_FLAG<br>in the testing suite files.<br>In addition, there is a GUI based visualization, set VISUALIZE_FLAG&#x3D;True. You<br>can change the GUI frame rate speed in the visualizer.py file. The 6 choices<br>are [1,2,3,4,5] (slow to fast) and [0] which is MANUAL-PAUSE mode (this will<br>not proceed to the next time step until you press the space bar). You can<br>conveniently quit any test case by pressing the Esc (escape) key. An example<br>demo video can be found at the following link.<br>Part A’s visualization will also indicate to you which cells your algorithm<br>(did and didn’t) access during the search process. The cells with a dark<br>overlay on them indicate cells that your algorithm didn’t access.<br>In testing_suite_partA.py you can turn on TEST_MODE to control the robot with<br>your keyboard. This can be used to validate and build your understanding about<br>the rules of the game. The controls are the following (note that NumLock may<br>need to be turned off).</p>
+<h2 id="Development-and-Debugging"><a href="#Development-and-Debugging" class="headerlink" title="Development and Debugging"></a>Development and Debugging</h2><p>When developing and debugging here are some ideas that might prove helpful.</p>
+<ol>
+<li>During initial development of your algorithm use warehouse.py and its main function<br>* Copy a test case from the testing suite to the main in the bottom of warehouse.py </li>
+<li>Test your algorithm using a single test case:<br>* You can run a single test case. For example to run the first test case for partA: python testing_suite_partA.py PartATestCase.test_case_01<br>* Or you may comment out all but a single test case in the testing_suite </li>
+<li>If testing in a debugger, to allow breakpoints to work properly, there are some flags that can be set at the top of testing_suite_partA.py and testing_suite_partB.py<br>* Set the TIME_OUT to a very large value (like 600 seconds)<br>* Set DEBUGGING_SINGLE_PROCESS &#x3D; True (this disables multiprocessing, which messes up most debuggers)<br>* Set VERBOSE_FLAG &#x3D; True <ul>
+<li>provides a simple console based visualization </li>
+<li>provides line numbers for any syntax errors that occur </li>
+<li>if exceptions are raised provides detailed stack trace <ul>
+<li>After the test case of interest works be sure to set the flags back to</li>
+</ul>
+</li>
+<li>VERBOSE_FLAG &#x3D; False </li>
+<li>TIME_OUT &#x3D; 5 </li>
+<li>DEBUGGING_SINGLE_PROCESS &#x3D; False</li>
+</ul>
+</li>
+<li>Part C outputs some additional terminal based data and visualizations that may be helpful in developing your solution, to turn them on set VERBOSE &#x3D; True in the testing suite.<br>Surrounding the warehouse policy are the row and column indexes so it is<br>easier to locate a particular index (helpful on larger warehouses). The arrows<br>denote the policy motion. The empty square denotes a box. The white square<br>denotes a wall. + denotes a lift command. - denotes a down command. Note that<br>lift and down for part C are a little more lax as they do not check the box<br>number nor direction.<br>If you also return a set of values to accompany your policies then these will<br>be displayed (as integers) next to your motions. These values can represent<br>anything you want and can serve as a way to visually see why certain motions<br>are as they are.<br>The correct actions performed and student actions performed are output for<br>part C. The difference between these are marked with indicating the place<br>where the lists do not match.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/03/11/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS7638WarehouseAI/">http://saferman.github.io/2019/03/11/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS7638WarehouseAI/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/03/12/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACOM5725HospitalSystemDatabaseandDataInterfacePart2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="PostgreSQL代写：COM5725 Hospital System Database and Data Interface Part2">
+                        
+                        <span class="card-title">PostgreSQL代写：COM5725 Hospital System Database and Data Interface Part2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-03-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">PostgreSQL代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/03/07/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSE1100WordLink/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Java代写：CSE1100 WordLink">
+                        
+                        <span class="card-title">Java代写：CSE1100 WordLink</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-03-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

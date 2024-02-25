@@ -1,0 +1,970 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="MIPS代写：CSE320 MIPS Translate, 留学生CS|辅导|代写">
+    <meta name="description" content="代写MIPS指令转换器，在MIPS指令和MIPS语言进行转换。  
+IntroductionIn this assignment, you will write a command line utility to translate MIP">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>MIPS代写：CSE320 MIPS Translate | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MIPS代写：CSE320 MIPS Translate</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MIPS%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">MIPS代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-10-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写MIPS指令转换器，在MIPS指令和MIPS语言进行转换。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will write a command line utility to translate MIPS<br>machine code between binary and human-readable mnemonic form. The goal of this<br>homework is to familiarize yourself with C programming, with a focus on<br>input&#x2F;output, strings in C, and the use of pointers.<br>You MUST write your helper functions in a file separate from main.c. The<br>main.c file MUST ONLY contain #includes, local #defines and the main function.<br>This is the only requirement for project structure. Beyond this, you may have<br>as many or as few additional .c files in the src directory as you wish. Also,<br>you may declare as many or as few headers as you wish. In this document, we<br>use hw1.c as our example file containing helper functions.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>Fetch base code for hw1 as described in hw0.<br>Both repos will probably have a file named .gitlab-ci.yml with different<br>contents. Simply merging these files will cause a merge conflict. To avoid<br>this, we will merge the repos using a flag so that the .gitlab-ci.yml found in<br>the hw1 repo will be the file that is preserved. To merge, use this command:<br>    git merge -m “Merging HW1_CODE” HW1_CODE&#x2F;master –strategy-option theirs<br>Note: All commands from here on are assumed to be run from the hw1 directory.</p>
+<h2 id="A-Note-about-Program-Output"><a href="#A-Note-about-Program-Output" class="headerlink" title="A Note about Program Output"></a>A Note about Program Output</h2><p>What a program does and does not print is VERY important. In the UNIX world<br>stringing together programs with piping and scripting is commonplace. Although<br>combining programs in this way is extremely powerful, it means that each<br>program must not print extraneous output. For example, you would expect ls to<br>output a list of files in a directory and nothing else. Similarly, your<br>program must follow the specifications for normal operation. One part of our<br>grading of this assignment will be to check whether your program produces<br>EXACTLY the specified output. If your program produces output that deviates<br>from the specifications, even in a minor way, or if it produces extraneous<br>output that was not part of the specifications, it will adversely impact your<br>grade in a significant way, so pay close attention.<br>Use the debug macro debug (described in the 320 reference document in the<br>Piazza resources section) for any other program output or messages you many<br>need while coding (e.g. debugging output).</p>
+<h2 id="Part-1-Program-Operation-and-Argument-Validation"><a href="#Part-1-Program-Operation-and-Argument-Validation" class="headerlink" title="Part 1: Program Operation and Argument Validation"></a>Part 1: Program Operation and Argument Validation</h2><p>In this part, you will write a function to validate the arguments passed to<br>your program via the command line. Your program will support the following<br>flags:</p>
+<ul>
+<li>If no flags are provided, you will display the usage and return with an EXIT_FAILURE return code </li>
+<li>If the -h flag is provided, you will display the usage for the program and exit with an EXIT_SUCCESS return code </li>
+<li>If the -a flag is provided, you will perform text-to-binary conversion (i.e. “assembly”), reading text from stdin and writing binary to stdout. </li>
+<li>If the -d flag is provided, you will perform binary-to-text conversion (i.e. “disassembly”), reading binary from stdin and writing text to stdout. <ul>
+<li>The -a and -d flags are not allowed to be used in combination with each other </li>
+<li>EXIT_SUCCESS and EXIT_FAILURE are macros defined in <code>&lt;stdlib.h&gt;</code> which represent success and failure return codes respectively. </li>
+<li>stdin, stdout, and stderr are special files that are opened upon execution for all programs and do not need to be reopened.<br>Some of these operations will also need other command line arguments which are<br>described in each part of the assignment. The two usages for this program are:<br>usage: .&#x2F;hw1 -h [any other number or type of arguments]<br>usage: bin&#x2F;hw1 [-h] -a|-d [-b BASEADDR] [-e ENDIANNESS]<br>  -a Assemble: convert mnemonics to binary code<br>  -d Disassemble: convert binary code to mnemonics<br> Additional parameters: [-b BASEADDR] [-e ENDIANNESS]<br>  -b BASEADDR is the starting memory address for the code<br>      It must be a hexadecimal number of 8 digits or less<br>  -e ENDIANNESS specifies the byte order of the binary code<br>     It must be a single character:<br>         b for big-endian, or<br>         l for little-endian<br>  -h Display this help menu.</li>
+</ul>
+</li>
+</ul>
+<p>A valid invocation of the program implies that the following hold about the<br>command-line arguments:</p>
+<ul>
+<li>All positional arguments (-a|-d) come before any optional arguments (-b and -e). The optional arguments may come in any order after the positional ones. </li>
+<li>If the -h flag is provided, it is the first positional argument after the program executable. </li>
+<li>If an option requires a parameter, the corresponding parameter must be provided (e.g. -e must always be followed by an ENDIANNESS specification). </li>
+<li>If -b is given, the BASEADDR argument will be given as a hexadecimal number in which in addition to the digits (‘0’-‘9) either upper-case letters (‘A’-‘F’) or lower-case letters (‘a’-‘f’) may be used, in any combination. </li>
+<li>If -e is given, then the ENDIANNESS argument will be a single word (i.e. will have no whitespace). <ul>
+<li>You may only use argc and argv for argument parsing and validation. Using any libraries that parse command line arguments (e.g. getopt) is prohibited. </li>
+<li>Any libraries that help you parse strings are prohibited as well (string.h, ctype.h, etc). This is intentional and will help you practice parsing strings and manipulate pointers. </li>
+<li>You MAY NOT use dynamic memory allocation in this assignment (i.e. malloc, realloc, calloc, mmap, etc)<br>For example, the following are a subset of the possible valid argument<br>combinations:</li>
+</ul>
+</li>
+<li>$ bin&#x2F;hw1 -h … </li>
+<li>$ bin&#x2F;hw1 -a </li>
+<li>$ bin&#x2F;hw1 -a -e b </li>
+<li>$ bin&#x2F;hw1 -d -b D000d000 -e l<br>Some examples of invalid orderings would be:</li>
+<li>$ bin&#x2F;hw1 -e b -d </li>
+<li>$ bin&#x2F;hw1 -b D000d000 -a -e b <ul>
+<li>The … means that all arguments, if any, are to be ignored; e.g. the usage bin&#x2F;hw1 -h -a -b D00D000 -e b is equivalent to bin&#x2F;hw1 -h<br>NOTE: The makefile compiles the hw1 executable into the bin folder. Assume all<br>commands in this doc are run from from the hw1 directory of your repo.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Required-Validate-Arguments-Function"><a href="#Required-Validate-Arguments-Function" class="headerlink" title="Required Validate Arguments Function"></a>Required Validate Arguments Function</h2><p>In const.h, you will find the following function prototype (function<br>declaration) already declared for you. You MUST implement this function as<br>part of the assignment.<br>    &#x2F;**<br>     * @brief Validates command line arguments passed to the program.<br>     * @details This function will validate all the arguments passed to the<br>     * program, returning 1 if validation succeeds and 0 if validation fails.<br>     * Upon successful return, the selected program options will be set in the<br>     * global variable “global_options”, where they will be accessible<br>     * elsewhere in the program.<br>     *<br>     * @param argc The number of arguments passed to the program from the CLI.<br>     * @param argv The argument strings passed to the program from the CLI.<br>     * @return 1 if validation succeeds and 0 if validation fails.<br>     * Refer to the homework document for the effects of this function on<br>     * global variables.<br>     * @modifies global variable “global_options” to contain a bitmap representing<br>     * the selected options.<br>     *&#x2F;<br>    int validargs(int argc, char **argv);<br>—|—<br>This function must be implemented as specified as it will be tested and graded<br>independently. It should always return – the USAGE macro should never be<br>called from validargs.<br>The validargs function should return 0 if there is any form of failure. This<br>includes, but is not limited to:</p>
+<ul>
+<li>Invalid number of arguments (too few or too many) </li>
+<li>Invalid ordering of arguments </li>
+<li>A missing parameter to an option that requires one (e.g. -e with no ENDIANNESS specification). </li>
+<li>Invalid base address (if one is specified). A base address is invalid if it contains characters other than the digits (‘0’-‘9), upper-case letters (‘A’-‘F’), and lower-case letters (‘a’-‘f’), if it is more than 8 digits in length, or if it is not a multiple of 4096 (i.e. the twelve least-significant bits of its value are not all zero). </li>
+<li>Invalid endianness (if one is specified). An endiannness is invalid if either it does not consist of a single character or that single character is not either ‘b’ or ‘l’.<br>The global_options variable of type unsigned int is used to record the mode of<br>operation (i.e. assemble&#x2F;disassemble) of the program, as well as any selected<br>flags and base address. This is done as follows:</li>
+<li>If the -h flag is specified, the least significant bit is 1 </li>
+<li>The second least significant bit is 0 if -a is passed (i.e. the user wants assembly mode) and 1 if -d is passed (i.e. the user wants disassembly mode) </li>
+<li>The third least signficant bit is 1 if -e b is passed (i.e. the user wants big-endian byte ordering) and 0 otherwise. </li>
+<li>If the -b option was specified, then the base address is given by taking the value of global_options and clearing the 12 least significant bits. If the -b option was not specified, then the 20 most significant bits of global_options should all be 0 (i.e. the default base address is 0).<br>If validargs returns 0 indicating failure, your program must print<br>USAGE(program_name, return_code) and return EXIT_FAILURE. Once again,<br>validargs must always return, and therefore it must not call the<br>USAGE(program_name, return_code) macro itself. That should be done in main.<br>If validargs sets the least significant bit of global_options to 1 (i.e. the<br>-h flag was passed), your program must print USAGE(program_name, return_code)<br>and return EXIT_SUCCESS.</li>
+<li>The USAGE(program_name, return_code) macro is already defined for you in const.h.<br>If validargs returns 1 and the least significant bit of global_options is 0,<br>your program must perform assembly or disassembly accordingly and return<br>EXIT_SUCCESS upon successful completion, or EXIT_FAILURE in case of an error.<br>If -b is provided, you must check to confirm that the specified base address<br>is valid.<br>If -e is provided, you must check that the specified endianness is either the<br>single character b or the single character l.</li>
+<li>Remember EXIT_SUCCESS and EXIT_FAILURE are defined in [stdlib.h]. Also note, EXIT_SUCCESS is 0 and EXIT_FAILURE is 1. </li>
+<li>We suggest that you create functions for each of the operations defined in this document. Writing modular code will help you isolate and fix problems.</li>
+</ul>
+<h2 id="Sample-validargs-Execution"><a href="#Sample-validargs-Execution" class="headerlink" title="Sample validargs Execution"></a>Sample validargs Execution</h2><p>The following are examples of global_options settings for given inputs. Each<br>input is a bash command that can be used to run the program. In the examples,<br>all don’t care bits (bits 3-11, where the least significant bit is numbered 0<br>and the most significant bit is numbered 31) have been set to 0.</p>
+<ul>
+<li>Input: bin&#x2F;hw1 -h. Setting: 0x1 (help bit is set. All other bits are don’t cares.) </li>
+<li>Input: bin&#x2F;hw1 -d. Setting: 0x2 (disassemble bit is set). </li>
+<li>Input: bin&#x2F;hw1 -d -e b. Setting: 0x6 (disassemble and big endian bits are set). </li>
+<li>Input: bin&#x2F;hw1 -d -e b -b BaB000. Setting: 0xBAB006 (disassemble and big endian bits are set, base address is 0xBAB000). </li>
+<li>Input: bin&#x2F;hw1 -e b -d -b BaB000. Setting: 0x0. This is an error case because the argument ordering is invalid (-e is before -d). In this case validargs returns 0, leaving global_options unset.</li>
+</ul>
+<h2 id="Part-2-MIPS-Instruction-Format"><a href="#Part-2-MIPS-Instruction-Format" class="headerlink" title="Part 2: MIPS Instruction Format"></a>Part 2: MIPS Instruction Format</h2><p>Presumably you learned something about the MIPS process and its instruction<br>set in CSE 220. If you need to, review the materials used for that course. You<br>might also find useful information via this link or this one. Below we<br>summarize the information about the MIPS instruction format that will be<br>needed to do the assignment.<br>Each MIPS instruction consists of one 32-bit word. We will number the bits<br>from 0 (least significant bit) to 31 (most significant bit) and we will think<br>of bit 31 as being “leftmost”. To indicate a particular bit field from the<br>instruction word we will use a notation like 31:26, which indicates bits 31<br>down to 26; that is, the 6 “leftmost”, or most significant bits.<br>In every MIPS instruction, bit field 31:26 is used as a 6-bit opcode. Most<br>instructions are directly identified by one of the 64 possible values of this<br>field, but as we will see there are some special cases. There are three types<br>of MIPS instructions: R, I, and J. Instructions of type R take up to three<br>registers as arguments. Instructions of type I take up to two registers and a<br>16-bit immediate value (obtained from the 16 least significant bits of the<br>instruction word). Instructions of type J take a jump target from the 26 least<br>signficant bits of the instruction word. The MIPS processor has 32 registers,<br>which means that it takes 5 bits to specify a register. The registers are<br>specified by the contents of bit fields 25:21 (called RS), 20:16 (called RT),<br>and 15:11 (called RD), or, in some cases, bit field 10:6.<br>In the files instruction.h and instr_table.c you have been provided with a set<br>of tables that can be used to decode MIPS binary instruction words. Rather<br>than going through full details of the MIPS instruction format, we will just<br>go through the procedure for decoding an instruction using the tables. The<br>type Opcode is an enumerated type that assigns to integer values in the range<br>0 to 63 the names of MIPS instructions, and in addition defines names for<br>three additional values SPECIAL (64), BCOND (65), and ILLEGL (66). Opcode<br>values in the range 0 to 63 serve as indices into the instruction table<br>instrTable. Each entry in this table uniquely identifies a particular type of<br>MIPS instruction and provides further information about it. Our first<br>objective in decoding an instruction is to determine the proper Opcode value<br>(in the discussion below we refer to this as “the Opcode”), thereby obtaining<br>access to the proper entry from the instruction table.<br>The starting point for obtaining the Opcode is the value in bits 31:26 of the<br>instruction word. This value is used as an index into opcodeTable and the<br>value (of type Opcode) at that index in the table is retrieved.</p>
+<ul>
+<li>If the value obtained from opcodeTable is neither SPECIAL nor BCOND, then it is the Opcode. </li>
+<li>If the value obtained from opcodeTable is SPECIAL (this occurs when the value of bits 31:26 is 000000), then the value in bits 5:0 of the instruction word is used as an index into the table specialTable to obtain the Opcode. </li>
+<li>If the value obtained from opcodeTable is BCOND, then the value in bits 20:16 is examined. If the value is 00000, 00001, 10000, or 10001, then the Opcode is OP_BLTZ, OP_BGEZ, OP_BLTZAL, or OP_BGEZAL, respectively, otherwise it is an error.<br>Having determined the Opcode, it is then used as an index into instrTable and<br>the corresponding Instr_info structure is retrieved. What happens next depends<br>on the value of the type field. This value can be NTYP (which occurs in a few<br>entries of the table that do not correspond to actual instructions), RTYP,<br>which indicates an instruction of type R, ITYP, which indicates an instruction<br>of type I, and JTYP, which indicates an instruction of type J.<br>The next task is to determine the sources of the instruction arguments. For<br>this, the information in the srcs field of the Instr_info structure is used.<br>This field consists of an array of three values of type Source. The first<br>entry in this array specifies the source of the first instruction argument,<br>the second entry specifies the source of the second instruction argument, and<br>the third entry specifies the source of the third argument. There are five<br>possible source values: RS, RT, RD, EXTRA, and NSRC. The value RS indicates<br>that the argument source is the register specified by the RS field of the<br>instruction word. Similarly, the values RT and RD the argument source is the<br>register specified by the RT or RD field of the instruction word,<br>respectively. The value EXTRA indicates that the argument value has to be<br>decoded from the instruction word in a way that depends on the particular type<br>of instruction. The value NSRC is used as a place-holder value for<br>instructions that take fewer than three arguments.<br>For arguments with source EXTRA, the actual argument is determined as follows:</li>
+<li>If the Opcode is OP_BREAK, then the argument consists of the 20-bit value in bits 25:6 of the instruction word. </li>
+<li>For instructions of type R, the argument consists of the 5-bit value in bits 10:6 of the instruction word. </li>
+<li>For instructions of type I, the argument is obtained by extracting the 16-bit value in bits 15:0, treating bit 15 as a sign bit, and performing sign-extension to a 32-bit signed integer. For non-branch instructions of type I (such as ADDI), this 32-bit signed integer is the immediate argument to the instruction.<br>For the conditional branch instructions BEQ, BGEZ, BGEZ, BGEZAL, BGTZ, BLEZ,<br>BLTZ, BLTZAL, BNE, the 32-bit signed integer value is further processed by<br>shifting it left by two bits (which amounts to multiplication by 4) and then<br>treating it as a PC-relative branch offset. It is added to the current value<br>of the PC register (this will be the memory address at which the instruction<br>“lives”, plus 4) to obtain an absolute address which is the branch target.</li>
+<li>For instructions of type J, the argument is obtained by extracting the 26-bit value in bits 25:0 of the instruction word and treating it as an unsigned integer. This value is shifted left by two bits and then added to the value obtained from the PC by zeroing the 28 least significant bits, to obtain an absolute address that is the jump target. (As above, the PC value is given by the memory address of the instruction, plus 4.)</li>
+</ul>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><p>The instruction word is 0x00c72820, which when written in binary is:<br>    0000 0000 1100 0111 0010 1000 0010 0000<br>    OOOO OOSS SSST TTTT DDDD D FF FFFF<br>The letters written underneath the bits indicate the various bit fields: O for<br>the opcode field in bits 31:26, S for the RS field in bits 25:21, T for the RT<br>field in bits 20:16, D for the RD field in bits 15:11, and F for the function<br>code in bits 5:0. The value in bits 31:26 is 000000; i.e. 0. Using this as an<br>index into opcodeTable yields SPECIAL, so it is then necessary to use the<br>value in bits 5:0 as an index into specialTable. This index is 100000, or 32<br>in decimal, and the entry at that index is OP_ADD. The corresponding entry in<br>instrTable indicates that the ADD instruction is of type R, and that the three<br>arguments are given by RD, RS, and RT. The value of RD (in bits 15:11) is<br>00101 indicating that the first argument is register 5. The value of RS (in<br>bits 25:21) is 00110 indicating that the second argument is register 6. The<br>value of RT (in bits 20:16) is 00111 indicating that the third argument is<br>register 7. So the mnemonic form of this instruction is add $5,$6,$7.</p>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h3><p>The instruction word is 0x8cc50007, which when written in binary is:<br>    1000 1100 1100 0101 0000 0000 0000 0111<br>    OOOO OOSS SSST TTTT XXXX XXXX XXXX XXXX<br>The value in bits 31:26 is 100011, or 35. Using this as an index into<br>opcodeTable yields OP_LW. The corresponding entry from instrTable indicates<br>that the instruction is of type I, with first argument source RT, second<br>argument source EXTRA, and the third argument source RS. RT is 00101 so the<br>first argument is register 5. RS is 00110 so the third argument is register 6.<br>The second argument is obtained from bits 15:0, which have the value 7. So the<br>mnemonic form of this instruction is lw $5,7($6).</p>
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h3><p>The instruction word is 0x10effc1f, which when written in binary is:<br>    0001 0000 1110 1111 1111 1100 0001 1111<br>    OOOO OOSS SSST TTTT XXXX XXXX XXXX XXXX<br>The value in bits 31:26 is 000100, or 4. Using this as an index into<br>opcodeTable yields OP_BEQ. The corresponding entry from instrTable indicates<br>that the instruction is of type I, with first argument source RS, second<br>argument source RT, and the third argument source EXTRA. RS is 00111 so the<br>first argument is register 7. RT is 01111 so the third argument is register<br>15. The third argument is obtained from bits 15:0, which is fc1f in hex. This<br>16-bit value is sign-extended to the 32-bit signed value fffffc1f, which is<br>then shifted two bits to obtain ffff f07c, or -3972 in decimal. This is the<br>PC-relative branch offset. This offset is added to the current value of the PC<br>(i.e. the memory address of the instruction, plus 4) to obtain the final<br>absolute address that is the branch target. Assuming the memory addess of this<br>instruction is 1000 in hex, or 4096 in decimal, the branch target is 4096 + 4</p>
+<ul>
+<li>3972, or 128 in decimal. So the mnemonic form of this instruction is beq<br>$7,$15,128.</li>
+</ul>
+<h3 id="Example-4"><a href="#Example-4" class="headerlink" title="Example 4"></a>Example 4</h3><p>The instruction word is 0x08000400, which when written in binary is:<br>    0000 1000 0000 0000 0000 0100 0000 0000<br>    OOOO OOXX XXXX XXXX XXXX XXXX XXXX XXXX<br>The value in bits 31:26 is 000010, or 2. Using this as an index into<br>opcodeTable yields OP_J. The value in bits 25:0 is 0000400, which is shifted<br>left two bits to obtain 00001000 in hex. Assuming that the memory address of<br>the instruction is 40000000 in hex, the PC value at the time of execution<br>would be 40000004. Clearing the 28 least-significant bits yields 40000000, and<br>adding this to 00001000 yields 40001000 in hex. So the mnemonic form of this<br>instruction is j 0x40001000.<br>The MIPS instruction set does not support jumps to addresses whose four most-<br>significant bits differ from those of the current PC value. Consequently, an<br>attempt to assemble a jump instruction (i.e. J or JAL) whose target address<br>differs in its four most-significant bits from the base address supplied with<br>-b should be treated as an error.</p>
+<h2 id="Part-3-Required-encode-and-decode-functions"><a href="#Part-3-Required-encode-and-decode-functions" class="headerlink" title="Part 3: Required encode and decode functions"></a>Part 3: Required encode and decode functions</h2><p>In order to provide some additional structure for you, as well as to make it<br>possible for us to perform additional unit tests on your program, you are<br>required to implement the two functions below as part of your program. The<br>prototypes for these functions are given in const.h. Once again, you MUST<br>implement these functions as part of the assignment, as we will be testing<br>them separately.<br>    &#x2F;**<br>     * @brief Computes the binary code for a MIPS machine instruction.<br>     * @details This function takes a pointer to an Instruction structure<br>     * that contains information defining a MIPS machine instruction and<br>     * computes the binary code for that instruction. The code is returne<br>     * in the “value” field of the Instruction structure.<br>     *<br>     * @param ip The Instruction structure containing information about the<br>     * instruction, except for the “value” field.<br>     * @param addr Address at which the instruction is to appear in memory.<br>     * The address is used to compute the PC-relative offsets used in branch<br>     * instructions.<br>     * @return 1 if the instruction was successfully encoded, 0 otherwise.<br>     * @modifies the “value” field of the Instruction structure to contain the<br>     * binary code for the instruction.<br>     <em>&#x2F;<br>    int encode(Instruction <em>ip, unsigned int addr);<br>    &#x2F;</em></em><br>     * @brief Decodes the binary code for a MIPS machine instruction.<br>     * @details This function takes a pointer to an Instruction structure<br>     * whose “value” field has been initialized to the binary code for<br>     * MIPS machine instruction and it decodes the instruction to obtain<br>     * details about the type of instruction and its arguments.<br>     * The decoded information is returned by setting the other fields<br>     * of the Instruction structure.<br>     *<br>     * @param ip The Instruction structure containing the binary code for<br>     * a MIPS instruction in its “value” field.<br>     * @param addr Address at which the instruction appears in memory.<br>     * The address is used to compute absolute branch addresses from the<br>     * the PC-relative offsets that occur in the instruction.<br>     * @return 1 if the instruction was successfully decoded, 0 otherwise.<br>     * @modifies the fields other than the “value” field to contain the<br>     * decoded information about the instruction.<br>     *&#x2F;<br>    int decode (Instruction *ip, unsigned int addr);<br>—|—<br>These functions each take as an argument a pointer to a structure of type<br>Instruction, which is defined in instruction.h. The decode function assumes<br>that the value field has been set to the binary code for a MIPS instruction,<br>and it decodes this value to fill in the other fields. The info field should<br>be set to a pointer to the appropriate Instr_info structure obtained from<br>instrTable. The entries of the regs array should be set to the contents of the<br>RS, RT, and RD fields of the instruction word. (Note: these should always be<br>set even if the particular instruction does not use those fields.) The extra<br>field should be set to the “extra” argument decoded from the instruction word.<br>As this is done differently for each type of instruction, this does not have<br>to be set unless the instruction uses EXTRA as an argument source. The entries<br>of the args field should be set to the final values of the instruction<br>arguments, as required in order print out the instruction in mnemonic form<br>(i.e. args[0] corresponds to the first % in the format string, args[1]<br>corresponds to the second %, and args[2] to the third). If the instruction<br>takes fewer than three arguments, the unused entries (i.e. the ones with src<br>NSRC) should be set to 0.<br>The encode function does the inverse operation from decode: it assumes that<br>all the fields other than value have been set, and it computes the binary code<br>for the instruction and stores it in the value field.<br>You should not define additional tables to help you map instruction mnemonics<br>to Opcode values for implementing encode. Instead, to perform this mapping you<br>should use a linear search of the existing instrTable. You should use the<br>sscanf function to match a format string from the instrTable against a<br>mnemonic instruction read from the input. The mapping defined by the<br>specialTable should be inverted using a similar linear scan approach.<br>The implementation of validargs, encode, and decode constitutes most of the<br>work involved in implementing the program. Once these have been written,<br>finishing the program should be easy.<br>One requirement we have yet to consider is the endianness option. Recall that<br>“endianness” refers to the order in which the bytes in a multi-byte quantity<br>are stored in memory or written to a file. In “little-endian” byte order, the<br>least-significant byte is stored at the lowest-numbered memory address or<br>written first to a file. In “big-endian” byte order, the most-significant byte<br>is stored or written first.<br>The default mode of operation of your program should be to use little-endian<br>byte order for reading and writing binary MIPS code. However, if the -e b<br>option is specified, then big-endian ordering should be used instead.</p>
+<h2 id="Part-4-Running-the-Completed-Program"><a href="#Part-4-Running-the-Completed-Program" class="headerlink" title="Part 4: Running the Completed Program"></a>Part 4: Running the Completed Program</h2><p>In either assembly or disassembly mode, the program reads from stdin and<br>writes to stdout. In assembly mode, since the input is text, it is possible to<br>enter to enter assembly code directly from the terminal:<br>    $ bin&#x2F;hw1 -a<br>    add $5,$6,$7<br>    j 0x1000<br>NOTE: In the above example, the program encrypts one line at a time and stops<br>encrypting after it reads ^d (control-d) from stdin. Entering ^d into a<br>terminal in a UNIX system signals an EOF (end of file) to the program.<br>If you run the program in assembly mode this way, the binary output of the<br>program will also be sent to the terminal. This binary data will appear as<br>“garbage” in the output. To avoid this, the binary output should be<br>redirected, either to a file or else via a pipe to a program that can produce<br>a printable representation of it.<br>To redirect the output to a file hw1.out, you can use:<br>    $ bin&#x2F;hw1 -a &gt; hw1.out<br>    add $5,$6,$7 j 0x1000<br>    $ echo $?<br>The <code>&gt;</code> symbol tells the shell to perform “output redirection”: the file<br>hw1.out is created (or truncated if it already existed – be careful!) and the<br>output produced by the program is sent to that file instead of to the<br>terminal.<br>$? is an environment variable in bash which holds the return code of the<br>previous program run. In the above, the echo command is used to display the<br>value of this variable.<br>The contents of hw1.out can then be viewed using the od (“octal dump”)<br>command:<br>    $ od -X hw1.out<br>    0000000 00c72820 08000400<br>The -X flag instructs od to interpret the file as a sequence of 32-bit words,<br>which are printed as 8-digit hexadecimal values. In this case, the file<br>contains two such words: 00c72820 and 08000400. The values in the first column<br>indicate the offsets from the beginning of the file, specified as 7-digit<br>octal (base 8) numbers.<br>Alternatively, the output of the program could be redirected via a “pipe” to<br>the od command, without using any file:<br>    $ bin&#x2F;hw1 -a | od -X<br>    add $5,$6,$7<br>    j 0x1000<br>    0000000 00c72820 08000400<br>In this case, you won’t see the output produced by od until ^d has been typed,<br>because when the output of a program is redirected to a pipe the system<br>assumes that the program is being run non-interactively, so for efficiency it<br>buffers a larger amount of the output rather than emitting it a line at a<br>time.<br>In disassembly mode, it is not very useful to read the input from the<br>terminal, since it would be very difficult to generate the necessary binary<br>data using the keyboard. Instead, the input should be redirected from a file:<br>    $ bin&#x2F;hw1 -d &lt; hw1.out<br>    add $5,$6,$7<br>    j 0x1000<br>Finally, a pipe can be used to assemble and disassemble in a single run. This<br>is one way to test whether your program is working properly:<br>    $ bin&#x2F;hw1 -a | bin&#x2F;hw1 -d<br>    add $5,$6,$7<br>    j 0x1000<br>    add $5,$6,$7<br>    j 0x1000<br>The output should be identical to the input if the program is working<br>properly.</p>
+<h2 id="Testing-Your-Program"><a href="#Testing-Your-Program" class="headerlink" title="Testing Your Program"></a>Testing Your Program</h2><p>In testing your program, it is useful to be able to compare two files to see<br>if they have the same content. The diff command (use man diff to read the<br>manual page) is useful for comparison of text files. On the other hand, the<br>cmp command can be used to perform a byte-by-byte comparison of two files,<br>regardless of their content:<br>    $ cmp file1 file2<br>If the files have identical content, cmp exits silently. If one file is<br>shorter than the other, but the content is otherwise identical, cmp will<br>report that it has reached EOF on the shorter file. Finally, if the files<br>disagree at some point, cmp will report the offset of the first byte at which<br>the files disagree.<br>We can take this a step further and run an entire test without using any<br>files:<br>    $ cmp [(echo “j 0x1000”) &lt;(echo “j 0x1000” | bin&#x2F;hw1 -a | bin&#x2F;hw1 -d)<br>    $ echo $?<br>Because both strings are identical, cmp outputs nothing.<br>Finally, we can test the program on entire files with a similar command:<br>    $ cmp [(cat rsrc&#x2F;bcond.asm) &lt;(cat rsrc&#x2F;bcond.asm | bin&#x2F;hw1 -a -b 1000 | bin&#x2F;hw1 -d -b 1000)<br>    $ echo $?<br>cat is a command that outputs a file to stdout.</p>
+<h2 id="Unit-Testing"><a href="#Unit-Testing" class="headerlink" title="Unit Testing"></a>Unit Testing</h2><p>Unit testing is a part of the development process in which small testable<br>sections of a program (units) are tested individually to ensure that they are<br>all functioning properly. This is a very common practice in industry and is<br>often a requested skill by companies hiring graduates.<br>Some developers consider testing to be so important that they use a work flow<br>called test driven development. In TDD, requirements are turned into failing<br>unit tests. The goal is then to write code to make these tests pass.<br>This semester, we will be using a C unit testing framework called Criterion,<br>which will give you some exposure to unit testing. We have provided a basic<br>set of test cases for this assignment.<br>The provided tests are in the tests&#x2F;hw1_tests.c file. These tests do the<br>following:</p>
+<ul>
+<li>validargs_help_test ensures that validargs sets the help bit correctly when the -h flag is passed in. </li>
+<li>validargs_disassem_test ensures that validargs sets the Disassembly bit correctly when the -d flag is passed in. </li>
+<li>help_system_test uses the system syscall to execute your program through Bash and checks to see that your program returns with EXIT_SUCCESS.</li>
+</ul>
+<h2 id="Compiling-and-Running-Tests"><a href="#Compiling-and-Running-Tests" class="headerlink" title="Compiling and Running Tests"></a>Compiling and Running Tests</h2><p>When you compile your program with make, a hw1_tests executable will be<br>created in your bin directory alongside the hw1 executable. Running this<br>executable from the hw1 directory with the command bin&#x2F;hw1_tests will run the<br>unit tests described above and print the test outputs to stdout. To obtain<br>more information about each test run, you can use the verbose print option: <code>bin/hw1_tests --verbose=0</code> .<br>The tests we have provided are very minimal and are meant as a starting point<br>for you to learn about Criterion, not to fully test your homework. You may<br>write your own additional tests in tests&#x2F;hw1_tests.c. However, this is not<br>required for this assignment. Criterion documentation for writing your own<br>tests can be found here.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/10/26/MIPS%E4%BB%A3%E5%86%99%EF%BC%9ACSE320MIPSTranslate/">http://saferman.github.io/2020/10/26/MIPS%E4%BB%A3%E5%86%99%EF%BC%9ACSE320MIPSTranslate/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/MIPS%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">MIPS代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/10/26/PHP%E4%BB%A3%E5%86%99%EF%BC%9ACS313InvestigateCMS/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="PHP代写：CS313 Investigate CMS">
+                        
+                        <span class="card-title">PHP代写：CS313 Investigate CMS</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-26
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PHP%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">PHP代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/10/25/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP10002TextQuery/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="C代写：COMP10002 Text Query">
+                        
+                        <span class="card-title">C代写：COMP10002 Text Query</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

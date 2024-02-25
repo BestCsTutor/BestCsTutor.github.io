@@ -1,0 +1,900 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：COMS228 Convex Hull, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Convex Hull算法，然后将计算得到的边界画图显示出来。  
+Project OverviewIn this project, you are asked to implement Graham’s scan and Javis’">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：COMS228 Convex Hull | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：COMS228 Convex Hull</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-27
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Convex Hull算法，然后将计算得到的边界画图显示出来。  </p>
+<h2 id="Project-Overview"><a href="#Project-Overview" class="headerlink" title="Project Overview"></a>Project Overview</h2><p>In this project, you are asked to implement Graham’s scan and Javis’ march to<br>construct the convex hull of an input set of points in the plane, and compare<br>their execution times. For a description of the algorithm, please refer to the<br>lecture notes “convex-hull.pptx”.<br>We make the following two assumptions:</p>
+<ul>
+<li>a) All the input points have integral coordinates ranging between 50 and 50. </li>
+<li>b) The input points may have duplicates.<br>In a), integral coordinates are assumed to avoid issues with floating-point<br>arithmetic. The rectangular range [50, 50] [50, 50] is big enough to contain<br>10,201 points with integral coordinates. Since the input points will be either<br>generated as pseudo-random points or read from an input file, duplicates may<br>appear.<br>The classes PureStack and ArrayBasedStack should not be modified. Four classes<br>from Project 2 will be modified or reused for this project: Segment, Plot,<br>Point, and PolarAngleComparator,. No need to modify Segment and Plot.<br>Modify your implementation of the class Point so that the compareTo() method<br>now compares y-coordinate first. The class PolarAngleComparator has an<br>additional instance variable flag used for breaking a tie between two points<br>which have the same polar angle with respect to the reference point (stored in<br>the instance variable referencePoint). When flag &#x3D;&#x3D; true, the point closer to<br>referencePoint is considered smaller; when flag &#x3D;&#x3D; false, the further point is<br>considered smaller.</li>
+</ul>
+<h2 id="ConvexHull-Class"><a href="#ConvexHull-Class" class="headerlink" title="ConvexHull Class"></a>ConvexHull Class</h2><p>Convex hull construction is implemented by the abstract class ConvexHull,<br>which has two constructors:<br>    public ConvexHull(Point[] pts) throws IllegalArgumentException<br>    public ConvexHull(String inputFileName) throws FileNotFoundException, InputMismatchException<br>—|—<br>The first constructor takes an array pts[] of points and copy them over to the<br>array points[]. The array pts[] may consist of random points, or more<br>precisely, points whose coordinates are pseudo-random numbers within the range<br>[50, 50] [50, 50]. After Project 2, you are assumed to be familiar with random<br>point generation. (Just in case not, please read Section 5.)<br>The second constructor reads points from an input file of integers. Every pair<br>of integers represents the and -coordinates of a point. A<br>FileNotFoundException will be thrown if no file with the inputFileName exists,<br>and an InputMismathException will be thrown if the file consists of an odd<br>number of integers. (There is no need to check if the input file contains<br>unneeded characters like letters since they can be taken care of by the<br>hasNextInt() and nextInt() methods of a Scanner object.)<br>For example, suppose a file points.txt has the following content (this was the<br>same example file used in the description of Project 2):<br>    0 0 -3 -9 0 -10<br>    8 4 3 3<br>    -6 3<br>    -2 1<br>    10 5<br>    -7 -10<br>    5 -2<br>    7 3 10 5<br>    -7 -10 0 8<br>    -1 -6<br>    -10 0<br>    5 5<br>There are 34 integers in the file. A constructor call ConvexHull(“points.txt”)<br>will initialize the array points[] to store 17 points below (aligned with five<br>points per row just for display clarity here):<br>    (0, 0) (-6, 3) (7, 3) (-10, 0) (3, 3)<br>    (-3, -9) (-2, 1) (10, 5) (5, 5) (5, -2)<br>    (0, -10) (10, 5) (-7, -10) (-1, -6)<br>    (8, 4) (-7, -10) (0, 8)<br>Note that the points (-7, -10) and (10, 5) each appear twice in the input, and<br>thus their second appearances are duplicates. The 15 distinct points are<br>plotted in Fig.1 by Mathematica.<br>There is a non-negligible chance that duplicates occur among the input points,<br>whether they are from the input file or randomly generated from the range [50,<br>50] [50, 50]. For a fair comparison between Graham’s scan and Javis’ march,<br>both assuming their input points to be distinct, all the duplicates should be<br>eliminated before the convex hull construction. This is done by the<br>constructors via calling the method removeDuplicates().<br>The method removeDuplicates() performs quicksort on all the points by<br>y-coordinate. After the sorting, equal points will appear next to each other<br>in points[]. The method creates an object of the class QuickSortPoints to<br>carry out quicksort using a provided Comparator object, which invokes the<br>compareTo() method in the class Point. After the sorting, identical points<br>will appear together, and duplicates will be easily removed. Distinct points<br>are then saved to the array pointsNoDuplicate[] with the element at index 0<br>assigned to lowestPoint.<br>In the previous example, quicksort produces the following sequence:<br>    (-7, -10) (5, -2) (3, 3) (10, 5)<br>    (-7, -10) (-10, 0) (7, 3) (0, 8)<br>    (0, -10) (0, 0) (8, 4)<br>    (-3, -9) (-2, 1) (5, 5)<br>    (-1, -6) (-6, 3) (10, 5)<br>The two (-7, -10)s appear together, so do the two (10, 5)s. After removal of<br>duplicates, the remaining points are copied over to the array<br>pointsNoDuplicate[]:<br>    (-7, -10) (-10, 0) (7, 3)<br>    (0, -10) (0, 0) (8, 4)<br>    (-3, -9) (-2, 1) (5, 5)<br>    (-1, -6) (-6, 3) (10, 5)<br>    (5, -2) (3, 3) (0, 8)<br>The variable lowestPoint is set to (-7, -10).<br>The array pointsNoDuplicate[] will be the input of a convex hull algorithm.<br>The class<br>ConvexHull has an abstract method constructHull() which will be implemented by<br>its subclasses to carry out convex hull construction using either Graham’s<br>scan or Jarvis’ march.<br>    public abstract void constructHull();<br>—|—<br>The vertices of the constructed convex hull will be stored in the array<br>hullVertices[] in counterclockwise order starting with lowestPoint.</p>
+<h2 id="Convex-Hull-Construction"><a href="#Convex-Hull-Construction" class="headerlink" title="Convex Hull Construction"></a>Convex Hull Construction</h2><p>Two algorithms, Graham’s scan and Jarvis’ march, are respectively implemented<br>by the subclasses GrahamScan and JarvisMarch of the abstract class ConvexHull.<br>Both subclasses must handle the special case of one or two points only in the<br>array pointsNoDuplicates[], where the corresponding convex hull is the sole<br>point or the segment connecting the two points.</p>
+<h3 id="Graham’s-scan"><a href="#Graham’s-scan" class="headerlink" title="Graham’s scan"></a>Graham’s scan</h3><p>The class GrahamScan sorts all the points in points[] by polar angle with<br>respect to lowestPoint. Point comparison is done using a Comparator object<br>generated by the constructor call PolarAngleComparator(lowestPoint, true). The<br>second argument true ensures that points with the same polar angle are ordered<br>in increasing distance. (In case your previous implementation did not work<br>well, this is a chance to make it up. ) The compare() method must be<br>implemented using cross and dot products not any trigonometric or square root<br>functions. (Please read the Javadoc for the compare() method carefully.)<br>Point sorting above is carried out by quicksort as follows. Create an object<br>of the QuickSortPoint class and have it call the quicksort() method using the<br>PolarAngleComparator object mentioned in the above paragraph. The comparator<br>uses lowestPoint as the reference point. Note that quicksort has the expected<br>running time ( log ) and the worst-case running time (2 ), which will<br>respectively be the expected and worst-case running times for this<br>implementation of Graham’s scan for convex hull construction.<br>Sorting is performed within the method setUpScan(). In the array<br>pointsNoDuplicate[], (1, -6) and (5, -2) have the same polar angle with<br>respect to (-7, -10). That (-1, -6) appears before (5, -2) is because it is<br>closer to (-7, -10). Graham’s scan is performed within the method<br>constructHull() on the array pointsNoDuplicate[] using a private stack<br>vertexStack. As the scan terminates, the vertices of the constructed convex<br>hull are on vertexStack. Pop them out one by one and store them in a new array<br>hullVertices[], starting at the highest index. When the stack becomes empty,<br>the elements in the array, in increasing index, are the hull vertices in<br>counterclockwise order.</p>
+<h3 id="Jarvis’-March"><a href="#Jarvis’-March" class="headerlink" title="Jarvis’ March"></a>Jarvis’ March</h3><p>This algorithm of the gift wrapping style is implemented in the class<br>JarvisMarch. There are three private instance variables.<br>    private Point highestPoint;<br>    private PureStack leftChain;<br>    private PureStack rightChain;<br>—|—<br>The algorithm builds the right chain from lowerestPoint to highestPoint and<br>then the left chain from highestPoint downward to lowestPoint. Two stacks,<br>leftChain and rightChain, are used respectively to store the chains during the<br>construction. The convex hull vertices on the stacks are later merged into the<br>array hullVertices[].<br>The convex hull construction is described with more details in the PowerPoint<br>notes “convex hull.pptx”. At each step, the method<br>    private Point nextVertex(Point v)<br>—|—<br>determines, given the current vertex v, the next vertex to be the point which<br>has the smallest polar angle with respect to v. In the situation where<br>multiple points attain the smallest polar angle, the one that is the furthest<br>from v is the next vertex. Hence, the comparator used in this construction<br>step should be generated by the call PolarAngleCompartor(v, false).</p>
+<h2 id="Display-the-Convex-Hull"><a href="#Display-the-Convex-Hull" class="headerlink" title="Display the Convex Hull"></a>Display the Convex Hull</h2><p>The constructed convex hull will be displayed again using Java graphics<br>package Swing. Please refer to Section 4 in the description of Project 2 for a<br>brief introduction to Swing. The outputs by the two convex hull algorithms are<br>displayed in separate windows. For display, a separate thread is created<br>inside the method myFrame() in the class Plot. Please do not modify this class<br>for better display unless you understand what is going on there.<br>The class Segments has been implemented for creating specific line segments to<br>connect the input points so you can see the correctness of the sorting result.<br>The output of each algorithm can be displayed by calling the partially<br>implemented method draw() in the ConvexHull class, only after constructHull()<br>is called, via the statement below:<br>    Plot.myFrame(pointsNoDuplicate, segments, getClass().getName());<br>—|—<br>where the first two parameters have types Point[] and Segment[], respectively.<br>The call getClass().getName() simply returns the name of the convex hull<br>algorithm used. From hullVertices[] you will generate the edges of the convex<br>hull as line segments and store them in the array segments[]. This can be done<br>by iterating through the element in the array in one loop. Do not forget to<br>generate a segment connecting the last element with the first point at index<br>0, that is, lowestPoint.<br>For the example in Section 1, the array Segment[] contains 5 segments below<br>(where each element is shown as a pair of points):<br>    ((-7, -10), (0, -10))<br>    ((0, -10), (10, 5))<br>    ((10, 5), (0, 8))<br>    ((0, 8), (-10, 0))<br>    ((-10, 0), (-7, -10))</p>
+<h2 id="Compare-Convex-Hull-Algorithms"><a href="#Compare-Convex-Hull-Algorithms" class="headerlink" title="Compare Convex Hull Algorithms"></a>Compare Convex Hull Algorithms</h2><p>The class CompareHullAlgorithms executes Graham’s scan and Jarvis’ march on<br>points randomly generated or read from files. If the input points are not from<br>an existing file, , its main() method calls the method generateRandomPoints()<br>to supply an array of random points Over each input set of points, the method<br>compares the execution times of these algorithms in multiple rounds. Each<br>round proceeds as follows:</p>
+<ul>
+<li>a) Create an array of randomly generated integers, if needed. </li>
+<li>b) For each of GrahamScan and JavisMarch, create an object from the above array or an input file. </li>
+<li>c) Have the two created objects call the construcHull() method and store the results in hullVertices[].</li>
+</ul>
+<h2 id="Random-Point-Generation"><a href="#Random-Point-Generation" class="headerlink" title="Random Point Generation"></a>Random Point Generation</h2><p>To test your code, you may generate random points within the range [50, 50]<br>[50, 50].<br>Such a point has its - and -coordinates generated separately as pseudo-random<br>numbers within the range [50, 50]. You already had experience with random<br>number generation from Project 1. Import the Java package java.util.Random.<br>Next, declare and initiate a Random object like below<br>    Random generator &#x3D; new Random();<br>—|—<br>Then, the expression<br>    generator.nextInt(101) - 50<br>—|—<br>will generate a pseudo-random number between -50 and 50 every time it is<br>executed.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/09/27/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMS228ConvexHull/">http://saferman.github.io/2019/09/27/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMS228ConvexHull/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/01/Network%E4%BB%A3%E5%86%99%EF%BC%9AEE450LibraryRegistrationSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Network代写：EE450 Library Registration System">
+                        
+                        <span class="card-title">Network代写：EE450 Library Registration System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-10-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Network%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Network代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/26/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS1040RudimentarySystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Python代写：CS1040 Rudimentary System">
+                        
+                        <span class="card-title">Python代写：CS1040 Rudimentary System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-09-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

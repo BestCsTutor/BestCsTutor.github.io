@@ -1,0 +1,894 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Database代写：CS313 Information Retrieval System, 留学生CS|辅导|代写">
+    <meta name="description" content="使用Berkeley DB实现一个信息检索系统。  
+IntroductionThe goal of this project is to teach the concept of working with data in thephysi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Database代写：CS313 Information Retrieval System | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Database代写：CS313 Information Retrieval System</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Database代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-10
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用Berkeley DB实现一个信息检索系统。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The goal of this project is to teach the concept of working with data in the<br>physical layer. This is done by building an information retrieval system,<br>using the Berkeley DB library for operating on files and indices.<br>Your job in this project is to write programs that keep data in files and<br>maintain indices that provide basic searches over data. 80% of the project<br>mark would be assigned to your indices that provide basic searches over data.<br>80% of the project mark would be assigned to your implementation which would<br>be assessed in a demo session, and is further broken down to three phases with<br>10% of the mark allocated for Phase 1, 5% of the mark for Phase 2, and 65% for<br>Phase 3. In addition to the correctness of your indices and your query<br>results, the efficiency of your programs and your queries (in terms of the<br>running time) will be evaluated. Another 15% of the mark will be assigned for<br>the documentation and quality of your source code and for your design<br>document. 5% of the mark is assigned for your project task break-down and your<br>group coordination.</p>
+<h2 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h2><p>You are given a data file, which you will use to construct your indices. Here<br>is a small data file with only 10 records and here is one with 1000 records.<br>The data includes ads posted on Kijiji; each record consists of an id, a<br>category, a location, a title, a description, a price (not all ads may have a<br>price or the price may be 0) and a date when the ad is posted. The records are<br>formatted in xml and have a start tag <code>&lt;ad&gt;</code> and and an end tag &#96;; each<br>record has a newline character at the end, which can help you easily process<br>the file (without using an xml parser). Fields inside records are also<br>formatted similarly with respective tags. Your job is to create indices,<br>following Phases 1 and 2, and use those indices to process the queries in<br>Phases 3.</p>
+<h2 id="Phase-1-Preparing-Data-Files"><a href="#Phase-1-Preparing-Data-Files" class="headerlink" title="Phase 1: Preparing Data Files"></a>Phase 1: Preparing Data Files</h2><p>Write a program that reads records in xml from the standard input and produces<br>4 files as described next. The format of the input is as given in the samples<br>with the first, second and the last input lines giving the xml tags and every<br>other line giving a record. Because of this simplicity, you don’t need an xml<br>parser for the input. Here are the files you will be generating in Phase 1.</p>
+<h3 id="terms-txt"><a href="#terms-txt" class="headerlink" title="terms.txt"></a>terms.txt</h3><p>This file includes terms extracted from ad titles and descriptions; for our<br>purpose, suppose a term is a consecutive sequence of alphanumeric, underscore<br>‘<em>‘ and dashed ‘-‘ characters, i.e [0-9a-zAZ</em>-]. The format of the file is as<br>follows: for every termT in the title or the description of an ad with id a,<br>there is a row in this file of the form t:a where t is the lowercase form of<br>T. Ignore all special characters coded as <code>&amp;#number;</code> such as <code>&amp;#29987;</code><br>which represents as well as <code>&amp;apos;</code> , <code>&amp;quot;</code> and <code>&amp;amp;</code> which<br>respectively represent ‘, “ and &amp;. Also ignore terms of length 2 or less.<br>Convert the terms to all lowercase before writing them out. Here are the<br>respective files for our input files with 10 records and 1000 records.</p>
+<h3 id="pdates-txt"><a href="#pdates-txt" class="headerlink" title="pdates.txt"></a>pdates.txt</h3><p>This file includes one line for each ad in the form of d:a,c,l where d is a<br>non-empty date at which the ad is posted and a, c, and l are respectively the<br>ad id, category and location of the ad. Here are the respective files for our<br>input files with 10 records and 1000 records.</p>
+<h3 id="prices-txt"><a href="#prices-txt" class="headerlink" title="prices.txt"></a>prices.txt</h3><p>This file includes one line for each ad that has a non-empty price field in<br>the form of p:a,c,l where p is a number indicating the price and a, c, and l<br>are respectively the ad id, category and location of the ad. Here are the<br>respective files for our input files with 10 records and 1000 records.</p>
+<h3 id="ads-txt"><a href="#ads-txt" class="headerlink" title="ads.txt"></a>ads.txt</h3><p>This file includes one line for each ad in the form of a:rec where a is the ad<br>id and rec is the full ad record in xml. Here are the respective files for our<br>input files with 10 records and 1000 records.<br>These files can also be found at directory ~drafiei&#x2F;291&#x2F; pub on the lab<br>machines. In the same directory, you would also find larger size files (with<br>20k records and larger) that you may want to use in the testing of your<br>programs.</p>
+<h2 id="Phase-2-Building-Indexes"><a href="#Phase-2-Building-Indexes" class="headerlink" title="Phase 2: Building Indexes"></a>Phase 2: Building Indexes</h2><p>Sort the files built in Phase 1 using the Linux sort command; pass the right<br>option to the sort command to keep only the unique rows (see the man page for<br>sort). You can keep the sorted data under the same file names or pass the<br>sorted records to stdout so they can be piped to your loading program (as<br>described next). Suppose the sorted files are named as before (to simplify our<br>presentation here). Given the sorted files terms.txt, pdates.txt, prices.txt<br>and ads.txt, create the following four indexes: (1) a hash index on ads.txt<br>with ad id as key and the full ad record as data, (2) a B+tree index on<br>terms.txt with term as key and ad id as data, (3) a B+-tree index on<br>pdates.txt with date as key and ad id, category and location as data, (4) a<br>B+-tree index on prices.txt with price as key and ad id, category and location<br>as data. You should note that the keys in all 4 cases are the character<br>strings before colon ‘:’ and the data is everything that comes after the<br>colon. Use the db_load command to build your indexes. db_load by default<br>expects keys in one line and data in the next line. Also db_load treats<br>backslash as a special character and you want to avoid backslash in your<br>input. Here is a simple Perl script that converts input records into what<br>db_load expects and also removes backslashes. Your program for Phase 2 would<br>produce four indexes which should be named ad.idx, te.idx, da.idx, and pr.idx<br>respectively corresponding to indexes 1, 2, 3, and 4, as discussed above. It<br>can be noted that the keys in ad.idx are unique but the keys in all indexes<br>can have duplicates.<br>In addition to db_load, you may also find db_dump with option p useful as you<br>are building and testing the correctness of your indexes.</p>
+<h2 id="Phase-3-Data-Retrieval"><a href="#Phase-3-Data-Retrieval" class="headerlink" title="Phase 3: Data Retrieval"></a>Phase 3: Data Retrieval</h2><p>Given the index files ad.idx, te.idx, da.idx and pr.idx created in Phase 2<br>respectively on ad ids, terms, dates, and prices, write a program that<br>efficiently processes queries as follows. By default, the output of each query<br>is the ad id and the title of all matching ads. The user should be able to<br>change the output format to full record by typing “output&#x3D;full” and back to id<br>and title only using “output&#x3D;brief”. Here are some examples of queries:<br>The first query returns all records that have camera as a word in the title or<br>description fields. The second query returns all records that have a term<br>starting with camera in the title or description fields. The third and the<br>fourth queries respectively return ad records that are posted on or before<br>2018&#x2F;11&#x2F;05, and after 2018&#x2F;11&#x2F;05. The fifth and the sixth queries respectively<br>return ad records with prices less than 20, and greater than or equal to 20.<br>The seventh query returns all ads from Edmonton posted on 2018&#x2F;11&#x2F;07. The<br>eight query returns all ads in category art-collectibles that have the term<br>camera in the title or description fields. Finally the ninth query returns all<br>records that have the term camera in the title or description, are posted on<br>or after 2018&#x2F;11&#x2F;05 and on or before 2018&#x2F;11&#x2F;07, and have a price greater than<br>20 and less than 40.<br>More formally, each query defines some conditions that must be satisfied by<br>title, description, post date, location, category and the price fields of the<br>matching records. A condition on terms can be either an exact match (as in<br>Query 1) or a partial match (as in Query 2); for simplicity, partial matches<br>are restricted to prefix matches only (i.e. the wild card % can only appear at<br>the end of a term). All matches are case-insensitive, hence the queries<br>“Camera”, “camera”, “cAmera” would retrieve the same results; for the same<br>reason the extracted terms in previous phases are all stored in lowercase.<br>Conditions on dates and prices are both equality and range matches. Conditions<br>on location and category are exact (but case-insensitive) equality matches.<br>There is zero or more spaces between column names (e.g. price, date, location,<br>and cat), and the comparison symbols (e.g. ], &#x3D;) and the numbers, dates, or<br>strings that follow. Each query term, location, and category name is a<br>consecutive sequence of alphanumeric, underscore ‘<em>‘ and dashed ‘-‘<br>characters, i.e [0-9a-zA-Z</em>-]. A query term can also have the wild card symbol<br>% at the end. A query can have multiple conditions (as in Query 9) in which<br>case the result must match all those conditions (i.e. the and semantics), and<br>there is one or more spaces between the conditions. The keywords price, cat,<br>location, date and output are reserved for searches and query interface (as<br>described above) and would not be used for term searches. The dates are<br>formatted as yyyy&#x2F;mm&#x2F;dd in both queries and in the data. Here is the query<br>language grammar.<br>When a query can be evaluated using multiple strategies, your evaluation<br>should select the most efficient strategy (i.e., the one expected to be the<br>fastest) as much as possible. For example, for Query 1, you can use the index<br>on terms to find the matching aids, then use the index on aids to find the<br>actual records. For Query 7, you can use the index on date.<br>Since the index on dates also stores locations, you can verify the location<br>and only retrieve aids that match both the date and the location, before going<br>to the index on aids to find the actual records. before going to the index on<br>aids to find the actual records.</p>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>At demo time, your code will be tested under a TA account. You will be given<br>the name of a data file, and will be asked (1) to prepare terms.txt,<br>pdates.txt, prices.txt, ads.txt (2) build Berkeley DB indexes ad.idx, te.idx,<br>da.idx and pr.idx, and (3) provide a query interface, which will allow us to<br>test your system for Phase 3. We typically follow a 5 minutes rule, meaning<br>that you are expected to prepare the data and build your indices in Phases 1<br>and 2 in less than 5 minutes; if not, you may lose marks and we may have to<br>use our own indexes, in which case you would lose the whole mark for Phases 1<br>and 2.<br>The demo will be run using the source code submitted and nothing else. Make<br>sure your submission includes every file that is needed. There will be a<br>limited time for each demo. Every group will book a time slot convenient to<br>all group members to demo their projects. At demo time, all group members must<br>be present. The TA will be asking you to perform various tasks and show how<br>your application is handling each task. A mark will be assigned to your demo<br>on the spot after the testing.<br>Important note: You can make no assumption on the size of the input file (and<br>any of the files and indexes that are built from the input file). Avoid using<br>xml processors that may attempt to load the whole data file into memory. Each<br>record is in one row and should be easy to process without such tools. We will<br>be using a relatively large file for testing and you don’t want your program<br>to break down in our tests, resulting in a poor mark! That said, you can make<br>very few assumptions (such as the inverted list of a term can fit in main<br>memory) and state them in your report.</p>
+<h2 id="Instructions-for-Submissions"><a href="#Instructions-for-Submissions" class="headerlink" title="Instructions for Submissions"></a>Instructions for Submissions</h2><p>Your submission includes (1) the source code for phases 1, 2 and 3 and any<br>makefile or script that you may need to compile your code, (2) README.txt, and<br>(3) a short report. Your source code must include at least three programs,<br>i.e. one for each phase. Your program for Phase 3 would implement a simple<br>query interface in your favorite programming language (e.g. Python, Java, C or<br>C++). For phases 1 and 2, you can have more than one program (for example, in<br>Python, Java, C, C++ or Perl) and can make use of any Unix command and<br>scripting language (e.g. Perl, bash) that runs under Linux on lab machines, as<br>long as you clearly document in your report how and in what sequence the<br>programs or commands should run.<br>Create a single gzipped tar file with (1) all your source code, (2)<br>README.txt, and (3) your project report. Name the file prj2.tgz.<br>Submit your project tarfile in the project submission site by the due date at<br>the top of this page. All partners in a group must submit their own<br>copies(even though the copies may be identical)!<br>The file README.txt is a text file that lists the names and ccids of all group<br>members. This file must also include the names of anyone you collaborated with<br>(as much as it is allowed within the course policy) or a line saying that you<br>did not collaborate with anyone else.<br>This is also the place to acknowledge the use of any source of information<br>besides the course textbook and&#x2F; or class notes.<br>Your report must be type-written, saved as PDF and be included in your<br>submission. Your report cannot exceed 3 pages. cannot exceed 3 pages.<br>The report should include (a) a general overview of your system with a small<br>user guide, (b) a description of your algorithm for efficiently evaluating<br>queries, in particular evaluating queries with multiple conditions and wild<br>cards and range searches and an analysis of the efficiency of your algorithm,<br>(c) your testing strategy, and (d) your group work break-down strategy.<br>The general overview of the system gives a high level introduction and may<br>include a diagram showing the flow of data between different components; this<br>can be useful for both users and developers of your application. The user<br>guide should have instructions for running your code for phases 1, 2 and 3.<br>The testing strategy discusses your general strategy for testing, with the<br>scenarios being tested and the coverage of your test cases. The group work<br>strategy must list the break-down of the work items among partners, both the<br>time spent (an estimate) and the progress made by each partner, and your<br>method of coordination to keep the project on track. Your report should also<br>include any assumption you have made or any possible limitations your code may<br>have.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/04/10/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS313InformationRetrievalSystem/">http://saferman.github.io/2023/04/10/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS313InformationRetrievalSystem/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Database代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/04/11/MySQL%E4%BB%A3%E5%86%99%EF%BC%9ADBS201HRApplication/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="MySQL代写：DBS201 HR Application">
+                        
+                        <span class="card-title">MySQL代写：DBS201 HR Application</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-11
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MySQL%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">MySQL代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/04/09/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS416AddingSignalstoXV6/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Operating System代写：CS416 Adding Signals to XV6">
+                        
+                        <span class="card-title">Operating System代写：CS416 Adding Signals to XV6</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

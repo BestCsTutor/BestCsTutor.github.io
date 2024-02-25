@@ -1,0 +1,937 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CSE100 Six Degrees of Kevin Bacon, 留学生CS|辅导|代写">
+    <meta name="description" content="代写算法类作业，需要用到BFS和Union-Find两个算法。这个作业比较坑的地方是需要对算法进行优化，否则计算不出结果。  
+OverviewThe assignment is sub-divided under the followin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CSE100 Six Degrees of Kevin Bacon | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CSE100 Six Degrees of Kevin Bacon</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-06-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写算法类作业，需要用到BFS和Union-Find两个算法。这个作业比较坑的地方是需要对算法进行优化，否则计算不出结果。  </p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The assignment is sub-divided under the following headings:</p>
+<ul>
+<li>Part 0: Survey and Consent Form </li>
+<li>Part 1: Checkpoint: Pathfinder <ul>
+<li>You will write a program to play (and win) the generalized Kevin Bacon trivia game. Your program will take as input ANY two actors&#x2F;actresses and find the shortest sequence of shared movies between them. Part of this program (unweighted shortest path) is due at the checkpoint deadline.</li>
+</ul>
+</li>
+<li>Part 2: Final Submission: Pathfinder (Complete) + Actor Connections — Deadline: Monday, November 28 <ul>
+<li>In addition to completing the weighted shortest path version of Pathfinder, you will write a program that starts with one actor in the graph and adds new movies step-by-step to find the earliest movie year to connect the start actor to the destination actor.</li>
+</ul>
+</li>
+<li>Part 3: Final Submission: Additional Extension – Deadline: Monday, November 28 <ul>
+<li>You will write a program that will compute some other interesting statistic or action on a different graph of your choosing. Particularly complex extensions will earn a star point</li>
+</ul>
+</li>
+</ul>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>You will explore the “Six Degrees of Kevin Bacon” game. Specifically, you will<br>design and implement the data structures and algorithms necessary to explore<br>degrees of separation between Hollywood actors that act in the same movies.<br>The main focus of this assignment is to design and implement efficient graph-<br>based data structures and use them to explore large graphs.<br>What is the “Six Degrees of Kevin Bacon” game?<br>“Six Degrees of Kevin Bacon” is a parlor game based on the “six degrees of<br>separation” concept, which posits that any two people on Earth are six or<br>fewer acquaintance-links apart. That idea eventually morphed into this parlor<br>game wherein movie buffs challenge each other to find the shortest path<br>between an arbitrary actor and prolific Hollywood actor Kevin Bacon. It rests<br>on the assumption that any individual involved in the Hollywood, California,<br>film industry can be linked through his or her film roles to Kevin Bacon<br>within six steps. The game requires a group of players to try to connect any<br>such individual to Kevin Bacon as quickly as possible and in as few links as<br>possible. It can also be described as a trivia game based on the concept of<br>the small world phenomenon.</p>
+<h2 id="Part-0-Survey-and-Consent-form-complete-AFTER-filling-out-CAPEs-and"><a href="#Part-0-Survey-and-Consent-form-complete-AFTER-filling-out-CAPEs-and" class="headerlink" title="Part 0: Survey and Consent form (complete AFTER filling out CAPEs and"></a>Part 0: Survey and Consent form (complete AFTER filling out CAPEs and</h2><p>finishing most of PA4)<br>Link coming up Soon!!</p>
+<h2 id="Part-1-Checkpoint-Pathfinder-Unweighted"><a href="#Part-1-Checkpoint-Pathfinder-Unweighted" class="headerlink" title="Part 1: Checkpoint: Pathfinder (Unweighted)"></a>Part 1: Checkpoint: Pathfinder (Unweighted)</h2><p>We have provided you a tab-separated file movie_casts.tsv that contains the<br>majority of actors&#x2F;actresses found in IMDb and the movies they have played in.<br>Specifically, the file looks like this (“TAB” denotes a single tab character):<br>    Actor&#x2F;Actress<TAB>Movie<TAB>Year<br>    50 CENT<TAB>BEEF<TAB>2003<br>    50 CENT<TAB>BEFORE I SELF DESTRUCT<TAB>2009<br>    50 CENT<TAB>THE MC: WHY WE DO IT<TAB>2005<br>    50 CENT<TAB>CAUGHT IN THE CROSSFIRE<TAB>2010<br>    50 CENT<TAB>THE FROZEN GROUND<TAB>2013<br>    50 CENT<TAB>BEEF III<TAB>2005<br>    50 CENT<TAB>LAST VEGAS<TAB>2013<br>    50 CENT<TAB>GUN<TAB>2010<br>    …<br>The first column contains the name of the actor&#x2F;actress, the second column<br>contains the name of a movie they played in, and the last column contains the<br>year the movie was made. Each line defines a single actor→movie relationship<br>in this manner (except for the first line, which is the header). You may<br>assume that actor→movie relationships will be grouped by actor name, but do<br>not assume they will be sorted.<br>Note that multiple movies made in different years can have the same name, so<br>use movie year as well as title when checking if two are the same. Also note<br>that some actors have a “(I)” appended to their name - so “Kevin Bacon” is<br>really “Kevin Bacon (I)”. Make sure you DO NOT format the names of actors or<br>movies beyond what is given in the tab-separated input file. In other words,<br>each actor’s name should be taken exactly as the actor’s name appears in the<br>movie_casts.tsv file: you do not have to (and should not) mess with it. During<br>grading, the actor’s name in the test file will match the actor’s name in the<br>movie_casts.tsv file.<br>In your graph, each actor&#x2F;actress will define a single node. Two nodes (i.e.,<br>actors) will be connected by an undirected edge if the corresponding actors<br>played in the same movie.<br>Multiple undirected edges can exist between the same two nodes (which would<br>imply that the two actors played in multiple movies together). Once you load<br>the movie_casts.tsv file, you should expect to find 11,794 actors or nodes,<br>14,252 movies, and 4,016,412 directed edges - note that if we implement our<br>graph with directed edges, every undirected edge will be represented by two<br>directed edges. You may NOT use any pre-built data structures, like the Boost<br>Graph Library (BGL), besides what is provided in the C++ STL data structures.<br>For this part of PA4, you will write a program called pathfinder (in<br>pathfinder.cpp) to find paths between actors. It will take 4 command-line<br>arguments:</p>
+<ol>
+<li>The first argument is the name of a text file containing the movie casts in the same format as movie_casts.tsv. This file is quite large (6.4M), so you should create smaller versions to test your implementation as a first step. </li>
+<li>The second argument is a lower-case character equal to u or w - u means “build the graph with unweighted edges”, while w means “build the graph with weighted edges” (where weights are computed with the formula described later). </li>
+<li>The third argument is the name of a text file containing the pairs of actors for which you will find paths. The first line of the file is a header, and each row contains the names of two actors separated by a single tab character. </li>
+<li>The fourth argument is the name for your output text file, which will contain the shortest path between each pair of actors given in the input pairs file in argument 3. The first line of the output will be a header, and each row will contain a path for the corresponding pair of actors in the input pairs file (in the same order). Each path will be formatted as follows: (  )–[  #@  ]–&gt;(  )–[  #@  ]–&gt;(  )….etc where the movie listed between each pair of actors is one where they both had a role. Note that any given pair of actors may have played in multiple movies together (like Matt Damon and Ben Affleck), and if we are interested in a shortest weighted path, you must display the particular movie between each pair of actors that yields the minimum total path weight when combined with all other movies in the path.<br>Examples of the input pairs and output paths files are given in test_pairs.tsv<br>and out_paths_unweighted.tsv, respectively. So calling your program with:<br>&gt; .&#x2F;pathfinder movie_casts.tsv u test_pairs.tsv out_paths_unweighted.tsv<br>where test_pairs.tsv contains:<br>Actor1&#x2F;Actress1 Actor2&#x2F;Actress2<br>BACON, KEVIN (I)<TAB>HOUNSOU, DJIMON<br>BACON, KEVIN (I)<TAB>KIDMAN, NICOLE<br>BACON, KEVIN (I)<TAB>WILLIS, BRUCE<br>BACON, KEVIN (I)<TAB>GIAMATTI, PAUL<br>HOUNSOU, DJIMON<TAB>50 CENT<br>should produce an output file out_paths_unweighted.tsv containing the<br>following (although the particular movies may not match, the total path<br>weights should match your output):<br>(actor)–[movie#@year]–&gt;(actor)–…<br>(BACON, KEVIN (I))–[ELEPHANT WHITE#@2011]–&gt;(HOUNSOU, DJIMON)<br>(BACON, KEVIN (I))–[SUPER#@2010]–&gt;(MCKAY, COLE S.)–[FAR AND AWAY#@1992]–&gt;(KIDMAN, NICOLE)<br>(BACON, KEVIN (I))–[SUPER#@2010]–&gt;(MORENO, DARCEL WHITE)–[LAY THE FAVORITE#@2012]–&gt;(WILLIS, BRUCE)<br>(BACON, KEVIN (I))–[A FEW GOOD MEN#@1992]–&gt;(MOORE, DEMI)–[DECONSTRUCTING HARRY#@1997]–&gt;(GIAMATTI, PAUL)<br>(HOUNSOU, DJIMON)–[IN AMERICA#@2002]–&gt;(MARTINEZ, ADRIAN (I))–[MORNING GLORY#@2010]–&gt;(50 CENT)<br>For the CHECKPOINT submission you are only required to have the unweighted<br>portion of pathfinder working. This means we will test your program with all 4<br>arguments, except the second argument will always be a u. The weighted portion<br>will be graded on the FINAL submission This is all that will be graded for the<br>checkpoint submission.<br>The complete pathfinder program (as described below) will be graded at the<br>final submission, so even if you don’t get the “unweighted edges” version of<br>your program working for the checkpoint, you still need to get the whole thing<br>working (weighted path find and unweighted) for the final submission.</li>
+</ol>
+<h2 id="Files-Required"><a href="#Files-Required" class="headerlink" title="Files Required:"></a>Files Required:</h2><ol>
+<li>pathfinder.cpp </li>
+<li>Makefile (supporting at least make pathfinder) </li>
+<li>Any additional files needed to execute Part 1</li>
+</ol>
+<h2 id="Part-2-Final-Submission-Pathfinder-Complete-Actor-Connections"><a href="#Part-2-Final-Submission-Pathfinder-Complete-Actor-Connections" class="headerlink" title="Part 2: Final Submission: Pathfinder (Complete) + Actor Connections"></a>Part 2: Final Submission: Pathfinder (Complete) + Actor Connections</h2><p>In this part, the first thing you will do is complete pathfinder by<br>implementing the “weighted edges” version of your program (which is needed for<br>pathfinder for the Final Submission). In this version of your program, you can<br>treat unweighted edges as weighted edges with a weight of 1 (i.e., a “dummy”<br>weight), while truly weighted edges will have a weight equal to the age of the<br>movie (because we will want to choose newer movies over older movies when<br>connecting two actors). If we are defining an edge between two actors that<br>played in a movie made in year Y, then the weight of that edge will be:<br>    weight &#x3D; 1 + (2015 - Y)<br>Note that we are using 2015 instead of 2016, which is because the dataset only<br>contains movies released in 2015 and earlier. Don’t accidentally use 2016!<br>Calling your program with:<br>    &gt; .&#x2F;pathfinder movie_casts.tsv w test_pairs.tsv out_paths_weighted.tsv<br>should produce an output file out_paths_weighted.tsv containing the following<br>(although the particular movies may not match, the total path weights should<br>match your output):<br>    (actor)–[movie#@year]–&gt;(actor)–…<br>    (BACON, KEVIN (I))–[ELEPHANT WHITE#@2011]–&gt;(HOUNSOU, DJIMON)<br>    (BACON, KEVIN (I))–[R.I.P.D.#@2013]–&gt;(HUSS, TOBY (I))–[LITTLE BOY#@2015]–&gt;(CHAPLIN, BEN)–[CINDERELLA#@2015]–&gt;(MARTIN, BARRIE (II))–[PADDINGTON#@2014]–&gt;(KIDMAN, NICOLE)<br>    (BACON, KEVIN (I))–[R.I.P.D.#@2013]–&gt;(BELTRAN, JONNY)–[THE WEDDING RINGER#@2015]–&gt;(ROGERS, MIMI (I))–[CAPTIVE#@2015]–&gt;(WILLIS, BRUCE)<br>    (BACON, KEVIN (I))–[R.I.P.D.#@2013]–&gt;(HOWARD, ROSEMARY (II))–[THE AMAZING SPIDER-MAN 2#@2014]–&gt;(GIAMATTI, PAUL)<br>    (HOUNSOU, DJIMON)–[THE VATICAN TAPES#@2015]–&gt;(SCOTT, DOUGRAY)–[TAKEN 3#@2014]–&gt;(HARVEY, DON (I))–[THE PRINCE#@2014]–&gt;(50 CENT)<br>In this part of the assignment, you will implement a program called<br>actorconnections. For a given movie database and a list of actor pairs, the<br>actorconnections program should answer the following query for every actor<br>pair (X, Y) in the given list: “After which year did actors X and Y become<br>connected?”<br>By connected, we mean that there exists a path between actors X and Y in the<br>equivalent movie graph (similar to that constructed in Part 1) with the<br>exception that the movie graph under consideration only includes movies that<br>were made until (i.e., before and including) a certain year.<br>actorconnections will take 4 command-line arguments:</p>
+<ol>
+<li>The first argument is the name of a text file containing the movie casts in the same format as movie_casts.tsv. Again, this file is quite large (6.4M), so you should create smaller versions to test your implementation as a first step. </li>
+<li>The second argument is the name of a text file containing the names of actor pairs on each line separated, with the two actor names are tab-separated (same format as test_pairs.tsv). </li>
+<li>The third argument is the name of your output text file, which should contain in each line an actor pair followed by the year (tab-separated) after which the corresponding actor pair became connected (you will do all actor pairs specified in the file from step 2, one on each line). If two actors are never connected or if one or both of the actors is not in the movie cast file given to you, simply append 9999 in the corresponding line of the output file. To further clarify, if the second argument was a file containing the actor pair “BLANCHETT, CATE” and “REEVES, KEANU” and they only became connected after adding a movie made in 1997, your program should output the actor pair and 1997 in their line of the output file. If they never became connected even after adding all the movies from in the movie cast file to your graph, you should output 9999 on that line. </li>
+<li>The fourth argument should be specified as either bfs or ufind. This option determines which algorithm will be used in your program. If the fourth argument is not given, by default your algorithm should use the union-find data structure (i.e., the equivalent of specifying ufind as the fourth argument). We will test your code with both flags.<br>Your output text file should look like the following:<br>Actor1<TAB>Actor2<TAB>Year<br>BLANCHETT, CATE<TAB>REEVES, KEANU<TAB>1997<br>KNAPP, DANIEL<TAB>WILLIS, BRUCE<TAB>9999<br>…<br>Calling your program with:<br>&gt; .&#x2F;refactorconnections movie_casts.tsv test_pairs.tsv out_connections_bfs.tsv ufind<br>should run your code (using the union-find algorithm) to produce an output<br>file out_connections_bfs.tsv containing the following:<br>Actor1<TAB>Actor2<TAB>Year<br>BACON, KEVIN (I)<TAB>HOUNSOU, DJIMON<TAB>1992<br>BACON, KEVIN (I)<TAB>KIDMAN, NICOLE<TAB>1991<br>BACON, KEVIN (I)<TAB>WILLIS, BRUCE<TAB>1990<br>BACON, KEVIN (I)<TAB>GIAMATTI, PAUL<TAB>1992<br>HOUNSOU, DJIMON<TAB>50 CENT<TAB>2003<br>We would like you to implement the actorconnections program using both BFS and<br>union-find and allow the user to select between the two by specifying the<br>appropriate value for the fourth argument to your executable:</li>
+<li>BFS: To answer queries about the connection between actor pairs using BFS, we recommend you start with an empty graph containing only actor names and incrementally add movies in increasing order of the year of the movie. Every time you add a new set of movies made in a specific year, actors that were not connected before may become connected, which can be determined by running BFS on the updated graph. </li>
+<li>Union-Find: Alternatively, the disjoint-set (i.e., “union-find”) data structure allows you to keep track of all connected sets of actors without maintaining the corresponding graph structure. You might still consider adding movies incrementally, and if a movie creates a path between two actors that were not connected before, two disjoint sets would be merged into a single set in your union-find data structure. You should be able to then query your data structure about the connectivity of any specific actor pairs. The performance of your implementation will naturally depend on the efficiency of your Union-Find data structure. We will go over these topics in lecture as well.<br>We will not test you on the corner case where both the actors are the same.<br>You can handle it however you want.<br>Once you have completed and tested both implementations, compare the run time<br>of each implementation on a file containing actor pair pairs that you generate<br>yourself. The file should be in the same format as test_pairs.tsv. See how the<br>run times compare when you repeat the same query multiple times. For example,<br>in your input file (specified as the second argument), have the same actor<br>pair appear 100 times and calculate the time it took to answer all 100 queries<br>using your BFS implementation and then using your union-find implementation.<br>To time your code, you can use the timing classes given to you in PA2. Analyze<br>the timing results for the two implementations and write your analysis in the<br>file Report.pdf.<br>In addition, answer the following questions in Report.pdf:</li>
+<li>Which implementation is better and by how much? </li>
+<li>When does the union-find data structure significantly outperform BFS (if at all)? </li>
+<li>What arguments can you provide to support your observations?</li>
+</ol>
+<h3 id="Files-Required-1"><a href="#Files-Required-1" class="headerlink" title="Files Required:"></a>Files Required:</h3><ol>
+<li>pathfinder.cpp </li>
+<li>actorconnections.cpp </li>
+<li>extension.cpp </li>
+<li>Makefile (supporting at least make pathfinder, make actorconnections, and make extension) </li>
+<li>extension.txt </li>
+<li>Report.pdf </li>
+<li>Any additional files needed to execute Parts 1-3</li>
+</ol>
+<h2 id="Part-3-Final-Submission-Additional-Extension"><a href="#Part-3-Final-Submission-Additional-Extension" class="headerlink" title="Part 3: Final Submission -: Additional Extension"></a>Part 3: Final Submission -: Additional Extension</h2><p>In Part 3, you should choose any additional extension in which you report some<br>interesting graph properties or solve some interesting problem on a data set<br>different from the kevin bacon movie data set that we provided. There are a<br>number of extensions you can make to this assignment, and rather than choosing<br>a data set and a problem for you, we’ve left it open for you to decide what<br>you want to do. Do you want to pull in data from movie reviews to augment your<br>weighting so you prefer more highly rated movies? Do you want to analyze<br>friend circles from the facebook ego network and make interesting conclusions?<br>Do you want to provide k friend recommendations to a user based on the number<br>of mutual&#x2F;common friends? Do you want to study on how tweets evolve over time?<br>Pretty much any cool non-trivial graph extension is fair game here. If you are<br>concerned about whether or not your idea is “non-trivial” enough, ask on<br>Piazza. It is important that you solve a problem that is considerably<br>different from path-finder &#x2F; actorConnections. You may not solve the same<br>problem on a different graph.<br>These videos give you some leads and classes of questions that you might<br>answer using graphs. This extension is really about your interests and your<br>creativity. Feel free to come up with a completely new idea&#x2F; solve similar<br>problems on other datasets&#x2F; tweak the ideas described in the videos. We really<br>encourage you to keep looking and research. Google is your friend here.<br>You need to implement your idea in a program called extension (in a file<br>called extension.cpp) and it is worth 3 points and potentially a star point.<br>For full credit, you will need to provide a short write-up in the file<br>extension.txt which includes the problem you solved, how you solved it, and<br>how you tested it. Note that this file will be in plain text format. Include<br>in the write-up how the grader should run your program. If this is not<br>provided, you will receive a 0 for this part. You must also include a<br>tsv&#x2F;csv&#x2F;data file for a smaller version of the graph for us to test the<br>program. The data file(s) that you submit must be small and must contain no<br>more than 100 vertices. Also provide a link to where we can download the<br>entire data set in extension.txt. If you did some pre-processing to the data<br>set, you must include that code as well in your submission and tell. You must<br>clearly give all steps to get the data set and reproduce the results that you<br>have provided. DO NOT PUSH THE ENTIRE DATA SET TO GIT.<br>REMEMBER TO ADD THE LINE !fileName TO THE .gitignore FILE. (where the fileName<br>is the fileName of the smaller version of the graph on which we can test your<br>code).<br>Since this is a challenging extension that requires a substantial amount of<br>work, the extension may be deemed Star Point worthy. Again, we won’t say yes<br>or no for any particular problem. The graders will deem it Star Point worthy<br>based on the difficulty of the problem attempted, correctness and quality of<br>write-up&#x2F;testing.<br>Super challenging, complex extensions may even receive more than 1 star point.</p>
+<h2 id="Guidelines-to-Submit-the-Assignment"><a href="#Guidelines-to-Submit-the-Assignment" class="headerlink" title="Guidelines to Submit the Assignment"></a>Guidelines to Submit the Assignment</h2><p>When you have completed the milestone you were working on (either Checkpoint<br>or Final), you MUST submit it. Before submitting, please insure that any main<br>methods you implement return 0 upon completion. You will do this by (1)<br>pushing your changes to GITHUB (i.e. push the required files ONLY) and (2)<br>Submitting on Vocareum, in that order.<br>For detailed instructions look at the ppt.</p>
+<h2 id="Format"><a href="#Format" class="headerlink" title="Format"></a>Format</h2><p>We are giving very specific instructions on how to format your programs’<br>output because our auto-grader will parse your output in these formats, and<br>any deviation from these exact formats will cause the autograder to take off<br>points. There will be no special attention given to submissions that do not<br>output results in the correct format. Although we will still give partial<br>credit to the correctness of your results, if you do not follow the exact<br>formatting described here, you are at risk of losing all the points for that<br>portion of the assignment. NO EXCEPTIONS.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/06/26/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE100SixDegreesofKevinBacon/">http://saferman.github.io/2018/06/26/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE100SixDegreesofKevinBacon/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/06/29/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACOMP302AST/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="JavaScript代写：COMP302 AST">
+                        
+                        <span class="card-title">JavaScript代写：COMP302 AST</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-06-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/06/20/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS116Iteration/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Python代写：CS116 Iteration">
+                        
+                        <span class="card-title">Python代写：CS116 Iteration</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

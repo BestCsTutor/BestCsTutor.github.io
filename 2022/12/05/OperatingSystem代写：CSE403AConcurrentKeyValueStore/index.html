@@ -1,0 +1,926 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CSE403 A Concurrent Key/Value Store, 留学生CS|辅导|代写">
+    <meta name="description" content="练习并发( [ Concurrency ](https://www.geeksforgeeks.org/concurrency-in-operating-system&amp;#x2F; “Concurrency”) )编程。![Concurren">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CSE403 A Concurrent Key/Value Store | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CSE403 A Concurrent Key/Value Store</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-05
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>练习并发( [ Concurrency ](<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/concurrency-in-operating-">https://www.geeksforgeeks.org/concurrency-in-operating-</a><br>system&#x2F; “Concurrency”) )编程。<br>![Concurrency](<a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Reiko-">https://www.researchgate.net/profile/Reiko-</a><br>Heckel&#x2F;publication&#x2F;241612607&#x2F;figure&#x2F;fig10&#x2F;AS:298662744870920@1448218155187&#x2F;Example-<br>Concurrency.png)</p>
+<h2 id="A-Concurrent-Key-Value-Store"><a href="#A-Concurrent-Key-Value-Store" class="headerlink" title="A Concurrent Key&#x2F;Value Store"></a>A Concurrent Key&#x2F;Value Store</h2><p>The purpose of this assignment is to practice using concurrency in a realistic<br>setting.</p>
+<h2 id="Do-This-First"><a href="#Do-This-First" class="headerlink" title="Do This First"></a>Do This First</h2><p>Immediately after pulling <code>p2</code> from Bitbucket, you should start a container,<br>navigate to the <code>p2</code> folder, and type <code>chmod +x solutions/*.exe</code> . This<br>command only needs to be run once. It will make sure that certain files from<br>the assignment have their executable bit set.</p>
+<h2 id="Assignment-Details"><a href="#Assignment-Details" class="headerlink" title="Assignment Details"></a>Assignment Details</h2><p>There are two main reasons for using concurrency. One of them, which is more<br>typically called “parallelism”, is the desire to use multiple CPU cores to get<br>a job done in less time. The second involves overlapping communication with<br>computation. Often, these go hand in hand. As an example, consider our server<br>from assignment 1. For the entire time that the server is responding to one<br>client, it cannot even accept a connection from another client. Certainly it<br>would be good if we could overlap one client’s operations in the directory<br>with another client’s network communication. But what if two clients need to<br>access the <code>directory</code> at the same time? We can make the <code>directory</code><br>thread-safe by protecting it with a <code>mutex</code> , but that’s not going to let us<br>use many cores to satisfy many requests at the same time.<br>In this assignment, we are going to extend our client and server in two main<br>ways. The first is that we are going to add a new feature to the server, a<br>“key&#x2F;value” store (KVS). This new data structure will be a hash table into<br>which clients can store arbitrary data (the value) by giving it a unique name<br>(the key, a <code>std::string</code> ). The client will need to be able to perform five<br>new operations:</p>
+<ul>
+<li>KVI: Key&#x2F;Value <code>Insert</code> : insert a new key&#x2F;value pair into the server’s KVS </li>
+<li>KVD: Key&#x2F;Value <code>Delete</code> : remove an existing key&#x2F;value pair from the server’s KVS </li>
+<li>KVG: Key&#x2F;Value <code>Get</code> : get the value associated with a key </li>
+<li>KVU: Key&#x2F;Value <code>Upsert</code> : set or change the value for a key in the server’s KVS </li>
+<li>KVA: Key&#x2F;Value <code>All</code> : get a list of all the keys in the server’s KVS<br>These changes to the client are relatively straightforward, and we have done<br>them for you. You do not need to edit the client code at all. In fact, we<br>don’t even compile the client anymore. Your focus should be entirely on the<br>server.<br>First and foremost, we will need a way for the server to give incoming<br>requests to concurrent threads. Our solution will be to create a new “thread<br>pool”. The thread pool can be thought of as a single-producer multi-consumer<br>queue. Each time a new connection arrives, the server’s main thread should<br>accept the connection and put it into the queue. Worker threads will be<br>blocked trying to pop elements from the queue. The worker threads can then<br>read the requests, compute results, and send them back to clients.<br>The other main task will be to make the server’s data structures thread-safe.<br>We could do this by protecting each with a coarse-grained <code>std::mutex</code><br>object. However, that’s not going to be particularly good for performance.<br>Instead, we will create a concurrent, generic hash table. When the hash table<br>is complete, we will be able to use it twice: for the KVS, and for the<br>authentication table. Note that it will be important to think very carefully<br>about two-phase locking for this new hash table… the comments in the provided<br>code are a good place to start.<br>Finally, it will be necessary to update the persistence mechanism of our<br>server, because the new functionalities will need to be incorporated into the<br>way that we persist data. Again, see the comments in the provided code for<br>details of the new persistence requirements. You should be sure to think about<br>two-phase locking.</li>
+</ul>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>Your git repository has a new folder, <code>p2</code> , which contains a significant<br>portion of the code for the final solution to this assignment. It also<br>includes binary files that represent much of the solution to assignment 1. The<br><code>Makefile</code> has been updated so that you do not need to have completed the<br>first assignment in order to get full credit for this assignment.<br>There is a test script called <code>scripts/p2.py</code> , which you can use to test<br>your code. Note that these tests are not sufficient to show that your code is<br>thread-safe and free of data races. We will inspect your code to evaluate its<br>correctness in the face of concurrency, and also test it to see if it scales.</p>
+<h2 id="Tips-and-Reminders"><a href="#Tips-and-Reminders" class="headerlink" title="Tips and Reminders"></a>Tips and Reminders</h2><p>While a real server cannot be concurrent until it has a thread pool, in this<br>assignment you can start with any of the three files. The <code>just_my</code><br>makefiles will allow you to test each independently.<br>As in the last assignment, you should keep in mind that subsequent assignments<br>will build upon this… so as you craft a solution, be sure to think about how<br>to make it maintainable.<br><strong>Start Early</strong> . Just reading the code and understanding what is happening<br>takes time. If you start reading the assignment early, you’ll give yourself<br>time to think about what is supposed to be happening, and that will help you<br>to figure out what you will need to do.<br>As always, please be careful about not committing unnecessary files into your<br>repository.<br>Your server should <strong>not</strong> store plain-text passwords in the file.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>The <code>scripts</code> folder has four python scripts that exercise the main portions<br>of the assignment: basic authentication and correctness, file-based<br>persistence, the thread pool, and the hash table. These scripts use<br>specialized <code>Makefiles</code> that integrate some of the solution code with some<br>of your code, so that you can get partial credit when certain portions of your<br>code work. Note that these <code>Makefiles</code> are very strict: they will crash on<br>any compiler warning. You should <em>not</em> turn off these warnings; they are there<br>to help you. If your code does not compile with these scripts, you will not<br>receive any credit. If you have partial solutions and you do not know how to<br>coerce the code into being warning-free, you should ask the professor.<br>If the scripts pass when using your client with our server, and when using our<br>client with your server, then you will receive full “functionality” points for<br>that portion of the assignment. We will manually inspect your code to<br>determine if it is correct with regard to concurrency. As before, we reserve<br>the right to deduct “style” points if your code is especially convoluted.<br>Please be sure to use your tools well. For example, Visual Studio Code (and<br>emacs, and vim) have features that auto-format your code. You should use these<br>features.<br>While it is our intention to give partial credit, <em>no credit will be given for<br>code that does not compile without warnings.</em> If you decide to move functions<br>between files, or add files, or do other things that break the scripts in the<br>grading folder, then you will lose at least 10%. If you think some change is<br>absolutely necessary, speak with the professor first.<br>There are five main graded portions of the assignment:</p>
+<ul>
+<li>Is the thread pool correct? <ul>
+<li>Files: <code>common/my_pool.cc</code></li>
+</ul>
+</li>
+<li>Does the server’s handle client requests correctly? <ul>
+<li>Files: <code>server/my_storage.cc</code></li>
+</ul>
+</li>
+<li>Is the concurrent hash table Store implemented correctly? <ul>
+<li>Files: <code>common/concurrenthashmap.h</code></li>
+</ul>
+</li>
+<li>Is persistence implemented correctly, and according to <code>format.h</code><ul>
+<li>Files: <code>server/my_storage.cc</code></li>
+</ul>
+</li>
+<li>Does the Key&#x2F;Value store scale? <ul>
+<li>Files: <code>common/concurrenthashmap.h</code><br>Note: for the fifth part of the assignment, we have provided a separate <code>bench</code> folder, which has a benchmark you can use to test scalability. Be sure<br>to pay careful attention to your Docker settings. By default, Docker does not<br>give many cores to each container, so you may find that you aren’t seeing<br>scalability, even though your laptop has many cores.<br>Also, note that we have removed a lot of code from the <code>p2</code> folder, and<br>instead are providing <code>.o</code> files for the corresponding libraries. This<br>means, for example, that if you did not correctly implement cryptography in<br>the last assignment, it will not affect your grade in this assignment. In<br>fact, we are providing a complete <code>client.exe</code> , and expecting all of your<br>work to only be in three files: <code>common/my_pool.cc</code> , <code>server/concurrenthashmap.h</code> , and <code>server/my_storage.cc</code> . You will<br>probably want to begin by re-using a lot of your <code>server/my_storage.cc</code> code<br>from the last assignment.<br>Remember that the graded components are intentionally vague: you need to start<br>thinking about what it means for code to be “correct”. There are many criteria<br>that cannot be established through unit testing. This is especially true when<br>thinking about race freedom and serializability.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Notes-About-the-Reference-Solution"><a href="#Notes-About-the-Reference-Solution" class="headerlink" title="Notes About the Reference Solution"></a>Notes About the Reference Solution</h2><p>In the following subsections, you will find some details about the reference<br>solution.</p>
+<h3 id="server-my-storage-cc"><a href="#server-my-storage-cc" class="headerlink" title="server/my_storage.cc"></a><code>server/my_storage.cc</code></h3><p>The reference solution is about 500 lines, including comments. Most of the<br>functions are not implemented at all. Note that the fields of <code>Storage</code> are<br>complete. They provide everything that you need to implement storage<br>correctly.<br>One of the biggest challenges in this code is to get the concurrency correct,<br>and it’s hard to do because our tests won’t crash if the concurrency is wrong.<br>In particular, while it is fine to assume that <code>load()</code> will only be called<br>once, before there are threads, and thus does not need concurrency, you cannot<br>assume the same about any other methods. You will need to use two-phase<br>locking to <code>persist()</code> correctly. The easiest way is to chain lambdas<br>together. If you aren’t sure how, you should think carefully about the <code>do_all_readonly()</code> method of the hash table.<br>Most of the K&#x2F;V operations are relatively straightforward once you’ve got<br>everything else working. For example, the code for <code>kv_upsert()</code> looks<br>something like this:<br>    auto r &#x3D; auth(user, pass);<br>    if (!r.succeeded)<br>      return {false, r.msg, {<em>two big parantheses</em>;<br>    if (fields-&gt;kv_store.upsert(key, vector(val)))<br>      return {true, RES_OKINS, {<em>two big parantheses</em>;<br>    return {true, RES_OKUPD, {<em>two big parantheses</em>;<br>—|—  </p>
+<h3 id="common-my-pool-cc"><a href="#common-my-pool-cc" class="headerlink" title="common/my_pool.cc"></a><code>common/my_pool.cc</code></h3><p>The thread pool is fundamental to having any concurrency in your server.<br>Consider the old implementation of <code>accept_client()</code> from p0:<br>    &#x2F;&#x2F;&#x2F; Given a listening socket, start calling accept() on it to get new<br>    &#x2F;&#x2F;&#x2F; connections. Each time a connection comes in, use the provided handler to<br>    &#x2F;&#x2F;&#x2F; process the request. Note that this is not multithreaded. Only one client<br>    &#x2F;&#x2F;&#x2F; will be served at a time.<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param sd The socket file descriptor on which to call accept<br>    &#x2F;&#x2F;&#x2F; @param handler A function to call when a new connection comes in<br>    void accept_client(int sd, function&lt;bool(int)&gt; handler) {<br>      &#x2F;&#x2F; Use accept() to wait for a client to connect. When it connects, service<br>      &#x2F;&#x2F; it. When it disconnects, then and only then will we accept a new client.<br>      while (true) {<br>        cout &lt;&lt; “Waiting for a client to connect…\n”;<br>        sockaddr_in clientAddr &#x3D; {0};<br>        socklen_t clientAddrSize &#x3D; sizeof(clientAddr);<br>        int connSd &#x3D; accept(sd, (sockaddr *)&amp;clientAddr, &amp;clientAddrSize);<br>        if (connSd &lt; 0) {<br>          close(sd);<br>          sys_error(errno, “Error accepting request from client: “);<br>          return;<br>        }<br>        char clientname[1024];<br>        cout &lt;&lt; “Connected to “<br>             &lt;&lt; inet_ntop(AF_INET, &amp;clientAddr.sin_addr, clientname,<br>                          sizeof(clientname))<br>             &lt;&lt; endl;<br>        bool done &#x3D; handler(connSd);<br>        &#x2F;&#x2F; NB: ignore errors in close()<br>        close(connSd);<br>        if (done)<br>          return;<br>      }<br>    }<br>—|—<br>Each time a new socket connection happened, the server would directly execute<br>the handler to parse the request, decrypt it, and interact with <code>server_storage.h</code> accordingly. If an operation in <code>server_storage.h</code> took a<br>long time, then no other requests would be satisfied in the meantime.<br>The purpose of a thread pool is to overcome this sequential bottleneck. The<br>thread pool is essentially a bunch of threads that are all waiting (by using a<br>condition variable) for things to arrive in a queue. When the main thread (the<br>one who is running <code>accept_client</code> ) receives a new connection, it should<br>just push it into the queue and then wait for the next connection to arrive.<br>Let’s look at the new <code>accept_client()</code> code:<br>    &#x2F;&#x2F;&#x2F; Given a listening socket, start calling accept() on it to get new<br>    &#x2F;&#x2F;&#x2F; connections. Each time a connection comes in, pass it to the thread pool so<br>    &#x2F;&#x2F;&#x2F; that it can be processed.<br>    &#x2F;&#x2F;&#x2F;<br>    &#x2F;&#x2F;&#x2F; @param sd   The socket file descriptor on which to call accept<br>    &#x2F;&#x2F;&#x2F; @param pool The thread pool that handles new requests<br>    void accept_client(int sd, thread_pool &amp;pool) {<br>      atomic<bool> safe_shutdown(false);<br>      pool.set_shutdown_handler(<a href="">&amp;</a> {<br>        safe_shutdown &#x3D; true;<br>        shutdown(sd, SHUT_RDWR);<br>      });<br>      &#x2F;&#x2F; Use accept() to wait for a client to connect. When it connects, service<br>      &#x2F;&#x2F; it. When it disconnects, then and only then will we accept a new client.<br>      while (pool.check_active()) {<br>        cout &lt;&lt; “Waiting for a client to connect…\n”;<br>        sockaddr_in clientAddr &#x3D; {0};<br>        socklen_t clientAddrSize &#x3D; sizeof(clientAddr);<br>        int connSd &#x3D; accept(sd, (sockaddr *)&amp;clientAddr, &amp;clientAddrSize);<br>        if (connSd &lt; 0) {<br>          &#x2F;&#x2F; If safe_shutdown() was called, and it’s EINVAL, then the pool has been<br>          &#x2F;&#x2F; halted, and the listening socket closed, so don’t print an error.<br>          if (errno !&#x3D; EINVAL || !safe_shutdown)<br>            sys_error(errno, “Error accepting request from client: “);<br>          return;<br>        }<br>        char clientname[1024];<br>        cout &lt;&lt; “Connected to “<br>             &lt;&lt; inet_ntop(AF_INET, &amp;clientAddr.sin_addr, clientname,<br>                          sizeof(clientname))<br>             &lt;&lt; endl;<br>        pool.service_connection(connSd);<br>      }<br>    }<br>—|—<br>This code is mostly the same, except that it just hands the connection to a<br>pool, instead of handling it. However, there is one other important<br>difference: what happens on a <code>BYE</code> message. Before, the main thread was<br>processing each message, so it would receive a <code>BYE</code> , <code>handler()</code> would<br>return false, and it would exit the loop. Now we need some way for the threads<br>of the pool to communicate back to the main thread. We do this by sending a <code>shutdown_handler</code> lambda to the pool. This handler tells the pool how to<br>notify the main thread of a <code>BYE</code> message.<br>The code above is trickier than it seems: the code in the handler is not run<br>by the main thread, but by <em>one of</em> the threads in the pool. To prevent races,<br>we need to use an <code>atomic</code> variable. Since the main thread may be blocked in<br>a call to <code>accept</code> , we also need to <code>shutdown</code> the socket. While we<br>provide this code for you, it highlights an important point: thinking about<br>concurrency is much more difficult than thinking about sequential code.<br>With all of the above as background, note that <code>pool.cc</code> is only about 130<br>lines of code. You will need to use a <code>queue</code> , a <code>mutex</code> , and a <code>condition variable</code> in your <code>Internal</code> class. You will also need to have an<br><code>atomic</code> variable for letting a thread who receives <code>BYE</code> indicate to<br>other threads that they should not keep waiting on the queue (probably in<br>addition to broadcasting on the condition variable).</p>
+<h3 id="server-concurrenthashmap-h"><a href="#server-concurrenthashmap-h" class="headerlink" title="server/concurrenthashmap.h"></a><code>server/concurrenthashmap.h</code></h3><p>The hash table you create needs to be concurrent, and it needs to be scalable,<br>but it does not need to be particularly clever. It is sufficient to have a<br>fixed-size array&#x2F;vector (whose size is governed by a command-line argument) of<br><code>std::list</code> s. Then you can have a single mutex per entry in the fixed-size<br>array, and you’ll end up with a reasonably scalable hash table.<br>You will need to implement your hash table correctly, so that it can be<br>instantiated twice in <code>server/my_storage.cc</code> file: once for the directory,<br>and once for the key&#x2F;value store.<br>There are some basic concurrency best practices you should follow, like using<br>mutexes <em>even when reading</em> and using <code>lock_guard</code> . The hardest part though<br>is remembering to use two-phase locking (2PL) everywhere where more than one<br>bucket is accessed. Recall that with 2PL, all locks that an operation might<br>acquire <em>must</em> be acquired before any lock is released. This can be done by<br>incrementally growing the lock set, and releasing all at the end; by<br>aggressively locking everything early, and then releasing as the data<br>structure is released; or by aggressively locking everything early, and then<br>releasing everything at the end. We won’t be testing the performance of your<br>2PL code, so you don’t really need to worry about which one performs best.<br>However, you will need to implement <code>do_all_readonly</code> carefully, since it<br>will be used by your <code>my_storage.cc</code> file in the <code>persist()</code> method.<br>The good news is that the reference solution is only about 150 lines of code.<br>But as you probably have guessed by now, there is a lot of subtlety to getting<br>that code to be correct.</p>
+<h2 id="Collaboration-and-Getting-Help"><a href="#Collaboration-and-Getting-Help" class="headerlink" title="Collaboration and Getting Help"></a>Collaboration and Getting Help</h2><p>You may work in teams of 2 for this assignment. If you plan to work in a team,<br>you must notify the instructor by September 24th, so that we can set up your<br>repository access (be sure to cc your teammate, and to inform us of which<br>repository you want shared). If you notify us after that date, we will deduct<br>10 points. If you wish to have a different team than in the last assignment,<br>or to disband your team and work alone, please contact the professor by<br>September 24th. If you are working in a team, you should <strong>pair program</strong> for<br>the entire assignment. After all, your goal is to learn together, not to each<br>learn half the material.<br>If you require help, you may seek it from any of the following sources:</p>
+<ul>
+<li>The professor and TAs, via office hours or Piazza </li>
+<li>The Internet, as long as you use the Internet as a read-only resource and do not post requests for help to online sites.<br>It is not appropriate to share code with past or current CSE 303 &#x2F; CSE 403<br>students, unless you are sharing code with your teammate.<br>If you are familiar with <code>man</code> pages, please note that the easiest way to<br>find a man page is via Google. For example, typing <code>man printf</code> will<br>probably return <code>https://linux.die.net/man/3/printf</code> as one of the first<br>links. It is fine to use Google to find man pages.<br>StackOverflow is a wonderful tool for professional software engineers. It is a<br>horrible place to ask for help as a student. You should feel free to use<br>StackOverflow, but only as a <em>read only</em> resource. In this class, you should<br><strong>never</strong> need to ask a question on StackOverflow.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/12/05/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSE403AConcurrentKeyValueStore/">http://saferman.github.io/2022/12/05/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSE403AConcurrentKeyValueStore/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/05/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS2003Othello/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java代写：CS2003 Othello">
+                        
+                        <span class="card-title">Java代写：CS2003 Othello</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/04/Security%E4%BB%A3%E5%86%99%EF%BC%9ACSC363CreatingaSecureOn-LineService/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Security代写：CSC363 Creating a Secure On-Line Service">
+                        
+                        <span class="card-title">Security代写：CSC363 Creating a Secure On-Line Service</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

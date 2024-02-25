@@ -1,0 +1,975 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CPSC415 Device Driver, 留学生CS|辅导|代写">
+    <meta name="description" content="代写操作系统作业，练习设备驱动(  Device Driver  )的三层交互方式，通过事件(  Event
+ )的方式驱动应用程序。![Event Model](https://upload.wikimedia.org/wikipedia">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CPSC415 Device Driver | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CPSC415 Device Driver</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-06-12
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写操作系统作业，练习设备驱动( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Device_driver" title="Device Driver"> Device Driver </a> )的三层交互方式，通过事件( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Event_(computing)" title="Event"> Event
+</a> )的方式驱动应用程序。<br>![Event Model](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/d/d3/GUI_-">https://upload.wikimedia.org/wikipedia/commons/d/d3/GUI_-</a><br>_Delegate_Event_Model.PNG)</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>The purpose of this assignment is to develop an understanding of the how the<br>three layers of the device driver interact and how the kernel can signal<br>events to an application. In this assignment you will extend the kernel from<br>the second assignment to implement signal handling and a keyboard device. In<br>doing this you will learn how a device driver is constructed and how the<br>kernel can asynchronously signal events to an application.<br>Also, since this is the last assignment not as much guidance is provided on<br>what to do and which files need to modified. By this point you should be able<br>to determine that on your own.</p>
+<h2 id="To-Start"><a href="#To-Start" class="headerlink" title="To Start"></a>To Start</h2><p>Your starting point is the kernel resulting from the second assignment. If you<br>did not complete the assignment, or don’t wish to use your kernel, you may use<br>someone else’s kernel or the partial solution kernel available through Stash.<br>(You could also start with an assignment 1 solution to avoid time slicing<br>problems, but in the end it needs to run on the assignment 2 kernel.) You will<br>modify the code in several modules and add additional modules to extend the<br>kernel. Note: If you use the supplied solution, as with the A1 solution, the<br>kfree() function is not fully implemented and does not actually free memory.<br>Consequently, don’t get too exuberant with kmalloc() and expect kfree() to<br>help you out. Additionally none of the IPC primitives from assignment 2 are<br>supplied nor is priority scheduling since none of that functionality is needed<br>for this assignment.<br>If you are going to use your own kernel you need to clone the repo that is<br>created when you register for this assignment and then replace all the .h and<br>.c files from your A2.<br>Note: The solution kernel, using the supplied makefile, compiles without any<br>compiler warnings except for routines in the libx directory. Your code,<br>regardless of the kernel you start with, must also compile without warnings<br>except for files in the libx directory. You are not allowed to change the<br>command line options to the compiler to achieve this.</p>
+<h3 id="Assignment-3-GIT-Usage"><a href="#Assignment-3-GIT-Usage" class="headerlink" title="Assignment 3 - GIT Usage"></a>Assignment 3 - GIT Usage</h3><p>NOTE: You are expected to regularly check-in the work you have done throughout<br>the assignment. To encourage this part of the grade for this assignment will<br>be based on a regular and reasonable check-ins of your code. If working in<br>pairs it is expected that both partners will contribute to the assignment and<br>check-in code. It is accepted that the checking in of code may not be 50&#x2F;50,<br>but if only one person is checking in code then questions might be raised<br>about who is doing the work.</p>
+<h3 id="A-new-function"><a href="#A-new-function" class="headerlink" title="A new function"></a>A new function</h3><pre><code>int sysgetcputimes(processStatuses *)  
+</code></pre>
+<p>—|—<br>This system call is provided for you in the sample code. Each element in the<br>structure corresponds to a process in the system. For each process the pid,<br>current process state and the number of milliseconds (yes milliseconds and not<br>ticks) that have been charged to the process are recorded. Process 0 is always<br>reported and it is the NULL&#x2F;idle process. The code in user.c shows how to call<br>it and how to print the information out. Note when you print the information<br>out you should print column headings and a meaningful state name as opposed to<br>just a number.<br>The function fills the table starting with table element 0. The value<br>returned, if it is positive is the last slot used. -1 is returned if the<br>address is in the hole, and -2 is returned if the structure being pointed to<br>goes beyond the end of main memory. If you are using your own kernel you will<br>need to either implement this functionality from scratch or move the provided<br>code into your code base and make the appropriate adjustments.</p>
+<h3 id="Signal"><a href="#Signal" class="headerlink" title="Signal"></a>Signal</h3><p>The task for this part of the assignment is to implement a mechanism that<br>allows the kernel to asynchronously signal an application. The signalling<br>system will support 32 signals, numbered 0 to 31. Signal 31 is a special<br>signal that has as its handler sysstop(). In addition signal 31 cannot be<br>overridden or ignored. Signals are to be delivered in priority order, with<br>signals of a higher number having a higher priority being delivered first and<br>they also are allowed to interrupt the execution of lower priority signal<br>handlers. For example, if signal 23 is being handled by a process, that<br>signal’s processing can be interrupted by signals numbered 24 to 31 while<br>signals 0 to 23 would be held in abeyance until the handling of signal 23<br>finished.<br>In order to keep things simple, the only way a signal can be posted<br>(signalled) is via the syskill() call which is being repurposed from<br>assignment 2.</p>
+<h4 id="Signal-system-calls"><a href="#Signal-system-calls" class="headerlink" title="Signal system calls"></a>Signal system calls</h4><p>To syscall.c add the following system calls:<br>    int syssighandler(int signal, void (<em>newhandler)(void <em>), void (</em></em> oldHandler)(void *))<br>—|—<br>This call registers the provided function as the handler for the indicated<br>signal. If signal is invalid then 1 is returned. Since signal 31 cannot have<br>its handler changed an attempt to change the handler for signal 31 will also<br>return 1. If it can be determined that the handler resides at an invalid<br>address then -2 is returned. If the handler is successfully installed a 0 is<br>returned. The function being registered as the handler takes a single<br>argument. The third argument, oldHandler, is a pointer to a variable that<br>points to a handler. When this call successfully installs a new handler it<br>copies the address of the old handler to the location pointed to by<br>oldHandler. By doing this it is possible for the application code to remember<br>a previously installed handler in case it needs&#x2F;wants to restore that handler.<br>If he address pointed to be oldHandler is an invalid address (e.g. the hole,<br>past the end of main memory etc.) then 3 is to be returned.<br>When the handler is called, the trampoline code will set up things so that the<br>handler’s parameter will point to the start of the context at the time the<br>kernel decides to deliver a signal to the process. (Note this means actually<br>delivering the signal, not marking it for delivery.) Essentially, this is a<br>pointer to the start of the context that would have been activated if a signal<br>was not being delivered. If a null pointer is passed in as the handler then<br>signal delivery for the identified signal is disabled, which means the signal<br>is ignored. The default action for all signals is to ignore the signal.<br>    void syssigreturn(void *old sp)<br>—|—<br>This call is to be used only by the signal trampoline code. It takes as an<br>argument the location, in the application stack, of the context frame to<br>switch this process to. This is just the value that was passed to the<br>trampoline code. (A discussion of the trampoline code occurs in the next<br>section.) On the kernel side, the action performed by this call is to replace<br>the stack pointer in this process’s PCB with the pointer passed as the<br>parameter to this system call. In addition this call needs to retrieve any<br>saved return value and indicate what signals can again be delivered. This call<br>does not return.<br>    int syskill(int PID, int signalNumber)<br>—|—<br>This system call requests that a signal be delivered to a process. The PID<br>argument is the process ID of the process to deliver the signal to. The<br>signalNumber is the number of the signal to be delivered (i.e. 0 to 31). On<br>success this call returns 0, if the target process does not exist then -514 is<br>returned and if the signal number is invalid -583 is returned. From<br>syskill()’s perspective if a signal is marked for delivery, or if the signal<br>to be delivered and is marked “to be ignored,” that is considered success.<br>    int syswait(int PID)<br>—|—<br>This system call causes the calling process to wait for the process with the<br>ID PID to terminate. If the call terminates normally it returns 0. If the<br>process to be waited for does not exist then -1 is returned. (Process 0 is<br>considered to not exist for the purposes of this call.) If a signal is<br>targeted at the process while it is waiting the signal is delivered and<br>handler run, if the signal isn’t being ignored, and the call returns the value<br>that indicates a system call was interrupted (see below).</p>
+<h4 id="Signal-processing-Code"><a href="#Signal-processing-Code" class="headerlink" title="Signal processing Code"></a>Signal processing Code</h4><p>In the file signal.c implements the function<br>    sigtramp(void (*handler)(void *), void *cntx)<br>—|—<br>When the kernel decides to deliver a signal to a process, the kernel modifies<br>the application’s stack so that sigtramp() is executed when this process is<br>switched to. The sigtramp() code runs in user space as part of the application<br>and is used to control the signal processing in the application. It is the<br>responsibility of sigtramp() to call the provided handler with the argument<br>cntx When the handler returns, sigtramp() then calls syssigreturn() with cntx<br>to complete the signal processing. The syssigreturn() call never returns.<br>    int signal(…)<br>—|—<br>This function, implemented in signal.c, is internal to the kernel, and is<br>called when a signal is to be registered for delivery to a process. It is your<br>responsibility to decided what appropriate arguments should be and the meaning<br>of the return values. Regardless of what you decide, it must be possible for a<br>process to signal itself.<br>If a process is blocked on a system call when it is targeted to receive a<br>signal, then the target process is unblocked and the return value for the<br>system call, which is being unblocked, is -666, unless otherwise specified and<br>means that the system call was interrupted by a signal. The unblocked process<br>does not return from this “interrupted” system call until after the signal<br>processing finishes. Consequently you will need to remember the value that<br>needs to be returned for the system call as any context switches from the<br>trampoline&#x2F;handler to the kernel could result in register eax being improperly<br>set upon return.<br>If, before a process gets a chance to process a specific signal, the same<br>signal is signalled (posted) again the signal handler for that signal is run<br>only once. However, if that same signal is posted while the signal handler (or<br>trampoline code) for it is being run, that same signal handler will be run,<br>depending on the priority of any other signals that might have occurred, once<br>the current handler is complete.</p>
+<h4 id="Interrupting-syssleep"><a href="#Interrupting-syssleep" class="headerlink" title="Interrupting syssleep()"></a>Interrupting syssleep()</h4><p>In assignment 2 the description of syssleep() says that the value returned is<br>0 if the timer expires or the time left to sleep if the call is interrupted.<br>Since the call can’t be interrupted in assignment 2 it always returned 0 so<br>there was no question as to whether the time retured should be in ticks or<br>milliseconds. For this assignment the units of the return value are to be<br>milliseconds, just like the parameter.</p>
+<h4 id="Signal-handling-implementation-suggestions"><a href="#Signal-handling-implementation-suggestions" class="headerlink" title="Signal handling implementation suggestions"></a>Signal handling implementation suggestions</h4><p>To deal with the signal prioritization issue you might want to maintain<br>several sets of bit masks. The first could be bit mask that records all of the<br>signals currently targeted to the process. The second could be a mask with 1s<br>in the locations of all the bits of the signals we are willing to accept (i.e.<br>a handler is installed for that signal). You will probably also want to keep<br>some indication of the range of signals the process will respond to taking<br>priorities into account. For example if the only signals with a priority<br>greater than 10 are to be processes then that needs to be remembered and<br>adjusted as signal handlers are run.<br>As part of delivering a signal the kernel will need to save the current value<br>of the current signal processing level so that the signalling level can be<br>raised and subsequently restored. Depending upon your implementation approach<br>there may be other values that need to be stored and recovered later.<br>One problem is where to store all these old values. You might want to consider<br>putting the old values on the application stack, just before the context for<br>the trampoline code is added. (i.e. Put it on the stack as if sigtramp() had<br>additional parameter. Sigtramp won’t use them, but when syssigreturn() is<br>called the kernel can compute where these values are stored and retrieve them.<br>(Suggestion: Consider defining a struct that can be used to setup the stack<br>for the switch to sigtramp and then having the appropriately defined fields in<br>it such as the new context, return address, arguments to sigtramp() and then<br>any extra fields.)<br>It is strongly suggested that you focus your initial implementation on getting<br>the signal handling code to work before permiting and excuting signal handler<br>to be interrupted by a higher priority signal.</p>
+<h3 id="Device-Driver"><a href="#Device-Driver" class="headerlink" title="Device Driver"></a>Device Driver</h3><p>You are to implement the keyboard device using the standard design pattern<br>discussed in class consisting of the DII and upper and lower half driver code.</p>
+<h4 id="System-Calls"><a href="#System-Calls" class="headerlink" title="System Calls"></a>System Calls</h4><p>To syscall.c and disp.c add the following system calls:<br>    extern int sysopen(int device no)<br>—|—<br>This call will be used to open a device. The argument passed in is the major<br>device number and can be used to index, perhaps after some adjustment, into<br>the device table. The call returns -1 if the open fails, and a file descriptor<br>in the range 0 to 3 (inclusive) if it succeeds.<br>    extern int sysclose(int fd)<br>—|—<br>This call takes as an argument, the file descriptor (fd) from a previously<br>successful open call, and closes that descriptor. Subsequent system calls that<br>make use of the file descriptor return a failure. The call returns 0 for<br>success and -1 for a failure.<br>    extern int syswrite(int fd, void *buff, int bufflen)<br>—|—<br>This call performs a write operation to the device associated with the<br>provided file descriptor, fd. Up to bufflen bytes are written from buff. The<br>call returns -1 if there is an error, otherwise it returns the number of bytes<br>written. Depending upon the device, the number of bytes written may be less<br>than bufflen.<br>    extern int sysread(int fd, void *buff, int bufflen)<br>—|—<br>This call reads up to bufflen bytes from the previously opened device<br>associated with fd into the buffer area pointed to by buff. The call returns<br>-1 if there is an error, otherwise it returns the number of bytes read.<br>Depending upon the device, the number of bytes read may be less than bufflen.<br>A 0 is returned to indicate end-of-file (EOF). If a sysread() call is<br>interrupted by a signal that isn’t being ignored, the signal handler is run<br>and then sysread() returns and the return value is number of bytes in its<br>buffer. If that value would be 0 then the value indicating an interrupted<br>system call is returned.<br>    extern int sysioctl(int fd, unsigned long command, …)<br>—|—<br>This call takes a file descriptor and executes the specified control command.<br>The action taken is device specific and depends upon the control command.<br>Additional parameters are device specific. The call returns -1 if there is an<br>error and 0 otherwise.</p>
+<h4 id="Device-Independent-Calls"><a href="#Device-Independent-Calls" class="headerlink" title="Device Independent Calls"></a>Device Independent Calls</h4><p>Each application level system call requires a corresponding call to be invoked<br>by the dispatcher. The calls that you will need to implement are: di_open(),<br>di_close(), di_write(), di_read() and di_ioctl(). The parameters to these<br>calls are just the parameters of the corresponding system call along with any<br>additional parameters, if any, required by your design. The return values of<br>these calls and their meaning are dependent upon your design. (Recall that the<br>return values are only used by the dispatcher and do not have to represent the<br>value that the system call returns to the application.) These calls are to be<br>implemented in the file called di_calls.c<br>Except for the di_open() call, the remaining calls all follow the same<br>implementation pattern. Roughly each DII call does the following:</p>
+<ul>
+<li>Verifies that the passed in file descriptor is in the valid range and corresponds to an opened device. </li>
+<li>Using the information stored in the file descriptor table of the process determines the index of the appropriate device in the device table from the there determines the function to call. </li>
+<li>Calls the function. </li>
+<li>You will need to determine the meaning of the return value of the DII call.<br>We discussed in class the types of things that di_open() needs to perform.<br>However, we don’t have a file system to perform the name to major device<br>number mapping. To get around this problem have the di_open() call take the<br>actual major device number as the argument to identify the device being<br>opened. The di_open() call will need to verify that the major number is in the<br>valid range before calling the device specific open() function pointed to by<br>the device block and adding the entry to the file descriptor table in the PCB.</li>
+</ul>
+<h4 id="PCB-Changes"><a href="#PCB-Changes" class="headerlink" title="PCB Changes"></a>PCB Changes</h4><p>You will need to add a file descriptor table to your PCB. The file descriptor<br>table must allow 4 devices to be opened at once. Each entry in the file<br>descriptor table must somehow (this is up to you) identify the device<br>associated with the descriptor.</p>
+<h3 id="Device-Table-and-Device-Structure"><a href="#Device-Table-and-Device-Structure" class="headerlink" title="Device Table and Device Structure"></a>Device Table and Device Structure</h3><p>The kernel’s device table will not be very interesting in that it will have<br>only 2 devices in it. Both entries are for the keyboard. The device 0 version<br>of the keyboard will not, by default, echo the characters. as they arrive.<br>This means that if the characters need to be displayed the application will<br>have to do it. Device 1 will, by default, echo the characters. This means that<br>the character could be displayed before the application has actually read the<br>character. Even though these are separate devices, only one of them is allowed<br>to be open at a time.<br>Each table entry has a device structure similar to that described in class.<br>(i.e. It need not be exactly as described in class.) The structure proposed in<br>class serves only as a guide. Keep in mind that the structure you choose must<br>be capable of supporting a wide range of both physical and virtual devices.<br>Also note that the keyboard devices have basically the same functionality<br>except for one routine so do not duplicate code.<br>The required tables and structures are to be defined in xeroskernel.h and<br>initialized in init.c</p>
+<h3 id="Keyboard"><a href="#Keyboard" class="headerlink" title="Keyboard"></a>Keyboard</h3><p>For each of the device independent calls you will need to implement a<br>corresponding device specific device driver call. The implementation is to be<br>in the files named kbd.c and kbd.h.<br>Since writes are not supported to the keyboard, all calls to syswrite() will<br>result in an error indication (-1) being returned.<br>The behaviour of the sysread() system call is somewhat simpler and less<br>flexible than might be found on a typical Unix system.<br>If the echo version of the keyboard is opened, then each typed character is<br>echoed to the screen as soon as it arrives. If the non-echo version of the<br>keyboard is being used the responsibility for printing characters, if<br>required, is the application’s.<br>The keyboard implementation is to internally buffer up to 4 characters. If a<br>control-d is typed the underlying driver will take that to mean that no more<br>input follows and return, at the appropriate time, an end-of-file (EOF)<br>indication. (i.e. a 0 on a sysread() call.) The control-d is never returned to<br>the application nor are any characters typed after a control-d. In fact it<br>makes sense to disable the keyboard hardware at this point. Subsequent<br>sysread() operations on this descriptor will continue to return the EOF<br>indication. If the buffer fills up subsequent character arrivals are discarded<br>and not displayed until buffer space becomes available. If a control-d is<br>received while the buffer is full it is discarded like any other character.<br>When a sysread call is made it blocks until one or more of the following<br>conditions occurs while copying data from the kernel to the application buffer<br>passed as the parameter to sysread():</p>
+<ul>
+<li>The buffer passed in to the sysread system call is full as specified by the size parameter to the read call. Any unread bytes in the kernel buffer are returned on subsequent sysreads. </li>
+<li>While copying bytes to the application buffer the “Enter key” (i.e. the carriage return character) is encountered. in this case the ASCII character for a new line (“\n”) is put into the buffer and the call returns. The “\n” character is included in the count of the number of characters returned. Characters after the “Enter Key” are returned in subsequent read operations. Note that “\n” takes up two characters when entered as code, it actually is a single character since the \ is acting as an escape character and provides a way to represent a non-printable character. </li>
+<li>An EOF was detected by the kernel and all unread data has been copied. </li>
+<li>A signal is targeted at the process and the signal is not being ignored. In this case the process is unblocked and the handler run. Once the handler has completed execution the sysread call returns the number of characters that, up to this point have been placed in the buffer supplied by the application. If that value is zero then the value defined earlier that indicates an interrupted system call is returned.<br>Observe that when filling the application’s read buffer, characters are always<br>consumed first from the kernel’s read buffer followed by new characters from<br>the keyboard if there are insufficient characters in the kernel’s buffer. When<br>sysread operations succeed the bytes returned in the buffer must correspond to<br>the legal ASCII characters as defined by man ASCII on the undergraduate Linux<br>machines.<br>The sysioctl() command supported by the keyboard device has three operations.<br>O is to change the character typed at the keyboard that indicates an EOF. The<br>command number to request this operation is 53, (see <a target="_blank" rel="noopener" href="https://www.random.org/"> http://www.random.org
+</a> for how this number was selected.) and the third<br>parameter is the integer value of the character that is to become the new EOF<br>indicator. The other two commands are 55 and 56. Command 55 turns echoing off,<br>and command 56 turns echoing on. There are no other parameters for command 55<br>and 56.</li>
+</ul>
+<h4 id="Interacting-with-the-keyboard-hardware"><a href="#Interacting-with-the-keyboard-hardware" class="headerlink" title="Interacting with the keyboard hardware"></a>Interacting with the keyboard hardware</h4><p>The chip that communicates with the keyboard is the Intel 8042 and it occupies<br>ports 0x60 to 0x6F, although we won’t use all the ports. Port 0x60 is where<br>data is read from. Commands and control information are read&#x2F;written to port<br>0x64. To see if there is data present read a byte from port 0x64. If the low<br>order bit is 1 then there is data ready to be read from port 0x60. Do not<br>assume that because an interrupt went off that there is actually data to read.<br>Most of the time there will be, but there are things known as spurious<br>interrupts that occur when there is in fact no data. Links to documents to<br>help you understand the 8042 and how to program it are available in this<br>assignment’s area on Canvas. The keyboard is the 2nd device connected to the<br>PIC&#x2F;APIC. Since devices are numbered starting with 0, the IRQ for the keyboard<br>controller is 1. Consequently, interrupts for the keyboard controller are<br>enabled with the following call: enable irq(1, 0). To avoid unneeded<br>processing, the kernel should enable the keyboard interrupts through the APIC<br>only upon an open and disable them again on a close. You will need to read the<br>code to determine how to disable the keyboard. I’d suggest starting with<br>enable irq(). Also, don’t forget to install your ISR.<br>When a character is read from the 8042 you actually get back a scan code<br>representing which key was pressed or released. (You get an event when the key<br>is pressed and another event when the key is released.) This means that you<br>will need to convert the scan codes to ASCII and you will also need to keep<br>track of whether the control and shift keys are still being held when<br>subsequent scan codes arrive. Note: keys outside the standard part of the<br>keyboard (e.g. the function keys, keypad, arrow keys etc, can be ignored. The<br>escape key is considered a standard key.) Before getting too involved in this<br>code, you should experiment a bit by having the keyboard interrupt routine<br>simply print the byte read from port 0x60. This will allow you to determine<br>just what happens when a key is pressed&#x2F;released and how the control and shift<br>keys fit into this. Some code to convert scan codes to ASCII has been put in<br>the file scancodesToAscii.txt in the C directory. You may find this code,<br>which doesn’t have a lot of comments, to be of some help. Feel free to use the<br>code and modify it for your own purposes. If you choose to use this code, and<br>make changes to it, be sure to clearly identify and document the changes you<br>make.</p>
+<h3 id="A-test-Program"><a href="#A-test-Program" class="headerlink" title="A test Program"></a>A test Program</h3><p>To demonstrate your new kernel you will write the program that controls access<br>to the console, a simple shell, and a couple of test programs.</p>
+<h4 id="The-init-program"><a href="#The-init-program" class="headerlink" title="The init program"></a>The init program</h4><p>The root process is going to provide the functionality similar to the init<br>program on Unix. The program does the following:</p>
+<ol>
+<li>Prints a banner that says Welcome to Xeros - a not so experimental OS </li>
+<li>Opens the keyboard. </li>
+<li>Prints Username: </li>
+<li>Reads the username - the only username you need to support is cs415 5. Turns keyboard echoing off </li>
+<li>Prints Password: </li>
+<li>Reads the password </li>
+<li>Closes the keyboard </li>
+<li>Verifies the username and password </li>
+<li>If the verification fails goes back to step 1 (The password is to be EveryonegetsanA) </li>
+<li>Create the shell program. </li>
+<li>Wait for the shell program to exit </li>
+<li>Go back to step 1</li>
+</ol>
+<h4 id="The-shell"><a href="#The-shell" class="headerlink" title="The shell"></a>The shell</h4><p>Roughly the shell behaves as follows after opening the keyboard.</p>
+<ol>
+<li>Print the prompt </li>
+<li>Reads the command - each command ends when the enter key is pressed. </li>
+<li>The first word on the line is the command. </li>
+<li>If the command does not exist print “Command not found” and go to step 1 </li>
+<li>If the command exists then create the process corresponding to that command and remember the process ID until the process exits. </li>
+<li>If the command line ended with “&amp;” go back to 1. </li>
+<li>Otherwise wait for the command to finish with syswait().<br>Determining if a program has exited if the shell hasn’t done a syswait() is a<br>bit problematic and will be dealt with in the commands section.</li>
+</ol>
+<h4 id="The-commands"><a href="#The-commands" class="headerlink" title="The commands"></a>The commands</h4><p>Commands designated as builtin are run by the shell directly and if the<br>command line ends with &amp; the &amp; is ignored. The commands you are to support<br>are:</p>
+<ul>
+<li>ps - builtin - lists all the current living&#x2F;active processes one per line. Each line consists of 3 nicely spaced columns. The columns, which are to have headings, are the process id, the current state of the process, and the amount of time the process has run in milliseconds. Note that the state of the process running the ps command is to be reported as RUNNING. You will probably need to introduce some additional states to represent things like processes blocked for I&#x2F;O or waiting for another process as these states are different from each other and from sleeping. </li>
+<li>ex or current EOF character - builtin - causes the shell to exit </li>
+<li>the current EOF character - builtin - causes the shell to exit. If a line is is terminated with the current EOF character as opposed to the enter key, then the the command line is not interpreted and the shell exits. </li>
+<li>k - builtin - Takes a parameter, the pid of the process to terminate, and kills that process. If the process does not exist it prints “No such process” (Note you will have to implement syskill() as it isn’t supplied.) </li>
+<li>a - partially builtin, This commands takes a parameter that is the number of milliseconds before signal 18 is to be sent. The shell first installs a hander that prints ALARM ALARM ALARM and then disables signal 18 once the alarm has been delivered. If the command line ends with “&amp;”. The shell will run the alarm() process in the background otherwise it waits for the alarm process to terminate. The alarm process will sleep for the required number of ticks and then send the signal 18 to the shell. To get the time and shell pid you can “cheat” and use global variables, but if you want more of a challenge you can figure out how to pass these values as parameters to the process (No marks will be deducted if you don’t do this.) </li>
+<li>t - this starts the t() process which simply prints, on a new line a T every 10 seconds or so. You might have to experiment a bit to get the right sleep value.<br>Feel free to add new commands to help with testing. Since the tests can be<br>command line driven leave them in so that we can try them.</li>
+</ul>
+<h3 id="Hints-to-Successfully-Completing-the-Assignment"><a href="#Hints-to-Successfully-Completing-the-Assignment" class="headerlink" title="Hints to Successfully Completing the Assignment"></a>Hints to Successfully Completing the Assignment</h3><p>Here are some hints on how to successfully complete this assignment.</p>
+<ol>
+<li>Implement the parts you understand first. Do not assume that the best way to implement this assignment is to start at the beginning of the assignment and working your way through. </li>
+<li>To develop some expertise in interacting with the 8042 just try reading from it and printing something out before writing other parts of the code. </li>
+<li>Write small bits of code and test it right away. Do not write the whole assignment and then try to get it working.</li>
+</ol>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>You are to produce a plain ASCII testing document, called testdoc.txt,<br>organized into sections. Each section will cover one of the testing scenario<br>described below, have a title, and be clearly delineated with an obvious<br>separator from adjacent sections. The sections are to appear in the order as<br>listed below. For each test case explain what is being tested, how the test is<br>structured, and how the output demonstrates what is being tested. You may want<br>to annotate the output but be very careful to distinguish between annotations<br>and actual output. It is acceptable to remove output that is superfluous as<br>long as that is indicated. The tests must be unique and different from any of<br>the scenarios required to implement the shell and its commands.</p>
+<ol>
+<li>Test showing prioritization and signals interrupting each other. </li>
+<li>syssighandler() test case </li>
+<li>syskill() test case </li>
+<li>syssigwait() test case </li>
+<li>sysopen() with invalid arguments </li>
+<li>syswrite() with invalid file descriptor </li>
+<li>sysioctl() test for invalid commands </li>
+<li>sysread() when there are more characters buffered in kernel than the read requests 9. Two test cases for scenarios not covered here or in the test program.</li>
+</ol>
+<h2 id="How-the-TA’s-will-Test-Your-Code"><a href="#How-the-TA’s-will-Test-Your-Code" class="headerlink" title="How the TA’s will Test Your Code"></a>How the TA’s will Test Your Code</h2><p>To test your code, the TA’s will compile and run your code as is, and verify<br>that the test program works. Secondly they may provide their own user land<br>code to test the signal handling and devices.</p>
+<h2 id="How-to-hand-in-things"><a href="#How-to-hand-in-things" class="headerlink" title="How to hand in things"></a>How to hand in things</h2><p>As in the previous assignments to hand in you need to commit your changes and<br>push the commits to stash.</p>
+<ol>
+<li>Make sure your c, h, and compile directories from the xeros distribution are committed. Do not add any .a or .o files to the repo. </li>
+<li>Make sure you have pushed all your final code to the stash server. </li>
+<li>If you have anything you want the TA to know about your assignment put in a file named README.txt in the c directory. </li>
+<li>Make sure your testing documentation is included.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/06/12/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACPSC415DeviceDriver/">http://saferman.github.io/2019/06/12/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACPSC415DeviceDriver/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/06/12/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC521MonteCarloSimulate/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：CSC521 Monte Carlo Simulate">
+                        
+                        <span class="card-title">Python代写：CSC521 Monte Carlo Simulate</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-06-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/06/11/JavaFX%E4%BB%A3%E5%86%99%EF%BC%9ACS141Langton'sAntColony/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="JavaFX代写：CS141 Langton&#39;s Ant Colony">
+                        
+                        <span class="card-title">JavaFX代写：CS141 Langton&#39;s Ant Colony</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-06-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaFX%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaFX代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

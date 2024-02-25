@@ -1,0 +1,898 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS341 Timing Instructions, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction这个作业属于硬件作业了，要求阅读芯片手册，然后写一个时钟驱动。难度的话其实比不过同期的软件作业难度，已经提供了大部分的代码，不过硬件调试需要一定的功底。  
+I. OBJECTIVESThe purpose of t">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS341 Timing Instructions | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS341 Timing Instructions</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-29
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>这个作业属于硬件作业了，要求阅读芯片手册，然后写一个时钟驱动。难度的话其实比不过同期的软件作业难度，已经提供了大部分的代码，不过硬件调试需要一定的功底。  </p>
+<h2 id="I-OBJECTIVES"><a href="#I-OBJECTIVES" class="headerlink" title="I. OBJECTIVES"></a>I. OBJECTIVES</h2><p>The purpose of this assignment is to build a package of timing routines for<br>the SAPC and use it to time code on the SAPC to determine memory access time<br>on the SAPC with and without caching. This code does not run on UNIX. Read the<br>Intel 8254 Programmable Interval Timer (PIT) Data Sheet. Look at $pcex&#x2F;timer.c<br>for an example of C code for accessing the timer. Copy all the files needed<br>for this project.</p>
+<h2 id="II-The-timing-package"><a href="#II-The-timing-package" class="headerlink" title="II. The timing package"></a>II. The timing package</h2><p>A package is a set of utilities that can be called by a program that wants to<br>use them. When designing a package we carefully consider the things in it that<br>must be visible to the caller, specify those, and require that everything else<br>be internal and invisible. The visible parts of the timing package you will<br>build are in “timepack.h”. A customer for the package’s services includes that<br>header file (using #include) in the program for compilation and links his or<br>her object code with “timepack_sapc.opc” to build the executable. You are<br>asked to modify “timepack_sapc.c” to provide a high resolution timer service<br>for programs running on the SAPC.</p>
+<h3 id="Existing-Code"><a href="#Existing-Code" class="headerlink" title="Existing Code"></a>Existing Code</h3><p>Every package should have a test program showing that it works by calling it<br>in all important ways. This test program is called a “driver” because it sits<br>on top of the package and drives it like we test-drive a car – start up, do<br>this, do that, stop, shut down. It is also called a “unit test” program<br>because it tests just this one package separate from any other package in a<br>bigger program. If you suspect something is wrong in a certain package, you’ll<br>try to make its unit test fail, and then you debug the problem in the<br>relatively simple environment of the unit test, rather than in the bigger<br>program. The test program for timepack is testpack.c. You can build testpack<br>and testpack.lnx right away and run them. Note what is printed out by<br>testpack.lnx. Capture this in a typescript1 file. It shows that the timing<br>package (as provided) can time things on the SAPC to 55-ms accuracy, but not<br>to the microsecond accuracy we want. The next step is to get your<br>timepack_sapc.c fixed up for the higher resolution and the unit test<br>executable testpack.lnx will show it.</p>
+<h3 id="Modifed-Code"><a href="#Modifed-Code" class="headerlink" title="Modifed Code"></a>Modifed Code</h3><p>You’re working directly with the hardware device, the Programmable Interval<br>Timer (PIT) with its interrupt handler. This code has been provided to you in<br>a). The timepack_sapc.c as provided can measure time in timer “ticks” at an<br>18.2-Hz (55 ms&#x2F;tick) standard PC tick rate.To use the PIT to measure higher<br>precision, you make use of “downcounts” within the timer chip. What you need<br>to do is determine how many counts have downcounted in the timer since the<br>last tick and compute a higher accuracy time. By doing this at both the start<br>and the end of the time interval being measured, you can compute the elapsed<br>time accurate to a few microseconds, a very respectable timer service. You’ll<br>need to modify the timepack_sapc.c to achieve this.<br>Since timer downcounts count down from 64K at the tick, you need to subtract<br>the register value from 65536 to get the number of downcounts since last tick:<br>    number of downcounts since tick &#x3D; 65536 - observed_count (in register)<br>Thus the accurate time between A and B is<br>    &#x3D; 202 clock ticks + (65536 – 43000) downcounts - (200 clock ticks + (65536 – 35000) downcounts)<br>    &#x3D; 2 clock ticks – 8000 downcounts<br>where 1 tick &#x3D; 64 * 1024 downcounts, so this whole thing can be expressed in<br>downcounts, and then converted to usecs.<br>Note that you need to convert downcounts (an int) to usecs (another int). To<br>do this, cast the downcount value to double, multiply by the correct double<br>conversion factor, and then cast back to int usecs. The idea here is that the<br>conversion factor is itself non-integral, so the needed multiplication by it<br>needs to be in floating point, resulting in a floating point number accurate<br>to about 1 usec, so we might as well cast it back to an int value since ints<br>are easier to work with.<br>See the timer.c in the course directory for a C program that reads the timer<br>downcounts – you can take code from this as needed.<br>Don’t leave any printf’s in your final code that output during timing runs!!<br>They take a really long time and ruin the data. Save the timing figures in<br>memory and print them out after the stoptimer call.<br>Any private functions or variables you need should be declared static in<br>“timepack_sapc.c”, so that the calling program can never accidentally use a<br>variable or function with the same name, or interfere with yours. Capture your<br>improved result in a typescript2 file.</p>
+<h2 id="III-Timing-i486-instructions-and-a-C-loop"><a href="#III-Timing-i486-instructions-and-a-C-loop" class="headerlink" title="III. Timing i486 instructions and a C loop"></a>III. Timing i486 instructions and a C loop</h2><p>In this part of the assignment you will use the timing package to time x86<br>instructions. Instruction execution time is measured in system clock cycles,<br>here 2.5 nsecs for our 400Mhz Pentium systems. The PC timer 0 is accurate only<br>in the usec (microsecond) range so you will need to loop many times and divide<br>by the loop count to get the accuracy needed.<br>The actual instructions to be timed appear in loops in “itests.s”, which is an<br>x86 assembler source. These are called from itimes.c.</p>
+<ul>
+<li>Finish “itests.s”, so that the third instruction to be timed (immediate move of IDATA to register) is properly implemented. Add a fourth instruction of your choice “itests.s” and “itimes.c” </li>
+<li>You can use the provided makefile to build an optimized version of the SAPC executable file. The provided makefile has the following definitions: <h1 id="development-build-g-provides-debugging-support-slows-down-execution"><a href="#development-build-g-provides-debugging-support-slows-down-execution" class="headerlink" title="development build: -g provides debugging support, slows down execution"></a>development build: -g provides debugging support, slows down execution</h1><h1 id="Use-O2-optimization-no-g-on-final-timing-runs"><a href="#Use-O2-optimization-no-g-on-final-timing-runs" class="headerlink" title="Use -O2 optimization, no -g on final timing runs!"></a>Use -O2 optimization, no -g on final timing runs!</h1>PC_CFLAGS_DEV &#x3D; -g -Wall -Wno-implicit -Wshadow -I$(PC_INC) -I$(TIMING)<br>PC_CFLAGS_OPT &#x3D; -O2 -Wall -Wno-implicit -Wshadow -I$(PC_INC) -I$(TIMING)  <h1 id="make-default-PC-CFLAGS-be-PC-CFLAGS-DEV"><a href="#make-default-PC-CFLAGS-be-PC-CFLAGS-DEV" class="headerlink" title="make default PC_CFLAGS be PC_CFLAGS_DEV"></a>make default PC_CFLAGS be PC_CFLAGS_DEV</h1>O &#x3D; DEV  <h1 id="allow-user-to-override-DEV-via-O-OPT-on-the-command-line"><a href="#allow-user-to-override-DEV-via-O-OPT-on-the-command-line" class="headerlink" title="allow user to override DEV via O&#x3D;OPT on the command line"></a>allow user to override DEV via O&#x3D;OPT on the command line</h1>PC_CFLAGS &#x3D; $(PC_CFLAGS_$(O))<br>—|—</li>
+</ul>
+<p>You can use O&#x3D;OPT on the make command line to build an optimized version of<br>the sapc executables. Note that you need to “make clean” between a development<br>build and an optimized build to get rid of object files. Note that we are<br>turning off debugging when we turn on optimizations. Although gcc allows both<br>at once, debugging with optimizations on can be confusing, and debugging<br>support slows down execution.<br>Do your final timing runs with the optimized version, except for the “C test”<br>– this should be done both ways to see the effect of development vs.<br>production compiling.</p>
+<ul>
+<li>Look at the itests code in memory using the i386-gdb “x&#x2F;i” command. Use “disas itests.opc” (at the UNIX prompt, using the disas alias from the ulab module) to see addresses of individual instructions. From this information figure out how many bytes there are per tested instruction. Then convert bytes to quadwords(64 bits) to see how many 64-bit reads are involved in instruction fetches. Allow fractional reads, for example .25 or .625 because the CPU does 64-bit reads and then saves unused instruction parts, even with caching off, for use as the next instruction. Add on memory reads or writes needed for the operands to find the total number of reads and writes for each tested instruction. For these operand accesses, the CPU does not save the extra bytes, so even a byte operand access counts as a full 64-bit read or write. Fill in the blanks on the form itimes.txt. </li>
+<li>Use your modified “itimes.c” and “itests.s” to time “movl %eax,%edx”, “movl  , %eax”, “movl $MEMADDR, %eax” and one other instruction of your choice on a SAPC. Use several values of loopcount and the same value several times to see if the time per instruction is consistent. When you get decent repeatability, fill in the form itimes.txt memory access time estimation. Add your discussion to your copy of the form.<br>NOTE: Even on the fairly well-defined environment of the SAPC, there are<br>sneaky mechanisms that disturb picture-perfect timing results, so don’t<br>despair if your data doesn’t follow theory exactly – report what you found and<br>discuss it.<br>Files in this directory:<br>mp3.txt     the assignment, link this or just print it<br>makefile    copy this, read for build instructions<br>itests.s    assembler code for loops to be timed – you copy, edit<br>itimes.c    source code for instruction timer driver – you copy, edit<br>timepack_sapc.c SAPC timing package – copy, edit<br>testpack.c  source code for testpack, timing pkg driver – copy, use as needed (build with make C&#x3D;testpack)<br>You shouldn’t need to copy or link these: the makefile knows where they are<br>$SAPC_TOOLS&#x2F;timing&#x2F;timepack.h header file for timing package<br>timepack_unix.c     unix implementation of timing package primitives<br>timepack_unix_dbg.o unix object code, debug version, for timepack_unix<br>timepack_unix_opt.o unix object code, opt. version, for timepack_unix<br>You should have the following files in your directory:<br>Sources for the master directory for the group:<br>timepack_sapc.c:    make sure you comment the code properly<br>itests.s:           indicating the new tests<br>itimes.c:           clearly indicate any changes you have made</li>
+</ul>
+<h2 id="FINAL-NOTE"><a href="#FINAL-NOTE" class="headerlink" title="FINAL NOTE"></a>FINAL NOTE</h2><p>In the event that you are unable to correctly complete this assignment by the<br>due date, do not remove the work you were able to accomplish – partial credit<br>is always better than none.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/06/29/C%E4%BB%A3%E5%86%99%EF%BC%9ACS341TimingInstructions/">http://saferman.github.io/2021/06/29/C%E4%BB%A3%E5%86%99%EF%BC%9ACS341TimingInstructions/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/30/NetworkProgramming%E4%BB%A3%E5%86%99%EF%BC%9ACSE320WolfieChatPart1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Network Programming代写：CSE320 Wolfie Chat Part1">
+                        
+                        <span class="card-title">Network Programming代写：CSE320 Wolfie Chat Part1</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Network-Programming%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Network Programming代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/29/Java%E4%BB%A3%E5%86%99%EF%BC%9AITP265Accomplishment/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Java代写：ITP265 Accomplishment">
+                        
+                        <span class="card-title">Java代写：ITP265 Accomplishment</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

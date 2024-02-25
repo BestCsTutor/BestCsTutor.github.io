@@ -1,0 +1,945 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Network Programming代写：EE450 MapReduce Model, 留学生CS|辅导|代写">
+    <meta name="description" content="代写实现分布式计算中的MapReduce模型，考察Linux下的网络编程能力。  
+Problem StatementIn this project you will implement a simple model of computat">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Network Programming代写：EE450 MapReduce Model | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Network Programming代写：EE450 MapReduce Model</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Network-Programming%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Network Programming代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-07-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写实现分布式计算中的MapReduce模型，考察Linux下的网络编程能力。  </p>
+<h2 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h2><p>In this project you will implement a simple model of computational offloading<br>where a single client offloads some computation to a server which in turn<br>distributes the load over 3 backend servers. The server facing the client then<br>collects the results from the backend and communicates the same to the client<br>in the required format. This is an example of how a cloud­computing service<br>such Amazon Web Services might implement MapReduce to speed up a large<br>computation task offloaded by the client.<br>The server communicating with the client is called AWS (Amazon Web Server) and<br>the three backend servers are named Back­Server A, Back­Server B and<br>Back­Server C. The client and the AWS communicates over a TCP connection while<br>the communication between AWS and the Back­Servers A, B &amp; C is over a UDP<br>connection.</p>
+<h2 id="Input-Files-Used"><a href="#Input-Files-Used" class="headerlink" title="Input Files Used"></a>Input Files Used</h2><p>The files specified below will be used as inputs in your programs in order to<br>dynamically configure the state of the system. The contents of the files<br>should NOT be “hardcoded” in your source code, because during grading, the<br>input files will be different, but the formats of the files will remain the<br>same.<br>If you are working in an environment other than UNIX, pay particular attention<br>to line endings or newlines . For this project, it is assumed that all files<br>follow the UNIX line ending convention. This is particularly important while<br>handling the input file(s). See the articles here and here for more<br>information.<br>nums.csv: An ASCII file that contains a single column of integers. Each row<br>consists of a single integer and ends with a newline. You may assume that each<br>integer is within the range of a long signed integer type. The number of rows<br>in the file will be a multiple of 3. This file will always reside in the same<br>directory as the client.</p>
+<h2 id="Source-Code-Files"><a href="#Source-Code-Files" class="headerlink" title="Source Code Files"></a>Source Code Files</h2><p>Your implementation should include the source code files described below, for<br>each component of the system.</p>
+<ol>
+<li>AWS: You must name your code file: aws.c or aws.cc or aws.cpp (all small letters). Also you must call the corresponding header file (if you have one; it is not mandatory) a ws.h (all small letters). </li>
+<li>Back­Server A, B and C: You must use one of these names for this piece of code: server#.c or server#.cc or server#.cpp (all small letters except for #). Also you must call the corresponding header file (if you have one; it is not mandatory) server#.h (all small letters, except for #). The “#” character must be replaced by the server identifier (i.e. A or B or C), depending on the server it corresponds to.<br>Note: In case you are using one executable for all four servers (i.e. if you<br>choose to make a “fork” based implementation), you should call the file<br>servers.c or servers.cc or servers.cpp. Also you must call the corresponding<br>header file (if you have one; it is not mandatory) servers.h (all small<br>letters). In order to create four servers in your system using one executable,<br>you can use the fork() function inside your server’s code to create 4 child<br>processes. You must follow this naming convention! This piece of code<br>basically handles the server functionalities.</li>
+<li>Client: The name of this piece of code must be client.c or client.cc or client.cpp (all small letters) and the header file (if you have one; it is not mandatory) must be called client.h (all small letters).</li>
+</ol>
+<h2 id="More-Detailed-Explanations"><a href="#More-Detailed-Explanations" class="headerlink" title="More Detailed Explanations"></a>More Detailed Explanations</h2><h3 id="Phase-1"><a href="#Phase-1" class="headerlink" title="Phase 1"></a>Phase 1</h3><p>All four server programs (AWS, Back­Server A, B, &amp; C) boot up in this phase.<br>While booting up, the servers must display a boot message on the terminal. The<br>format of the boot message for each server is given in the onscreen messages<br>tables at the end of the document. As the boot message indicates, each server<br>must listen on the appropriate port for incoming packets&#x2F;connections.<br>Once the server programs have booted up, the client program is run. The client<br>displays a boot message as indicated in the onscreen messages table. Note that<br>the client code takes an input argument from the command line, that specifies<br>the computation that is to be run. The format for running the client code is<br>    .&#x2F;client <function_name><br>where <code>function_name</code> can take a value from <code>&#123;min, max, sum, sos&#125;</code> . As an<br>example, to find the sum of the all the numbers in the input file, the client<br>should be run as follows:<br>    .&#x2F;client sum<br>After booting up, the client establishes a TCP connection with AWS. After<br>successfully establishing the connection, the client first sends the <code>function_name</code> to AWS. Once the <code>function_name</code> is sent, the client should<br>print a message in the format given int the table. The client then reads all<br>integers from nums.csv and proceeds to send them to AWS over the same TCP<br>connection. After successfully sending the integers, the client should print<br>the number of integers sent to AWS. This ends Phase 1 and we now proceed to<br>Phase 2.</p>
+<h3 id="Phase-2"><a href="#Phase-2" class="headerlink" title="Phase 2"></a>Phase 2</h3><p>In Phase 1, you read the numbers from the file and sent them to the AWS server<br>over a TCP connection. Now in phase 2, this AWS server will divide the data<br>into 3 non­overlapping components and send that to the 3 back­servers. If<br>there are N numbers in the file, then the first N&#x2F;3 numbers must be sent to<br>back­server A, next N&#x2F;3 to back­server B and the last N&#x2F;3 numbers to<br>back­server C. TAs will make sure that the number N is divisible by 3. Also<br>the function to be performed needs to be communicated to the back­servers.<br>The communication between the AWS server and the back­servers happen over UDP.<br>The AWS server will send the <code>function_name</code> along with the actual numbers.<br>Note that the <code>function_name</code> can be MIN, MAX, SUM or SOS (sum of squares).<br>The port numbers for back­servers A, B and C are specified in table 2. Since<br>all the servers will run on the same machine in our project, all have the same<br>IP address (the IP address of localhost is usually 127.0.0.1).<br>Once a back­server receives the actual numbers (a total of N&#x2F;3 numbers) and<br>the function to be performed, it computes the function value. Let this value<br>for server i as X(i). This step is also called as map in MapReduce. If the<br>numbers received the back­server i are n(1), n(2), then the Map operations it<br>performs are as follows.</p>
+<h3 id="Phase-3"><a href="#Phase-3" class="headerlink" title="Phase 3"></a>Phase 3</h3><p>At the end of Phase 2, all backend­servers have their answers ready. Let’s<br>call the value calculated by backend­server i as X(i). This is to be sent to<br>the AWS server using UDP. The final answer needs to be calculated by the<br>Frontend­server (AWS) in the reduce step and then handed over to the user.<br>The frontend­server (server D) looks at the type of reduction operation and<br>calculates the final answer which we call X f inal based on the answers it<br>receives from the back­servers A, B and C. This step is also called as reduce<br>in MapReduce. Now depending on the operation requested by the user we have.</p>
+<h2 id="Example-Output"><a href="#Example-Output" class="headerlink" title="Example Output"></a>Example Output</h2><pre><code>Backend­Server A Terminal:
+The Server A is up and running using UDP on port 21319.
+The Server A has received 30 numbers
+The Server A has successfully finished the reduction SUM: 1000
+The Server A has successfully finished sending the reduction value to AWS server.
+Backend­Server B Terminal:
+The Server B is up and running using UDP on port 22319.
+The Server B has received 30 numbers
+The Server B has successfully finished the reduction SUM: 1001
+The Server B has successfully finished sending the reduction value to AWS server.
+Backend­Server C Terminal:
+The Server C is up and running using UDP on port 23319.
+The Server C has received 30 numbers
+The Server C has successfully finished the reduction SUM: 1002
+The Server C has successfully finished sending the reduction value to AWS server.
+AWS Terminal:
+The AWS is up and running.
+The AWS has received 90 numbers from the client using TCP over port 25319
+The AWS has sent 30 numbers to Backend-Server A
+The AWS has sent 30 numbers to Backend-Server B
+The AWS has sent 30 numbers to Backend-Server C
+The AWS received reduction result of SUM from Backend-Server A using UDP
+over port 24319 and it is 1000
+The AWS received reduction result of SUM from Backend-Server B using UDP
+over port 24319 and it is 1001
+The AWS received reduction result of SUM from Backend-Server C using UDP
+over port 24319 and it is 1002
+The AWS has successfully finished the reduction SUM: 3003
+The AWS has successfully finished sending the reduction value to client.
+Client Terminal:
+The client is up and running.
+The client has sent the reduction type SUM to AWS.
+The client has sent 90 numbers to AWS
+The client has received reduction SUM: 3003
+</code></pre>
+<h2 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h2><ol>
+<li>It is recommended to start the processes in this order: backend­server (A), backend­server (B), backend­server (C), AWS (D), Client. </li>
+<li>If you need to have more code files than the ones that are mentioned here, please use meaningful names and all small letters and mention them all in your README file. </li>
+<li>You are allowed to use blocks of code from Beej’s socket programming tutorial (Beej’s guide to network programming) in your project. However, you need to mark the copied part in your code. </li>
+<li>When you run your code, if you get the message “port already in use” or “address already in use”, please first check to see if you have a zombie process (from past logins or previous runs of code that are still not terminated and hold the port busy). If you do not have such zombie processes or if you still get this message after terminating all zombie processes, try changing the static UDP or TCP port number corresponding to this error message (all port numbers below 1024 are reserved and must not be used). If you have to change the port number, please do mention it in your README file. If you have zombie processes you can kill them using unix commands: <code>kill</code> or <code>killall</code> .</li>
+</ol>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><ol>
+<li>Do not hardcode the TCP or UDP port numbers that are to be obtained dynamically. Refer to Table 1 to see which ports are statically defined and which ones are dynamically assigned. Use <code>getsockname()</code> function to retrieve the locally­bound port number wherever ports are assigned dynamically as shown. </li>
+<li>Use <code>gethostbyname()</code> to obtain the IP address or the local host however the host name must be hardcoded as nunki.usc.edu or localhost in all pieces of code. </li>
+<li>You can either terminate all processes after completion of phase 3 or assume that the user will terminate them at the end by pressing <code>ctrl-c</code> . </li>
+<li>All the naming conventions and the on­screen messages must conform to the previously mentioned rules. </li>
+<li>You are not allowed to pass any parameter or value or string or character as a command­line argument except while running the client in Phase 1. </li>
+<li>All the on­screen messages must conform exactly to the project description. You should not add anymore on­screen messages. If you need to do so for the debugging purposes, you must comment out all of the extra messages before you submit your project. </li>
+<li>Using <code>fork()</code> or similar system calls are not mandatory if you do not feel comfortable using them to create concurrent processes. </li>
+<li>Please do remember to close the socket and tear down the connection once you are done using that socket.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/07/22/NetworkProgramming%E4%BB%A3%E5%86%99%EF%BC%9AEE450MapReduceModel/">http://saferman.github.io/2019/07/22/NetworkProgramming%E4%BB%A3%E5%86%99%EF%BC%9AEE450MapReduceModel/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Network-Programming%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Network Programming代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/07/28/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS142WordJumbler/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java代写：CS142 Word Jumbler">
+                        
+                        <span class="card-title">Java代写：CS142 Word Jumbler</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-07-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/07/21/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCI141BlackoutMath/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Python代写：CSCI141 Blackout Math">
+                        
+                        <span class="card-title">Python代写：CSCI141 Blackout Math</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-07-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

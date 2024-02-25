@@ -1,0 +1,953 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kernel代写：COMS20001 Kernel Development, 留学生CS|辅导|代写">
+    <meta name="description" content="按照提供的Guide， 搭建开发环境，对Kernel进行修改以及裁剪。  
+Introduction
+Any sufficiently large program eventually becomes an operating system">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kernel代写：COMS20001 Kernel Development | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kernel代写：COMS20001 Kernel Development</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kernel%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Kernel代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>按照提供的Guide， 搭建开发环境，对Kernel进行修改以及裁剪。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><blockquote>
+<p>Any sufficiently large program eventually becomes an operating system.<br>This coursework focuses on development of an operating system kernel. The<br>practical nature of this task is important from an educational perspective: it<br>should offer a) deeper understanding of various topics covered in theory<br>alone, and transferable experience applicable when you either b) develop<br>software whose effectiveness and efficiency depend on detailed understanding<br>how it interacts with hardware and&#x2F;or a kernel, or c) develop software for a<br>platform that lacks a kernel yet still requires run-time support of some kind<br>(that you must therefore offer). The constituent stages offer a variety of<br>options, in attempt to cater for differing levels of interest in the topic as<br>a whole. In particular, note that they offer an initially low barrier to entry<br>for what is obviously a challenging task when considered as a whole.</p>
+</blockquote>
+<h2 id="Terms-and-conditions"><a href="#Terms-and-conditions" class="headerlink" title="Terms and conditions"></a>Terms and conditions</h2><ul>
+<li>The assignment description may refer to marksheet.txt. Download this ASCII text file, then complete and include it in your submission: this is important, and failure to do so may result in a loss of marks. </li>
+<li>The coursework design includes two heavily supported, closed initial stages which reflect a lower mark, and one totally unsupported, open final stage which reflects a higher mark. This suggests the marking scale is non-linear: it is clearly easier to obtain X marks in the initial stages than in the final stage.<br>The terms open and closed should be read as meaning flexibility wrt. options<br>for work, not openendedness wrt. workload: each stage has clear success<br>criteria that should limit the functionality you implement, meaning you can<br>(and should) stop work once they have been satisfied.</li>
+<li>Perhaps more so than other assignments, this one has a large design space of possible approaches for each stage. Part of the challenge, therefore, is to think about and understand which approach to take: this is not purely a programming exercise st. implementing an approach (elsewhere perhaps even prescribed in the description) is enough. Such decisions should ideally be based on a reasoned argument formed via your own background research (rather than reliance on the teaching material alone). </li>
+<li>Since the overarching goal of the assessment process is to reward better solutions (within indicative weights assigned to each stage), you can interpret “better” as meaning a) higher quality (e.g., functionality whose implementation is more robust or complete), and&#x2F;or b) more realistic (e.g., functionality that more closely models a real kernel). Keep in mind that wrt. the latter, and in line with the associated worksheets, justified simplifications will sometimes make sense if they allow progress toward a more limited or partial solution. </li>
+<li>You should submit your work via the SAFE submission system including all source code, written solutions and any auxiliary files you think are important (e.g., any example input or output). </li>
+<li>Your submission will be assessed in a 20 minute viva (meaning oral exam). By the stated submission deadline, select a viva slot online to suit your schedule. Note that: <ul>
+<li>The viva will be based on your submission via SAFE: you will need to know your candidate number1 so this can be downloaded.</li>
+</ul>
+</li>
+<li>Your submission will be marked using a platform equivalent to the CS lab. (MVB-2.11). As a result, it must compile, execute and be thoroughly tested against default operating system and development tool-chain versions available. </li>
+<li>The discussion will focus on demonstration and explanation of your solution wrt. the stated success criteria. Keeping this in mind, it is essential you have a simple, clear way to execute and demonstrate your work. Ideally, you will be able to a) use one (or very few) command(s) to build a kernel image (e.g., using a script or Makefile), then b) demonstrate that a given success criteria has been met by discussing appropriate diagnostic output. Any significant editing and&#x2F;or recompilation of the solution during the viva is strongly discouraged, as are multi-part solutions (e.g., use of separately compiled source code for each stage). </li>
+<li>Immediate personal feedback will be offered verbally, with a general, written marking report released at the same time as the marks.</li>
+</ul>
+<h2 id="Material"><a href="#Material" class="headerlink" title="Material"></a>Material</h2><p>Download and unarchive the file somewhere secure within your file system<br>(e.g., in the Private sub-directory in your home directory). The content and<br>structure of this archive, as illustrated in Figure 1, should be familiar: it<br>closely matches that used by the lab. worksheets, and thus represents a<br>skeleton starting point for your submission.</p>
+<ul>
+<li>There are two extra (sub-)Makefile are provided: these relate to Appendix A and Appendix B, effectively automating associated commands, and are introduced at the appropriate point below. </li>
+<li>The extra files disk.[ch] and disk.py also relate to Appendix B, but are only relevant for one option within the final stage. </li>
+<li>In combination, image.ld, lolevel.[sh] and int.[sh] implement a interrupt handling skeleton for the reset, SVC and IRQ interrupts: it is analogous to worksheet #2, with each low-level interrupt handler function invoking an associated high-level, empty placeholder in hilevel.[ch].</li>
+</ul>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>The overarching goal of this assignment is to develop an initially simple but<br>then increasingly capable operating system kernel. It should execute and thus<br>manage resources on a specific ARM-based target platform, namely a RealView<br>Platform Baseboard for Cortex-A8 [1] emulated by QEMU2 . The capabilities of<br>said platform suggest a remit for the kernel, or, equivalently, a motivating<br>context: if and when it makes sense to do so, imagine the platform and kernel<br>form an embedded, consumer electronics product (e.g., set-top box3 or media<br>center).</p>
+<h3 id="Stage-1"><a href="#Stage-1" class="headerlink" title="Stage 1"></a>Stage 1</h3><p>This stage is designed to match the task in lab. worksheet #4: you should<br>implement a simple, functioning operating system kernel that supports pre-<br>emptive multi-tasking (for some fixed number of user processes stemming from<br>statically linked programs).<br>Success criteria. Initialise the kernel so that the three user programs P3, P4<br>and P5 are automatically executed, and then demonstrate their concurrent<br>execution.</p>
+<h3 id="Stage-2"><a href="#Stage-2" class="headerlink" title="Stage 2"></a>Stage 2</h3><p>This stage involves the design and implementation of some standard<br>improvements to the starting point above. Initialise the kernel so that only<br>the console user program (an overview of which is given in Appendix A) is<br>executed automatically: this will allow you to interact with the kernel via a<br>command-line shell4 , and thus, with appropriate alterations, control each<br>(sub-)stage.</p>
+<ul>
+<li>(a) The kernel developed in the lab. worksheet(s) assumed a fixed number of user processes exist. Improve on this by supporting dynamic5 creation and termination of processes via fork, exec and exit system calls. Since you design the semantics of these system calls, any reasoned simplifications are allowed provided they support the desired functionality: fork could be simpler than in POSIX [2, Page 881], for example.<br>Success criteria. Altering the provided user programs where appropriate,<br>demonstrate the dynamic creation and termination of some user processes (i.e.,<br>correct behaviour of the underlying fork, exec and exit system calls) via<br>appropriate use of the console.</li>
+<li>(b) The kernel developed in the lab. worksheet(s) used a special-purpose scheduling algorithm: it could do so as the result of assuming a fixed number of user processes exist. Improve on this by implementing an alternative; you can select or design an algorithm, but it must be able to capitalise on the concept of priorities somehow.<br>Success criteria. Demonstrate the differing behaviour of your implementation<br>vs. round-robin scheduling (as implemented in the same kernel), and explain<br>when and why this represents an improvement.</li>
+<li>(c) The kernel developed in the lab. worksheet(s) lacked any mechanism for Inter-Process Communication (IPC). The first half of the unit introduced various ways to support the concept of IPC: implement one of them in the kernel.<br>Success criteria. Develop a new user program which uses your IPC mechanism to<br>solve the dining philosophers6 problem: upon execution, it should first use<br>fork to spawn 16 new “philosopher child processes” which then interact with<br>each other via IPC. Demonstrate execution of this new program from the<br>console, and explain how the solution a) ensures mutual exclusion and b)<br>prevents starvation.</li>
+</ul>
+<h3 id="Stage-3"><a href="#Stage-3" class="headerlink" title="Stage 3"></a>Stage 3</h3><p>This stage includes several diverse, more challenging options which you can<br>select between. Keep in mind that a) you should only attempt this stage having<br>first completed each previous (sub-)stage, and b) per marksheet.txt, you<br>select and submit one option only: if you submit more, only the option with<br>the highest mark will be considered wrt. assessment.</p>
+<ul>
+<li>(a) As shown in worksheet #1, the PB-A8 represents a complete computer system. As such, an ambitious but realistic goal is to investigate various devices not utilised thus far. For example, either: <ul>
+<li>i. Success criteria. Demonstrate use of the MMU to a) prevent access by one process into an address space allocated to the kernel or another process, and b) offer some degree of memory virtualisation (i.e., a uniform address space per process). </li>
+<li>ii. Success criteria. Demonstrate a) management of the LCD and PS&#x2F;2 controllers within an appropriate device driver framework, and b) implementation of an improved UI vs. interaction via the QEMU terminal and hence command-line shell: this could be achieved either with a user- or kernel-space window manager, for example, however simple.</li>
+</ul>
+</li>
+<li>(b) In contrast to investigating one of the various real, albeit emulated devices supported by the PB-A8, we could consider a compromise: for certain cases we could consider a simplified device instead, and therefore focus on higher-level use rather than low-level detail of the device itself. Appendix B outlines the source code provided in order to support such a case. The goal is to use a simplified disk, which offers block-based storage of data, to implement a file system: ideally this will a) implement a UNIX-like, inode-based data structure, allowing some form of directory hierarchy, and b) support a suite of system calls such as open, close, read and write, with semantics of your own design, which, in turn, demand management of file descriptors.<br>Success criteria. Demonstrate either a) two new user programs which model the<br>cat and wc tools (i.e., the ability to write data into a new file, or append<br>to an existing file, then count the lines etc. in it), and&#x2F;or b) the kernel<br>dynamically loading a user program from the disk then executing it (vs. using<br>one of the statically compiled user programs, as assumed above).</li>
+<li>(c) Originally, emulation of the PB-A8 was motivated by a need to a) reduce the challenge of software development, and b) address the issue of scale when used in the context of the unit. That said, investigation of a physical alternative such the RaspberryPi7 can be a rewarding exercise. So, provided you are willing to accept the associated and significant challenges, the goal is to port your existing kernel and have it execute on such a platform.<br>Success criteria. Demonstrate the kernel executing on whatever physical target<br>platform you select, and, ideally, utilising board-specific devices available.</li>
+</ul>
+<h2 id="A-simplified-console-console-ch"><a href="#A-simplified-console-console-ch" class="headerlink" title="A simplified console: console.[ch]"></a>A simplified console: console.[ch]</h2><p>Consider the diagram below: development platform target platform<br>Although the terms are often conflated, is is common to define a console as a<br>(command-line) terminal specific to local, kernel-mode interaction; this<br>contrasts with a more general terminal, where interaction a) can often be<br>remote (e.g., over a network), and b) is related to user-mode login. The<br>mechanism used to implement a console differs system-by-system, but in<br>embedded contexts, use of a UART is not uncommon: a RaspberryPi, for example,<br>has such a console by default. In fact, the lab. worksheet(s), we already made<br>extensive use of this model: QEMU was configured st. an emulated UART (namely<br>the PL011_t instance UART0) is associated with the emulation terminal: this<br>meant the kernel could read and write input and output, and hence interact<br>with the user. However, QEMU is more flexible than this. It also supports<br>association between an emulated UART and a network port; reading or writing<br>bytes to or from the UART thus implies receiving or transmitting them across<br>the network.<br>This is essentially what the diagram shows. A user program implementing the<br>console (i.e., console.[ch]) executes under control of the kernel, using the<br>PL011_t instance UART1. This is associated with a network port, allowing a<br>connection from a terminal emulator executing on the development platform: the<br>net result could be viewed as roughly analogous to a command-line terminal<br>resulting from (remote) login to snowy.cs.bris. ac.uk using SSH.</p>
+<h3 id="Why-is-this-a-reasonable-simplification"><a href="#Why-is-this-a-reasonable-simplification" class="headerlink" title="Why is this a (reasonable) simplification?"></a>Why is this a (reasonable) simplification?</h3><p>The approach outlined above is not a radical simplification at all. In fact,<br>the only significant difference vs. a real kernel is direct use of UART1 by<br>the console implementation: this would obviously need to be managed, by the<br>kernel, via a device driver in reality. The major advantage of this minor<br>simplification is the fact that console I&#x2F;O can be segregated from I&#x2F;O by<br>other user programs. This is important, in so far as it offers a clearer<br>interactive interface with the kernel. Put simply, the alternative of<br>interleaving all I&#x2F;O can be confusing and therefore hinder progress wrt. the<br>core ILOs.</p>
+<h3 id="Interacting-with-the-console"><a href="#Interacting-with-the-console" class="headerlink" title="Interacting with the console"></a>Interacting with the console</h3><p>Note that Makefile.console extends the vanilla Makefile provided with<br>variables and build targets related to use of the console. We explain how to<br>do so directly below, but keep in mind that, as a result, the same steps can<br>and perhaps should be automated.</p>
+<ul>
+<li>Ensure the line in Makefile that reads<br>QEMU_UART +&#x3D; telnet:127.0.0.1:1235,server<br>is uncommented, then launch QEMU as normal in one terminal: this instructs<br>QEMU to associate the<br>PL011_t instance UART1 with the network port 1235. Note that QEMU will<br>initially wait for a connection to be made via said port, indicated by a<br>message similar to<br>QEMU waiting for connection on: disconnected:telnet:127.0.0.1:1235,server</li>
+<li>Issue the command nc<br>127.0.0.1 1235<br>in another terminal we refer to as the console terminal.</li>
+<li>Once you execute the kernel (e.g., issue a continue command to gdb), the console terminal should show a command prompt (assuming the kernel has automatically executed the associated user process): by typing commands into the console terminal, you can interact with the console and hence the kernel.</li>
+</ul>
+<h2 id="A-simplified-disk-disk-py-and-disk-ch"><a href="#A-simplified-disk-disk-py-and-disk-ch" class="headerlink" title="A simplified disk: disk.py and disk.[ch]"></a>A simplified disk: disk.py and disk.[ch]</h2><p>The lower part of the diagram illustrates components that exists on the<br>development platform:</p>
+<ul>
+<li>disk.bin models the disk mechanism: it stores the disk content as a sequence of bytes as a so-called disk image. This is a standard file, in so far it is stored on the standard file system available via the development platform. </li>
+<li>disk.py models the disk controller: it acts as an interface, accepting high-level commands that it satisfies at a low level using the underlying disk mechanism. When executed, the controller will connect to and communicates via a network port. Note it imposes structure on the disk content, so rather than a “flat” sequence of bytes it is interpreted as some number of blocks of a given length.<br>The upper part of the diagram illustrates components that exists on the target<br>platform, which in this case is represented by QEMU (and so is, in turn,<br>executing on the development platform). As was the case in Appendix A, we<br>capitalise on the ability to form an association between emulated UART and<br>network port: by connecting the disk controller to the same port, we allow the<br>kernel image and disk controller to communicate. disk.[ch] includes a set of<br>high-level functions the kernel can call; you could view this source code as a<br>primitive form of device driver, which acts as an abstraction of the<br>communication protocol.</li>
+</ul>
+<h3 id="Why-is-this-a-reasonable-simplification-1"><a href="#Why-is-this-a-reasonable-simplification-1" class="headerlink" title="Why is this a (reasonable) simplification?"></a>Why is this a (reasonable) simplification?</h3><p>Hopefully it is obvious that the approach outlined above is not how a real<br>disk would be connected to a real computer system like the PB-A8! Likewise,<br>the communication protocol used has, at best, a limited relationship with a<br>real analogy such as SCSI8 .<br>As a result, it is fair to question whether the approach represents a<br>reasonable or useful simplification of reality. The answer is basically that<br>it offers a compromise. That is, what it lacks wrt. realism, it gains in<br>allowing a focus on high(er)-level ILOs: with a simplified low-level, block-<br>based storage medium you can focus on high-level design and implementation of<br>a file system without complicating detail that would exist otherwise. In<br>particular, the approach allows a) inspection and manipulation of the disk<br>state using more familiar and “trusted” tools on the development platform,<br>and&#x2F;or b) manual interaction with the disk controller in order to test and<br>verify behaviour of a command (you can type a command, and then inspect the<br>response).<br>Used correctly, both can make the implementation challenge vastly easier.</p>
+<h3 id="Creating-a-disk-image"><a href="#Creating-a-disk-image" class="headerlink" title="Creating a disk image"></a>Creating a disk image</h3><p>Creation of an initial, empty disk image is simple. For example, by issuing<br>the command dd of&#x3D;disk.bin if&#x3D;&#x2F;dev&#x2F;zero count&#x3D;1048576 bs&#x3D;1 we instruct dd to<br>copy 1048576Bs from the input file &#x2F;dev&#x2F;zero to the output file disk.bin.<br>Given that reading from &#x2F;dev&#x2F;zero will always produce a sequence of zero bytes<br>(i.e., whose value is 00(16) ), this will create a 1MiB file disk.bin that is<br>entirely zero bytes. Note that:</p>
+<ul>
+<li>Although the use of dd initialises the disk image via 1048576 blocks each of 1B, the disk controller using said image must select a block length of more than 1B: not doing so basically means this is not a block device, and masks many inherent issues. </li>
+<li>Beyond this restriction, the total capacity should equal the product of whatever block count and length you opt for. For example, you could opt for more, shorter blocks st. 65536 16B &#x3D; 1MiB or for fewer, longer blocks st. 256 4096B &#x3D; 1MiB to suit: both result in the same capacity, but imply that the controller will interpret the underlying sequence of bytes in a different way. </li>
+<li>You can inspect the byte-by-byte file content using the command<br>hexdump -C disk.bin<br>Initially, however, it will produce somewhat limited output: the repeated zero<br>bytes are printed in a “compressed” form, rather than in their entirety.</li>
+</ul>
+<h3 id="Interacting-with-the-disk"><a href="#Interacting-with-the-disk" class="headerlink" title="Interacting with the disk"></a>Interacting with the disk</h3><p>Note that Makefile.disk extends the vanilla Makefile provided with variables<br>and build targets related to use of the disk. We explain how to do so directly<br>below, but keep in mind that, as a result, the same steps can and perhaps<br>should be automated. Also note disk.py has an optional –debug flag, which<br>causes it to emit extra debugging information: this can be useful if&#x2F;when use<br>of it fails to behave as you expect.</p>
+<h4 id="The-communication-protocol"><a href="#The-communication-protocol" class="headerlink" title="The communication protocol"></a>The communication protocol</h4><p>The communication protocol used by the disk controller is, by design, very<br>simple: it receives a command then transmits a response where</p>
+<ul>
+<li>each command and response is 1-line of ASCII text terminated by an EOL character, </li>
+<li>each such line is comprised of some number of fields separated by space characters, </li>
+<li>each field is a sequence of bytes, represented in hexadecimal; the bytes are presented so when read left-to-right, the 0-th byte (resp. (n 1)-th byte) is toward the left (resp. right) of the field, and </li>
+<li>the first field of each command or response is a 1-byte code which identifies the type (e.g., distinguishes between a write command vs. a read command, or success vs. failure response).</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/04/21/Kernel%E4%BB%A3%E5%86%99%EF%BC%9ACOMS20001KernelDevelopment/">http://saferman.github.io/2023/04/21/Kernel%E4%BB%A3%E5%86%99%EF%BC%9ACOMS20001KernelDevelopment/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kernel%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Kernel代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/04/25/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACSE270JuliaSets/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="JavaScript代写：CSE270 Julia Sets">
+                        
+                        <span class="card-title">JavaScript代写：CSE270 Julia Sets</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/04/18/Java%E4%BB%A3%E5%86%99%EF%BC%9ASE701ElasticSearch/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Java代写：SE701 Elastic Search">
+                        
+                        <span class="card-title">Java代写：SE701 Elastic Search</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CMPS101 DFS and SCC, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Graph相关的算法作业，需要编写DFS(Depth-first search)和SCC(strongly connectedcomponent)两个算法。  
+ReadingRead the text, sections 7.1 - ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CMPS101 DFS and SCC | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CMPS101 DFS and SCC</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-04-04
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Graph相关的算法作业，需要编写DFS(Depth-first search)和SCC(strongly connected<br>component)两个算法。  </p>
+<h2 id="Reading"><a href="#Reading" class="headerlink" title="Reading"></a>Reading</h2><p>Read the text, sections 7.1 - 7.4 for explanations of what the dfs skeleton<br>and dfsTrace functions are are doing. This has been covered in lectures and<br>will be covered further in sections.<br>Depth-first search (DFS) is a major topic for this course.<br>Read the text, section 7.5 for explanations of how the the SCC algorithm is<br>based on DFS. The SCC algorithm will be covered in lectures before the<br>assignment is due, and further in sections.<br>Depth-first search (DFS) and the strongly connected component algorithm (SCC)<br>are major topics for this course.<br>Several online Unix tutorials are mentioned on the class web page.</p>
+<h2 id="Information-Sources"><a href="#Information-Sources" class="headerlink" title="Information Sources"></a>Information Sources</h2><p>Same as ho04.txt and ho07.txt, the 1st and 2nd program assignments.<br>There are usually quite a few questions and clarifications about programs on<br>the “C101” mailing list, so keep up. Consider the source when evaluating a<br>message, because there is no screening of the postings.</p>
+<h2 id="Program-Requirements"><a href="#Program-Requirements" class="headerlink" title="Program Requirements"></a>Program Requirements</h2><p>You will implement Depth First Search as explained in the text, Ch. 7. This<br>will be the DFS skeleton for directed graphs, with some added code to carry<br>accomplish the functions described. The procedure will correspond closely to<br>DFS Trace in the text.<br>The added work after DFS Trace works is to find the strongly connected<br>components (SCCs) for unweighted graphs.</p>
+<h3 id="dfsTrace1-c"><a href="#dfsTrace1-c" class="headerlink" title="dfsTrace1.c"></a>dfsTrace1.c</h3><p>Implement dfsTrace (Algorithm 7.4, which is a refinement of Algorithm 7.3) on<br>a directed graph represented as an array of adjacency IntVecs. (Note that<br>graph02.c and the associated files in pa02, your second program assignment,<br>read a directed graph from input, create the array of IntVecs, and print the<br>graph, so you can simply copy this code from your WORKING pa02. If pa02 was<br>working correctly, this allows you to concentrate on DFS and SCC parts of the<br>program.)<br>intVec.h should be commented as found in the class locker. It is almost the<br>same as in pa02, but has one new constructor.<br>Although intList.h and intList.c are not actually used in this assignment,<br>they should be programmed and working, as assigned in pa02. They will be part<br>of the grading for pa03.<br>In this assignment, your intVec.o will be tested with other students’ programs<br>and their intVec.o will be tested with yours. So use the standard names in<br>this class. A starter intVec.h is in the course locker, but you need to copy<br>it and put in your comments, as indicated by the questions in the file. The<br>starter for pa02 is there too, named intVec.h-pa02, so you can see what<br>changed with “diff”.</p>
+<h2 id="Reuse-the-main-c-file-from-pa02"><a href="#Reuse-the-main-c-file-from-pa02" class="headerlink" title="Reuse the main c file from pa02"></a>Reuse the main c file from pa02</h2><p>Right from pa02, graph02.c can be renamed to scc03.c and compiled into scc03,<br>for pa03; it contains main() and probably other functions. Several other C and<br>.h files can be used right from pa02.<br>Of course, for pa03, the “main” procedure will be changed to do different<br>things after the graph is loaded. Also, the loadGraph functionality will be<br>separated, as assigned in pa02.</p>
+<h2 id="High-level-flow"><a href="#High-level-flow" class="headerlink" title="High-level flow"></a>High-level flow</h2><p>main() should read and interpret the command-line parameters, which are<br>different from in pa02, then open the input file and interact with loadGraph.c<br>functions to input the graph, as in pa02. main() should call a function to<br>print the graph, as in pa02.<br>To compute SCCs, main calls a function with a name like findSCCs() that is<br>also in scc03.c to manage the SCC computation. findSCCs() should call the main<br>subroutines dfsTrace1(), transposeGraph(), dfsPhase2(), as well as calling the<br>printing functions. In particular, dfsTrace1(), transposeGraph(), dfsPhase2()<br>will not print anything. Their job is to compute data structures.<br>findSCCs() in scc03.c will allocate the arrays filled by its subroutines.<br>Because there are two runs of dfsTrace now, name the arrays filled by<br>dfsTrace1(): discoverTime1, finishTime1, parent1, and finishStk1, or<br>recognizable abbreviations, such as dtime1, etc.<br>Also findSCCs() allocates adjVerticesT for the transpose graph. Finally, it<br>will allocate the arrays filled by the second dfs,<br>which works on the transpose graph and finds the SCCs: discoverTime2,<br>finishTime2, parent2, dfstRoot2 (or abbreviations).<br>Other procedures will output the contents of the arrays after each dfsTrace<br>has completed.<br>Allocating all the arrays in scc03.c makes it easier to pass them as arguments<br>to functions in other files, without making any global arrays. However, if you<br>already have working code that allocates and returns an array from a different<br>file (such as loadGraph.c) it is okay to use and build upon that code.<br>A more sophisticated way to pass several run-time parameters is that main() or<br>findSCCs() creates a struct with fields for all of them, and then a pointer to<br>that struct is passed around. For this technique you should declare the struct<br>AS A TYPE in scc03.h. Then scc03.c and loadGraph.c and maybe others <code>#include scc03.h</code> .<br>Write dfsTrace1.h to declare the function prototypes in dfsTrace1.c that are<br>called from a different C file. State the pre- and post-conditions in<br>dfsTrace1.h.<br>In pa03 dfsTrace1.c should be a separate file and you should have it working<br>before copying it into dfsPhase2.c as a starter.<br>It is better to copy working code than debug both versions.<br>Aside from intVec.h, intVec.c, scc03.c and scc03, the names of files,<br>functions and arrays should be understandable but do NOT need to be strictly<br>the same as this handout.</p>
+<h2 id="Command-line-arguments"><a href="#Command-line-arguments" class="headerlink" title="Command-line arguments"></a>Command-line arguments</h2><p>If your program receives no command-line arguments, it should print a usage<br>message and exit. If your program receives incorrect command-line arguments,<br>such as an unknown flag or no file name, it also should print a usage message<br>and exit with a positive exit code, such as 1 or 2 or 3.<br>Command-line arguments of the form “-something” are often called “flags”, and<br>provide the means for varying the way the program runs, or varying the form of<br>the output. (“-“ by itself denotes stdin.)<br>The final command-line argument is the name of the input file, and this name<br>will not begin with a “-“ unless it is “-“ by itself.<br>As in pa02, the “-V” flag denotes that IntVec should be used for lists and<br>stacks.<br>The new command-line flag “-u” instructs the program to build an undirected<br>graph from the input. That is, if the input contains “3 5” on a line, enter 5<br>as an adjacency of 3 and enter 3 as an adjacency of 5. Do not worry about<br>duplicate edges.<br>DFS Trace will expect the graph not to be weighted. Therefore weights in the<br>input should be parsed if they are present, but they do not become part of the<br>data structure for the graph.<br>In pa03 IntList will not be used (although intList.h and intList.c are still<br>required to be submitted and working). Therefore if a flag “-L” is present on<br>the command line, that is an error, and should be treated as specified in the<br>first paragraph of this subsection..<br>The flags -u and -V may be in either order before the file name. The -V is<br>required for compatibility; -u is optional.<br>When running the program on a large input file remember to use <code>&gt;</code> to<br>redirect the stdout to a file. Do not submit very large test files or their<br>outputs. We will supply some large files.<br>Example command lines for doing SCCs:<br>    scc03<br>    (user wants usage message.)<br>    scc03 -V -<br>    (user wants type in the file, directed.)<br>    scc03 -V test1.in<br>    (test1.in is treated as directed.)<br>    scc03 -u -V test2.in<br>    (test2.in is treated as undirected.)</p>
+<h2 id="Input-format"><a href="#Input-format" class="headerlink" title="Input format"></a>Input format</h2><p>This is the same as pa01 and pa02, repeated for self-containment.<br>Input consists of a sequence of lines read from a file that was given as the<br>LAST command-line argument. The string “-“ as a filename stands for standard<br>input, as usual. We will use stdin to denote either case.<br>End-of-file signals the end of input, and is typed on the keyboard as cntl-D<br>in Unix (maybe cntl-Z in DOS, Windows, etc.).<br>Lines will have the format expected by graph01.c with or without without<br>weights.<br>One int on the first line to tell us the value of “n”. Two ints per line for<br>each edge after that, or two ints and a double per line if the graph is<br>weighted. For pa03, weights are parsed but ignored, even if they are present<br>in the input.<br>Print an informative error message if the input contains a bad vertex number,<br>outside 1,…,n, or has the wrong number of words on a line. This is for your<br>own protection. It is not a grading issue and submitting tests to check bad<br>input is not asked and will not count as testing credit.<br>Example 1 input, unweighted<br>    1 4<br>    5 4<br>    1 3<br>    2 3<br>    3 3<br>    5 6<br>    6 5<br>    4 3<br>    1 2<br>Remember that graphs want to start on index 1, not index 0. So allocate 1<br>extra space in the array and start loading at 1.<br>Example 2, with weights:<br>    1 4 2.7<br>    5 4 -3<br>    1 3 0.0</p>
+<h2 id="Undirected-input"><a href="#Undirected-input" class="headerlink" title="Undirected input"></a>Undirected input</h2><p>Whether the input is treated as undirected or directed depends on a command-<br>line argument “-u”, as described before. If the graph is considered<br>undirected, create an edge in each direction from one edge in the input file.<br>In the above example, when “-u” is specified, “1 4 2.7” should result in edges<br>(1,4) and (4,1). If “-w” was also specified, both edges have weight 2.7.<br>Do not worry if edges are not unique. The algorithms will work anyway.</p>
+<h2 id="OUTPUT"><a href="#OUTPUT" class="headerlink" title="OUTPUT"></a>OUTPUT</h2><p>Print information on stdout. You should know how to structure your unix<br>command line to redirect stdout to a file or another process, so your program<br>is not concerned about these details.<br>For a preliminary version, print the input graph as in pa01, ignoring edge<br>weights even if “-w” was specified.<br>Example 2 would look something like this:<br>    1 [3, 4]<br>    2 []<br>    3 []<br>    4 []<br>    5 [4]<br>    6 []<br>Using “[]” instead of “null” for an empty list is preferred. Details like<br>punctuation may vary but the numbers should be in the order shown.<br>It would be quite complicated to try to show that structure of the DFS forest<br>graphically, so for phase 1, write a procedure that just prints a table of 5<br>columns for vertex, color, dtime, ftime, and parent. In that order (spacing is<br>flexible). Do not use numbers for colors! Include column titles (exact<br>spelling not required) and print an empty line after the table.<br>Use “-1” for the parent if the vertex is the root of a DFS tree.<br>This first table should present the arrays filled by dfsTrace1. Also print the<br>arrays filled by dfsTrace1 to show whether the graph is being visited<br>correctly.<br>Example 2 after dfsTrace1 is finished would look something like this:<br>    V color dTime fTime parent<br>    1 B 1 6 -1<br>    2 B 7 8 -1<br>    3 B 2 3 1<br>    4 B 4 5 1<br>    5 B 9 10 -1<br>    6 B 11 12 -1<br>Color should be one of W,G,B and other table entries are ints.<br>The reason for making this a procedure is so you can call it at any time (in<br>gdb, most likely, or in debugging code that you remove later).<br>If you call this print function BEFORE dfsTrace1 is finished, every vertex<br>with color W should show 0 for the last 3 columns, and every vertex with color<br>G should show 0 for fTime. This might be helpful for debugging and for midterm<br>studying, but should not occur in the submitted program.<br>After the table for dfsTrace1, print finishStk1 ON A SINGLE LINE with the<br>bottom element to the left, top to the right.<br>E.g.,<br>    FSTK: 3 4 1 2 5 6<br>There should not be any other numbers on this line. The title and spacing are<br>flexible, but don’t make the mistake of using “FSTK1”.<br>Print the transpose graph in the same format as the original graph. The same<br>print function should work for both (the title can be printed before calling<br>the function or passed as a parameter).<br>The last part of the output shows the result of dfsTrace2. This shows values<br>for the tranpose graph. Write a separate procedure for this.<br>Example 2 after dfsTrace2 is finished would look something like this:<br>    V color2 dTime2 fTime2 parent2 dfstRoot2<br>    1 B 7 8 -1 1<br>    2 B 5 6 -1 2<br>    3 B 2 3 -1 3<br>    4 B 9 10 -1 4<br>    5 B 3 4 -1 5<br>    6 B 1 2 -1 6<br>This is a pretty boring example, and just shows the format, not an interesting<br>test. Every dfs tree has one vertex and no edges. Every SCC has one vertex and<br>is its own dfsRoot.</p>
+<h2 id="How-to-preceed"><a href="#How-to-preceed" class="headerlink" title="How to preceed"></a>How to preceed</h2><p>Make a new directory to work in. Do this first.<br>If you wrote a weighted edge ADT for pa01, save it for last. (It was not<br>assigned in pa01.)<br>You need to use the standard names given in this section so your ADTs can<br>interface with other students’ clients and vice versa.<br>The function names in the intList ADT must be as given in the intList.h<br>starter file for pa01 and pa02. The function names in the intVec ADT must be<br>as given in the intVec.h starter file for pa02.<br>These names must be spelled and capitalized as shown in that file.<br>For this program, loadGraph.c should be a separate file, although that was not<br>required in pa01. loadGraph.h will provide the interface. Functions in<br>loadGraph.c that are only called within loadGraph.c should not appear in<br>loadGraph.h.<br>loadGraph is not required to be an ADT, so the functions and prototypes do not<br>need to agree with other students. Similarly, dfsTrace1 and dfsTrace2 are not<br>ADTs.<br>dfsTrace1 needs to build a finishing-time stack, call it finishStk1. Starting<br>with an empty stack at the beginning of dfsTrace1(), simply push v (the vertex<br>whose visit is finishing) on to the stack at its finishing time, as explained<br>in Section 7.5. finishStk1 should be implemented as an IntVec with the new<br>constructor intMakeEmptyVecN(). What should the parameter be for this<br>constructor so you never need to do a realloc on it?</p>
+<h3 id="NEW-FUNCTION-transposeGraph"><a href="#NEW-FUNCTION-transposeGraph" class="headerlink" title="NEW FUNCTION: transposeGraph()"></a>NEW FUNCTION: transposeGraph()</h3><p>Write a function to transpose a graph, after it is built. Make your function<br>as simple as you can to be sure it is correct. There is a fast way to do this,<br>but if you do not see it, think of a simpler, possibly slower, way.<br>For C the function prototype is<br>    IntVec* transposeGraph(IntVec* origGraph, int n);<br>—|—<br>It may be implemented in scc03.c; a separate file is unnecessary.<br>The transpose graph has edges in the opposite direction of the original graph,<br>in one-to-one correspondence. Suppose the original graph prints like this<br>    1 [ 3, 2 ]<br>    2 [ 3, 4 ]<br>    3 [ ]<br>    4 [ 1 ]<br>The transpose graph should have edges (2,1), (3,1), (4,2), (3,2), (1,4), and<br>print accordingly. Most likely it would appear as<br>    1 [ 4 ]<br>    2 [ 1 ]<br>    3 [ 2, 1 ]<br>    4 [ 1 ]<br>but other orders are possible. See the text for more details. if needed.</p>
+<h3 id="NEW-C-FILE-dfsPhase2-c"><a href="#NEW-C-FILE-dfsPhase2-c" class="headerlink" title="NEW C FILE: dfsPhase2.c"></a>NEW C FILE: dfsPhase2.c</h3><p>dfsPhase2() in dfsPhase2.c will implement phase 2 of the SCC algorithm, and<br>also will compute discoverTime2, finishTime2 for insurance, although the SCC<br>algorithm does not need them.<br>After you get dfsTrace1.c working, you should be able to use almost all the<br>code here, with some name modifications.<br>Keep in mind that dfsPhase2() uses finishStk1 for dfsSweepT() and operates on<br>the transpose graph. The recursive function is named something like dfsT() or<br>dfsTrace2(). Read the text for details.<br>An additional array, dfstRoot2, will be filled to keep track of the separate<br>DFS trees in a second dfs. Some function prototypes will be altered to pass<br>this value down from dfsTsweep() through dfsTrace2() calls.<br>The purpose of dfstRoot2 is to tell every vertex who is its SCC leader.<br>dfsSweepT() passes the number of the root into the recursive function dfsT.<br>(Where does dfsSweepT get this number from?) Then dfsT(v, …) puts this number<br>into dfstRoot[v] and passes this number down into its own recursive calls of<br>dfsT().<br>Write dfsTrace1.h and dfsPhase2.h to declare the function prototypes in the<br>respective C files, and state the pre- and post-conditions.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2017/04/04/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPS101DFSandSCC/">http://saferman.github.io/2017/04/04/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPS101DFSandSCC/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/04/07/Security%E4%BB%A3%E5%86%99%EF%BC%9ACA161FileStoreServicePart2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Security代写：CA161 File Store Service Part2">
+                        
+                        <span class="card-title">Security代写：CA161 File Store Service Part2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2017-04-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/03/31/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSE143HTMLManager/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Java代写：CSE143 HTML Manager">
+                        
+                        <span class="card-title">Java代写：CSE143 HTML Manager</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-03-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

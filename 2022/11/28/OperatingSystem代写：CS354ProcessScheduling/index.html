@@ -1,0 +1,944 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CS354 Process Scheduling, 留学生CS|辅导|代写">
+    <meta name="description" content="代写操作系统作业，实现作业调度算法。  
+ObjectivesThe objective of this lab is to give you an idea about how process schedulingworks. You w">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CS354 Process Scheduling | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CS354 Process Scheduling</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-11-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写操作系统作业，实现作业调度算法。  </p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><p>The objective of this lab is to give you an idea about how process scheduling<br>works. You will implement earliest deadline first scheduler.</p>
+<h2 id="What-to-do"><a href="#What-to-do" class="headerlink" title="What to do?"></a>What to do?</h2><h3 id="Setup-Xinu"><a href="#Setup-Xinu" class="headerlink" title="Setup Xinu"></a>Setup Xinu</h3><p>The tarball you have to use is lab1-Xinu-code-BeagleBoneBlack.tar.gz. Make<br>sure you copy &#x2F;homes&#x2F;cs354&#x2F;www&#x2F;lab1-Xinu-code-BeagleBoneBlack.tar.gz and not<br>the old one as some additional code snippets are provided in the new tar which<br>will be used for grading. Follow the updated XINU Setup tutorial.</p>
+<h3 id="Implement-Scheduler"><a href="#Implement-Scheduler" class="headerlink" title="Implement Scheduler"></a>Implement Scheduler</h3><p>You will implement a new scheduling policy for XINU. You will be implementing<br>dynamic scheduling algorithm used in real-time operating systems. The aim is<br>to make the system more predictable in terms of when a particular process will<br>be executed. In the standard priority based round robin scheduler used in<br>XINU, there are no guarantees. If an old lower priority process exists, it<br>might starve if there are higher priority processes that are added and do not<br>give the old process time to execute. This is not acceptable in situations<br>where you have a deadline by which a job should be executed. Let’s call such<br>jobs as bounded jobs.<br>There are three components that characterize a bounded job :</p>
+<ol>
+<li>The arrival time </li>
+<li>The execution time (Time the process has to execute for) </li>
+<li>The deadline (Time by which this process should finish its execution)<br>Until there are any bounded jobs in the system in ready mode, the OS should<br>not fallback to the original priority based scheduler. Only if there are no<br>bounded jobs left, that it should fallback to normal priority based scheduler.</li>
+</ol>
+<h3 id="Earliest-Deadline-First-Scheduler"><a href="#Earliest-Deadline-First-Scheduler" class="headerlink" title="Earliest Deadline First Scheduler"></a>Earliest Deadline First Scheduler</h3><p>The aim is to find a schedule that completes all jobs before their deadline.<br>We will be implementing Earliest Deadline First (EDF) to attain this. The OS<br>should select the process with closest deadline to execute first. If two jobs<br>have the same deadline, chose the one which has the longest execution time.<br>Before making a plan, all the jobs should be created. After that it should<br>come up with a plan for executing these jobs. To prevent replanning again and<br>again, you will not accept any new bounded jobs for the duration while your<br>bounded jobs are executing.<br>The strategy in a nutshell is as follows :</p>
+<ol>
+<li>Select the job with the earliest deadline. </li>
+<li>If two jobs have the same deadline, select the one with the longest execution time. </li>
+<li>If two jobs have same deadline and same execution time, select the job that was created first.<br>The following examples will help clear this out. Assume there are following<br>bounded jobs :<br>job1, execution_time : 10, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 50, deadline : 90<br>job4, execution_time : 70, deadline : 160<br>job5, execution_time : 30, deadline : 190<br>Let’s assume that the arrival time for all jobs is the same as t &#x3D; 0.<br>The plan should be :<br>job2 ( 0 - 20 ), job3 ( 20 - 70 ), job1 ( 70 - 80 ), job4 ( 80 - 150 ), job5 ( 150 - 180 )<br>Note that a job’s schedule time should not matter on whether the job can be<br>completed or not. For example, look at the following jobs :<br>job1, execution_time : 20, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 50, deadline : 90<br>job4, execution_time : 10, deadline : 100<br>job5, execution_time : 30, deadline : 120<br>In such a case, the job should run for whatever time it can before the<br>deadline and then should be killed.<br>In this case, the plan should be :<br>job2 ( 0 - 20 ), job3 ( 20 - 70 ), job1 ( 70 - 90 ), job4 ( 90 - 100 ), job5 ( 100 - 120 )<br>Note here that there was a clash between job1 and job4, we select the one with<br>with longest execution time. Hence job1 is selected first.<br>Now let’s consider a case where both deadline and execution time clash.<br>job1, execution_time : 10, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 50, deadline : 90<br>job4, execution_time : 10, deadline : 100<br>job5, execution_time : 30, deadline : 120<br>In such a case, we select the job based on creation order if both deadline and<br>execution time are same.<br>In this case, the plan should be :<br>job2 ( 0 - 20 ), job3 ( 20 - 70 ), job1 ( 70 - 80 ), job4 ( 80 - 90 ), job5 ( 90 - 120 )<br>Here, between job1 and job4, we selected job1 as job1 was created first.<br>Another case that is possible is when a job can’t be scheduled at all.<br>Consider the following jobs :<br>job1, execution_time : 20, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 60, deadline : 90<br>job4, execution_time : 70, deadline : 100<br>job5, execution_time : 30, deadline : 130<br>The plan should be :<br>job2 ( 0 - 20 ), job3 ( 20 - 80 ), job4 ( 80 - 100 ), job5 ( 100 - 130 ), job1 “cannot schedule”</li>
+</ol>
+<h2 id="System-Call-Implementations"><a href="#System-Call-Implementations" class="headerlink" title="System Call Implementations"></a>System Call Implementations</h2><p>Assume that at max 25 bounded jobs will be submitted. Not more than that.<br>    int rt_create(void *funcaddr, uint32 size, uint32 execution_time, uint32 deadline, char *name, int32 arg)<br>—|—  </p>
+<ul>
+<li>To be implemented in &#x2F;system&#x2F;rt_create.c<br>This is a replacement for create system call. Please add two new arguments :<br>the execution time and the deadline. These are in msecs.</li>
+</ul>
+<ol>
+<li>Execution time : The time for which the job is to be executed. This will act as the time quantum that will be given to this job when it becomes a running process. </li>
+<li>Deadline : This is the time by which the job should have completed. For simplicity sake, this is not absolute time, but time with reference to resume time.<br>rt_create does the following things :</li>
+<li>Validates the arguments. Deadline should be greater than the execution_time, they can’t be 0, etc. </li>
+<li>creates the necessary XINU metadata related to the process (by invoking old create). </li>
+<li>Maintains extra data to keep track of all bounded jobs to be scheduled on rt_plan_and_resume.</li>
+</ol>
+<h3 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h3><ul>
+<li>rt_create makes sure that it does not accept any other bounded job while a current bounded job plan is being executed. This means that if you submitted some jobs and did rt_plan_and_resume, the OS should not accept any new bounded job unless all those jobs are done. The rt_create call should return SYSERR (Xinu provides SYSERR as a macro to return in case of failure). </li>
+<li>rt_create accepts only 1 int32 argument to be passed to the func. Pass this to the create call.</li>
+</ul>
+<h3 id="int-rt-plan-and-resume"><a href="#int-rt-plan-and-resume" class="headerlink" title="int rt_plan_and_resume()"></a>int rt_plan_and_resume()</h3><ul>
+<li>To be implemented in &#x2F;system&#x2F;rt_plan_and_resume.c<br>This is a variant of resume function for Earliest Deadline First scheduler.<br>This selects all the bounded jobs and plans the complete schedule out. The<br>invocation time of rt_plan_and_resume will be considered as the arrival time<br>for all the bounded jobs. You can think of this time as t &#x3D; 0 and plan the<br>schedule out. It effectively does the following steps :</li>
+</ul>
+<ol>
+<li>Plans the jobs in earliest deadline first fashion. </li>
+<li>Plan the time quantum based on the execution time and the deadline. </li>
+<li>Print out the plan to the console. </li>
+<li>Make the processes ready and start execution of the first process. </li>
+<li>If any job can’t be scheduled before it’s deadline, do not include it in the plan and kill them.<br>The output format is :<br><job1_name> <scheduling_time><br><job2_name> <scheduling_time><br><job3_name> <scheduling_time><br><job4_name> “cannot schedule”<br><job5_name> “cannot schedule”<br>Sample case :<br>job1, execution_time : 20, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 60, deadline : 90<br>job4, execution_time : 70, deadline : 100<br>job5, execution_time : 30, deadline : 120<br>Output should be :<br>job2 : 0<br>job3 : 20<br>job4 : 80<br>job5 : 100<br>job1 : cannot schedule</li>
+</ol>
+<h3 id="Points-to-note"><a href="#Points-to-note" class="headerlink" title="Points to note"></a>Points to note</h3><ul>
+<li>The jobs should be sorted by their scheduling time and the jobs which cannot be scheduled should be sorted on deadline. If the jobs have the same deadline, they should be sorted on creation order. </li>
+<li>If a bounded job is killed before creating the plan, you should not execute it or include it in the plan.</li>
+</ul>
+<h3 id="resched"><a href="#resched" class="headerlink" title="resched()"></a>resched()</h3><p>Changes in resched include the following :</p>
+<ol>
+<li>Use a flag to denote whether bounded jobs are running or not. (This is a suggestion. You can choose your own implementation) </li>
+<li>If scheduling a bounded job :<br>* Set the quantum based on the plan. (A job will execute till its quantum expires and will not resume after that)<br>* If resched happened because of quantum expiry, kill self (the current running bounded job).<br>* If resched leads to the current process going out of PR_CURR state, kill self (the current running bounded job).<br>* If resched happened because of any other reason, continue with the execution of the same bounded job without checking any other job. </li>
+<li>After completing the last bounded job, disable the flag and print “Bounded jobs ended.” Use kprintf to print this. </li>
+<li>Schedule the next normal process in the ready queue with normal quantum.</li>
+</ol>
+<h3 id="Note-1"><a href="#Note-1" class="headerlink" title="Note"></a>Note</h3><ul>
+<li>All priorities to the default jobs will be less than 100. </li>
+<li>You can use a large dummy value &#x3D; 10000 to assign priority to bounded jobs. </li>
+<li>At the end of each bounded job, call the function hook. The details of hook you can find in &#x2F;system&#x2F;hook.c. It is void hook(pid, quantum_left); Pass the pid of the task just finished and the quantum time left when the job gave up CPU. This will be used for grading, so make sure you call hook everytime a bounded job finishes execution from reshched.</li>
+</ul>
+<h2 id="Theory-Questions"><a href="#Theory-Questions" class="headerlink" title="Theory Questions"></a>Theory Questions</h2><p>The answers to these questions should be written in lab1answers.txt file.<br>Place it in system&#x2F; directory. Here are the questions :</p>
+<ol>
+<li>In XINU, why are interrupts raised and what are they used for? Give example of some interrupts in XINU. </li>
+<li>In the above Earliest deadline first approach, on collision, we selected the job that has the largest execution time. What if we chose to select the smallest job first. Tell the plan, in the following scenario.<br>job1, execution_time : 10, deadline : 100<br>job2, execution_time : 20, deadline : 80<br>job3, execution_time : 60, deadline : 80<br>job4, execution_time : 70, deadline : 100<br>job5, execution_time : 30, deadline : 120<br>In the following jobs are given, what will be the completely fair scheduler<br>plan?<br>job1, execution_time : 20<br>job2, execution_time : 20<br>job3, execution_time : 60<br>job4, execution_time : 70<br>job5, execution_time : 30<br>Note : the minimum quantum is 10ms.</li>
+</ol>
+<h2 id="Turn-in"><a href="#Turn-in" class="headerlink" title="Turn in"></a>Turn in</h2><h3 id="What-to-Turn-in"><a href="#What-to-Turn-in" class="headerlink" title="What to Turn in"></a>What to Turn in</h3><p>You have to turn in the entire Xinu source code. Note that we will be running<br>linter on the modified files as discussed on Piazza. It should follow those<br>standards. Also, the warnings on compilation will lead to penalization of<br>marks. Make sure when you compile, there are minimal warnings.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/11/28/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS354ProcessScheduling/">http://saferman.github.io/2022/11/28/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS354ProcessScheduling/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/11/30/Scala%E4%BB%A3%E5%86%99%EF%BC%9ACSE262TableDrivenScanner/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Scala代写：CSE262 Table Driven Scanner">
+                        
+                        <span class="card-title">Scala代写：CSE262 Table Driven Scanner</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Scala%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Scala代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/11/24/C%E4%BB%A3%E5%86%99%EF%BC%9ACS117Comments/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="C代写：CS117 Comments">
+                        
+                        <span class="card-title">C代写：CS117 Comments</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

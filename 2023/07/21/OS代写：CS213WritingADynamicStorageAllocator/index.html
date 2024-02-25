@@ -1,0 +1,949 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="OS代写：CS213 Writing A Dynamic Storage Allocator, 留学生CS|辅导|代写">
+    <meta name="description" content="实现  malloc  , free, realloc, calloc函数的底层，动态内存分配管理的部分。![malloc](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>OS代写：CS213 Writing A Dynamic Storage Allocator | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">OS代写：CS213 Writing A Dynamic Storage Allocator</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">OS代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/C_dynamic_memory_allocation" title="malloc"> malloc </a> , free, realloc, calloc函数的底层，动态内存分配管理的部分。<br>![malloc](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/External_Fragmentation.svg/450px-">https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/External_Fragmentation.svg/450px-</a><br>External_Fragmentation.svg.png)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>This lab requires submitting two versions of your code: one as an initial<br>checkpoint, and the second as your final version.</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this lab you will write a dynamic memory allocator which will consist of<br>the malloc, free, realloc, and calloc functions. Your goal is to implement an<br>allocator that is correct, efficient, and fast.<br>We strongly encourage you to start early. The total time you spend designing<br>and debugging can easily eclipse the time you spend coding.<br>Bugs can be especially pernicious and difficult to track down in an allocator,<br>and you will probably spend a significant amount of time debugging your code.<br>Buggy code will not get any credit.<br>This lab has been heavily revised from previous versions. Do not rely on<br>advice or information you may find on the Web or from people who have done<br>this lab before. It will most likely be misleading or outright wrong1 . Be<br>sure to read all of the documentation carefully and especially study the<br>baseline implementation we have provided.</p>
+<h2 id="Logistics"><a href="#Logistics" class="headerlink" title="Logistics"></a>Logistics</h2><p>This is an individual project. You should do this lab on one of the Shark<br>machines.<br>To get your lab materials, click “Download Handout” on Autolab, enter your<br>Andrew ID, and follow the instructions. Then, clone your repository on a Shark<br>machine by running:<br>The only file you will turn in is mm.c, which contains your solution. The<br>provided code allows you to evaluate your implementations. Using the command<br>make will generate four driver programs: mdriver, mdriver-dbg, mdriver-<br>emulate, and mdriver-uninit, as described in section 6. Your final autograded<br>score is computed by driver.pl, as described in section 7.1.<br>To test your code for the checkpoint submission, run mdriver and&#x2F;or driver.pl<br>with the -C flag. To test your code for the final submission, you don’t need<br>any additional flags.<br>You can get some idea of your program performance and the resulting value you<br>will get for the throughput portion of your grade. However, the Autolab<br>servers will generate different throughput values, and these will determine<br>your actual score. This is discussed in more detail in Section 7.</p>
+<h2 id="Required-Functions"><a href="#Required-Functions" class="headerlink" title="Required Functions"></a>Required Functions</h2><p>Your allocator will implement the following functions, declared in mm.h and<br>defined in mm.c:<br>    bool mm_init(void);<br>    void *malloc(size_t size);<br>    void free(void *ptr);<br>    void *realloc(void *ptr, size_t size);<br>    void *calloc(size_t nmemb, size_t size);<br>    bool mm_checkheap(int);<br>—|—<br>We provide you two versions of memory allocators:<br>mm.c: A fully-functional implicit-list allocator. We recommend that you use<br>this code as your starting point.<br>Note that the provided code does not implement coalesce block(). Although it<br>is a valid memory allocator, it will result in a high amount of external<br>fragmentation, so you should implement coalescing. We strongly recommend<br>considering all cases you need to implement before writing code for this<br>function; the lecture slides should help you identify and reason about these<br>cases.<br>mm-naive.c: A functional implementation that runs quickly but gets very poor<br>utilization, because it never reuses any blocks of memory.<br>Your allocator must run correctly on a 64-bit machine. It must support a full<br>64-bit address space, even though current implementations of x86-64 machines<br>support only a 48-bit address space.<br>Your submitted mm.c must implement the following functions:</p>
+<ul>
+<li>bool mm_init(void): Performs any necessary initializations, such as allocating the initial heap area. The return value should be false if there was a problem in performing the initialization, true otherwise. You must reinitialize all of your data structures in this function, because the drivers call your mm init function every time they begin a new trace to reset to an empty heap. </li>
+<li>void *malloc(size_t size): The malloc routine returns a pointer to an allocated block payload of at least size bytes. The entire allocated block should lie within the heap region and should not overlap with any other allocated block.<br>Your malloc implementation must always return 16-byte aligned pointers.</li>
+<li>void free(void *ptr): The free routine frees the block pointed to by ptr. It returns nothing. This routine is only guaranteed to work when the passed pointer was returned by an earlier call to malloc, calloc, or realloc and has not yet been freed. free(NULL) has no effect. </li>
+<li>void <em>realloc(void</em> ptr, size_t size): The realloc routine returns a pointer to an allocated region of at least size bytes with the following constraints: <ul>
+<li>if ptr is NULL, the call is equivalent to malloc(size); </li>
+<li>if size is equal to zero, the call is equivalent to free(ptr) and should return NULL; </li>
+<li>if ptr is not NULL, the call is equivalent to free(ptr) followed by malloc(size), except the contents of the new block will be the same as those of the old block, up to the minimum of the old and new sizes.<br>Your realloc implementation will have only minimal impact on measured<br>throughput or utilization. A correct, simple implementation will suffice.</li>
+</ul>
+</li>
+<li>void *calloc(size_t nmemb, size_t size): Allocates memory for an array of nmemb elements of size bytes each and returns a pointer to the allocated memory. The memory is set to zero before returning.<br>Your calloc will not be graded on throughput or performance. A correct, simple<br>implementation will suffice.</li>
+<li>bool mm_checkheap(int line): The mm checkheap function (the heap consistency checker, or simply heap checker) scans the heap and checks it for possible errors.<br>A quality heap checker is essential for debugging your malloc implementation.<br>Many malloc bugs are too subtle to debug using conventional gdb techniques. A<br>heap consistency checker can help you isolate the specific operation that<br>causes your heap to become inconsistent.<br>Because of the importance of the consistency checker, it will be graded;<br>section 7.2 describes the requirements for your implementation in greater<br>detail. We may also require you to write your checkheap function before coming<br>to office hours.<br>The mm checkheap function takes a single integer argument that you can use any<br>way you want. One technique is to use this this argument to pass in the line<br>number where it was called.<br>This allows you to print the line number where mm checkheap was called, if you<br>detect a problem with the heap. Note, however, that mm checkheap will also be<br>called with an argument of 0 by the driver.<br>The semantics for malloc, realloc, calloc, and free match those of the<br>corresponding libc routines. Type man malloc in the shell for more<br>documentation.</li>
+</ul>
+<h2 id="Support-Routines"><a href="#Support-Routines" class="headerlink" title="Support Routines"></a>Support Routines</h2><p>The memlib.c package simulates the memory system for your dynamic memory<br>allocator. You can invoke the following functions in memlib.c:</p>
+<ul>
+<li>void *mem_sbrk(intptr_t incr): Expands the heap by incr bytes, where incr is a nonnegative integer, and returns a generic pointer to the first byte of the newly allocated heap area. The semantics are identical to the Unix sbrk function, except that mem_sbrk will fail for negative arguments. (Data type intptr_t is defined to be a signed integer large enough to hold a pointer. On our machines it is 64-bits long.) </li>
+<li>void *mem_heap_lo(void): Returns a generic pointer to the first valid byte in the heap. </li>
+<li>void *mem_heap_hi(void): Returns a generic pointer to the last valid byte in the heap.<br>Careful: the definition of mem_heap_hi() given here is correct, but it may not<br>be intuitive!<br>If your heap is 8 bytes large, then the “last valid byte” will be 7 bytes from<br>the start and its address will not be aligned.</li>
+<li>size_t mem heapsize(void): Returns the current size of the heap in bytes.<br>You are also allowed to use the following libc library functions: memcpy,<br>memset, printf, fprintf, and sprintf. Other than these functions and the<br>support routines, your mm.c code may not call any externally-defined function.</li>
+</ul>
+<h2 id="Programming-Rules"><a href="#Programming-Rules" class="headerlink" title="Programming Rules"></a>Programming Rules</h2><ul>
+<li>Any allocator that attempts to explicitly detect which trace is running will receive a penalty of 20 points. On the other hand, you should feel free to write an adaptive allocatorone that dynamically tunes itself according to the general characteristics of the different traces. </li>
+<li>You should not change any of the interfaces in mm.h, and your program must compile with the provided Makefile. However, we strongly encourage you to use static helper functions in mm.c to break up your code into small, easy-to-understand segments. </li>
+<li>You are not allowed to define any large global data structures such as large arrays, trees, or lists in your mm.c program. However, you are allowed to declare small global arrays, structs and scalar variables such as integers, floats, and pointers in mm.c. In total, your global data should sum to at most 128 bytes. Global values defined with the const qualifier are not counted in the 128 bytes. This will be tested by automated means, as described in Section 7.1.4.<br>The reason for this restriction is that the driver cannot account for such<br>global variables in its memory utilization measure. If you need space for<br>large data structures, you can allocate space for them within the heap.</li>
+<li>The presence of some undefined behavior is inevitable in malloclab, where we perform unsafe memory operations and generally treat memory as a giant playground. For example, we need to do things like cast between pointer types, perform pointer arithmetic, and write to arbitrary locations in memory. Outside of this lab, it is rarely appropriate to write code in this style, but it is necessary to do so here.<br>However, we ask you to minimize the amount of undefined behavior by avoiding<br>it when possible. For example, instead of directly casting between pointer<br>types, you should explicitly alias memory through the use of unions.<br>Additionally, you should limit the use of pointer arithmetic to a few short<br>helper functions, as we have tried to do in the handout code.</li>
+<li>In the provided baseline code, we use a zero-length array to declare a payload element in the block struct. This is a non-standard compiler extension, but we encourage you to use it for this lab as a way to explicitly declare your block payload.<br>One important restriction is that a zero-length array must appear as the last<br>element in its containing struct. However, for malloclab, we will also permit<br>the use of a zero-length array as a member of a union, as long as that union<br>is the last element in its containing struct. This will allow you to<br>explicitly alias the payload with other data that you might also want to store<br>in the same memory address. Though this is not portable, we strongly encourage<br>its use compared to the alternative of casting between pointer types.</li>
+<li>The use of macro definitions (using #define) in your code is restricted to the following: <ul>
+<li>Macros for debugging purposes, whose names must begin with the prefix “dbg”. See, for example, the debugging macros defined in mm.c. You may create your own, but they must be disabled in submitted code. </li>
+<li>Definitions of constants. These definitions must not have any parameters.<br>The practice of using macros instead of function definitions is now obsolete.<br>Modern compilers (when optimization is enabled) perform inline substitution of<br>small functions, eliminating any inefficiencies due to the use of functions<br>rather than macros. In addition, functions provide better type checking and<br>enable better debugging support.<br>When you run make, it will run a program that checks for disallowed macro<br>definitions in your code. This checker is overly strictit cannot determine<br>when a macro definition is embedded in a comment or in some part of the code<br>that has been disabled by conditional-compilation directives. Nonetheless,<br>your code must pass this checker without any warning messages.</li>
+</ul>
+</li>
+<li>The code shown in the textbook (Section 9.9.12, and available from the CS:APP website) is a useful source of inspiration for the lab, but it does not meet the required coding standards.<br>It does not handle 64-bit allocations, it makes extensive use of macros<br>instead of functions, and it relies heavily on low-level pointer arithmetic.<br>Similarly, the code shown in K&amp;R does not satisfy the coding requirements. You<br>should use the provided code mm.c as your starting point.</li>
+<li>It is okay to look at any high-level descriptions of algorithms found in the textbook or elsewhere, but it is not acceptable to copy or look at any code of malloc implementations found online or in other sources, except for the allocators described in the textbook, in K&amp;R, or as part of the provided code. </li>
+<li>It is okay to adapt code for useful generic data structures and algorithms (e.g., linked lists, hash tables, search trees, and priority queues) from Wikipedia and other repositories. (This code must not have already been customized as part of a memory allocator.) You must include (as a comment) an attribution of the origins of any borrowed code. </li>
+<li>Your allocator must always return pointers that are aligned to 16-byte boundaries. The driver will check this requirement. </li>
+<li>Your code must compile without warnings.</li>
+</ul>
+<h2 id="Driver-Programs"><a href="#Driver-Programs" class="headerlink" title="Driver Programs"></a>Driver Programs</h2><p>Three driver programs are generated when you run make.</p>
+<ol>
+<li>mdriver should be used for testing your code’s performance. It checks the correctness, utilization, and throughput of the standard benchmark traces. </li>
+<li>mdriver-dbg should be used when debugging your program. This is the same program as mdriver, with two notable differences:<br>* (a) This program is compiled with DEBUG defined, which enables the dbg_macros at the top of mm.c. Without this defined, functions like dbg_printf and dbg_assert will not have any effect.<br>* (b) Additionally, this program is compiled with optimization level -O0, which allows GDB to display more meaningful debugging information. </li>
+<li>mdriver-emulate is used to perform additional correctness checks on your program, which can result in additional deductions described in section 7.1.4.<br>It uses special compilation and memory-management techniques to allow testing<br>your program with a heap making use of the full, 64-bit address space. In<br>addition to the standard benchmark traces, it will run a set of giant traces<br>with very large allocation requests.</li>
+<li>mdriver-uninit can be used to detect uses of uninitialized memory, using the MemorySanitizer tool. It only raises an error when uninitialized memory is actually used, and can track initialization status down to each bit.</li>
+</ol>
+<h3 id="Trace-files"><a href="#Trace-files" class="headerlink" title="Trace files"></a>Trace files</h3><p>The driver programs are controlled by a set of trace files that are included<br>in the traces subdirectory. Each trace file contains a sequence of commands<br>that instruct the driver to call your malloc, realloc, and free routines in<br>some sequence. The drivers and the trace files are the same ones we will use<br>when we grade your handin mm.c file.<br>The traces that count towards both your memory utilization and throughput are<br>marked with a ‘<em>‘ in the output of mdriver. Some of the traces are short<br>traces that do not count toward your memory utilization or throughput but are<br>useful for detecting errors and for debugging, which will not be marked with a<br>‘</em>‘ next to them.<br>When the driver programs are run, they will run each trace file multiple<br>times: once to make sure your implementation is correct, once to determine the<br>space utilization, and between 3 and 20 times to determine the throughput.</p>
+<h3 id="Command-line-arguments"><a href="#Command-line-arguments" class="headerlink" title="Command-line arguments"></a>Command-line arguments</h3><p>The drivers accept the following command-line arguments. The normal operation<br>is to run it with no arguments, but you may find it useful to use the<br>arguments during development.</p>
+<ul>
+<li>-C: Apply the scoring standards for the checkpoint, rather than for the final submission. </li>
+<li>-f tracefile: Use one particular tracefile instead of the default set of tracefiles for testing correctness, utilization, and throughput. </li>
+<li>-c tracefile: Run a particular tracefile twice, calling mm init in between each run. Unlike -t, this option tests only for correctness. This option is extremely useful if you want to print out debugging messages. </li>
+<li>-v level: Set the verbosity level to the specified value. Levels 0-2 are supported, with a default level of 1. Raising the verbosity level causes additional diagnostic information to be printed as each trace file is processed. This can be useful during debugging for determining which trace file is causing your malloc package to fail. </li>
+<li>-d level: Controls the amount of validity checking performed by the driver. This is entirely distinct from the DEBUG compile-time define.<br>At debug level 0, very little checking is done, which is useful when testing<br>performance only.<br>At debug level 1, the driver checks the payload contents to ensure that they<br>are not overwritten between calls into your code. This is the default.<br>At debug level 2, the driver will also call into your implementation of mm<br>checkheap. This mode is slow, but it can help identify the exact point at<br>which an error occurs.<br>Additional arguments can be listed by running mdriver -h.</li>
+</ul>
+<h2 id="Strategic-Advice"><a href="#Strategic-Advice" class="headerlink" title="Strategic Advice"></a>Strategic Advice</h2><p>You must design algorithms and data structures for managing free blocks that<br>achieve the right balance of space utilization and speed. This involves a<br>trade-offit is easy to write a fast allocator by allocating blocks and never<br>freeing them, or a high-utilization allocator that carefully packs blocks as<br>tightly as possible. You must seek to minimize wasted space while also making<br>your program run fast.<br>As described in the textbook and the lectures, utilization is reduced below<br>100% due to fragmentation, taking two different forms:</p>
+<ul>
+<li>External fragmentation: Unused space between allocated blocks or at the end of the heap </li>
+<li>Internal fragmentation: Space within an allocated block that cannot be used for storing data, because it is required for some of the manager’s data structures (e.g., headers, footers, and free-list pointers), or because extra bytes must be allocated to meet alignment or minimum block size requirements<br>To reduce external fragmentation, you will want to implement good block<br>placement heuristics. To reduce internal fragmentation, it helps to reduce the<br>storage for your data structures as much as possible.<br>Maximizing throughput requires making sure your allocator finds a suitable<br>block quickly. This involves constructing more elaborate data structures than<br>is found in the provided code. However, your code need not use any exotic data<br>structures, such as search trees. Our reference implementation only uses<br>singly- and doubly-linked lists.<br>Here’s a strategy we suggest you follow in meeting the checkpoint and final<br>version requirements:</li>
+<li>Checkpoint. The provided code already meets the required utilization performance2 , but it has very low throughput. You can achieve the required throughput by converting to an explicit-list allocator, and then converting that into a segregated free list allocator. Both of these changes will not affect your utilization much.<br>You will want to experiment with allocation policies. The provided code<br>implements first-fit search. Some allocators attempt best-fit search, but this<br>is difficult to do efficiently. You can find ways to introduce elements of<br>best-fit search into a first-fit allocator, while keeping the amount of search<br>bounded.<br>Depending on whether you place newly freed blocks at the beginning or the end<br>of a free list, you can implement either a last-in-first-out (LIFO) or a<br>first-in-first-out (FIFO) queue discipline. You should experiment with both.</li>
+<li>Final Version. Building on the checkpoint version, you must greatly increase the utilization and keep a high throughput. You must reduce both external and internal fragmentation.<br>Reducing external fragmentation requires achieving something closer to best-<br>fit allocation.<br>Reducing internal fragmentation requires reducing data structure overhead.<br>There are multiple ways to do this, each with its own challenges. Possible<br>approaches and their associated challenges include:</li>
+<li>Eliminate footers in allocated blocks. But, you still need to be able to implement coalescing. See the discussion about this optimization on page 852 of the textbook. </li>
+<li>Decrease the minimum block size. But, you must then manage free blocks that are too small to hold the pointers for a doubly linked free list. </li>
+<li>Set up special regions of memory for small, fixed-size blocks. But, you will need to manage these and be able to free a block when given only the starting address of its payload.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/07/21/OS%E4%BB%A3%E5%86%99%EF%BC%9ACS213WritingADynamicStorageAllocator/">http://saferman.github.io/2023/07/21/OS%E4%BB%A3%E5%86%99%EF%BC%9ACS213WritingADynamicStorageAllocator/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">OS代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/22/Python%E4%BB%A3%E5%86%99%EF%BC%9AINFO3012ForecastingofSales/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Python代写：INFO3012 Forecasting of Sales">
+                        
+                        <span class="card-title">Python代写：INFO3012 Forecasting of Sales</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/20/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI230BouncingProgram/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Java代写：COMPSCI230 Bouncing Program">
+                        
+                        <span class="card-title">Java代写：COMPSCI230 Bouncing Program</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

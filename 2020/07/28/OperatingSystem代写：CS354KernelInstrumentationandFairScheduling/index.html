@@ -1,0 +1,910 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CS354 Kernel Instrumentation and Fair Scheduling, 留学生CS|辅导|代写">
+    <meta name="description" content="基于  XINU  操作系统，实现一个  CompletelyFair Scheduler(CFS)  ，并且进行性能分析。![CFS](https://upload.wikimedia.org/wikipedia/commons/thum">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CS354 Kernel Instrumentation and Fair Scheduling | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CS354 Kernel Instrumentation and Fair Scheduling</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-07-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>基于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Xinu" title="XINU"> XINU </a> 操作系统，实现一个 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler" title="CFS"> Completely<br>Fair Scheduler(CFS) </a> ，并且进行性能分析。<br>![CFS](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Simplified_Structure_of_the_Linux_Kernel.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Simplified_Structure_of_the_Linux_Kernel.svg/220px-</a><br>Simplified_Structure_of_the_Linux_Kernel.svg.png)</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><p>The objectives of this lab are to instrument XINU to monitor system<br>performance and implement a simplified version of Linux CFS in XINU.</p>
+<h2 id="Readings"><a href="#Readings" class="headerlink" title="Readings"></a>Readings</h2><p>Chapter 5 from the XINU textbook.</p>
+<h2 id="Instrumenting-kernels-monitoring-system-uptime-process-lifetime-and-CPU"><a href="#Instrumenting-kernels-monitoring-system-uptime-process-lifetime-and-CPU" class="headerlink" title="Instrumenting kernels: monitoring system uptime, process lifetime and CPU"></a>Instrumenting kernels: monitoring system uptime, process lifetime and CPU</h2><p>usage</p>
+<h3 id="Fine-resolution-system-uptime"><a href="#Fine-resolution-system-uptime" class="headerlink" title="Fine resolution system uptime"></a>Fine resolution system uptime</h3><p>XINU measures in unit of second the time elapsed since a backend was<br>bootloaded (i.e., system uptime). It does so by updating the global variable<br>clktime in clkhandler(), keeping in mind that clock interrupt handling in<br>XINU’s lower half runs every 1 millisecond. Declare a new global variable,<br>uint32 clktimefine, in the same file where clktime is declared and initialize<br>it to 0. Update clktimefine in clkhandler() so that it maintains system uptime<br>in unit of millisecond.</p>
+<h3 id="Process-lifetime"><a href="#Process-lifetime" class="headerlink" title="Process lifetime"></a>Process lifetime</h3><p>Add a new process table field, uint32 prbdate, that specifies the time when a<br>process is created (i.e., “birthday”) using clktimefine in 3.1. Modify<br>create() accordingly. Create a new system call, syscall procage(pid32 pid),<br>which returns the age of a process given by argument pid in unit of<br>millisecond. procage() returns SYSERR if the app programmer is using it<br>incorrectly. As in Problem 4 of lab2, procage() should follow the default<br>format of XINU system calls. Place the code in procage.c under system&#x2F;. Note<br>that procage() whose return value is of type syscall will not return the<br>correct age of a process if it is sufficiently old since prbdate is of type<br>uint32. See the discussion in 3.3. For our testing purposes, this won’t matter<br>since test runs are limited to around 30 seconds.</p>
+<h3 id="Process-CPU-usage"><a href="#Process-CPU-usage" class="headerlink" title="Process CPU usage"></a>Process CPU usage</h3><p>For a number of reasons including scheduling and accounting, it is important<br>for a kernel to monitor how much CPU time a process has consumed during its<br>lifetime. Add a new process table field, uint32 prcputime, initialized to 0<br>when a process is created that tracks its CPU usage. Create a new system call,<br>syscall proccputime(pid32 pid), following the default format of XINU system<br>calls, that returns CPU usage of a process given by pid and SYSERR when there<br>is an error. Note that the return type of proccputime() is declared as syscall<br>(i.e., int32), hence cannot return the full range of prcputime which is of<br>type uint32 (i.e., unsigned int32). This is the same situation for system<br>calls in Linux&#x2F;UNIX and Windows where there is no uniform return type. For<br>example, for some system calls such as getpid(), there is no need to consider<br>returning an error since it can be designed to never fail. For other system<br>calls where they can fail (negative return value) and the range of return<br>value is insufficient (e.g., unsigned int), pointers must be used as<br>arguments. Put proccputime.c in system&#x2F;.<br>There are two issues to consider when implementing CPU usage tracking in<br>prcputime and querying CPU usage through proccputime(). First, when CPU usage<br>of a process that is not current (i.e., is not running on the CPU) is queried<br>either by calling proccputtime() (user app) or direct inspection of prcputime<br>in the process table (kernel code), the value in prcputime will specify<br>accurate CPU usage in msec. However, if CPU usage is queried of the current<br>process, the value returned should be prcputime + (QUANTUM - preempt). That<br>is, since XINU sets the global time slice variable preempt to QUANTUM before a<br>process is allocated CPU cycles, QUANTUM - preempt specifies CPU time consumed<br>by the current process since it has been context-switched in. There is no need<br>to add overhead to clkhandler() which runs every 1 msec by updating prcputime<br>of the current process.<br>Second, in our design where unnecessary operations in the lower half of XINU<br>are avoided, prcputime does need to be updated when the current process is<br>context-switched out at which time prcputime must hold the accurate CPU usage<br>value. Based on the control flow of the XINU kernel during scheduling, make<br>kernel modifications so that the aforementioned update is performed. Explain<br>in Lab3Answers.pdf where you chose to make the modification and why.</p>
+<h2 id="Dynamic-priority-scheduling"><a href="#Dynamic-priority-scheduling" class="headerlink" title="Dynamic priority scheduling"></a>Dynamic priority scheduling</h2><h3 id="Objective-of-fair-scheduling"><a href="#Objective-of-fair-scheduling" class="headerlink" title="Objective of fair scheduling"></a>Objective of fair scheduling</h3><p>The default XINU scheduler is a static (or fixed) priority scheduler that uses<br>priorities specified in the create() system call and never changes them.<br>XINU’s process scheduler, resched(), when invoked, picks a highest priority<br>ready process to run next. If there is a tie round-robin scheduling is<br>implemented among the group of highest priority processes. In computing<br>systems where multiple processes share CPU resources, “fair” allocation of CPU<br>cycles is a widely accepted goal. Giving an app programmer direct control over<br>process priority through create() cannot be allowed. The underlying substrate<br>of a scheduler – picking a highest priority ready process and breaking ties in<br>a round-robin matter – remains unchanged. What does change is that a process’s<br>priority becomes dynamic, i.e., changes over time, so as to facilitate<br>equitable sharing of CPU cycles.<br>Linux’s scheduler was completely revamped several years back to implement a<br>form of “fair” scheduling that was more characteristic of packet scheduling at<br>routers in computer networks and its underlying theory. Instead of the<br>previous approach, still followed by UNIX and Windows operating systems, Linux<br>adopted process CPU usage as a prime metric for deciding which ready process<br>should run next. The basic idea is to allocate CPU cycles to a ready process<br>that has received the least CPU usage – a form of load balancing – so that CPU<br>usage across processes over time evens out. To do so, process CPU usage is<br>monitored (Problem 3.3) and when a scheduler is invoked by a kernel’s upper<br>(system call) or lower half (interrupt), a process of least CPU usage is<br>selected to become current. Equivalently, a process’s CPU usage is interpreted<br>as its priority with smaller numbers (i.e., smaller CPU usage) meaning higher<br>priority.</p>
+<h3 id="XINU-compatibility"><a href="#XINU-compatibility" class="headerlink" title="XINU compatibility"></a>XINU compatibility</h3><p>To implement fair scheduling in XINU where CPU usage is viewed as priority,<br>its ready list – a priority queue – would have to be modified so that a<br>process of least CPU usage is at the front of the list. Alternatively, using<br>real numbers (i.e., floating-point representation) we could set priority as 1<br>&#x2F; CPU usage which would preserve XINU’s notion of priority: larger value means<br>higher priority. For our purposes where we aim to, one, reduce volume of<br>coding to focus on quality of coding, two, not use floating-point<br>representations when possible (recall our discussion of router operating<br>systems), and three, be backward-compatible with legacy XINU to the extent<br>feasible, we will implement a third approach that requires least change. We<br>will define the priority of a process as 30000 - CPU usage. 30000 msec, i.e.,<br>30 seconds will suffice as an upper bound on tests and performance evaluation<br>in lab assignments. As such, a process will not incur more than 30 seconds of<br>CPU usage during testing. Thus a process with a smaller CPU usage than another<br>will have a correspondingly higher priority value which allows us to use<br>XINU’s ready list as is.<br>Another simplification is not to use a data structure such as a heap with<br>logarithmic insert&#x2F;extract time complexity. Instead we will continue to use<br>XINU’s priority queue which has linear insert overhead. The reason is three-<br>fold: one, you will know from data structures how to code heaps and balanced<br>search trees, two, we will not be testing with hundreds and thousands of<br>processes where difference in overhead will surface as a dominant performance<br>factor, and three, kernel support for dynamic memory allocation which is<br>needed for managing heaps will be discussed later in the course under memory<br>management.</p>
+<h3 id="Linux-CFS-scheduler"><a href="#Linux-CFS-scheduler" class="headerlink" title="Linux CFS scheduler"></a>Linux CFS scheduler</h3><p>Linux’s current scheduler, CFS (completely fair scheduler), was introduced in<br>2007 and implements a specific form of fair scheduling. Fair scheduling based<br>on process CPU usage as outlined above cannot be used in real-world operating<br>environments where processes come and go. For example, suppose a process is<br>newly created (hence CPU usage is 0), however, processes that were created an<br>hour ago are still running which have tallied up significant CPU usage. For an<br>existing process with 15 minutes of CPU usage, the newly created process would<br>need at least 15 minutes of CPU time to catch up, which means that during this<br>time the older process (maybe a web browser or mail client) would be<br>completely starved of CPU cycles. This, of course, is unacceptable.<br>Another important consideration in real-world operating environments is the<br>need to provide interactive applications with fast response times. For<br>example, applications with user interfaces (UIs) that perform frequent I&#x2F;O<br>operations (e.g., shells, chat apps, some gaming apps) may not consume<br>significant CPU time but require fast response times to affect desirable user<br>experience. Thus an interactive process that is blocking on a message from a<br>server&#x2F;peer to arrive should be assigned a high priority when it does become<br>ready so that it is allocated CPU cycles in a timely manner.<br>Linux CFS addresses the first concern by (i) setting the initial CPU usage of<br>a newly created process not to 0 but the maximum CPU usage across all ready<br>processes. That is, a newly created process is assigned the lowest priority.<br>The second concern is addressed by (ii) assigning an interactive process that<br>becomes ready a new CPU usage value that is the minimum CPU usage across all<br>ready processes. That is, an interactive process that was blocked but just<br>became unblocked (i.e., ready) begets the highest priority. To do so, the<br>kernel needs to distinguish I&#x2F;O-bound (includes interactive) from CPU-bound<br>processes. Linux uses the criterion that a process that blocks, i.e., makes a<br>blocking system call, is considered I&#x2F;O-bound. Linux (and similarly UNIX and<br>Windows) does not consider a process’s entire history to assess whether it is<br>I&#x2F;O- or CPU-bound. A process’s last action – did it make a blocking system<br>call or was it involuntarily switched out by the kernel because it depleted<br>its time slice – is the sole criterion. For XINU, where we have not yet<br>discussed blocking system calls stemming from inter-process communication and<br>device I&#x2F;O, we will consider sleepms() as the sole system call through which<br>test apps block, i.e., voluntarily relinquish the CPU despite having time left<br>in preempt.<br>When incorporating mechanisms (i) and (ii) into XINU, we cannot use the<br>process CPU usage time field, prcputime, introduced in Problem 3.3 since the<br>two mechanism change prcputime. That is, prcputime ceases to be a variable<br>that accurately tracks CPU usage of a process. We will introduce a second<br>process table field, uint32 prvcputime, which undergoes the same updates as<br>prcputime and, in addition, is subject to updates by (i) and (ii). We call<br>this cousin of prcputime, virtual CPU usage, hence the letter “v” in its name.<br>XINU’s scheduler uses prvcputime when making scheduling decisions, i.e.,<br>priority becomes 30000 - prvcputime, and leaves prcputime as a pure accounting<br>variable.</p>
+<h3 id="XINU-fair-scheduler-implementation"><a href="#XINU-fair-scheduler-implementation" class="headerlink" title="XINU fair scheduler implementation"></a>XINU fair scheduler implementation</h3><p>Following the features described in 4.1, 4.2 and 4.3 which captures the gist<br>of Linux CFS, implement fair scheduling in XINU that dynamically adjusts<br>process priority over time so as to provide equitable sharing of CPU cycles<br>while promoting responsiveness of I&#x2F;O-bound applications. Set the time slice<br>parameter QUANTUM to 25 msec. Note that in fair scheduling a fixed time slice<br>is not needed. For example, if the highest priority process has CPU usage 100<br>msec and the second highest process has CPU usage 180 msec, then for<br>scheduling purposes a time slice of 80 msec will suffice since that amount of<br>time is required for the highest priority process to catch to the second<br>highest priority process. There is no need to call the scheduler earlier than<br>that from the clock interrupt handler (unless an even higher priority process<br>wakes up) which adds unnecessary overhead. For simplicity we will fix time<br>slice at 25 msec.<br>When a new process is spawned using create(), ignore the third argument<br>specifying the process priority and follow mechanism (i) to set the process’s<br>initial priority. XINU’s null process (PID 0) must be treated separately so<br>that its priority always remains 0 and strictly less than the priority of all<br>other processes in the system. Thus the null process does not undergo dynamic<br>priority changes. Explain in Lab3Answers.pdf how you go about assuring that.<br>When coding your XINU fair scheduler, make sure to clearly specify where in<br>your code you have made changes (note your initial) along with brief comments<br>on what and why. Code that is inadequately annotated will result in point<br>deductions.</p>
+<h2 id="Evaluation-of-XINU-fair-scheduler"><a href="#Evaluation-of-XINU-fair-scheduler" class="headerlink" title="Evaluation of XINU fair scheduler"></a>Evaluation of XINU fair scheduler</h2><p>Coding and testing individual components in Problem 4 needs to be augmented by<br>system-wide testing and performance evaluation to gauge correctness of your<br>implementation.</p>
+<h3 id="Test-applications"><a href="#Test-applications" class="headerlink" title="Test applications"></a>Test applications</h3><p>Code two test applications, void appcpu(void), that serves as a CPU-bound app<br>and, void appio(void), that acts as an I&#x2F;O-bound app. The code of appcpu()<br>(place in system&#x2F;appcpu.c) works as follows:<br>    int x, y;<br>    x &#x3D; 0;<br>    y &#x3D; clktimefine;<br>    while(clktimefine - y &lt; 29000)<br>      x++;<br>    kprintf(“cpu-bound: %d %d %d\n”, currpid, x, proctab[currpid].prcputime);<br>—|—<br>Since clktimefine from Problem 3.1 is updated by XINU’s clock interrupt<br>handler, appcpu() keeps performing ALU operations until 29 seconds have<br>elapsed at which time it prints its PID, counter x, CPU usage, and terminates.<br>Note: From a C programming perspective, note that y is assigned clktimefine<br>which is a global variable that is asynchronously updated by the clock<br>interrupt handler every 1 msec (unless interrupts are disabled). gcc, by<br>default, performs a number of optimizations so that the machine code generated<br>is efficient. Sometimes gcc tries too hard which can lead to code that is<br>incorrect. One example is a C variable that is asynchronously updated by<br>interrupt handlers. The qualifier volatile is used to inform the C compiler<br>not to engage in optimizations that may result in unintended behavior.<br>Carefully consider if this is required in the test applications or any other<br>code in lab3 where clktimefine comes into play.<br>The I&#x2F;O-bound application, appio() (in system&#x2F;appio.c), works as follows:<br>    int x, y;<br>    x &#x3D; 0;<br>    y &#x3D; clktimefine;<br>    while(clktimefine - y &lt; 29000) {<br>      x++;<br>      sleepms(20);<br>    }<br>    kprintf(“io-bound: %d %d %d\n”, currpid, x, proctab[currpid].prcputime);<br>—|—<br>We expect the value of x and CPU usage of appio() to be significantly smaller<br>than appcpu().</p>
+<h3 id="Test-scenario-A"><a href="#Test-scenario-A" class="headerlink" title="Test scenario A"></a>Test scenario A</h3><p>Create 5 CPU-bound processes from main() back-to-back. If your scheduler is<br>implemented correctly, we would expect to see the 5 processes printing similar<br>CPU usage and x values. Repeat the benchmark tests two more times and inspect<br>your results. Discuss your findings in Lab3Answers.pdf.</p>
+<h3 id="Test-scenario-B"><a href="#Test-scenario-B" class="headerlink" title="Test scenario B"></a>Test scenario B</h3><p>Create 5 I&#x2F;O-bound processes from main() and perform the same benchmark tests<br>as in Problem 5.2. Discuss your findings in Lab3Answers.pdf.</p>
+<h3 id="Test-scenario-C"><a href="#Test-scenario-C" class="headerlink" title="Test scenario C"></a>Test scenario C</h3><p>Create 5 CPU-bound processes and 5 I&#x2F;O-bound processes. We would expect the 5<br>CPU-bound processes to output similar x values and CPU usage with respect to<br>each other, and the same goes for the 5 I&#x2F;O-bound processes. Between the two<br>groups, however, we would expect CPU-bound processes to receive significantly<br>more CPU time than I&#x2F;O-bound processes. Discuss your findings in<br>Lab3Answers.pdf.</p>
+<h3 id="Test-scenario-D"><a href="#Test-scenario-D" class="headerlink" title="Test scenario D"></a>Test scenario D</h3><p>A variant of test scenario A, create 5 CPU-bound processes in sequence with 5<br>second delays (by calling sleepms()) added between successive create() (nested<br>with resume()) system calls. Estimate how much CPU time the first process<br>should receive, and the same goes for the other 4 processes. Compare your<br>back-of-the-envelop calculations with the actual performance results from<br>benchmarking. Discuss your findings in Lab3Answers.pdf.</p>
+<h2 id="Bonus-problem"><a href="#Bonus-problem" class="headerlink" title="Bonus problem"></a>Bonus problem</h2><p>Mechanism (ii) is aimed at enhancing responsiveness of I&#x2F;O-bound applications.<br>The test cases B and C do not quantitatively gauge if (ii) has indeed improved<br>responsiveness. What might be a way to quantify the benefit of (ii)? Describe<br>your solution in Lab3Answers.pdf, implement it, and discuss your results.<br>Note: The bonus problem provides an opportunity to earn extra credits that<br>count toward the lab component of the course. It is purely optional.</p>
+<h2 id="Turn-in-instructions"><a href="#Turn-in-instructions" class="headerlink" title="Turn-in instructions"></a>Turn-in instructions</h2><ol>
+<li>Format for submitting written lab answers and kprintf() added for testing and debugging purposes in kernel code:<br>* Provide your answers to the questions below in Lab3Answers.pdf and place the file in system&#x2F;. You may use any document editing software but your final output must be exported and submitted as a pdf file.<br>* For problems where you are asked to print values using kprintf(), use conditional compilation (C preprocessor directives #ifdef and #define) with macros, please follow the instructions specified in the TA Notes. </li>
+<li>Before submitting your work, make sure to double-check the TA Notes to ensure that additional requirements and instructions have been followed. </li>
+<li>Electronic turn-in instructions:<br>* i) Go to the xinu-spring2019&#x2F;compile directory and run “make clean”.<br>* ii) Go to the directory of which your xinu-spring2019 directory is a subdirectory. (Note: please do not rename xinu-spring2019 or any of its subdirectories.) <ul>
+<li>e.g., if &#x2F;homes&#x2F;bob&#x2F;xinu-spring2019 is your directory structure, go to &#x2F;homes&#x2F;bob <ul>
+<li>iii) Type the following command<br>You can check&#x2F;list the submitted files using<br> turnin -c cs354le1 -p lab3 -v<br>Please make sure to disable all debugging output before submitting your code.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/07/28/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS354KernelInstrumentationandFairScheduling/">http://saferman.github.io/2020/07/28/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACS354KernelInstrumentationandFairScheduling/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/07/29/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS143CircularDoublyLinkedList/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Java代写：CS143 Circular Doubly Linked List">
+                        
+                        <span class="card-title">Java代写：CS143 Circular Doubly Linked List</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/07/26/Python%E4%BB%A3%E5%86%99%EF%BC%9ACCPS109Problems5/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Python代写：CCPS109 Problems 5">
+                        
+                        <span class="card-title">Python代写：CCPS109 Problems 5</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

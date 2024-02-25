@@ -1,0 +1,950 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Security代写：CS61B The Enigma, 留学生CS|辅导|代写">
+    <meta name="description" content="这次是Java基础课作业，没有学太多的Java高级语法，但是作业却是要求编写一个古老的  Enigma
+ 加密机，逻辑非常复杂。  
+IntroductionThis programming assignment is intended t">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Security代写：CS61B The Enigma | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Security代写：CS61B The Enigma</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Security代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-02-12
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这次是Java基础课作业，没有学太多的Java高级语法，但是作业却是要求编写一个古老的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Enigma_machine" title="Enigma machine"> Enigma
+</a> 加密机，逻辑非常复杂。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This programming assignment is intended to exercise a few useful data<br>structures and an object-based view of a programming problem. There is some<br>background reading, but the necessary program is not (or rather need not be)<br>terribly big.<br>We will be grading largely on whether you manage to get your program to work<br>(according to our tests). In addition, we will be looking at your own tests<br>(which you should be sure to turn in as well). While we have supplied a few<br>unit tests and some simple integration tests and testing utilities, the tests<br>in skeleton are entirely inadequate for testing your program. There is also a<br>stylistic component: the submission and grading machinery require that your<br>program pass a mechanized style check (style61b), which mainly checks for<br>formatting and the presence of comments in the proper places. See the course<br>website for a brief description of the style rules.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>You may have heard of the Enigma machines that Germany used during World War<br>II to encrypt its military communications. If you have not, I recommend you<br>read the wikipedia page on them, or similar resource, especially the part<br>about design and operation. This project involves building a simulator for a<br>generalized version of this machine (which itself had several different<br>versions.) Your program will take descriptions of possible initial<br>configurations of the machine and messages to encode or decode (the Enigma<br>algorithms were reciprocal, meaning that encryption is its own inverse<br>operation.)<br>The Enigmas effect a substitution cipher, on the letters of a message. That<br>is, at any given time, the machine performs a permutation—a one-to-one<br>mapping—of the alphabet onto itself. The alphabet consists solely of the 26<br>letters in one case (there were various conventions for spaces and<br>punctuation).<br>Plain substitution ciphers are easy to break (you’ve probably seen puzzles in<br>newspapers that consist of breaking such ciphers). The Enigma, however,<br>implements a progressive substitution, different for each subsequent letter of<br>the message. This made decryption considerably more difficult.<br>The device consists of a simple mechanical system of (partially)<br>interchangeable rotors (Walzen) that sit side-by-side on a shaft and make<br>electrical contact with each other. Most of these rotors have 26 contacts on<br>both sides, which are wired together internally so as to effect a permutation<br>of signals coming in from one side onto the contacts on the other (and the<br>inverse permutation when going in the reverse direction). To the left of the<br>rotors, one could select one of a set of reflectors (Umkehrwalzen), with<br>contacts on their right sides only, and wired to connect half of those<br>contacts to the other half. A signal starting from the right through one of<br>the 26 possible contacts will flow through wires in the rotors, “bounce” off<br>the reflector, and then come back through the same rotors (in reverse) by a<br>different route, always ending up permuted to a letter position different from<br>where it started. (This was a significant cryptographic weakness, as it turned<br>out. It doesn’t really do a would-be code-breaker any good to know that some<br>letters in an encrypted message might be the same as the those in the<br>plaintext if he doesn’t know which ones. But it does a great deal of good to<br>be able to eliminate possible decryptions because some of their letters are<br>the same as in the plaintext.)<br>Each rotor and each reflector implements a different permutation, and the<br>overall effect depends on their configuration: which rotors and reflector are<br>used, what order they are placed in the machine, and which rotational position<br>they are initially set to. This configuration is the first part of the secret<br>key used to encrypt or decrypt a message. In what follows, we’ll refer to the<br>selected rotors in a machine’s configuration as 1–N, with 1 being the<br>reflector, and N the rightmost rotor. In our simulator, N will be a<br>configuration parameter. In actual Enigma machines, it was fixed for any given<br>model (the Navy used four and the Wehrmacht used three.)<br>The overall permutation changes with each successive letter because some of<br>the rotors rotate after encrypting a letter. Each rotor has a circular ratchet<br>on its right side and a an “alphabet ring” (Ringstellung) on its left side<br>that fits over the ratchet of the rotor to its left. Before a letter of a<br>message is translated, a spring-loaded pawl (lever), one to the right of each<br>rotating rotor, tries to engage the ratchet on the right side of its rotor and<br>thus rotate that rotor by one position, changing the permutation performed by<br>the rotor. The lever on the rightmost rotor (N) always succeeds, so that rotor<br>N (the “fast” rotor) rotates one position before each character. The pawls<br>pushing the other rotors, however, are normally blocked from engaging their<br>rotors by the ring on the left side of the rotor to their right.<br>This ring usually holds the pawl away from its ratchet, preventing the rotor<br>wheel to its left from moving. However, the rings have notches in them (either<br>one or two in the original Enigma machines), and when the pawl is positioned<br>over a notch in the ring for the rotor to its right, it slips through to its<br>own rotor and pushes it forward. A “feature” of the design called “double<br>stepping” (corrected in other versions of the Enigma, since it reduced the<br>period of the cipher) is that when a pawl is in a notch, it also moves the<br>notch itself and the rotor the notch is connected to, so that the rotors on<br>both sides of the pawl move.<br>Let’s illustrate with a much simplified version. Suppose our alphabet has only<br>the letters A-C and we have four rotors (numbered 1-4) each of which has one<br>notch on its ring at the C position. Suppose also that there are 3 pawls, one<br>for each of rotors 2-4. There is no pawl for rotor 1, which will therefore not<br>rotate. We’ll start with the rotors set at AAAA. The next 19 positions are as<br>follows:<br>    AAAB  AAAC  AABA  AABB  AABC  AACA  ABAB  ABAC<br>    ABBA  ABBB  ABBC  ABCA  ACAB  ACAC  ACBA  ACBB<br>    ACBC  ACCA  AAAB<br>As you can see,</p>
+<ul>
+<li>Rotor 4, the fast rotor, advances each time, pushed by pawl 3. </li>
+<li>Rotor 3 advances whenever rotor 4 is at C, because then pawl 3 pushes on its ratchet. </li>
+<li>Rotor 2 advances whenever rotor 3 is at C, pushed by pawl 2. Rotor 3 also advances when it is at C, because when pawl 2 slips into rotor 3’s notch it will push against that notch when it moves. </li>
+<li>There is no pawl 1, so rotor 2 (unlike rotor 3) does not advance just because it is at C. </li>
+<li>Rotor 1 never changes, since there is no pawl on either side of it.<br>So the advancement of the rotors, while similar to that of the wheels of an<br>odometer, is not quite the same. If it were, then the next position after AACA<br>would be AACB, rather than ABAB.<br>The effect of advancing a wheel is to change where on the wheel any given<br>signal enters or leaves. When a wheel is in its ‘A’ setting in the machine,<br>then a signal that arrives from the right at, say, the ‘C’ position, goes into<br>the ‘C’ contact on the wheel. Likewise, a signal that leaves the wheel from<br>its left ‘C’ contact exits at the ‘C’ position. When the wheel is rotated by<br>one to its ‘B’ setting, a signal that arrives at the ‘C’ position goes instead<br>into the ‘D’ contact on the wheel, and a signal that leaves through the ‘D’<br>contact does so at the ‘C’ position. It’s easier to calculate if we use<br>numbers 0—25 rather than letters (‘A’ is 0, ‘B’ is 1, etc.). Then, when the<br>wheel is in its k setting, a signal entering at the p position enters the &#96; p</li>
+</ul>
+<ul>
+<li>k mod 26 <code>contact on the wheel, and a signal exiting through the c contact does so at the</code> c−k mod 26 &#96; position. For example, Figure 1 shows one of the<br>rotors from the real Enigma machines (called rotor “I”) and the effect of<br>moving from its ‘A’ to its ‘B’ setting.<br>The contacts on the rightmost rotor’s right side connect with stationary input<br>and output contacts, which run to keys that, when pressed, direct current to<br>the contact from a battery or, when not pressed, direct current back from the<br>contact to a light bulb indicating a letter of the alphabet. Since a letter<br>never encrypts or decrypts to itself after going back and forth through the<br>rotors, the to and from directions never conflict.<br>The German Navy used a machine with 12 rotors and five slots for them:<ul>
+<li>Eight rotors labeled with roman numerals I—VIII, of which three will be used in any given configuration as the rightmost rotors, </li>
+<li>Two additional non-moving rotors (Zusatzwalzen) labeled “Beta” and “Gamma”, of which one will be used in any configuration, as the fourth-from-right rotor, and </li>
+<li>Two reflectors (Umkehrwalzen), labeled ‘B’ and ‘C’, of which one will be used in any given configuration as the leftmost rotor.<br>Given just this equipment, there are 614,175,744 possible configurations (or<br>keys):</li>
+<li>Two possible reflectors, times </li>
+<li>Two possible rotors in the fourth position, times </li>
+<li>8!&#x2F;(8−3)!&#x3D;336 choices for the rightmost three rotors and their ordering, times </li>
+<li>26^4 possible initial rotational settings for the rightmost four rotors (each reflector had only one possible position.).<br>Especially by today’s standards, this is not a large key size (less than 30<br>bits). To make things more difficult for code-breakers, therefore, the Enigma<br>incorporated a plugboard (Steckerbrett) between the keyboard and the rightmost<br>wheel. It acted as a non-moving, configurable rotor. The operator could choose<br>any set of disjoint pairs of letters by means cables placed between them on<br>the plugboard. Each selected pair would then be swapped going into the machine<br>from the keyboard and coming out into the indicator lights. Thus, if the<br>operator connected (“steckered”) the letters A and P, then P would be<br>substituted for each A typed and vice versa. Likewise, if an ingoing letter<br>was encrypted to P by the other rotors, it would display as A, and letters<br>decrypted as A would display as P.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Describing-Permutations"><a href="#Describing-Permutations" class="headerlink" title="Describing Permutations"></a>Describing Permutations</h2><p>Since the rotors and the plugboard implement permutations, we’ll need a<br>standard way to describe them. We could simply have a table showing each<br>letter and what it maps to, but we’ll use a more compact notation known as<br>cycle representation. The idea is that any permutation of a set may be<br>described as a set of cyclic permutations. For example, the notation<br>describes the permutation in Figure 1. It describes seven cycles:</p>
+<ul>
+<li>A maps to E, E to L, L to T, …, R to U, and U back to A. </li>
+<li>B maps to K, K to N, N to W, and W back to B. </li>
+<li>C maps to M, M to O, O to Y, and Y back to C. </li>
+<li>D maps to F, F to G, and G back to D. </li>
+<li>I maps to V and V back to I. </li>
+<li>J maps to Z and Z back to J. </li>
+<li>S maps to itself.<br>The inverse permutation just reverses these cycles:</li>
+<li>U maps to R, R to X, …, E to A, and A back to U. </li>
+<li>… </li>
+<li>S maps to itself.<br>Each letter appears in one and only one cycle, so the mapping is unambiguous.<br>As a shorthand, we’ll say that if a letter is left out of all cycles, it maps<br>to itself (so that we could have left off “(S)” In the example above.)</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>As an example of a translation, consider the set of rotors from Figure 2, and<br>suppose that</p>
+<ul>
+<li>The rotors in positions 1—5 are, respectively, B, Beta, III, IV, and I. </li>
+<li>The rotors in positions 2—5 are currently at positions A, X, L, E, respectively. </li>
+<li>In the plugboard, the letter pair ‘Y’ and ‘F’ and the letter pair ‘Z’ and ‘H’ are both interchanged.</li>
+</ul>
+<h2 id="Input-and-Output"><a href="#Input-and-Output" class="headerlink" title="Input and Output"></a>Input and Output</h2><p>To run your program, you can use the command<br>    java enigma.Main [configuration file] [input file] [output file]<br>The configuration file contains descriptions of the machine and the available<br>rotors. The data are in free format. That is, they consist of strings of non-<br>whitespace characters separated by arbitrary whitespace (spaces, tabs, and<br>newlines), so that indentation, spacing, and line breaks are irrelevant. Each<br>file has the following contents:</p>
+<ul>
+<li>A string of non-blank characters, giving the alphabet. Unless you do the extra credit, you may assume this is the upper-case alphabet. </li>
+<li>Two integer numerals, S&gt;P≥0, where SS is the number of rotor slots (including the reflector) and PP is the number of pawls—that is, the number of rotors that move. The moving rotors and their pawls are all to the right of any non-moving ones. </li>
+<li>Any number of rotor descriptors. Each has the following components (separated by whitespace):<br>The input file to your program will consist of a sequence of messages to<br>decode, each preceded by a line giving the initial settings. Given the<br>configuration file above, a settings line looks like this:<ul>
+<li>B BETA III IV I AXLE (YF) (ZH)<br>(all upper case.) This particular example means that the rotors used are<br>reflector B, and rotors Beta, III, IV, and I, with rotor I in the rightmost,<br>or fast, slot. The remaining parenthesized items indicate that the letter pair<br>Y and F and the pair Z and M are steckered (swapped going in from the keyboard<br>and going out to the lights).<br>In general for this particular configuration, rotor 1 is always the reflector;<br>rotor 2 is Beta or Gamma, and each of 3—5 is one of rotors I—VIII. A rotor may<br>not be repeated. The four letters of the following word (AXLE in the example)<br>give the initial positions of rotors 2—5, respectively (i.e., not including<br>the reflector). Any number of steckered pairs may follow (including none).<br>After each settings line comes a message on any number of lines. Each line of<br>a message consists only of letters, blanks, and tabs (0 or more). The program<br>should ignore the blanks and tabs and convert all letters to upper case. The<br>end of message is indicated either by the end of the input or by a new<br>configuration line (distinguished by its leading asterisk). The machine is not<br>reset between lines, but continues stepping from where it left off on the<br>previous message line. Because the Enigma is a reciprocal cipher, a given<br>translation may either be a decryption or encryption; you don’t have to worry<br>about which, since the process is the same in any case.<br>Output the translation for each message line in groups of five upper-case<br>letters, separated by blanks (the last group may have fewer characters,<br>depending on the message length). Figure 3 contains an example that shows an<br>encryption followed by a decryption of the encrypted message. Since we have<br>yet to cover the details of File I&#x2F;O, you will be provided the File IO<br>machinery for this project.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Handling-Errors"><a href="#Handling-Errors" class="headerlink" title="Handling Errors"></a>Handling Errors</h2><p>You can see a number of opportunities for input errors:</p>
+<ul>
+<li>The configuration file may have the wrong format. </li>
+<li>The input might not start with a setting. </li>
+<li>The setting line can contain the wrong number of arguments. </li>
+<li>The rotors might be misnamed. </li>
+<li>A rotor might be repeated in the setting line. </li>
+<li>The first rotor might not be a reflector. </li>
+<li>The initial positions string might be the wrong length or contain characters not in the alphabet.<br>A significant amount of a program will typically be devoted to detecting such<br>errors, and taking corrective action. In our case, the only corrective action<br>needed is to throw an EnigmaException with an explanatory message.</li>
+</ul>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>The directory testing contains the scripts test-correct and test-error for<br>testing the execution of enigma.Main.</p>
+<ul>
+<li>bash test-correct F1.inp F2.inp … will run the program for each of the message files F1.inp, F2.inp …, comparing the results to the corresponding output files F1.out, F2.out, …. The configuration files used are F1.conf, F2.conf, …. However, if any of these is missing, the file default.conf (from the same directory) is used instead. </li>
+<li>bash test-error F1.inp F2.inp … will run the program for each of the message files F1.inp, F2.inp …, checking that the program reports at least one error in each case. The configuration files are as for test-correct. The tests we’ve supplied are nowhere near adequate to test your program, so you will need to generate your own integration tests as well (we will check to see that you make an effort to test).</li>
+</ul>
+<h2 id="Extra-Credit"><a href="#Extra-Credit" class="headerlink" title="Extra Credit"></a>Extra Credit</h2><p>If you feel up to it, consider extending your program to work on more general<br>alphabets (which will be specified by the first string in the configuration<br>file). The effect of specifying a new alphabet is to change the size and<br>contents of the rotors. Continue to convert lower-case letters in messages to<br>upper case. Alphabets should not contain whitespace, lower-case letters, or<br>any of the special characters “(“, “)”, or “*”.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/02/12/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS61BTheEnigma/">http://saferman.github.io/2019/02/12/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS61BTheEnigma/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Security代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/02/14/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108HBob'sCompatibilityCalculator/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Python代写：CSC108H Bob&#39;s Compatibility Calculator">
+                        
+                        <span class="card-title">Python代写：CSC108H Bob&#39;s Compatibility Calculator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-02-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/02/09/C#%E4%BB%A3%E5%86%99%EF%BC%9ACS3160FastFoodRestaurant/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="C#代写：CS3160 Fast Food Restaurant">
+                        
+                        <span class="card-title">C#代写：CS3160 Fast Food Restaurant</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-02-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C#代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

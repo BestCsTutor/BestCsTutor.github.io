@@ -1,0 +1,897 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS354 Kernel IPC Services and Process Hijacking, 留学生CS|辅导|代写">
+    <meta name="description" content="编写  Kernel module  , 通过修改进程的运行时Stack，改变进程的运行状态。![Kernel](https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS354 Kernel IPC Services and Process Hijacking | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS354 Kernel IPC Services and Process Hijacking</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-03-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>编写 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Loadable_kernel_module" title="Kernel module"> Kernel module </a> , 通过修改进程的运行时Stack，改变进程的运行状态。<br>![Kernel](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-</a><br>Linux_kernel_interfaces.svg.png)</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><p>The objective of this lab is to enhance XINU’s IPC services and utilize run-<br>time stack manipulation to “hijack” a process by executing malware.</p>
+<h2 id="Readings"><a href="#Readings" class="headerlink" title="Readings"></a>Readings</h2><p>Read Chapters 6 and 7 of the XINU textbook.</p>
+<h2 id="Blocking-send-IPC"><a href="#Blocking-send-IPC" class="headerlink" title="Blocking send() IPC"></a>Blocking send() IPC</h2><p>This problem concerns the implementation of a blocking version of send(),<br>bsend(), which has the same function definition as send(). The difference is<br>that if the receiver’s buffer is full, bsend() blocks until the receiver’s<br>buffer frees up. This is in contrast to send() which returns immediately with<br>SYSERR indicating that sending has failed. Use your code from lab1 as the code<br>base. Put bsend() in system&#x2F;bsend.c.</p>
+<h3 id="Kernel-modifications-bsend"><a href="#Kernel-modifications-bsend" class="headerlink" title="Kernel modifications: bsend()"></a>Kernel modifications: bsend()</h3><p>For send() to behave in blocking mode means, first, if the receiver’s 1-word<br>message buffer is empty, it behaves the same way as send(). That is, send()<br>copies the message to the receiver buffer, sets the receiver’s prhasmsg flag<br>to 1, and returns OK without blocking. Second, if the receiver’s buffer is<br>full, bsend() blocks until the receiver’s buffer becomes free. To block upon<br>attempting to send means that the sender’s state changes from current to<br>PR_SND (define PR_SND as 11 in include&#x2F;process.h). The kernel records the<br>message to be sent in a new 1-word process table field, umsg32 prsndmsg.<br>Before calling resched() to context-switch out the sender and context-switch<br>in a different process, the sender is inserted into a FIFO queue of processes<br>blocking to send to the same receiver. To do so, we need to provide each<br>process with a private FIFO queue in case it becomes a receiver process to<br>whom other processes attempting to send messages block. Increase NQENT in<br>include&#x2F;queue.h to accommodate per-receiver process blocked sender queues.<br>Explain in Lab4Answers.pdf why your change of NQENT works. Confer Chapter 4 of<br>the textbook for a discussion of how XINU implements queues. Define two<br>additional process table fields<br>    bool8 prsenderflag;     &#x2F;* Set to 1 if one or more processes are blocking to send <em>&#x2F;<br>    qid16 prblockedsenders; &#x2F;</em> Index to FIFO queue of blocked senders *&#x2F;<br>—|—<br>where prsenderflag is true if one or more processes are blocking to send, 0<br>otherwise. prblockedsenders is an index to a FIFO queue of blocked sender<br>processes which must be initialized in create(). Use XINU’s enqueue() and<br>dequeue() functions for implementing FIFO queues for managing the per-process<br>blocked sender queues. In XINU, a process can be resident in only one queue<br>(e.g., sleep queue, ready list) which affords space efficient queue management<br>using the kernel data structure queuetab[].</p>
+<h3 id="Kernel-mods-receive"><a href="#Kernel-mods-receive" class="headerlink" title="Kernel mods: receive()"></a>Kernel mods: receive()</h3><p>When a process makes a receive() system call, receive() checks if it has a<br>message in its 1-word buffer by inspecting the prhasmsg flag. If prhasmsg is<br>0, the receiver blocks. In the case prhasmsg is true, before the 1- word<br>message is returned by receive(), the kernel must check if there are any<br>blocker sender processes. If prsenderflag is 1, one or more sender processes<br>are waiting in the receiver’s blocked sender FIFO queue. Using dequeue() the<br>process at the front of the queue is extracted and inserted into the ready<br>list. The dequeued sender’s message is copied from the sender’s prsndmsg<br>process table field to the receiver’s prmsg 1-word buffer. Use of the local<br>variable msg prevents the previous message (which hasn’t been returned yet)<br>from being overwritten. The receiver’s prhasmsg flag remains 1. Lastly, the<br>previous message stored in msg is returned by receive(). Note that in our<br>version of receive(), the scheduler is only called when the receiver blocks<br>because its 1-word message buffer is empty. Even in the case where an<br>unblocked sender process has higher priority than the receiver process, the<br>receiver process will remain current and execute the instruction following the<br>receive() system call. That is, we do not preempt a process making a receive()<br>system call if its message buffer is not empty. This comes at the cost of<br>potentially delaying execution of a high priority process which just became<br>ready after blocking in a receiver process’s blocked sender queue. The benefit<br>is reduced overhead as resched() is not called before executing ret from<br>receive(). In the case the just unblocked sender has lower priority than the<br>receiver, the resched() call would have been pure overhead.</p>
+<h3 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h3><p>Test your kernels mods for implementing bsend(). Describe in Lab4Answers.pdf<br>what test scenarios you have considered to gauge correctness.</p>
+<h2 id="Hijacking-a-process-by-modifying-its-run-time-stack"><a href="#Hijacking-a-process-by-modifying-its-run-time-stack" class="headerlink" title="Hijacking a process by modifying its run-time stack"></a>Hijacking a process by modifying its run-time stack</h2><h3 id="Basic-idea"><a href="#Basic-idea" class="headerlink" title="Basic idea"></a>Basic idea</h3><p>An important technique for modifying the run-time behavior of a process is ROP<br>(return-oriented programming) which we utilized in Problem 3, lab3, to make a<br>process execute code that it wasn’t programmed to do. By modifying the return<br>address pushed onto the stack of a newly created process, we induced it to<br>make a detour to code that took time stamps to commence CPU usage measurement.<br>In this problem, we will use the same technique to “hijack” a process by<br>making it execute malware code. We will do so by modifying the run- time stack<br>of a victim process while it is context-switched out so that when it<br>eventually becomes current we induce ctxsw() to jump to the attacker’s malware<br>code. In the first attack, the attacker makes ctxsw() jump to malware function<br>hellomalware() which prints a hello message and terminates the victim process.<br>The attacker makes no effort to hide the attack. In the second attack, the<br>attacker makes ctxsw() jump to its malware function quietmalware(). Instead of<br>printing a message and terminating the victim process, quietmalware()<br>surgically modifies the victim process’s data – a local variable in the app<br>code – then returns to resched() as if nothing had happened. The victim<br>process will continue to execute, but when printing the value of the local<br>variable, it will have been corrupted unbeknownst to the victim. Use your code<br>base from lab1 but set QUANTUM to be 30 msec.</p>
+<h3 id="Overt-attack"><a href="#Overt-attack" class="headerlink" title="Overt attack"></a>Overt attack</h3><p>Spawn three app processes from main() back-to-back using create()&#x2F;resume(),<br>all running victimA(). This is followed by creation and resumption from main()<br>of an attacker process which runs attackerA(). Assign all four processes equal<br>priority, albeit less than that of the parent process running main().<br>Victim process. The app code victimA() in system&#x2F;victimA.c is given by<br>    void victimA(void) {<br>      int x;<br>      x &#x3D; 5;<br>      kprintf(“before funcA: %d %d\n”, getpid(), x);<br>      sleepms(300);<br>      kprintf(“after funcA: %d %d\n”, getpid(), x);<br>    }<br>—|—<br>Creating and resuming the three app processes will result in the expected<br>output of a process’s PID and integer value 5, twice per process. This is in<br>the absence of interference by the attacker process. Verify normal operation<br>when the attacker process does nothing.<br>Attacker process. The attacker process runs, void attackerA(int y), in<br>system&#x2F;attackerA.c which works as follows. The attacker chooses its victim’s<br>PID as getpid() - y. For example, if y &#x3D; 1 then the victim is the third app<br>process created by main(). To stage a successful attack, the attacker is<br>assumed to be privy to certain knowledge such as the victim process being in<br>sleep state. The attacker is assumed to have access to the kernel’s process<br>table which allows it to know the address of the top of the victim’s run-time<br>stack by looking up prstkptr. With knowledge of how XINU’s context-switch<br>works, the attacker finds the address at which the return address of ctxsw()<br>(which returns to its caller resched()) has been pushed. Explain in<br>Lab4Answers.pdf how you determine this address. The attacker then overwrites<br>the return address with the address of void hellomalware(void) (in<br>system&#x2F;hellomalware.c). When the victim process eventually wakes up and<br>becomes current, it will continue to execute the “second half” of ctxsw() that<br>pops the victim’s stack to restore register contents and returns to resched().<br>However, since the return address has been modified to contain the function<br>pointer of hellomalware(), the victim process jumps to hellomalware() which<br>outputs a suitable message (e.g., “successful takeover”) and terminates the<br>victim process.<br>Testing. Verify that the attacker code works as intended by running tests<br>without the attacker as a reference point, followed by attacks with different<br>values of argument y. For example, for y &#x3D; 3, the first app process spawned by<br>the process main() should not return from sleepms() to victimA() and, hence,<br>not get to output the second kprintf(). The second and third app processes<br>should run as before.</p>
+<h3 id="Stealth-attack"><a href="#Stealth-attack" class="headerlink" title="Stealth attack"></a>Stealth attack</h3><p>Hackers may opt for overt attacks in some cases. In others, a more stealthy<br>mode may be employed to leave a victim in the dark about having been attacked.<br>Code a stealth attack, void attackerB(int y), in system&#x2F;attackerB.c which<br>works as follows. The victim code remains the same, and the process running<br>main() spawns three app processes followed by the attacker process as in 4.2.<br>When the attacker process run attackerB(), its goal is three-fold. First, as<br>in 4.2, make ctxsw() jump to malware code, in this instance, void<br>quietmalware(void), in system&#x2F;quietmalware.c. Second, the code of<br>quietmalware() finds out the address of the local variable x of victimA() and<br>modifies its value from 5 to 9. Third, after quietmalware() is finished it<br>jumps to the instruction of resched() that ctxsw() would have returned to. The<br>victim process returns from resched() to sleepms() which returns to victimA()<br>and outputs the second kprintf(). The victim process seems to execute normally<br>except for the value of the local variable x having changed to 9. A victim<br>that does not know what the correct value of x should be will be unaware that<br>it has been corrupted. Explain in Lab4Answers.pdf your method for<br>accomplishing the second and third goals. For Problem 4.3, add the option<br>-fno-omit-frame-pointer in Makefile which forces gcc to use ebp as frame<br>pointer. By default, gcc tries to optimize by freeing up ebp to hold other<br>values. Test and verify that the attacker code works correctly.</p>
+<h2 id="Bonus-problem"><a href="#Bonus-problem" class="headerlink" title="Bonus problem"></a>Bonus problem</h2><p>In Problem 3, the possibility exists that processes are blocked trying to send<br>to a receiver, but the receiver terminates without reading all messages. That<br>is, one or more processes are queued in the receiver’s blocked sender queue<br>when it undergoes termination. One approach is to dequeue such processes,<br>insert them into XINU’s ready list, and have bsend() return SYSERR. Describe a<br>solution in Lab4Answers.pdf that follows this approach and is backward<br>compatible with the solution of Problem 3. No need to implement the solution,<br>but the description should be sufficiently detailed. That is, all kernel<br>functions and data structures that are required to be modified should be<br>listed and the changes needed specified.<br>Note: The bonus problem provides an opportunity to earn extra credits that<br>count toward the lab component of the course. It is purely optional.</p>
+<h2 id="Turn-in-instructions"><a href="#Turn-in-instructions" class="headerlink" title="Turn-in instructions"></a>Turn-in instructions</h2><p>General instructions:<br>When implementing code in the labs, please maintain separate versions&#x2F;copies<br>of code so that mistakes such as unintentional overwriting or deletion of code<br>is prevented. This is in addition to the efficiency that such organization<br>provides. You may use any number of version control systems such as GIT and<br>RCS. Please make sure that your code is protected from public access. For<br>example, when using GIT, use git that manages code locally instead of its on-<br>line counterpart github. If you prefer not to use version control tools, you<br>may just use manual copy to keep track of different versions required for<br>development and testing. More vigilance and discipline may be required when<br>doing so.<br>The TAs, when evaluating your code, will use their own test code (principally<br>main()) to drive your XINU code. The code you put inside main() is for your<br>own testing and will, in general, not be considered during evaluation.<br>If you are unsure what you need to submit in what format, consult the TA Notes<br>link. If it doesn’t answer your question, send email to all four GTAs.<br>Specific instructions:</p>
+<ol>
+<li>Format for submitting written lab answers and kprintf() added for testing and debugging purposes in kernel code:<br>* Provide your answers to the questions below in Lab4Answers.pdf and place the file in lab4&#x2F;. You may use any document editing software but your final output must be exported and submitted as a pdf file.<br>* For problems where you are asked to print values using kprintf(), use conditional compilation (C preprocessor directives #define combined with #if and #endif) with macro XINUTEST (in include&#x2F;process.h) to effect print&#x2F;no print depending on if XINUTEST is defined or not. For your debug statements, do the same with macro XINUDEBUG. </li>
+<li>Before submitting your work, make sure to double-check the TA Notes to ensure that additional requirements and instructions have been followed.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/03/18/C%E4%BB%A3%E5%86%99%EF%BC%9ACS354KernelIPCServicesandProcessHijacking/">http://saferman.github.io/2023/03/18/C%E4%BB%A3%E5%86%99%EF%BC%9ACS354KernelIPCServicesandProcessHijacking/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/03/18/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSCI111Employee/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="C++代写：CSCI111 Employee">
+                        
+                        <span class="card-title">C++代写：CSCI111 Employee</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/03/17/Web%E4%BB%A3%E5%86%99%EF%BC%9ASI506RestAPIWebsites/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Web代写：SI506 Rest API Websites">
+                        
+                        <span class="card-title">Web代写：SI506 Rest API Websites</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Web%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Web代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

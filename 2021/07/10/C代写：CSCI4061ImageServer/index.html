@@ -1,0 +1,940 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CSCI4061 Image Server, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个图片服务器，供图像下载服务。  
+PurposeThe purpose of this assignment is to understand the use of sockets and simpleclient-server c">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CSCI4061 Image Server | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CSCI4061 Image Server</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-07-10
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个图片服务器，供图像下载服务。  </p>
+<h2 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h2><p>The purpose of this assignment is to understand the use of sockets and simple<br>client-server communication interactions.</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In Assignment 4, you were asked to browse through a particular directory tree,<br>locate and create a catalog of a certain subset of the files. However, this<br>catalog was not accessible over a network. In this assignment, you are tasked<br>with writing two programs, a client and server, which communicate with each<br>other via TCP sockets and facilitate sharing of files over a network. Since<br>files downloaded over a network have a high probability of being corrupted,<br>you will also implement error checking using a widely used hashing algorithm.</p>
+<h2 id="Assignment"><a href="#Assignment" class="headerlink" title="Assignment"></a>Assignment</h2><p>In this assignment, you are supposed to implement two C programs, a server and<br>a client, that have the following functionalities:</p>
+<ol>
+<li>Files (either image or text) can be transmitted between the server and the client through TCP socket. </li>
+<li>A catalog file will be generated at the server and record all the image files that can be downloaded by the client. </li>
+<li>MD5 checksum is used at the client to verify the correctness of transmission. </li>
+<li>An HTML file, named “download.html” is used to show all the downloaded files. </li>
+<li>Deploy the server and client program on two different computers in the computer lab.</li>
+</ol>
+<h3 id="Program-Invocation"><a href="#Program-Invocation" class="headerlink" title="Program Invocation"></a>Program Invocation</h3><p>The server program will be invoked as follows:<br>    .&#x2F;server server.config<br>where server.config is like<br>    Port &#x3D; <port><br>    Dir &#x3D; <server directory></p>
+<ol>
+<li>The server program when started, should open a TCP socket on the specified port and wait for incoming client connections. </li>
+<li>The server should browse the directory specified in [server directory] to find image directory and prepare a catalog.<br>The client program will be invoked as follows:<br>.&#x2F;client client.config<br>where client.config is like<br>Server &#x3D; <IP_address><br>Port &#x3D; <port><br>Chunk_Size &#x3D; <chunk size><br>ImageType &#x3D; <type> (only for passive mode)</li>
+<li>ip_address is an IPv4 address in dotted decimal format, which specifies the IP address of the machine on which your server program is running. </li>
+<li>port indicates the port on which your server is listening for connections. </li>
+<li>The chunk size is the size of chunks that we separate image files into for transmission. </li>
+<li>The type is only for passive mode. You need to transmit all the files satisfying the given image type. You give only one image type at a time.</li>
+</ol>
+<h2 id="Server-design"><a href="#Server-design" class="headerlink" title="Server design"></a>Server design</h2><p>The server first reads a configuration file (i.e., server.config), and get<br>necessary configuration data. Then it browses through a specified directory<br>(i.e., [server directory]) and searches for image files of type jpg, png, gif,<br>and tiff (in the assignment we only give jpg files as an example, but the<br>program needs to support all the image types). The server then creates a<br>catalog file, named catalog.csv, which contains a record for each image file<br>found (Details on creating this file are specified later in this handout). The<br>server then starts listening for client connections on a specified port (i.e.,<br>[port]).</p>
+<h2 id="Client-design"><a href="#Client-design" class="headerlink" title="Client design"></a>Client design</h2><p>The client first reads a configuration file (i.e., client.config) to get<br>necessary configuration information and then runs in 2 modes: Interactive and<br>passive. In both modes, the client must first attempt to connect to a server<br>through IP address and port (i.e., [IP address] and [port]). After the socket<br>connection has been successfully set up, the client must download catalog.csv<br>from the server. The contents of this file must then be displayed to the user<br>on the screen&#x2F;console.<br>Passive mode: In passive mode, the file extension will be provided in the<br>configuration file. This will be one of jpg, png, gif, or tiff. The client<br>program must then download all files corresponding to the specified type from<br>the server.<br>Interactive mode: In the interactive mode, the client must allow the user to<br>choose files for download. You must allow the user to download multiple image<br>files in this mode of execution.<br>When you are downloading the files, separate image files into small chunks,<br>because the size of image file may be large. Each chunk has [chunk size]<br>bytes. After a file is downloaded, you need to output the number of chunks you<br>have downloaded.</p>
+<h2 id="Record-available-images-through-“catalog-csv”"><a href="#Record-available-images-through-“catalog-csv”" class="headerlink" title="Record available images through “catalog.csv”"></a>Record available images through “catalog.csv”</h2><p>This is a CSV formatted file. You need to use a comma(,) as the delimiter. The<br>header line for this file should be<br>    filename, size, checksum<br>Following the header line, each image file found in the directory must have<br>its own record in the file on a separate line. The filename must be stripped<br>down to the last &#x2F; (e.g., image01.png instead of<br>&#x2F;home&#x2F;grad03&#x2F;student&#x2F;hw5&#x2F;image01.png) . You need to compute the checksum for<br>each image file. You may use the provided API for this. You may refer to<br>catalog.csv in the attached tar ball.</p>
+<h2 id="Verify-the-correctness-of-downloading-through-checksum"><a href="#Verify-the-correctness-of-downloading-through-checksum" class="headerlink" title="Verify the correctness of downloading through checksum"></a>Verify the correctness of downloading through checksum</h2><p>You have been provided with an API which computes the MD5 hash for a given<br>file. You need to compile md5sum.c and link it with your server and client<br>programs. You may use the provided md5_test.c and Makefile as a reference.<br>(This program is identical to the md5sum command in Linux). Do NOT modify the<br>md5sum.[c&#x2F;h] files. You will lose significant points if you do so.</p>
+<h2 id="Show-the-downloaded-files-through-“download-html”"><a href="#Show-the-downloaded-files-through-“download-html”" class="headerlink" title="Show the downloaded files through “download.html”"></a>Show the downloaded files through “download.html”</h2><p>This is an HTML document which should list the names of all downloaded files<br>with hyperlinks to the full size images. Additionally, “Checksum match” or<br>“Checksum mismatch” must be displayed next to each filename depending on the<br>result of the checksum comparison. (Note: If, for a particular file there is a<br>checksum mismatch, you do not need to provide a link to the full size image,<br>since the image is probably corrupted). You can find a sample download.html in<br>the attached tar ball.</p>
+<h2 id="Deployment-of-server-client"><a href="#Deployment-of-server-client" class="headerlink" title="Deployment of server&#x2F;client"></a>Deployment of server&#x2F;client</h2><p>Although it is possible to run both the server and the client on the same<br>machine, for this assignment you need to ensure that the server and the client<br>both run on different machines. For instance, you can run the server on one of<br>the machines in Lind40 and the client on one of the machines in Keller 4250.<br>(This is how your assignment will be graded, by running your server and client<br>programs on physically different machines, so make sure that it works).</p>
+<h2 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h2><h3 id="General"><a href="#General" class="headerlink" title="General"></a>General</h3><ol>
+<li>You are not allowed to use commands in shell scripts, such as “find” &amp; “grep”, use functions in C libraries, such as “opendir()”and “readdir()”. </li>
+<li>You should not change md5sum.[c&#x2F;h], but you can put them in your own directory. </li>
+<li>Maximum length of file names [ 255 bytes; maximum length of dir path [ 1024 bytes </li>
+<li>There’s only one client and one server. </li>
+<li>We assume the catalog.csv file will transmit successfully.</li>
+</ol>
+<h3 id="Server-side"><a href="#Server-side" class="headerlink" title="Server-side"></a>Server-side</h3><ol>
+<li>The directory path in server’s configuration file to the server can be absolute or relative. </li>
+<li>The specified directory can contain files other than the image files. </li>
+<li>The specified directory can contain any number of subdirectories. You need to go through all the subdirectories and check for image files while preparing the catalogue. </li>
+<li>The filenames encountered in the directory are guaranteed to be unique. </li>
+<li>If catalog.csv exists, you must truncate&#x2F;delete it and create a new file.</li>
+</ol>
+<h3 id="Client-side"><a href="#Client-side" class="headerlink" title="Client-side"></a>Client-side</h3><ol>
+<li>The images subdirectory may or may not exist initially. If it exists, it may contain some files. However, these files will not be found on the server (i.e. There will not be any filename conflicts during the download phase) </li>
+<li>You can place all downloaded images in the top-level images subdirectory. There is no need to recreate the directory structure as per what is present on the server. </li>
+<li>If download.html exists, you must truncate&#x2F;delete the file and create a new file. </li>
+<li>You may safely assume that the server program is always started before the client program starts.</li>
+</ol>
+<h2 id="Trouble-shooting"><a href="#Trouble-shooting" class="headerlink" title="Trouble shooting"></a>Trouble shooting</h2><ol>
+<li>Error in compiling “fatal error: openssl&#x2F;md5.h: No such file or directory”<br>* First check whether you have installed libssl-dev, and openssl<br>* Then check your make file, remember to (1) compile server.c with linkers: -lcrypto - lssr, and (2) use linker -pthread for threads </li>
+<li>Sometimes you need to convert signed char <em>&#x2F;unsigned char</em> to char*, you can try “sprintf”. </li>
+<li>When you are reading&#x2F;writing from&#x2F;to sockets, try to use unbuffered I&#x2F;O, such as read(), write(), send(), recv(), instead of buffered I&#x2F;O, such as fprintf() and fread().</li>
+</ol>
+<h2 id="What-you-need-to-turn-in"><a href="#What-you-need-to-turn-in" class="headerlink" title="What you need to turn in"></a>What you need to turn in</h2><ol>
+<li>The source files of your programs ( *.[c&#x2F;h] files) </li>
+<li>The configuration files ([server&#x2F;client].config) </li>
+<li>A README.txt which contains the name and student ID of the team members. This file must also contain instructions about the way your programs must be run. </li>
+<li>A Makefile for compiling the two programs. The two executables must be named server and client respectively. </li>
+<li>Please do not include download.html, catalog.csv, images&#x2F;and other image files in your submissions.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/07/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4061ImageServer/">http://saferman.github.io/2021/07/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4061ImageServer/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/07/12/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS211LexicalAnalysis/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="C++代写：CS211 Lexical Analysis">
+                        
+                        <span class="card-title">C++代写：CS211 Lexical Analysis</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/08/Database%E4%BB%A3%E5%86%99%EF%BC%9ANCC32DatabaseDesignandDevelopment/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Database代写：NCC32 Database Design and Development">
+                        
+                        <span class="card-title">Database代写：NCC32 Database Design and Development</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

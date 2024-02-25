@@ -1,0 +1,921 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS201 Hash Table, Hash Function Comparison and Optional BST in C, 留学生CS|辅导|代写">
+    <meta name="description" content="代写数据结构中的Hash Table，通过不同的实现方式，对Hash碰撞进行分析。  
+OverviewFor this assignment, you will implement a hash table and experiment ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS201 Hash Table, Hash Function Comparison and Optional BST in C | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS201 Hash Table, Hash Function Comparison and Optional BST in C</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-08-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写数据结构中的Hash Table，通过不同的实现方式，对Hash碰撞进行分析。  </p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>For this assignment, you will implement a hash table and experiment using<br>various hashing methods to try and minimize collisions. To simplify<br>implementation, you will be using separate chaining to resolve collisions.<br>Additionally, you will generate statistics on the performance of your hash<br>table, which will be written to a file.</p>
+<h2 id="Part-1-Hash-Table"><a href="#Part-1-Hash-Table" class="headerlink" title="Part 1 - Hash Table"></a>Part 1 - Hash Table</h2><p>In this part, you will implement a basic Hash Table. We have provided you with<br>an interface and starter code that implements that interface. Fill in the<br>blanks to complete given methods.</p>
+<h3 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h3><p>You will be implementing the IHashTable interface, as additional required<br>private helper methods. See method descriptions for details. The benefits of a<br>hash table are a result of the ability to hash a value and then immediately<br>locate its position if there are no collisions, or vastly narrow down the<br>search space if there are. As such, you shouldn’t need to search through the<br>entire table to find an element for your contains() and delete() methods.<br>Your hash table will be used exclusively to store strings, as this is the type<br>of hash table that would be used to store a dictionary of words for uses such<br>as spell check.<br>To resolve collisions, use will be using separate chaining. One way of<br>implementing this would be to have your backing storage be an array of<br>LinkedLists. Then you would simply add to the LinkedList at the specified<br>index when inserting elements into your hash table. The performance of hash<br>tables degrades if there are too many collisions. As such, you will keep track<br>of the load factor of the table (the ratio of the size of the table to the<br>number of elements) and once this value exceeds , you must double the size of<br>the table and rehash all of the values. You will be implementing a private<br>helper method rehash() to accomplish this.<br>You will be implementing three different hash functions. You must implement a<br>rolling hash using Horner’s Method, as well as two other hash functions of<br>your choosing. A list of possible hash functions are provided in the starter<br>files, but feel free to use other hash functions as well. Remember, at the<br>minimum your hash functions must be deterministic, although your goal is for<br>them to be uniform and fast. You will later compare the performance of the<br>hash functions and record your results in HW5.txt.<br>You must actually implement the algorithms in your HashTable class. If you use<br>String.hashCode(), you not receive any credit for this assignment.</p>
+<h3 id="Hash-Table-Methods"><a href="#Hash-Table-Methods" class="headerlink" title="Hash Table Methods"></a>Hash Table Methods</h3><h4 id="public-boolean-insert-String-value"><a href="#public-boolean-insert-String-value" class="headerlink" title="public boolean insert(String value)"></a>public boolean insert(String value)</h4><p>Insert the string value into the hash table, returning true if the value was<br>inserted and false if the value was already present.<br>Throws:<br>NullPointerException if value is null</p>
+<h4 id="public-boolean-delete-String-value"><a href="#public-boolean-delete-String-value" class="headerlink" title="public boolean delete(String value)"></a>public boolean delete(String value)</h4><p>Delete the given value from the hash table, returning true if the value was<br>deleted and false if the value could not be found.<br>Throws:<br>NullPointerException if value is null</p>
+<h4 id="public-boolean-contains-String-value"><a href="#public-boolean-contains-String-value" class="headerlink" title="public boolean contains(String value)"></a>public boolean contains(String value)</h4><p>Check if the given value is present in the hash table, returning true if it is<br>and false otherwise.<br>Throws:<br>NullPointerException if value is null</p>
+<h4 id="public-void-printTable"><a href="#public-void-printTable" class="headerlink" title="public void printTable()"></a>public void printTable()</h4><p>Print the contents of the hash table, printing nothing if the table is empty.<br>See appendix for example output.</p>
+<h4 id="public-int-getSize"><a href="#public-int-getSize" class="headerlink" title="public int getSize()"></a>public int getSize()</h4><p>Accessor for the number of elements currently stored in the hash table.</p>
+<h4 id="private-void-rehash"><a href="#private-void-rehash" class="headerlink" title="private void rehash()"></a>private void rehash()</h4><p>Expand the size of the hash table and rehash the elements. Called when the<br>load factor passes a threshold.</p>
+<h3 id="Keeping-Statistics"><a href="#Keeping-Statistics" class="headerlink" title="Keeping Statistics"></a>Keeping Statistics</h3><p>You should keep track and report the following information for the hash table</p>
+<ul>
+<li>The number of times you had to expand the table. </li>
+<li>The load factor in the table (before resizing), trimmed to 2 decimal places. </li>
+<li>The number of insertions that encountered a collision (before resizing). </li>
+<li>The length of the longest known collision chain (before resizing).<br>Note that all but the first of these statistics will need to be reinitialized<br>(reset) whenever you expand the table.<br>Write it out to a text file in the following format r, c, n are integers,<br>alpha is floating point number), each time you do a resize and rehash. Append<br>a new set of values for each rehash.<br>r resizes, load factor alpha, c collisions, n longest chain<br>Notice the two constructors in HashTable class in the starter code provided.<br>One takes in the initial size(any <code>value &gt; 0</code> ), while the other constructor<br>takes in a filename as well as a size. The boolean ‘printStats’ is set to<br>false by default, and is only changed to true in the constructor that receives<br>a filename. Each time you expand and rehash your table, you must check if this<br>boolean is set to true, and if yes, you must write the current statistics to<br>the file before rehashing.<br>For example, after, say, 4 rehashes, the file will have the following lines:</li>
+<li>1 resizes, load factor 0.67, 1 collisions, 2 longest chain </li>
+<li>2 resizes, load factor 0.67, 7 collisions, 2 longest chain </li>
+<li>3 resizes, load factor 0.75, 55 collisions, 6 longest chain </li>
+<li>4 resizes, load factor 0.68, 221 collisions, 14 longest chain<br>There is no ‘correct statistics’ and your numbers will change depending on<br>what hash function and initial table size you chose. These values will only<br>indicate how good your chosen hash function is.</li>
+</ul>
+<h3 id="HashTable-Tester"><a href="#HashTable-Tester" class="headerlink" title="HashTable Tester"></a>HashTable Tester</h3><p>Your tester must test the insert(), contains(), delete() and getSize() methods<br>thoroughly. Note that printTable() is only present for you to test your hash<br>table during implementation, and as such does not need to be tested for an<br>exact output string. However, this method must still be implemented. See the<br>appendix for sample formatting.<br>You can test the 2-arg constructor by passing a local file path and making<br>sure that the stats are printed to the file. However, when you submit your<br>tester, make sure you remove&#x2F;comment this test as your submitted file must not<br>have any local file path.</p>
+<h3 id="Hash-Analysis"><a href="#Hash-Analysis" class="headerlink" title="Hash Analysis"></a>Hash Analysis</h3><p>Remember that a good hash function is fast, deterministic, and uniform. For<br>the final part of this assignment, you will be evaluating your hash functions<br>on these categories.<br>A good way to test the relative performance of your hashing methods is to<br>build a dictionary with the provided files. To do this, you would read the<br>provided longDictionary.txt or simpleDictionary.txt and treat each line read<br>as a single word to insert into your table. Make sure that you specify a file<br>to record your statistics to so that you have concrete data to reference with<br>your explanations.<br>For each Hash function, describe the performance that it displayed. To assess<br>whether or not it is uniform, consider the following questions:</p>
+<ul>
+<li>How effective was it at preventing collisions? </li>
+<li>When collisions occurred, did it have have many short chains or a few long ones?<br>Keep in mind that for a hash function to be useable, it must be deterministic.<br>Mention briefly why each function satisfies this property.<br>Finally, describe the runtime performance for calculating the hash. A good way<br>to do this would be to use the same dictionary file as before, but instead of<br>building the complete table, just record the time it takes to hash the values.<br>To do this, call the protected hash() function with each of the enum values.<br>Record your findings in HW5.txt</li>
+</ul>
+<h2 id="Extra-Credit-BST-in-C"><a href="#Extra-Credit-BST-in-C" class="headerlink" title="Extra Credit - BST in C"></a>Extra Credit - BST in C</h2><p>You will be implementing a Binary Search Tree in C. You have been provided<br>with started code in BinaryTree.c. Input&#x2F;Output for this assignment will be<br>handled through the command line. The values inserted into your BST will be<br>strings of max length 100. Your BST will have the ability to insert, search,<br>and print the entire tree in order. See the appendix for specific help with C.</p>
+<h3 id="Function-Descriptions"><a href="#Function-Descriptions" class="headerlink" title="Function Descriptions"></a>Function Descriptions</h3><h4 id="int-compare-char-a-char-b"><a href="#int-compare-char-a-char-b" class="headerlink" title="int compare(char a, char b)"></a>int compare(char <em>a, char</em> b)</h4><p>Mimics the functionality of strcmp()<br>Returns:<br>0 if both strings are equal<br>Negative if the first non-matching character has a lower ascii value in a than<br>b<br>Positive if the first non-matching character has a higher ascii value in a<br>than b<br>DO NOT use strcmp() in the implementation of compare</p>
+<h4 id="void-insert"><a href="#void-insert" class="headerlink" title="void insert()"></a>void insert()</h4><p>Adds a node with the input value to the tree. Smaller strings are inserted on<br>the left and larger on the right. If the element is a duplicate, do nothing.<br>You will need to use malloc to allocate memory for each new node that is<br>inserted. The parameter to malloc() is the size in bytes; just passing the<br>number of elements is not correct.</p>
+<h4 id="void-find"><a href="#void-find" class="headerlink" title="void find()"></a>void find()</h4><p>Search the tree for a node containing the string the user inputs as its value.<br>Prints “Found: “ node value value (using printNode()) if the node is present.<br>Otherwise prints “Not found: “ followed by user input.<br>See sample output for examples</p>
+<h4 id="void-traverse"><a href="#void-traverse" class="headerlink" title="void traverse()"></a>void traverse()</h4><p>Traverse will output an inorder traversal of the values in the tree nodes. Use<br>printNode to print the values of the nodes. If the tree is empty nothing will<br>be printed.<br>See sample output for examples.<br>You may choose to implement the functionalities of the binary tree in any<br>order but the following is recommended:</p>
+<ol>
+<li>compare():<br>You will need a strong understanding of how strings are represented in C to<br>complete this part of the assignment. Consult your notes&#x2F;online resources. You<br>cannot use strcmp() in your implementation, however you can check your output<br>against strcmp().</li>
+<li>insert():<br>You should be familiar with how nodes are inserted into a BST. The tricky<br>thing about this portion is allocating memory for new nodes using malloc. Make<br>sure you understand how malloc works before you attempt to implement insert!</li>
+<li>find():<br>Again something you all should be familiar with. No tricks here.</li>
+<li>traverse():<br>This is a simple in order traversal of your BST. This can be accomplished<br>iteratively or recursively. You are free to use helper methods here.<br>Your output must match the Sample Output!</li>
+</ol>
+<h3 id="Important-Information"><a href="#Important-Information" class="headerlink" title="Important Information"></a>Important Information</h3><p>Do not edit any code marked “DO NOT EDIT”<br>You may edit main for the purposes of testing but when you turn in your code<br>it must match the starter code. You may use helper methods if you see fit, but<br>be aware - in C methods must be declared before they are used.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/08/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS201HashTable,HashFunctionComparisonandOptionalBSTinC/">http://saferman.github.io/2021/08/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS201HashTable,HashFunctionComparisonandOptionalBSTinC/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/08/24/C++%E4%BB%A3%E5%86%99%EF%BC%9AECE244BinarySearchTrees/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="C++代写：ECE244 Binary Search Trees">
+                        
+                        <span class="card-title">C++代写：ECE244 Binary Search Trees</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/08/18/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP1011ProgrammingForTheWeb/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Python代写：COMP1011 Programming For The Web">
+                        
+                        <span class="card-title">Python代写：COMP1011 Programming For The Web</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

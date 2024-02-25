@@ -1,0 +1,888 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMP10002 Indexed Document Retrieval, 留学生CS|辅导|代写">
+    <meta name="description" content="考察动态内存分配以及单链表的用法，前面两个Stage挺简单，最后一个Stage的Ranking算法计算非常复杂。  
+Learning OutcomesIn this project you will demonstrate your un">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMP10002 Indexed Document Retrieval | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMP10002 Indexed Document Retrieval</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-02-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>考察动态内存分配以及单链表的用法，前面两个Stage挺简单，最后一个Stage的Ranking算法计算非常复杂。  </p>
+<h2 id="Learning-Outcomes"><a href="#Learning-Outcomes" class="headerlink" title="Learning Outcomes"></a>Learning Outcomes</h2><p>In this project you will demonstrate your understanding of dynamic memory and<br>linked data structures, and extend your skills in terms of program design,<br>testing, and debugging. You will also learn about inverted indexes, and the<br>basic principles of web search algorithms.</p>
+<h2 id="Indexed-Document-Retrieval"><a href="#Indexed-Document-Retrieval" class="headerlink" title="Indexed Document Retrieval"></a>Indexed Document Retrieval</h2><p>The idea of an inverted index was mentioned briefly in class. To build an<br>index for some input text, the words are isolated, together with their<br>document numbers (in our case, line numbers in the input file), and arranged<br>so that, for every word, a list of the documents that contain that word is<br>constructed. In terms of notation, if t is an indexed term, then f t is the<br>number of documents in the collection that contain that term at least once;<br>and for any given document d, the value f d,t is the number of times that t<br>appears in d. For example, consider the text:<br>    line one has one word twice<br>    line two has words once only<br>    line three follows lines one and two, but not four<br>    line four is like the other lines, not like line five<br>    line five has word one and word two and word three<br>    six is the littlest one<br>If each line of that input file is taken to be a “document”, then the first<br>few lines of a simple document-level inverted index for it would be<br>    and 2 3 1 5 2<br>    but 1 3 1<br>    five 2 4 1 5 1<br>    follows 1 3 1<br>    four 2 3 1 4 1<br>    has 3 1 1 2 1 5 1<br>where the first integer following each word is the <code>f(t)</code> value for that<br>term t, with exactly that many <code>(d, f(d,t))</code> pairs after it all on the same<br>input line. For example, term <code>t = &quot;and&quot;</code> appears in <code>f(t) = 2</code> documents,<br>document <code>d = 3</code> (with <code>f(d,t) = 1</code> , that is, one occurrence), and in<br>document <code>d = 5</code> (with <code>f(d,t) = 2</code> occurrences). The full index file for<br>the original six lines is available on the LMS, together with larger examples.<br>Make sure that you understand the structure, and what the values represent.</p>
+<h2 id="Stage-1-–-Reading-the-Index"><a href="#Stage-1-–-Reading-the-Index" class="headerlink" title="Stage 1 – Reading the Index"></a>Stage 1 – Reading the Index</h2><p>Write a program that reads an index file with this format, specified as the<br>first (and only) argument on the command-line, and builds (using realloc() and<br>malloc()) a data structure to store that index information. The only<br>assumption you may make, purely for the purposes of reading the input strings,<br>is that each term in the index will be at most 999 characters long. Apart from<br>a single buffer of that size, all stored strings and lists of <code>(d, f(d,t))</code><br>pairs should be held in dynamic arrays of the correct length for the data they<br>contain (or within a factor of two of that minimum length). As evidence of the<br>operation of this stage of your program, it should report the number of terms<br>in the index that was read, the total number of <code>(d, f(d,t))</code> pairs in the<br>index, and up to ten of the pairs associated with the first two and the last<br>two terms in the index, using exactly the output format that is shown here and<br>in the LMS examples. Note that the terms are labeled from 1:<br>    mac: .&#x2F;ass2-soln test0-ind.txt<br>    Stage 1 Output<br>    index has 23 terms and 43 (d,fdt) pairs<br>    term 1 is “and”:<br>        3,1; 5,2<br>    term 2 is “but”:<br>        3,1<br>    term 22 is “word”:<br>        1,1; 5,3<br>    term 23 is “words”:<br>        2,1<br>You may assume throughout that all input files you will be provided with will<br>be “correct”, according to the description given above – there won’t be any<br>tricksy-wicksy deviations. That is, all strings will be lower-case alpha only;<br>all elements will be separated by a single space; all lines will have the<br>correct number of values; all lines (including the last one) will be ended by<br>a single (DOS-style) CR-LF combination (see the discussion of this in the<br>Assignment 1 FAQ page); etc. Note that the terms are provided in the index<br>file in strict dictionary order, and that the d values in the set of pairs<br>associated with each term are also are strictly increasing; you will need to<br>make these two facts in Stage 2 and Stage 3. Your Stage 1 program must open<br>and read from a named file (and not from stdin yet, see Stage 2 for that<br>input) so you will need to be familiar with Chapter 11 of the textbook. Output<br>should be written to stdout (but you may also write error messages to stderr<br>if you wish).</p>
+<h2 id="Stage-2-–-Queries-and-Term-Lookup"><a href="#Stage-2-–-Queries-and-Term-Lookup" class="headerlink" title="Stage 2 – Queries and Term Lookup"></a>Stage 2 – Queries and Term Lookup</h2><p>Extend your program so that it reads “queries” from stdin and looks up their<br>corresponding term numbers in the index. Terms that do not appear in the index<br>should be noted accordingly. For example (not showing the Stage 1 output<br>again):<br>    mac: .&#x2F;ass2-soln test0-ind.txt<br>    four and five<br>    Stage 2 Output<br>        “four” is term 5<br>        “and” is term 1<br>        “five” is term 3<br>    line seven<br>    Stage 2 Output<br>        “line” is term 9<br>        “seven” is not indexed<br>The eventual expectation in this stage is that you will use binary search to<br>do this lookup; but it might be prudent to make use of linear search in the<br>first instance, while you are debugging this stage and working on Stage 3, and<br>then switch to binary search when you are sure of yourself, and ready to<br>extend again. You may assume that each input line will contain at most 999<br>characters, and at most 20 different query terms. Lines should be processed<br>interactively, so that the output for each line is generated before the next<br>line is typed, with query terms limited to alphabetic characters, and case-<br>folded to lowercase before the lookup is undertaken, to match the index. You<br>do not need to retain each query line once it has been processed by Stage 2<br>and then Stage 3.</p>
+<h2 id="Stage-3-–-Ranked-Querying"><a href="#Stage-3-–-Ranked-Querying" class="headerlink" title="Stage 3 – Ranked Querying"></a>Stage 3 – Ranked Querying</h2><p>Ok, now for the fun part. Suppose that the collection has <code>N</code> documents, and<br>suppose that (as before) term <code>t</code> appears in <code>f(t)</code> of them, and appears<br>in document <code>d</code> a total of <code>f(d,t)</code> times. To determine the documents <code>d(here, lines)</code> that are the “strongest” matches for each query <code>q</code> , the<br>following calculation is carried out on a per-document basis.<br>The average document length over the <code>N</code> documents (computed as the<br>arithmetic mean), and <code>k = 1.2</code> and <code>b = 0.75</code> are constants. Broadly<br>speaking, there are three key relationships being balanced in this equation:<br>rare words with low <code>f(t)</code> values are regarded as being more important than<br>common words; words that appear multiple times in any given document have more<br>weight than words that only appear a few times; and long documents are<br>discounted relative to shorter ones. This computation is known as the “BM25”<br>similarity mechanism. A wide range of other such scoring mechanisms have been<br>proposed and used in web search systems. The ones actually used by Google and<br>similar are, of course, closely-guarded commercial secrets, but still embed<br>these same three principles. For web documents, commercial search providers<br>also make use of features such as page title text; information from relative<br>font-sizes being used; the anchor text that points to each page; language<br>cues; the link relationships between pages; query click-through rates from<br>other users; and so on.<br>Add further functionality to your program so that as each query is read from<br>stdin, it is processed against the index, and the top-3 matching documents (by<br>score, with ties on score resolved according to increasing document number)<br>identified and reported. For example (with the interleaved Stage 2 outputs<br>suppressed, see the LMS for full examples of the output required):<br>    mac: .&#x2F;ass2-soln test0-ind.txt<br>    four and five<br>    Stage 3 Output<br>        document   5: score 3.619<br>        document   3: score 3.115<br>        document   4: score 2.978<br>    line seven<br>    Stage 3 Output<br>        document   4: score 0.474<br>        document   1: score 0.425<br>        document   2: score 0.425<br>For this process to be efficient, you need to combine a number of different<br>sources of information, bringing components in as they are required. The<br>document lengths |d| should be stored as part of your index data structure,<br>and can be computed once the full index has been read. A value for <code>N</code> can<br>similarly be determined from the input data and stored as a component of the<br>index structure you build. But that still leaves the task of processing the<br>term lists to generate document scores, and determining the top few (where<br>“few” is three in this project, but is 10 for Google and Bing, for example) in<br>an appropriate manner. Be sure to start simple, and check your computations at<br>every step as you build towards the required output.<br>As an overall outline of the process to be implemented, to compute the<br>required score(d, q) values you should: (a) create and set to zero an array of<br><code>N</code> document score accumulators; (b) iterate over the index entries for the<br>(indexed) terms that appear in the query, and for each such term, iterate over<br>its <code>(d, f(d,t))</code> pairs, computing contributions to document scores one term<br>at a time and adding them to the corresponding accumulator; and then (c)<br>partially sort the array of accumulators (including their corresponding<br>document numbers) to bring the biggest ones to the front. Note you don’t have<br>to fully sort the score array in order to generate the required output (that<br>is, there is an algorithmic efficiency question here for you to consider).<br>My program to implement all three stages is a little under 500 lines long,<br>including detailed comments and debugging output, about 100 lines longer than<br>the solution for Assignment 1. Start early! If you want more of a challenge,<br>try writing (but please don’t submit) the indexing program that generated the<br>index files. And, of course, a real system would generate a query-biased<br>caption, or snippet, for each answer document (rather than just the document<br>number), you might like to think about how that process gets done.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/02/13/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP10002IndexedDocumentRetrieval/">http://saferman.github.io/2022/02/13/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP10002IndexedDocumentRetrieval/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/02/16/C%E4%BB%A3%E5%86%99%EF%BC%9ACS240LinkedLists/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="C代写：CS240 Linked Lists">
+                        
+                        <span class="card-title">C代写：CS240 Linked Lists</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/02/12/Assembly%E4%BB%A3%E5%86%99%EF%BC%9ACS204AssemblyProgramming/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Assembly代写：CS204 Assembly Programming">
+                        
+                        <span class="card-title">Assembly代写：CS204 Assembly Programming</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Assembly%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Assembly代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

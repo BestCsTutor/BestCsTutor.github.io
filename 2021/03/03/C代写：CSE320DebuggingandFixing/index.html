@@ -1,0 +1,946 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CSE320 Debugging and Fixing, 留学生CS|辅导|代写">
+    <meta name="description" content="练习  GDB  的使用，修复提供代码的Bug.![GDB](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/GDB-screenshot.gif&amp;#x2F;300px-G">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CSE320 Debugging and Fixing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CSE320 Debugging and Fixing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-03-03
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>练习 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GNU_Debugger" title="GDB"> GDB </a> 的使用，修复提供代码的Bug.<br>![GDB](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/GDB-">https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/GDB-</a><br>screenshot.gif&#x2F;300px-GDB-screenshot.gif)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment you are tasked with updating an old piece of software,<br>making sure it compiles, and that it works properly in your VM environment.<br>Maintaining old code is a chore and an often hated part of software<br>engineering. It is definitely one of the aspects which are seldom discussed or<br>thought about by aspiring computer science students. However, it is prevalent<br>throughout industry and a worthwhile skill to learn. Of course, this homework<br>will not give you a remotely realistic experience in maintaining legacy code<br>or code left behind by previous engineers but it still provides a small taste<br>of what the experience may be like. You are to take on the role of an engineer<br>whose supervisor has asked you to correct all the errors in the program, plus<br>add additional functionality.<br>By completing this homework you should become more familiar with the C<br>programming language and develop an understanding of:</p>
+<ul>
+<li>How to use tools such as gdb and valgrind for debugging C code. </li>
+<li>Modifying existing C code. </li>
+<li>C memory management and pointers. </li>
+<li>Working with files and the C standard I&#x2F;O library.</li>
+</ul>
+<h2 id="The-Existing-Program"><a href="#The-Existing-Program" class="headerlink" title="The Existing Program"></a>The Existing Program</h2><p>Your goal will be to debug and extend an old program called notation , which<br>was written by Henry Thomas in 1990-1992 and posted to Usenet in early 1992.<br>The version I am handing out is very close to the original version, except<br>that I have made a few changes for this assignment. First of all, I rearranged<br>the source tree and re-wrote the Makefile to conform to what we are using for<br>the other assignments in this course. I also introduced a few bugs here and<br>there to make things more interesting and educational for you . Aside from<br>these changes and the introduced bugs, which only involve a few lines, the<br>code is identical to the original, functioning version.<br>The purpose of the notation program is to read an input file containing the<br>transcript of a chess game in “algebraic” notation, and to write an output<br>file that consists of that game transcript, but possibly annotated with<br>diagrams showing the board at specified positions in the game. The program is<br>also able to translate the transcript between various European languages<br>(basically what this means is that the letters that are used to denote the<br>various chess pieces in the input transcript are substituted with versions<br>appropriate for the target language).<br>What you have to do is to first get the program to compile (for the most part,<br>I did not modify the original code, which requires some changes for it to<br>compile cleanly with the compiler and settings we are using). Then, you need<br>to test the program and find and fix the bugs that prevent it from functioning<br>properly. Finally, you will make some modifications to the program.<br>As you work on the program, limit the changes you make to the minimum<br>necessary to achieve the specified objectives. Don’t rewrite the program;<br>assume that it is essentially correct and just fix a few compilation errors<br>and bugs as described below. You will likely find it helpful to use git for<br>this (I did). Make exploratory changes first on a side branch (i.e. not the<br>master branch), then when you think you have understood the proper changes<br>that need to be made, go back and apply those changes to the master branch.<br>Using git will help you to back up if you make changes that mess something up.</p>
+<h3 id="Getting-Started-Obtain-the-Base-Code"><a href="#Getting-Started-Obtain-the-Base-Code" class="headerlink" title="Getting Started - Obtain the Base Code"></a>Getting Started - Obtain the Base Code</h3><p>Fetch base code for hw2 as you did for the previous assignments.<br>Once again, to avoid a merge conflict with respect to the file .gitlab-ci.yml<br>, use the following command to merge the commits:<br>    git merge -m “Merging HW2_CODE” HW2_CODE&#x2F;master –strategy-option&#x3D;theirs<br>The doc directory included with the assignment basecode contains various files<br>that were distributed with the program. One of these is a Unixstyle man page (<br>notation.n ). You can format and read the man page using the following<br>command:<br>    nroff -man doc&#x2F;notation.n | less<br>I corrected some errors in the original formatting commands to allow the<br>document to be processed more or less correctly with groff (the GNU re-<br>engineered version of nroff ). The file notation.doc contains what is<br>presumably the original result of running the then-current version of nroff on<br>notation.n .<br>Other files in the doc directory are Makefile.orig (the original Makefile )<br>and various other files that were in the original distribution. They should<br>not be necessary for doing the assignment.<br>The source files for the notation program are in the include and src<br>directories. The include directory contains the following:</p>
+<ul>
+<li>chesssymb.def – Defines macros used in src&#x2F;drivers.c and src&#x2F;notation.c in a clever way to construct tables of standard annotations that are used in chess literature. </li>
+<li>chesstype.h – Defines various macros and types that are mostly related to the representation of chess boards, moves, and pieces in the program. </li>
+<li>debug.h – Defines macros for debugging printout. This was not in the original distribution; it is the one we are using in this course. </li>
+<li>drivers.h – Defines the interface to the output driver code found in src&#x2F;drivers.c , in a kind of object-oriented style. </li>
+<li>lexer.h – extern declarations used by the lexical analyzer in src&#x2F;lexer.c to interface with the flex lexical analyzer generator package (more about this later). </li>
+<li>notation.h – Defines constants and function prototypes used by the code in src&#x2F;notation.c (the main program).<br>The src directory contains the following:</li>
+<li>drivers.c – Various “output drivers” that are called to emit output in various formats, such as plain text, LaTeX, Postscript, etc. </li>
+<li>lexer.c – Generated lexical analyzer that is the result of processing src&#x2F;lexer.l with the flex lexical analyzer generator. </li>
+<li>lexer.l – flex source code for the lexical analyzer. Basically gives regular expressions for each kind of input “token” that the program will recognize, and specifies actions to be performed each time a token is seen. </li>
+<li>main.c – A file I added which contains only the main() function. It calls notation_main() (the original main() function) in src&#x2F;notation.c . This was done so that we can use Criterion tests with the program (recall that Criterion uses its own main() ). </li>
+<li>notation.c – Contains the main body of the program.<br>The lib directory contains:</li>
+<li>notation.hlp – Contains the help message that is printed out when the program is invoked with the -h option. </li>
+<li>Header.ps , Footer.ps , notation.tex – “boilerplate” header and footer files inserted by the output drivers for the TeX and Postscript output formats.<br>The rsrc directory contains some files that can be used as test input to the<br>program:</li>
+<li>algebric.ntn – Game using “algebraic” notation, no text. </li>
+<li>boudy.ntn – Game using “shortened algebraic” notation, with variations, no text. </li>
+<li>keywords.ntn – “Nonsense” file (no game), just demonstrating the use of keyword commands to show the board and reconfigure the position. </li>
+<li>shortened.ntn – Game using “shortened algebraic” notation, with interspersed text.<br>The tests directory contains C source code (in file hw2_tests.c ) for some<br>Criterion tests that can help guide you toward bugs in the program. These are<br>not necessarily complete or exhaustive. The test_common.c and test_common.h<br>contain auxiliary code used by the tests. The subdirectory tests&#x2F;rsrc contains<br>files that are used by the tests.<br>Before you begin work on this assignment, you should read the rest of this<br>document. In addition, we additionally advise you to read the Debugging<br>Document.</li>
+</ul>
+<h2 id="Background-Information-Chess-Move-Parsing"><a href="#Background-Information-Chess-Move-Parsing" class="headerlink" title="Background Information - Chess Move Parsing"></a>Background Information - Chess Move Parsing</h2><p>The core function of the program is to read a transcript of a chess game,<br>interpret the moves, and keep track of the current board position. To simplify<br>this process, the program makes use of a lexical analyzer generator tool<br>called flex . A lexical analyzer is used to identify “tokens” in its input.<br>The flex tool is a GNU-re-engineered version of a traditional Unix tool that<br>was originally called lex . The flex program reads an input file that contains<br>a set of regular expressions that define the various forms that tokens can<br>take, and it generates transition tables for a finite automaton that can scan<br>for occurrences of these patterns in the input. The core lexical analyzer code<br>is always the same: it just uses the table to simulate the finite automaton.<br>Each time a token is identified in the input, an associated action is taken.<br>For example, if a token is identified that matches the form of a chess move,<br>then the associated action would be to update the current board position.<br>In the notation program, the flex input file is src&#x2F;lexer.l . The file<br>src&#x2F;lexer.c is the output of flex , which contains the generated lexical<br>analyzer. The flex tool is not installed by default on your Linux Mint VM, and<br>though it would be possible to install it, it will not be necessary, because<br>you will not need to make any changes to lexer.l that would require<br>regenerating the lexer.c file. This information is being provided so you<br>understand better the structure of the program and you know you don’t have to<br>worry about what is going on in lexer.c .<br>Actually, the regular expression given for a chess move in src&#x2F;lexer.l only<br>defines things that might be a move. Once a token matching this pattern has<br>been identified, the lexical analyzer calls the function parse_move() in<br>src&#x2F;notation.c . This function also uses a table-driven scheme (see transit<br>and action ) to determine if the token really does legitimately represent a<br>chess move. You might have to look at the parse_move() function, but you do<br>not need to understand the contents of the tables that it uses.</p>
+<h2 id="Part-1-Debugging-and-Fixing"><a href="#Part-1-Debugging-and-Fixing" class="headerlink" title="Part 1: Debugging and Fixing"></a>Part 1: Debugging and Fixing</h2><p>The command line arguments and expected operation of the program are described<br>by the following “Usage” message, which is printed within notation_main() in<br>notation.c (the actual text of the message is read from the file<br>lib&#x2F;notation.hlp ):<br>There are a few options that the program understands:</p>
+<ul>
+<li>If -a is specified, then the output of the program will use “long” algebraic notation; </li>
+<li>If -s is specified, then the output of the program will use “short” algebraic notation; </li>
+<li>If -f is specified, followed by an argument [language] , then the program will use the specified language to interpret the letters used in the input to represent the chess pieces; </li>
+<li>If -t is specified, followed by an argument [language] , then the program will use the specified language to determine the letters used in the output to represent the chess pieces; </li>
+<li>If -o is specified, followed by a filename, then the program will print output to the specified file instead of the default stdout . </li>
+<li>If -c is specified, then the next argument gives a comma-separated list of moves after which the board should be displayed. </li>
+<li>If -e is specified, then the next argument gives a move number after which to display the board and exit. </li>
+<li>If -d is specified, then the next argument gives the name of the output driver to be used in generating the output. </li>
+<li>If -i is specified, then header and footer “boilerplate” that would normally be inserted at the beginning and end of output files is omitted. </li>
+<li>If -h or an unknown option is specified, then a help message is printed; </li>
+<li>If -v is specified, then the program exits after printing the version number;<br>You are to complete the following steps:</li>
+</ul>
+<ol>
+<li>Clean up the code; fixing any compilation issues, so that it compiles without error using the compiler options that have been set for you in the Makefile . Use git to keep track of the changes you make and the reasons for them, so that you can later review what you have done and also so that you can revert any changes you made that don’t turn out to be a good idea in the end. </li>
+<li>Fix bugs.<br>Run the program, exercising the various options, and look for cases in which<br>the program crashes or otherwise misbehaves in an obvious way. We are only<br>interested in obvious misbehavior here; don’t agonize over program behavior<br>that might just have been the choice of the original author. You should use<br>the provided Criterion tests to help point the way, though they are not<br>guaranteed to be exhaustive.</li>
+<li>Use valgrind to identify any memory leaks or other memory access errors. Fix any errors you find.<br>Note that the bugs that are present will all manifest themselves in some way<br>either as incorrect output, program crashes or as memory errors that can be<br>detected by valgrind . It is not necessary to go hunting for obscure issues<br>with the program output. Also, do not make gratuitous changes to the program<br>output, as this will interfere with our ability to test your code.</li>
+</ol>
+<h2 id="Part-2-Changes-to-the-Program"><a href="#Part-2-Changes-to-the-Program" class="headerlink" title="Part 2: Changes to the Program"></a>Part 2: Changes to the Program</h2><h3 id="Rewrite-Extend-Options-Processing"><a href="#Rewrite-Extend-Options-Processing" class="headerlink" title="Rewrite&#x2F;Extend Options Processing"></a>Rewrite&#x2F;Extend Options Processing</h3><p>The base code performs options processing as part of the function<br>notation_main() (which was the main() function in the original program). It<br>uses ad hoc techniques to process the arguments, which are typical of what<br>many C programs might do. However, as options processing is a common function<br>that is performed by most programs, and it is desirable for programs on the<br>same system to be consistent in how they interpret their arguments, there have<br>been more elaborate standardized libraries that have been written for this<br>purpose. In particular, the POSIX standard specifies a getopt() function,<br>which you can read about by typing man 3 getopt . A significant advantage to<br>using a standard library function like getopt() for processing command-line<br>arguments, rather than implementing ad hoc code to do it, is that all programs<br>that uses the standard function will perform argument processing in the same<br>way rather than having each program implement its own quirks that the user has<br>to remember.<br>For this part of the assignment, you are to replace the original argument-<br>processing code in notation_main() by code that uses the GNU getopt library<br>package. In addition to the POSIX standard getopt() function, the GNU getopt<br>package provides a function getopt_long() that understands “long forms” of<br>option arguments in addition to the traditional single-letter options. In your<br>revised program, notation_main() should use getopt_long() to traverse the<br>command-line arguments, and it should understand the following alternative<br>forms for the various options (as well as the original short forms):</p>
+<ul>
+<li>–long-algebraic as equivalent to -a </li>
+<li>–short-algebraic as equivalent to -s </li>
+<li>–output-language as equivalent to -f </li>
+<li>–input-language as equivalent to -t </li>
+<li>–output-file as equivalent to -o </li>
+<li>–show-after as equivalent to -c </li>
+<li>–end-after as equivalent to -e </li>
+<li>–no-headers as equivalent to -i </li>
+<li>–help as equivalent to -h </li>
+<li>–version as equivalent to -v<br>You will probably need to read the Linux “man page” on the getopt package.<br>This can be accessed via the command man 3 getopt . If you need further<br>information, search for “GNU getopt documentation” on the Web.</li>
+</ul>
+<h3 id="Free-Memory"><a href="#Free-Memory" class="headerlink" title="Free Memory"></a>Free Memory</h3><p>The original program uses malloc() to allocate memory for things like the game<br>board, the list of moves in the main line of play, and lists of moves in sub-<br>variations. However, the program does not always free this memory. Your job is<br>to modify the program so that all the memory it allocates is freed before the<br>program terminates. This should be true whether or not the program terminates<br>normally or with an error. In order to accomplish this, you will have to study<br>how the program uses the memory that it allocates, and determine where to<br>introduce calls to free() in order to free this memory. You will probably not<br>find it very easy to get this right, so consider it a challenge. You will also<br>need to call the function yylex_destroy() before exiting, in order to free<br>memory that was allocated by flex . If you are successful with these<br>modifications, when you run the program with valgrind it will not report any<br>memory that is “lost” or any memory that is “still reachable” at the end of<br>execution.</p>
+<h2 id="Part-3-Testing-the-Program"><a href="#Part-3-Testing-the-Program" class="headerlink" title="Part 3: Testing the Program"></a>Part 3: Testing the Program</h2><p>For this assignment, you have been provided with a basic set of Criterion<br>tests to help you debug the program.<br>In the tests&#x2F;hw2_tests.c file, there are five test examples. You can run these<br>with the following command:<br>    $ bin&#x2F;notation_tests<br>To obtain more information about each test run, you can supply the additional<br>option –verbose&#x3D;1 .<br>The tests have been constructed so that they will point you at most of the<br>problems with the program. Each test has one or more assertions to make sure<br>that the code functions properly. If there was a problem before an assertion,<br>such as a “segfault”, the test will print the error to the screen and continue<br>to run the rest of the tests. Two of the tests use valgrind to verify that no<br>memory errors are found. If errors are found, then you can look at the log<br>file that is left behind (in the tests.out directory) by the test code.<br>Alternatively, you can better control the information that valgrind provides<br>if you run it manually.<br>The tests included in the base code are not true “unit tests”, because they<br>all run the program as a black box using system() . You should be able to<br>follow the pattern to construct some additional tests of your own, and you<br>might find this helpful while working on the program. You are encouraged to<br>try to write some of these tests so that you learn how to do it. Note that in<br>the next homework assignment unit tests will likely be very helpful to you and<br>you will be required to write some of your own. Criterion documentation for<br>writing your own tests can be found here.</p>
+<h2 id="Hand-in-Instructions"><a href="#Hand-in-Instructions" class="headerlink" title="Hand-in Instructions"></a>Hand-in Instructions</h2><p>Ensure that all files you expect to be on your remote repository are committed<br>and pushed prior to submission.<br>This homework’s tag is: hw2<br>    $ git submit hw2</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/03/03/C%E4%BB%A3%E5%86%99%EF%BC%9ACSE320DebuggingandFixing/">http://saferman.github.io/2021/03/03/C%E4%BB%A3%E5%86%99%EF%BC%9ACSE320DebuggingandFixing/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/03/04/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS301Plotting/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Python代写：CS301 Plotting">
+                        
+                        <span class="card-title">Python代写：CS301 Plotting</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/02/27/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI121Method/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Java代写：COMPSCI121 Method">
+                        
+                        <span class="card-title">Java代写：COMPSCI121 Method</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

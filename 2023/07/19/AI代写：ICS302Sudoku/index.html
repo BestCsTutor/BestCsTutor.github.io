@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：ICS302 Sudoku, 留学生CS|辅导|代写">
+    <meta name="description" content="实现  Sudoku  游戏的AI部分。![Sudoku](https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sudoku_Puzzle_by_L2G-20050714_so">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：ICS302 Sudoku | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：ICS302 Sudoku</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sudoku" title="Sudoku"> Sudoku </a> 游戏的AI部分。<br>![Sudoku](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sudoku_Puzzle_by_L2G-20050714_solution_standardized_layout.svg/250px-">https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Sudoku_Puzzle_by_L2G-20050714_solution_standardized_layout.svg/250px-</a><br>Sudoku_Puzzle_by_L2G-20050714_solution_standardized_layout.svg.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this programming assignment, you will be tasked with implementing various<br>approaches to solving Sudoku as a Constraint Satisfaction Problem. You will<br>have the choice of programming in C++, Java, or Python. Much of the code has<br>already been written for you, however, you will be asked to fill in the blank<br>functions from whichever shell you decide to use. Please read this document<br>before attempting to do any work.<br>Your grade will depend on your agent’s performance measure. Optionally, at the<br>end of the quarter, your agent will compete against your peers’ agents in a<br>class-wide tournament. There are a total of 5 methods to implement: Variable<br>Selection Heuristics:</p>
+<ul>
+<li>Minimum Remaining Value (MRV) </li>
+<li>Minimum Remaining Value with Degree heuristic as a tie-breaker (MAD)<br>Value Selection Heuristics:</li>
+<li>Least Constraining Value (LCV). Has a specific tie-breaking mechanism for this assignment; see appendix.<br>Consistency Checks:</li>
+<li>Forward Checking (FC) </li>
+<li>Norvig’s Check (NOR)<br>For more information on Norvig’s Check, see lecture slides for chapter 6.<br>Extra Heuristics (Tournament AI):</li>
+<li>Students are free to implement their own heuristic if they wish to, and use that heuristic to participate in the tournament. This is optional, extra credit.</li>
+</ul>
+<h2 id="Sudoku-Game-Mechanics"><a href="#Sudoku-Game-Mechanics" class="headerlink" title="Sudoku Game Mechanics"></a>Sudoku Game Mechanics</h2><p>To learn more about Sudoku, click here: <a target="_blank" rel="noopener" href="https://www.learn-sudoku.com/what-is-sudoku.html"> https://www.learn-sudoku.com/what-<br>is-sudoku.html </a><br>We will be working with Monster Sudoku instead of the regular Sudoku. Monster<br>Sudoku (or Mega Sudoku) is a puzzle that follows the rules of Sudoku and is<br>played on a NxN grid, N being any positive integer including <code>N &gt; 9</code> . The<br>numbers that fill each square are selected from the first N positive integers.<br>For display purposes, they are shown as 1, 2, …, 9, A, B, …, Z so that each<br>token takes up exactly one column when printed.<br>Monster Sudoku puzzles are described by four parameters:</p>
+<ul>
+<li>N &#x3D; the length of one side of the NxN grid, also the number of distinct tokens </li>
+<li>P &#x3D; the number of rows in each block, also the number of block columns. </li>
+<li>Q &#x3D; the number of columns in each block, also the number of block rows. </li>
+<li>M &#x3D; the number of values filled in from the start.<br>Note: Norvig uses “box” where we use “block” – the terms are equivalent.<br>Additional information of the assignment is given below.</li>
+</ul>
+<h2 id="Performance-Measure"><a href="#Performance-Measure" class="headerlink" title="Performance Measure"></a>Performance Measure</h2><p>The performance measure of your agent is based on how well it does on<br>Gradescope’s automated tests. Each function will have its own set of automated<br>tests in Gradescope. Your grade is based on the number of tests passed.<br>However, not all tests are visible; test your program thoroughly.</p>
+<h2 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h2><p>Each difficulty has a different board dimension and number of values given<br>initially:</p>
+<ul>
+<li>Easy: P &#x3D; Q &#x3D; 3, N &#x3D; 9 with 7 given values </li>
+<li>Intermediate: P &#x3D; 3, Q &#x3D; 4, N &#x3D; 12 with 11 given values </li>
+<li>Hard: P &#x3D; Q &#x3D; 4, N &#x3D; 16 with 20 given values </li>
+<li>Expert: P &#x3D; Q &#x3D; 5, N &#x3D; 25 with 30 given values</li>
+</ul>
+<h2 id="Tasks-to-Complete"><a href="#Tasks-to-Complete" class="headerlink" title="Tasks to Complete"></a>Tasks to Complete</h2><h3 id="Setup-Your-Environment"><a href="#Setup-Your-Environment" class="headerlink" title="Setup Your Environment"></a>Setup Your Environment</h3><p>In this section, you will find help setting up your coding environment. This<br>project will take advantage of UCI’s openlab; any other coding environment is<br>not supported. Think of openlab as a remote Linux computer you connect to when<br>you are working on your program.</p>
+<h3 id="Install-Required-Applications"><a href="#Install-Required-Applications" class="headerlink" title="Install Required Applications"></a>Install Required Applications</h3><p>To connect to openlab, you will need to use SSH. SSH stands for Secure Shell.<br>It is a program designed to allow users to log into another computer over a<br>network. A Windows user will need to install PuTTY, while Mac&#x2F;Linux users do<br>not have to install anything and can use the terminal directly.<br>If you are new to Linux or the terminal, there are simpler, GUI alternatives<br>to use the openlab and move files between openlab and your computer. Windows<br>has WinSCP, and Mac has Cyberduck.</p>
+<h3 id="Connect-to-openlab"><a href="#Connect-to-openlab" class="headerlink" title="Connect to openlab"></a>Connect to openlab</h3><p>First, make sure you are connected to the UCI network. If you are outside UCI,<br>you can use the VPN provided by UCI from this link.<br>Install the VPN and use it whenever you need to connect to openlab outside<br>UCI. If you are not connected to the UCI network or the VPN, you cannot<br>connect to openlab.<br>SSH into the openlab server to connect to openlab. If you are on Windows and<br>using PuTTY, type openlab.ics.uci.edu into the Host Name box; make sure the<br>port is 22 and the SSH flag is ticked. Click open, and login using your ICS<br>account.<br>If you are using Mac, open the terminal found under Application -] Utilities.<br>Enter ssh <a href="/cdn-cgi/l/email-protection"> [email protected] </a> and login using<br>your into ICS account.<br>Keep in mind that your ICS account password is different from the one you use<br>when logging into Canvas. If you forget your ICS account password, refer to<br>this page for more information.<br>The same instructions are used to connect to openlab using WinSCP or Cyberduck<br>(make sure the file protocol is SFTP, which stands for SSH File Transfer<br>Protocol). The Host Name box should be openlab.ics.uci.edu , port is 22,<br>username&#x2F;password is your ICS account.</p>
+<h3 id="Download-the-shells-on-openlab"><a href="#Download-the-shells-on-openlab" class="headerlink" title="Download the shells on openlab"></a>Download the shells on openlab</h3><p>To download the shells on openlab, you will use Git. On openlab, whether<br>through PuTTY or terminal, execute the following git clone command.<br>If there are updates to the project, execute git pull in the Sudoku_Student<br>directory.</p>
+<h3 id="Form-your-team"><a href="#Form-your-team" class="headerlink" title="Form your team"></a>Form your team</h3><p>Form a team of 1-2 people on Gradescope. The procedure (naming rules, etc.) is<br>described in the Team Formation section, under Deadlines.</p>
+<h3 id="Program-your-AI"><a href="#Program-your-AI" class="headerlink" title="Program your AI"></a>Program your AI</h3><p>Once you have your environment and team set up, you can start to program your<br>agent. In the src folder of your shell you will find the source code of the<br>project. You are only allowed to make changes to the BTSolver class. For<br>WinSCP users, you can edit the file in openlab directly by opening the file<br>using a text editor installed on your PC (right-click the file you want to<br>edit then select the appropriate options). You can also use vim; refer to the<br>Appendix: Helpful Tips section.<br>If you don’t know how or where to start, also refer to the Appendix: Helpful<br>Tips section below (especially the Dependecies section). Afterwards, read all<br>the code provided to you in the shell, including the comments, and understand<br>how the whole system works. For Part1 AI, MRV should be the simpler function<br>to try tackling first.<br>Remember that LCV has a tie-breaking mechanism. Refer to the Appendix for the<br>details.<br>There are also Coding Clinic sessions you may want to attend. These are<br>“office hours” with the people who worked on the shell, though you cannot ask<br>them to write the code for you.<br>PLEASE MAKE SURE YOUR CODE RUNS ON OPENLAB! All grading is done inside<br>openlab, so please test your code and make sure it runs on openlab before<br>submitting. Do not test your AI anywhere other than inside openlab, as there<br>are no guarantees it would work inside openlab. The procedures for compiling<br>and testing are described below.</p>
+<h3 id="Compile-Your-AI"><a href="#Compile-Your-AI" class="headerlink" title="Compile Your AI"></a>Compile Your AI</h3><p>Inside the directory with the Makefile file, execute the command: make<br>A bin folder should have appeared with the compiled product in there. It is<br>recommended to do this before any coding to ensure that the shell works fine<br>(the shell will compile without any student code).</p>
+<h3 id="Test-Your-AI"><a href="#Test-Your-AI" class="headerlink" title="Test Your AI"></a>Test Your AI</h3><p>To run your program after you have compiled it, navigate to the bin folder.<br>You should find the compiled program inside. Refer to the Shell Manual<br>Appendix at the end of this document for help running it. To generate large<br>amounts of boards to use with the folder option, refer to the Board Generator.<br>If you are using the Python Shell make sure you are using Python 3.5.2. On<br>openlab, run the command module load python&#x2F;3.5.2 to load Python 3.5.2.</p>
+<h3 id="Write-Your-Project-Report"><a href="#Write-Your-Project-Report" class="headerlink" title="Write Your Project Report"></a>Write Your Project Report</h3><p>Write a report according to the Professor’s instructions. Make sure your<br>report is in pdf format. You only need to write the report once, after all<br>functions have been written. Submit by the last deadline.</p>
+<h3 id="Submit-Your-Project"><a href="#Submit-Your-Project" class="headerlink" title="Submit Your Project"></a>Submit Your Project</h3><p>Part1 AI, Part2 AI<br>Download your BTSolver file and submit it to the appropriate assignment on<br>Gradescope.</p>
+<h3 id="Understanding-the-Tournament"><a href="#Understanding-the-Tournament" class="headerlink" title="Understanding the Tournament"></a>Understanding the Tournament</h3><p>After you submit your project and the deadline passes, your final AI be<br>entered into a tournament with your classmates. The tournament checks to make<br>sure you followed all the instructions correctly, then runs your agent across<br>several hundreds boards offour different difficulty level consisting of<br>several boards each using the special heuristics the AI has. Every agent is<br>run on the same boards to ensure fairness. Your agent’s total score is<br>calculated and a scoreboard is constructed that will be made available. Your<br>agent will be timed-out if it hangs for longer than one hour for a board.<br>After the scoreboard is constructed, scores are checked for any illegal<br>submissions. These include two agents with the same score.<br>Note: C++ is significantly faster than Python in most cases. Take this into<br>account if you are planning to participate in the end-of- quarter tournament.</p>
+<h3 id="Deadlines"><a href="#Deadlines" class="headerlink" title="Deadlines"></a>Deadlines</h3><p>For this project, you will have a team formation deadline and three AI<br>deadlines throughout the quarter, each of which build on top of each other.<br>Refer to the syllabus on Canvas for the exact dates of the deadlines.</p>
+<ul>
+<li>Team Formation submission </li>
+<li>Part1 AI, Part2 AI </li>
+<li>Final Report </li>
+<li>Tournament Bonus &#x2F; Final AI (Part2 AI)<br>For every submission, you will lose 10% for each late day after the deadline.</li>
+</ul>
+<h3 id="Team-Formation"><a href="#Team-Formation" class="headerlink" title="Team Formation"></a>Team Formation</h3><p>The submission of Team Formation must follow strict rules: Team names must use<br>only numbers and alphabetic characters. Any symbols including whitespace, is<br>not allowed. Capital letters are allowed. The submission text must follow this<br>format:<br>    team_name<br>    member_1_name, member_1_netid, member_1_id_number<br>    member_2_name, member_2_netid, member_2_id_number<br>For example,<br>    YetAnotherAITeam123<br>    John Smith, jsmith, 12345678<br>    Jane Doe, jdoe, 11235813<br>You will lose points (up to 100%) if you don’t follow the stated rules above.<br>Type this in a .txt file and submit it to Gradescope.</p>
+<h3 id="Three-Deadlines"><a href="#Three-Deadlines" class="headerlink" title="Three Deadlines"></a>Three Deadlines</h3><h4 id="Part1-AI"><a href="#Part1-AI" class="headerlink" title="Part1 AI"></a>Part1 AI</h4><p>Implement MRV, LCV, and FC.</p>
+<h4 id="Part2-AI"><a href="#Part2-AI" class="headerlink" title="Part2 AI"></a>Part2 AI</h4><p>Implement MAD and NOR.<br>Each of the methods in Part1 and Part2 should be able to pass all provided<br>Gradescope tests. Some tests are hidden; please test your functions thoroughly<br>for edge cases.</p>
+<h4 id="Final-Report"><a href="#Final-Report" class="headerlink" title="Final Report"></a>Final Report</h4><p>If you write each section in clear, logical, technical prose, you will get<br>100% credit. You will lose 10% credit for each late day after deadline.<br>A report template is given at the bottom of the manual, and a report template<br>should already be uploaded on canvas.<br>Submit the report in pdf form on Canvas . You only need to write the report<br>once.</p>
+<h4 id="Tournament-Bonus"><a href="#Tournament-Bonus" class="headerlink" title="Tournament Bonus"></a>Tournament Bonus</h4><p>Your AI’s score will be compared to other students and ranked based on the<br>total score obtained. The tournament bonus is between 1-10, where the top 10%<br>will get a 10, the second 10% will get a 9, and so on. Generally, a 10 means a<br>10% bonus to your Final AI submission. Only students who submitted the Final<br>AI by the deadline will be allowed to enter the tournament.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/07/19/AI%E4%BB%A3%E5%86%99%EF%BC%9AICS302Sudoku/">http://saferman.github.io/2023/07/19/AI%E4%BB%A3%E5%86%99%EF%BC%9AICS302Sudoku/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/20/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI230BouncingProgram/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Java代写：COMPSCI230 Bouncing Program">
+                        
+                        <span class="card-title">Java代写：COMPSCI230 Bouncing Program</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/18/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3006Sniper/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="C++代写：COMP3006 Sniper">
+                        
+                        <span class="card-title">C++代写：COMP3006 Sniper</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

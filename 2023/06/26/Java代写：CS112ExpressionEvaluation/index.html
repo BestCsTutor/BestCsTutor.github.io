@@ -1,0 +1,962 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS112 Expression Evaluation, 留学生CS|辅导|代写">
+    <meta name="description" content="使用Stack实现算式计算器  Formula calculator
+，相比常规的计算器，需要使用Recursion，以及表达式中包含变量，增加了难度。![Formulacalculator](https://upload.wikimedi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS112 Expression Evaluation | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS112 Expression Evaluation</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-06-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用Stack实现算式计算器 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Formula_calculator" title="Formula calculator"> Formula calculator
+</a><br>，相比常规的计算器，需要使用Recursion，以及表达式中包含变量，增加了难度。<br>![Formula<br>calculator](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Wi-">https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Wi-</a><br>Fi_challenge_Pi_equation_in_microMathematics_Plus_2.15.6_on_Android_2.3.png&#x2F;220px-<br>Wi-<br>Fi_challenge_Pi_equation_in_microMathematics_Plus_2.15.6_on_Android_2.3.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment you will implement a program to evaluate an arithmetic<br>expression USING RECURSION AND STACKS.</p>
+<h2 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h2><p>Here are some sample expressions of the kind your program will evaluate:<br>    Xyz<br>    3-4<em>5 a-(b+A[B[2]])<em>d+3<br>    A[2</em>(a+b)]<br>    (varx + vary</em>varz[(vara+varb[(a+b)*33])])&#x2F;55<br>The expressions will be restricted to the following components:</p>
+<ul>
+<li>Integer constants </li>
+<li>Scalar (simple, non-array) variables with integer values </li>
+<li>Arrays of integers, indexed with a constant or a subexpression </li>
+<li>Addition, subtraction, multiplication, and division operators </li>
+<li>Parenthesized subexpressions<br>Note the following:</li>
+<li>Subexpressions (including indexes into arrays between ‘[‘ and ‘]’) may be nested to any level </li>
+<li>Multiplication and division have higher precedence than addition and subtraction </li>
+<li>Variable names (either scalars or arrays) will be made up of one or more letters ONLY (nothing but letters a-z and A-Z), are case sensitive (Xyz is different from xyz) and will be unique. </li>
+<li>Integer constants may have multiple digits </li>
+<li>There may any number of spaces or tabs between any pair of tokens in the expression. Tokens are variable names, constants, parentheses, square brackets, and operators.</li>
+</ul>
+<h2 id="Implementation-and-Grading"><a href="#Implementation-and-Grading" class="headerlink" title="Implementation and Grading"></a>Implementation and Grading</h2><p>Download the attached expression_project.zip file to your computer. DO NOT<br>unzip it.<br>Instead, follow the instructions on the Eclipse page under the section<br>“Importing a Zipped Project into Eclipse” to get the entire project into your<br>Eclipse workspace.<br>You will see a project called Expression Evaluation with the following classes<br>in package apps:</p>
+<ul>
+<li>ScalarSymbol<br>This class represents a simple variable with a single value. Your<br>implementation will create a ScalarSymbol object for every simple variable in<br>the expression. You don’t have to implement anything in this class, so do not<br>make any changes to it.</li>
+<li>ArraySymbol<br>This class represents an array of integer values. Your implementation will<br>create an ArraySymbol object for every array variable in the expression. You<br>don’t have to implement anything in this class, so do not make any changes to<br>it.</li>
+<li>Expression<br>This class represents the expression as a whole, and consists all the<br>following steps of the evaluation process:<ol>
+<li>(25 points) buildSymbols - This method populates the two instance fields, scalars and arrays , with all simple (scalar) variables, and all array variables, respectively, that appear in the expression. You will fill in the implementation of this method. Make sure to read the comments above the method header to get more details. </li>
+<li>loadSymbolValues - This method reads values for all scalars and arrays from a file, into the ScalarSymbol and ArraySymbol objects stored in the scalars and arrays array lists. This method is already implemented, do not make any changes. </li>
+<li>(75 points) evaluate - This method evaluates the expression. You will fill in the implementation of this method. You MUST use RECURSION to evaluate parenthesized subexpressions and array index expressions. You can write a separate private recursive method and call it from this public method.<br>Two other methods, printScalars and printArrays are implemented for your<br>convenience, and may be used to verify the correctness of the scalars and<br>arrays lists after the buildSymbols and loadSymbolValues methods.</li>
+</ol>
+</li>
+<li>Evaluator , the application driver, which calls methods in Expression<br>You are also given the following class in package structures:</li>
+<li>Stack , to be used in the evaluation process<br>Lastly, two test files are included, etest1.txt and etest2.txt, appearing<br>directly under the project folder.<br>Do not add any other classes. In particular, do NOT use your own stack class,<br>ONLY use the one you are given. The reason is, we will be using this same<br>Stack class when we test your solution.</li>
+</ul>
+<h3 id="Notes-on-tokenizing-the-expression"><a href="#Notes-on-tokenizing-the-expression" class="headerlink" title="Notes on tokenizing the expression"></a>Notes on tokenizing the expression</h3><p>You will need to separate out (“tokenize”) the components of the expression in<br>buildSymbols and evaluate . Tokens include operands (variables and constants),<br>operators ( ‘+’,’-‘,’*’,’&#x2F;‘ ), parentheses and square brackets.<br>It may be helpful (but you are not required) to use java.util.StringTokenizer<br>to tokenize the expression. See the loadSymbolValues method in Expression for<br>an example of using StringTokenizer to extract variable names. The delims<br>field in the Expression class may be used in the tokenizing process.<br>The documentation of the StringTokenizer class says this:<br>    “StringTokenizer is a legacy class that is retained for compatibility reasons although its use is discouraged in new code. It is recommended that anyone seeking this functionality use the split method of String or the java.util.regex package instead.”<br>For the purpose of this assignment, you may use StringTokenizer without issue.<br>Alternatively, you may use the split method of the String class, or the<br>Pattern and Matcher classes in the package java.util.regex .<br>Or, you may simply parse the expression by scanning it a character at a time.</p>
+<h3 id="Rules-while-working-on-Expression-java"><a href="#Rules-while-working-on-Expression-java" class="headerlink" title="Rules while working on Expression.java"></a>Rules while working on Expression.java</h3><ul>
+<li>You may NOT add any import statements to the file. Note that the <code>java.io.*</code> , <code>java.util.*</code> , and <code>java.util.regex.*</code> import statements at the top of the file allow for using ANY class in <code>java.io</code> , <code>java.util</code> , and <code>java.util.regex</code> without additional specification or qualification. </li>
+<li>You may NOT add any fields to the Expression class. </li>
+<li>You may NOT modify the headers of any of the given methods. </li>
+<li>You may NOT delete any methods. </li>
+<li>You MAY add helper methods if needed, as long as you make them private . (Including the recursive evaluate method discussed below.)</li>
+</ul>
+<h3 id="Rules-and-guidelines-for-implementing-evaluate"><a href="#Rules-and-guidelines-for-implementing-evaluate" class="headerlink" title="Rules and guidelines for implementing evaluate"></a>Rules and guidelines for implementing evaluate</h3><ul>
+<li>An expression may contain sub-expressions within parentheses - you MUST use RECURSION to evaluate sub-expressions.<br>In order to recurse on a subexpression, you will need to write a separate<br>private recursive evaluate method.<br>One option is for this recursive method to accept as parameters two indexes<br>that mark the start and end of the subexpression in the main expression. So,<br>for instance, if the main expression is<br>a-(b+A[B[2]])*d+3<br>01234567891111111 (these are the positions of the chracters in the expression)<br>then, to recursively evaluate the subexpression in parantheses, you may call<br>the recursive evaluate method like this:<br>float res &#x3D; evaluate(expr, 3, 11);<br>—|—</li>
+</ul>
+<p>To start with, you may call the recursive evaluate method from the public<br>evaluate method like this (for the above expression):<br>    return evaluate(expr, 0, expr.length()-1);<br>—|—<br>which is the entire expression.<br>Another option is to have your recursive evaluate can accept a string as a<br>parameter, for the subexpression you want to evaluate. In which case, for the<br>parenthesized subexpression above, you can call it like this:<br>    float res &#x3D; evaluate(expr.substring(3,12));<br>—|—<br>And the initial call from the public evaluate method would simply be:<br>    return evaluate(expr);<br>—|—<br>You can include other parameters in your recursive evaluate, as necessary.<br>When testing, we will not directly call your recursive evaluate, only the<br>public evaluate method with no parameters.</p>
+<ul>
+<li>Recursion MUST also be used to evaluate array subscripts (within ‘[ and ‘]’), since a subscript is an expression. Use the same process as above to do the recursive call for the subscript expression. </li>
+<li>A stack may be used to store the values of operands as well as the results from evaluating subexpressions - see next point.- </li>
+<li>Since * and &#x2F; have precedence over + and - , it would help to store operators in another stack. (Think of how you would evaluate a+b*c with operands&#x2F;intermediate results on one stack and operators on the other.) </li>
+<li>When you implement the evaluate method, you may want to test as you go, implementing code for and testing simple expressions, then building up to more complex expressions. The following is an example sequence of the kinds of expressions you may want to build with: <ul>
+<li>3 </li>
+<li>a </li>
+<li>3+4 </li>
+<li>a+b </li>
+<li>3+4*5 </li>
+<li>a+b*c </li>
+<li>Then introduce parentheses </li>
+<li>Then try nested parentheses </li>
+<li>Then introduce array subscripts, but no parentheses </li>
+<li>Then try nested subscripts, but no parentheses </li>
+<li>Then try using parentheses as well as array subscripts </li>
+<li>Then try mixing arrays within parentheses, parentheses within array subscripts, etc.<br>You may assume that all input expressions will be correctly formatted, so you<br>don’t need to do any checking of the input expression for correctness.<br>You may also assume that all input symbol values files will be correctly<br>formatted, and every file will be guaranteed to have values for all symbols in<br>the expression that is being evaluated. So that when you do the evaluation,<br>after loadSymbolValues runs, all required scalar and array values for<br>evaluation will be correctly present in the arrays and scalars lists.</li>
+</ul>
+</li>
+</ul>
+<h3 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h3><p>When we test your evaluate method, we will use OUR implementation of the<br>buildSymbols method. This is for your benefit, so that in the event that your<br>buildSymbols does not work correctly, your evaluate method will not be<br>adversely affected.</p>
+<h2 id="Running-the-evaluator"><a href="#Running-the-evaluator" class="headerlink" title="Running the evaluator"></a>Running the evaluator</h2><p>You can test your implementation by running the Evaluator driver on various<br>expressions and input symbol values file.<br>When creating your own symbol values files for testing, make sure they are<br>directly under the project folder, alongside etest1.txt and etest2.txt .<br>Since you are not going to turn in the Evaluator.java file, you may introduce<br>debugging statements in it as needed.</p>
+<h3 id="No-variables"><a href="#No-variables" class="headerlink" title="No variables"></a>No variables</h3><pre><code>Enter the expression, or hit return to quit =&gt; 3
+Enter symbol values file name, or hit return if no symbols =&gt;
+Value of expression = 3.0
+Enter the expression, or hit return to quit =&gt; 3-4*5
+Enter symbol values file name, or hit return if no symbols =&gt;
+Value of expression = -17.0
+Enter the expression, or hit return to quit =&gt;
+</code></pre>
+<p>Neither of the expressions above have variables, so just hit return to skip<br>the symbol loading part.</p>
+<h3 id="Variables-values-loaded-from-file"><a href="#Variables-values-loaded-from-file" class="headerlink" title="Variables, values loaded from file"></a>Variables, values loaded from file</h3><pre><code>Enter the expression, or hit return to quit =&gt; a
+Enter symbol values file name, or hit return if no symbols =&gt; etest1.txt
+Value of expression = 3.0
+Enter the expression, or hit return to quit =&gt;
+</code></pre>
+<p>Since the expression has a variable, a, the evaluator needs to be supplied<br>with a file that has a value for it. Here’s what etest1.txt looks like:<br>    a 3<br>    b 2<br>    A 5 (2,3) (4,5)<br>    B 3 (2,1)<br>    d 56<br>Each line of the file begins with a variable name. For scalar variables, the<br>name is followed by the variable’s integer value. For array variables, the<br>name is followed by the array’s length, which is followed by a series of<br>(index,integer value) pairs.<br>Note: The index and integer value pairs must be written with no spaces around<br>the index or integer value.<br>So, for instance, (2, 3) or ( 2,3) or (2 ,3) are all incorrect.<br>Make sure you adhere to this requirement when you create your own input files<br>for testing.<br>If the value at a particular array index is not explicitly listed, it is set<br>to 0 by default.<br>So, in the example above, <code>A = [0,0,3,0,5]</code> and <code>B = [0,0,1]</code><br>Note that the symbol values file can have values for any number of symbols, so<br>that it can be used as input for several expressions that contain one or more<br>of the symbols in the file.<br>Here are a couple more evaluations of expressions for which the symbol values<br>are loaded from etest1.txt :<br>    Enter the expression, or hit return to quit &#x3D;&gt; (a + A[a*2-b])<br>    Enter symbol values file name, or hit return if no symbols &#x3D;&gt; etest1.txt<br>    Value of expression &#x3D; 8.0<br>    Enter the expression, or hit return to quit &#x3D;&gt; a - (b+A[B[2]])<em>d + 3<br>    Enter symbol values file name, or hit return if no symbols &#x3D;&gt; etest1.txt<br>    Value of expression &#x3D; -106.0<br>    Enter the expression, or hit return to quit &#x3D;&gt;<br>For a change of pace, here’s etest2.txt, which has the following symbols and<br>values:<br>    varx 6<br>    vary 5<br>    arrayA 10 (3,5) (8,12) (9,1)<br>And here are evaluations using this file:<br>    Enter the expression, or hit return to quit &#x3D;&gt; arrayA[arrayA[9]</em>(arrayA[3]+2)+1]-varx<br>    Enter symbol values file name, or hit return if no symbols &#x3D;&gt; etest2.txt<br>    Value of expression &#x3D; 6.0<br>    Enter the expression, or hit return to quit &#x3D;&gt;</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Submit your Expression.java file ONLY.</p>
+<h2 id="Frequently-Asked-Questions"><a href="#Frequently-Asked-Questions" class="headerlink" title="Frequently Asked Questions"></a>Frequently Asked Questions</h2><p>Q: Are array names all uppercase?<br>A: No. Arrays could have lower case letters in their names. You can tell if a<br>variable is an array if it is followed by an opening square bracket. See, for<br>example, the last example in the “Expression” section, in which varb and varz<br>are arrays:<br>    (varx + vary*varz[(vara+varb[(a+b)*33])])&#x2F;55<br>Q: Can we delete spaces from the expression?<br>A: Sure.<br>Q: Will the expression contain negative numbers?<br>A: No. The expression will NOT have things like <code>a*-3</code> or <code>x+(-y)</code> . It<br>will ONLY have the BINARY operators +, -, &#x2F;, and *. In other words, each of<br>these operators will need two values (operands)to work on. (The - in front of<br><code>3</code> in <code>a*-3</code> is called a UNARY minus. UNARY operators will NOT appear in<br>the input expression.)<br>However, it is possible that in the process of evaluating the expression, you<br>come across negative values, either because they appear in the input file, or<br>because they are the result of evaluation. For instance, when evaluating <code>a+b</code> , <code>a=6</code> and <code>b=-9</code> as input values, and a result of -3 is a perfectly<br>legitimate scenario.<br>Q: What if an array index evaluates to a non-integer such as 5&#x2F;2?<br>A: Truncate it and use the resulting integer as the index.<br>Q: Could an array index evaluate to a negative integer?<br>A: No, you will not be given any input expression or values that would result<br>in a negative integer value for an array index. In other words, you will not<br>need to account for this situation in your code.<br>Q: Could an array name be the same as a scalar?<br>A: No. All variable names, for both scalars and arrays, are unique.<br>Q: Should the expression “()” be reported as an error?<br>A: You don’t have to do any error checking on the legality of the expression<br>in the buildSymbols or evaluate methods. When these methods are called, you<br>may assume that the expression is correctly constructed. Which means you will<br>not encounter an expression without at least one constant or variable, and all<br>parens and brackets will be correctly formatted. Which means you won’t need to<br>deal with “()”.<br>Q: Can I convert the expression to postfix, then evaluate the postfix<br>expression?<br>A: NO!!! You have to work with the given traditional&#x2F;infix form of the<br>expression</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/06/26/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS112ExpressionEvaluation/">http://saferman.github.io/2023/06/26/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS112ExpressionEvaluation/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/06/27/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACS475CUDAMonteCarlo/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="CUDA代写：CS475 CUDA Monte Carlo">
+                        
+                        <span class="card-title">CUDA代写：CS475 CUDA Monte Carlo</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-06-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">CUDA代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/06/25/C++%E4%BB%A3%E5%86%99%EF%BC%9ACMPT115HuffmanTreePart2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="C++代写：CMPT115 Huffman Tree Part2">
+                        
+                        <span class="card-title">C++代写：CMPT115 Huffman Tree Part2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

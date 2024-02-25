@@ -1,0 +1,958 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CS440 HMM POS Tagging, 留学生CS|辅导|代写">
+    <meta name="description" content="使用  HMM  模型实现词性标记。![HMM](https://ars.els-cdn.com&amp;#x2F;content&amp;#x2F;image&amp;#x2F;3-s2.0-B9781907568411500052-f05-05-9781908">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CS440 HMM POS Tagging | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CS440 HMM POS Tagging</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-10-30
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hidden_Markov_model" title="HMM"> HMM </a> 模型实现词性标记。<br>![HMM](<a target="_blank" rel="noopener" href="https://ars.els-/">https://ars.els-</a><br>cdn.com&#x2F;content&#x2F;image&#x2F;3-s2.0-B9781907568411500052-f05-05-9781908818416.jpg)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>For this MP, you will implement part of speech (POS) tagging using an HMM<br>model. Make sure you understand the algorithm before you start writing code,<br>e.g. look at the lectures on Hidden Markov Models and Chapter 8 of Jurafsky<br>and Martin.</p>
+<h2 id="General-guidelines"><a href="#General-guidelines" class="headerlink" title="General guidelines"></a>General guidelines</h2><p>Basic instructions are the same as in previous MPs:</p>
+<ul>
+<li>For general instructions, see the main MP page and the course policies. </li>
+<li>You may use numpy (though it’s not needed). You may not use other non-standard modules (including nltk).</li>
+</ul>
+<h2 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h2><p>The mp4 code reads data from two files. Your tagging function will be given<br>the training data with tags and the test data without tags. Your tagger should<br>use the training data to estimate the probabilities it requires, and then use<br>this model to infer tags for the test input. The main mp4 function will<br>compare these against the correct tags and report your accuracy.<br>The data is divided into sentences. Your tagger should process each sentence<br>independently.<br>You will need to write two tagging functions:</p>
+<ul>
+<li>Baseline </li>
+<li>Viterbi: HMM tagger (in three versions)</li>
+</ul>
+<h2 id="The-materials"><a href="#The-materials" class="headerlink" title="The materials"></a>The materials</h2><p>The code package (and data) for the MP (template.zip) contains these code<br>files:</p>
+<ul>
+<li>mp4.py (do not change) </li>
+<li>utils.py (do not change) </li>
+<li>baseline.py </li>
+<li>viterbi <ul>
+<li>viterbi_1.py </li>
+<li>viterbi_2.py </li>
+<li>viterbi_3.py<br>The code package also contains training and development data</li>
+</ul>
+</li>
+<li>Brown corpus: data&#x2F;brown-training.txt, data&#x2F;brown-dev.txt<br>You should use the provided training data to train the parameters of your<br>model and the development sets to test its accuracy.<br>To run the code on the Brown corpus data you need to tell it where the data is<br>and which algorithm to run, either baseline, viterbi_1, viterbi_2, or<br>viterbi_3:<br>python3 mp4.py –train data&#x2F;brown-training.txt –test data&#x2F;brown-dev.txt –algorithm [baseline, viterbi_1, viterbi_2, viterbi_3]<br>The program will run the algorithm and report three accuracy numbers:</li>
+<li>overall accuracy </li>
+<li>accuracy on words that have been seen with multiple different tags </li>
+<li>accuracy on unseen words<br>Many words in our datasets have only one possible tag, so it’s very hard to<br>get the tag wrong! This means that even very simple algorithms have high<br>overall accuracy. The other two accuracy numbers will help you see where there<br>is room for improvement.</li>
+</ul>
+<h2 id="Code-Submission"><a href="#Code-Submission" class="headerlink" title="Code Submission"></a>Code Submission</h2><p>There are two places to submit on Gradescope, because testing can be a bit<br>slow. The first submit point is for baseline.py and viterbi_1.py. The second<br>is for viterbi_2.py and viterbi_3.py. Each of these submit points times out<br>after 10 minutes. Bear in mind that your laptop may be faster than the<br>processor on Gradescope.<br>The Gradescope autograder will run your code on the development dataset from<br>the supplied template and also a separate (unseen) set of data from the same<br>corpus. In addition, your code will be tested on one or more hidden datasets<br>that are not available to you, which may have different number of tags and<br>words from the ones provided to you.<br>Do NOT hardcode any of your important computations, such as transition<br>probabilities and emission probabilities, number or name of tags, and etc.</p>
+<h2 id="Tagset"><a href="#Tagset" class="headerlink" title="Tagset"></a>Tagset</h2><p>The following is an example set of 16 part of speech tags. This is the tagset<br>used in the provided Brown corpus. But remember you should not hardcode<br>anything regarding this tagset because we will test your code on another<br>dataset with a different tagset.</p>
+<ul>
+<li>ADJ adjective </li>
+<li>ADV adverb </li>
+<li>IN preposition </li>
+<li>PART particle (e.g. after verb, looks like a preposition) </li>
+<li>PRON pronoun </li>
+<li>NUM number </li>
+<li>CONJ conjunction </li>
+<li>UH filler, exclamation </li>
+<li>TO infinitive </li>
+<li>VERB verb </li>
+<li>MODAL modal verb </li>
+<li>DET determiner </li>
+<li>NOUN noun </li>
+<li>PERIOD end of sentence punctuation </li>
+<li>PUNCT other punctuation </li>
+<li>X miscellaneous hard-to-classify items<br>The provided code converts all words to lowercase when it reads in each<br>sentence. It also adds two dummy words at the ends of the sentnce: START (tag<br>START) and END (tag END). These tags are just for standardization; they will<br>not be considered in accuracy computations.<br>Since the first word in each input sentence is always START, the initial<br>probabilities for your HMM can have a very simple form, which you can hardcode<br>into your program. Your code only needs to learn the transition probabilities<br>and the emission probabilities. The transition probabilities from START to the<br>next tag will encode the probability of starting a sentence with the various<br>different tags.</li>
+</ul>
+<h2 id="Baseline-tagger"><a href="#Baseline-tagger" class="headerlink" title="Baseline tagger"></a>Baseline tagger</h2><p>The Baseline tagger considers each word independently, ignoring previous words<br>and tags. For each word w, it counts how many times w occurs with each tag in<br>the training data. When processing the test data, it consistently gives w the<br>tag that was seen most often. For unseen words, it should guess the tag that’s<br>seen the most often in training dataset.<br>A correctly working baseline tagger should get about 93.9% accuracy on the<br>Brown corpus development set, with over 90% accuracy on multitag words and<br>over 69% on unseen words.<br>DO NOT ATTEMPT TO IMPROVE THE BASELINE CODE.</p>
+<h2 id="Viterbi-1"><a href="#Viterbi-1" class="headerlink" title="Viterbi_1"></a>Viterbi_1</h2><p>The Viterbi tagger should implement the HMM trellis (Viterbi) decoding<br>algoirthm as seen in lecture or Jurafsky and Martin. That is, the probability<br>of each tag depends only on the previous tag, and the probability of each word<br>depends only on the corresponding tag. This model will need to estimate three<br>sets of probabilities:</p>
+<ul>
+<li>Transition probabilities (How often does tag tb follow tag ta?) </li>
+<li>Emission probabilities (How often does tag t yield word w?)<br>It’s helpful to think of your processing in five steps:</li>
+<li>Count occurrences of tags, tag pairs, tag&#x2F;word pairs. </li>
+<li>Compute smoothed probabilities </li>
+<li>Take the log of each probability </li>
+<li>Construct the trellis. Notice that for each tag&#x2F;time pair, you must store not only the probability of the best path but also a pointer to the previous tag&#x2F;time pair in that path. </li>
+<li>Return the best path through the trellis by backtracing.<br>You’ll need to use smoothing to get good performance. Make sure that your code<br>for computing transition and emission probabilities never returns zero.<br>Laplace smoothing is a good choice for a smoothing method.<br>For example, to smooth the emission probabilities, consider each tag<br>individually. For some tag T, you need to ensure that Pe(W|T) produces a non-<br>zero number no matter what word W you give it. You can use Laplace smoothing<br>(as in MP 1) to fill in a probability for “UNKNOWN,” to use as the shared<br>probability value for all words W that were not seen in the training data. The<br>emission probabilities Pe(W|T) should add up to 1 when we keep T fixed but sum<br>over all words W (including UNKNOWN).<br>Now repeat the Laplace smoothing process to smooth the emission probabilities<br>for all the other tags, one tag at a time. For this initial implementation of<br>Viterbi, use the same Laplace smoothing constant for all tags.<br>Similarly, to smooth the transition probabilities, consider one specific tag<br>T. Use Laplace smoothing to fill any zeroes in the probabilities of which tags<br>can follow T. The transition probabilities Pe(Tb|T) should add up to 1 when we<br>keep T constant and sum across all following tags Tb. Now repeat this process,<br>replacing T with all the other possible first tags. The Laplace smoothing<br>constant should be the same for all first tags, but it might be different from<br>the constant that you used for the emission probabilities.<br>This simple version of Viterbi will perform worse than the baseline code for<br>the Brown development dataset (somewhat over 93% accuracy). However you should<br>notice that it’s doing better on the multiple-tag words (e.g. over 93.5%). You<br>should write this simple version of Viterbi as the viterbi_1 function in<br>viterbi_1.py.<br>DO NOT ATTEMPT TO IMPROVE VITERBI 1</li>
+</ul>
+<h2 id="Making-Viterbi-1-Work-Right"><a href="#Making-Viterbi-1-Work-Right" class="headerlink" title="Making Viterbi_1 Work Right"></a>Making Viterbi_1 Work Right</h2><p>To get through all the parts of the MP, your Viterbi implementation must be<br>computing the trellis values correctly and also producing the output tag<br>sequence by backtracing. This is very much like the maze search in MP 1, where<br>you searched forwards to get from the start to the goal, and then traced<br>backwards to generate the best path to return. If you are producing the output<br>POS sequence as you compute trellis values, you’re using an incorrect<br>(“greedy”) method.<br>To help you debug your Viterbi implementation, we have provided a copy of the<br>small example from Jurafsky and Martin (section 8.4.6). For this example, the<br>initial, transition, and emission probabilities are all provided for you. You<br>just need to copy in your trellis computation and your backtracking code.<br>THIS PART IS OPTIONAL. DO NOT SUBMIT IT ON GRADESCOPE.<br>The small example is in the template package, in the subdirectory<br>test_viterbi.</p>
+<ul>
+<li>test_viterbi.py: Write your Viterbi implementation here, and run it using python3 test_viterbi.py<br>There is also a small synthetic dataset in the data directory with files<br>mttest-training.txt and mttest-dev.txt. Correctly working Viterbi code should<br>get 100% on this.<br>When testing on the real dataset, you may find it helpful to make a very small<br>file of test sentences. You can then print out the v and b values for each<br>word. If you look at the emission probabilities or the v array values for a<br>word, the correct tag should be one of the top couple values. Obviously<br>unsuitable tags should have much lower values.<br>You can also print the matrix of tag transitions. It’s not easy to be sure<br>transitions should be highest. However, you can identify some transitions that<br>should have very low values, e.g. transitions from anything to the START tag<br>or to the X tag.<br>Some additional hints for making your code produce correct answers and run<br>fast enough to complete on the autograder:</li>
+<li>Do probability computations using logs. Remember that math.log is faster than numpy.log. </li>
+<li>The trellis is described as an array in the lecture notes, but you can use any data structure to store it. Dictionaries work very well in Python. </li>
+<li>Avoid doing random access into python lists. Either use a “for” construction to walk down the list in order, or use some other data structure (e.g. a dictionary). </li>
+<li>In principle, the test data could contain a tag that you have not seen in the training data. Do not worry about this possibility because there is no way to guess the right answer. In a real linguistic situation, this would probably be due to a tagging error in the test data. </li>
+<li>If you suspect a bug in your backtracing code, it may be helpful to temporarily replace backtracing with the greedy method. </li>
+<li>Once you’ve computed a column of the Viterbi array, you do not need to keep the probability values from the previous columns. It’s sufficient to keep the backpointer values.</li>
+</ul>
+<h2 id="Viterbi-2"><a href="#Viterbi-2" class="headerlink" title="Viterbi_2"></a>Viterbi_2</h2><p>The previous Vitebi tagger fails to beat the baseline because it does very<br>poorly on unseen words. It’s assuming that all tags have similar probability<br>for these words, but we know that a new word is much more likely to have the<br>tag NOUN than (say) CONJ. For this part, you’ll improve your emission<br>smoothing to match the real probabilities for unseen words.<br>Words that occur only once in the training data (“hapax” words) have a<br>distribution similar to the words that appear only in the test&#x2F;development<br>data. Extract these words from the training data and calculate the probability<br>of each tag on them. When you do your Laplace smoothing of the emission<br>probabilities for tag T, scale Laplace smoothing constant by the corresponding<br>probability of tag T occurs among the set hapax words.<br>This optimized version of the Viterbi code should have a significantly better<br>unseen word accuracy on the Brown development dataset, e.g. over 66.5%. It<br>also beat the baseline on overall accuracy (e.g. 95.5%). You should write<br>optimized version of Viterbi as the viterbi_2 function in vertibi.py.<br>The hapax word tag probabilities may be different from one dataset to another.<br>So your Viterbi code should compute them dynamically from its training data<br>each time it runs.</p>
+<h3 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h3><ul>
+<li>Most of the code in viterbi_2.py is the same as that in viterbi_1.py </li>
+<li>Tag X rarely occurs in the dataset. </li>
+<li>Setting a high value for Laplace smoothing constant may overly smooth the emission probabilities and break your statistical computations. A small value for the Laplace smoothing constant, e.g. 1e-5, may help. </li>
+<li>We do not recommend using global variables in your implementation since Gradescope runs a number of different tests within the same python environment. Global values set during one test will carry over to subsequent tests.</li>
+</ul>
+<h2 id="Viterbi-3"><a href="#Viterbi-3" class="headerlink" title="Viterbi_3"></a>Viterbi_3</h2><p>The task for this last part is to maximize the accuracy of the Viterbi code.<br>You must train on only the provided training set (no external resources) and<br>you should keep the basic Viterbi algorithm. However, you can make any<br>algorithmic improvements you like. This optimized algorithm should be named<br>viterbi_3<br>We recommend trying to improve the algorithm’s ability to guess the right tag<br>for unseen words. If you examine the set of hapax words in the training data,<br>you should notice that words with certain prefixes and certain suffixes<br>typically have certain limited types of tags. For example, words with suffix<br>“-ly” have several possible tags but the tag distribution is very different<br>from that of the full set of hapax words. You can do a better job of handling<br>these words by changing the emissions probabilities generated for them.<br>Recall what we did for Viterbi 1 and 2: we mapped hapax words (in the training<br>data) and unseen words (in the development or test data) into a single<br>pseudoword “UNKNOWN”. To exploit the form of the word, you can map<br>hapax&#x2F;unseen words into several different pseudowords. E.g. perhaps all the<br>words ending in “-ing” could be mapped to “X-ING”. Then you can use the hapax<br>words to calculate suitable probability values for X-ING, as you did for<br>Viterbi_2.<br>It is extremely hard to predict useful prefixes and suffixes from first<br>principles. They may be useful patterns that aren’t the kind of prefix or<br>suffix you’d find in an English grammar, e.g. first names ending in -a are<br>likely to be women’s names in many European languages. We strongly recommend<br>building yourself a separate python tool to dump the hapax words, with their<br>tags, into a separate file that you can inspect. You may assume that our<br>completely hidden dataset is in English, so that word patterns from the Brown<br>corpus should continue to be useful for the hidden corpus.<br>Using this method, our model solution gets over 76% accuracy on unseen words,<br>and over 96% accuracy overall. (Both numbers on the Brown development<br>dataset.)<br>It may also be possible to improve performance by using two previous tags<br>(rather than just one) to predict each tag. A full version of this idea would<br>use 256 separate tag pairs and may be too slow to run on the autograder.<br>However, you may be able to gain accuracy by using only selected information<br>from the first of the two tags. Also, beam search can be helpful to speed up<br>decoding time</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/10/30/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS440HMMPOSTagging/">http://saferman.github.io/2023/10/30/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS440HMMPOSTagging/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/10/31/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSC2023TruckLoadingProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Java代写：CSC2023 Truck Loading Problem">
+                        
+                        <span class="card-title">Java代写：CSC2023 Truck Loading Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-10-31
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/10/25/MachineLearning%E4%BB%A3%E5%86%99%EF%BC%9AAlgorithmDesign/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Machine Learning代写：Algorithm Design">
+                        
+                        <span class="card-title">Machine Learning代写：Algorithm Design</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-10-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Machine-Learning%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Machine Learning代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

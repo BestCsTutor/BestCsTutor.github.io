@@ -1,0 +1,898 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CMSC414 Buffer Overflows Part1, 留学生CS|辅导|代写">
+    <meta name="description" content="研究缓冲区溢出漏洞，并加以利用，编写程序，破坏程序原有逻辑结构。  
+Project OverviewThis project will give you first-hand experience with buffer overflow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CMSC414 Buffer Overflows Part1 | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CMSC414 Buffer Overflows Part1</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-12-01
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>研究缓冲区溢出漏洞，并加以利用，编写程序，破坏程序原有逻辑结构。  </p>
+<h2 id="Project-Overview"><a href="#Project-Overview" class="headerlink" title="Project Overview"></a>Project Overview</h2><p>This project will give you first-hand experience with buffer overflow attacks.<br>This attack exploits a buffer overflow vulnerability in a program to make the<br>program bypass its usual execution and instead jump to alternative code (which<br>typically starts a shell). There are several defenses against this attack<br>(other than fixing the overflow vulnerability itself), such as address space<br>randomization, compiling with stack guard, and making the stack non-<br>executable.<br>The learning objective of this lab is for students to gain first-hand<br>experience of the buffer-overflow attack. This attack exploits a buffer-<br>overflow vulnerability in a program to make the program by- pass its usual<br>execution sequence and instead jump to alternative code (which typically<br>starts a shell). Specifically, the attack overflows the vulnerable buffer to<br>introduce the alternative code on the stack and appropriately modify the<br>return address on the stack (to point to the alternative code). There are<br>several defenses against this attack (other than fixing the overflow<br>vulnerability), such as address space randomization, compiling with stack-<br>guard, dropping root privileges, etc.<br>In this lab, students are given a set-root-uid program with a buffer-overflow<br>vulnerability for a buffer allocated on stack. They are also given a<br>shellcode, i.e., binary code that starts a shell. Their task is to exploit the<br>vulnerability to corrupt the stack so that when the program returns, instead<br>of going to where it was called from, it calls the shellcode, thereby creating<br>a shell with root privilege. Students will also be guided through several<br>protection schemes implemented in Ubuntu to counter this attack.<br>Note: There is a lot of helpful information in Section 13; be sure to read it<br>before you get started. Also, if you get stuck, “Smashing the Stack for Fun<br>and Profit” and the lecture notes and slides will help.</p>
+<h2 id="Getting-Set-Up"><a href="#Getting-Set-Up" class="headerlink" title="Getting Set Up"></a>Getting Set Up</h2><p>This is the machine we will use for testing your submissions. If it doesn’t<br>work on that machine, you will get no points. It makes no difference if your<br>submission works on another Ubuntu version (or another OS).<br>The amount of code you have to write in this lab is small, but you have to<br>understand the stack. Using gdb (or some equivalent) is essential. The<br>article, Smashing The Stack For Fun And Profit, is very helpful and gives<br>ample details and guidance. Read it if you’re stuck.<br>Throughout this document, the prompt for an ordinary (non-root) shell is “$”,<br>and the prompt for a root shell is “#”.</p>
+<h3 id="Starter-files"><a href="#Starter-files" class="headerlink" title="Starter files"></a>Starter files</h3><p>Starter files are available at the class projects page.</p>
+<h3 id="Disabling-address-space-randomization"><a href="#Disabling-address-space-randomization" class="headerlink" title="Disabling address space randomization"></a>Disabling address space randomization</h3><p>Ubuntu, and several other Linux-based systems, use “address space<br>randomization” to randomize the starting address of heap and stack. This makes<br>it difficult to guess the address of the alternative code (on stack), thereby<br>making buffer-overflow attacks difficult. Address space randomization can be<br>disabled by executing the following command:<br>    $ sudo sysctl -w kernel.randomize_va_space&#x3D;0<br>To re-enable ASLR, you simply run the above command but with a two instead of<br>a zero:<br>    $ sudo sysctl -w kernel.randomize_va_space&#x3D;2</p>
+<h3 id="Alternative-shell-program-bin-zsh"><a href="#Alternative-shell-program-bin-zsh" class="headerlink" title="Alternative shell program &#x2F;bin&#x2F;zsh"></a>Alternative shell program &#x2F;bin&#x2F;zsh</h3><p>A “set-root-uid” executable file is a file that a non-root user can execute<br>with root privilege; the OS temporarily gives root privilege to the user. More<br>precisely, each user has a real id (ruid) and an “effective” id (euid).<br>Ordinarily the two are the same. When the user enters the executable, its euid<br>is set to root. When the user exits the executable, its euid is restored (to<br>ruid).<br>However if the user exits abnormally (as in a buffer-overflow attack), its<br>euid stays as root even after exiting. To defend against this, a set-root-uid<br>shell program usually drops its root privilege before starting a shell if the<br>executing process is only an effective (but not real) root. So a non-root<br>attacker would get a shell but it would not be a root shell. Ubuntu’s default<br>shell program, &#x2F;bin&#x2F;bash, has this protection mechanism. There is another<br>shell program, &#x2F;bin&#x2F;zsh, that does not have this protection scheme. You can<br>make it the default by modifying the symbolic link &#x2F;bin&#x2F;sh.<br>    $ cd &#x2F;bin<br>    $ sudo rm sh<br>    $ sudo ln -s &#x2F;bin&#x2F;zsh &#x2F;bin&#x2F;sh<br>Whenever you are not working on this project, you will want to change back to<br>running bash. You can do that by running the above commands with &#x2F;bin&#x2F;bash<br>instead of &#x2F;bin&#x2F;zsh.<br>Note: Avoid shutting down Ubuntu with &#x2F;bin&#x2F;zsh as the default shell! Instead,<br>in VirtualBox, chose to “Save the machine state.” Otherwise, when Ubuntu<br>reboots, the GNOME display is disabled and only a tty comes up. If that<br>happens, here are several fixes:<br>Log in, run the following:<br>    $ sudo shutdown<br>A menu comes up. Choose “filesystem clean”, then “normal reboot”.<br>Log in, run the following:<br>    $ sudo mount -o remount &#x2F; mountsthefilesystemasread-write<br>    $ sudo &#x2F;etc&#x2F;init.d&#x2F;gdm restart restartsGNOMEDisplayManager</p>
+<h2 id="Compiling"><a href="#Compiling" class="headerlink" title="Compiling"></a>Compiling</h2><p>We will be using gcc to compile all of the programs in this project. There are<br>a few non-standard ways we will be using gcc, like turning off basic<br>protection mechanisms, but this can all be done by providing gcc some<br>commandline arguments, which we describe here.<br>In general, we highly recommend creating a Makefile that will automate these<br>for you.</p>
+<h3 id="Working-with-a-debugger"><a href="#Working-with-a-debugger" class="headerlink" title="Working with a debugger"></a>Working with a debugger</h3><p>gdb will be your best friend in this project. To get useful information from<br>gdb regarding the names of functions and variables, include the -g commandline<br>argument to gcc.</p>
+<h3 id="Compiling-to-32-bit"><a href="#Compiling-to-32-bit" class="headerlink" title="Compiling to 32-bit"></a>Compiling to 32-bit</h3><p>This semester, we will be using the latest, 64-bit version of Ubuntu. For the<br>sake of this project, how- ever, we will be running in 32-bit. To have gcc<br>compile to 32-bit, provide the following commandline option: -m32</p>
+<h3 id="Disabling-compiler-protections"><a href="#Disabling-compiler-protections" class="headerlink" title="Disabling compiler protections"></a>Disabling compiler protections</h3><p>The gcc compiler implements two security mechanisms that help protect against<br>buffer overflows and code injection. For the sake of this project, we will be<br>turning both of these off (but please leave them on in practice!).</p>
+<ol>
+<li>Canaries: gcc implements the idea in the “Stack Guard” paper by introducing canaries in each stack frame. You can disable this protection by compiling with the commandline argument -fno-stack-protector </li>
+<li>Non-executable stack: In the updated VM we are using, gcc by default will make the stack non-executable, thereby making it more difficult to launch arbitrary code. You can disable this with the commandline argument -z execstack</li>
+</ol>
+<h3 id="Putting-it-all-together"><a href="#Putting-it-all-together" class="headerlink" title="Putting it all together"></a>Putting it all together</h3><p>To compile a program vulnerable.c into a binary named vuln, with the above<br>protections dis- abled, in 32-bit, and ready for gdb, you would run the<br>following command:<br>    gcc -fno-stack-protector -z execstack -m32 -g vulnerable.c -o vuln</p>
+<h2 id="Task-0-Guessing-Game"><a href="#Task-0-Guessing-Game" class="headerlink" title="Task 0: Guessing Game"></a>Task 0: Guessing Game</h2><p>To get things started, consider the following simple program (provided in the<br>start-up files as guesser.c):<br>    &#x2F;* guesser.c <em>&#x2F;<br>    #include &lt;stdio.h&gt; &#x2F;</em> for printf() <em>&#x2F;<br>    #include &lt;stdlib.h&gt; &#x2F;</em> for EXIT_SUCCESS <em>&#x2F;<br>    int your_fcn()<br>    {<br>      &#x2F;</em> Provide THREE different versions of this,<br>       * that each win the “guessing game” in main(). *&#x2F;<br>       return 0;<br>    }<br>    int main()<br>    {<br>      int mine &#x3D; 0;<br>      int yours &#x3D; 0;<br>      yours &#x3D; your_fcn();<br>      mine &#x3D; yours + 1;<br>      if (mine &gt; yours)<br>        printf(“You lost!\n”);<br>      else<br>        printf(“You won!\n”);<br>      return EXIT_SUCCESS;<br>    }<br>—|—<br>This program runs a simple “guessing game” to see who can choose the biggest<br>number. It draws your number by calling your_fcn(), a function that you have<br>complete control over. It chooses its own number by just adding some to<br>yourshow convenient! Your task is to write not one but three different<br>versions of the function that each win the guessing game every time. As a<br>slight hint, note that the only way that we determine whether or not you win<br>is if the program prints “You won!” (followed by a newline) at the end.<br>We will be compiling them with address space randomization and stack<br>protection turned off and the stack executable (Sections 2 and 3).<br>Caveats. While you are allowed to set the body of your_fcn() as you wish, you<br>are not allowed to modify main() itself. Also, this task permits an exception<br>to the syllabus: hardcoding is allowed, if you think it will help you win! All<br>of your solutions must be fundamentally distinct. You do not have to use a<br>buffer overflow as one of your three solutions, but it is certainly one way to<br>go!<br>Submitting. Create three copies of the guesser: guesser1.c, guesser2.c, and<br>guesser3.c, each of which has a different implementation of your_fcn(). (There<br>are general submission instructions in Section 12.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/12/01/C%E4%BB%A3%E5%86%99%EF%BC%9ACMSC414BufferOverflowsPart1/">http://saferman.github.io/2023/12/01/C%E4%BB%A3%E5%86%99%EF%BC%9ACMSC414BufferOverflowsPart1/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/12/03/R%E4%BB%A3%E5%86%99%EF%BC%9ASTAT605LargeScaleDistributedComputingAtCHTC/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="R代写：STAT605 Large Scale Distributed Computing At CHTC">
+                        
+                        <span class="card-title">R代写：STAT605 Large Scale Distributed Computing At CHTC</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/R%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">R代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/12/01/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108HWorkingWitharxivMetadata/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Python代写：CSC108H Working With arxiv Metadata">
+                        
+                        <span class="card-title">Python代写：CSC108H Working With arxiv Metadata</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

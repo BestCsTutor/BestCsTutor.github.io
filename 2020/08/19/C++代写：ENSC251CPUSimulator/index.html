@@ -1,0 +1,891 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：ENSC251 CPU Simulator, 留学生CS|辅导|代写">
+    <meta name="description" content="用C++实现一个  CPU 的简易指令模拟器，需要使用STL库。![CPU](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Board_with_SPARC64_VIII">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：ENSC251 CPU Simulator | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：ENSC251 CPU Simulator</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用C++实现一个 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Central_processing_unit" title="CPU"> CPU </a><br>的简易指令模拟器，需要使用STL库。<br>![CPU](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Board_with_SPARC64_VIIIfx_processors_on_display_in_Fujitsu_HQ.JPG/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Board_with_SPARC64_VIIIfx_processors_on_display_in_Fujitsu_HQ.JPG/220px-</a><br>Board_with_SPARC64_VIIIfx_processors_on_display_in_Fujitsu_HQ.JPG)</p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>Students will develop an in-order, fully functional C++ CPU simulator that<br>executes appropriately binary-formatted programs. The CPU supports flexible<br>hardware structures and program parameters, may run in debug or execution<br>mode, and provides performance statistics on executed programs. The simulator<br>will be coded and realized using various classes and structures in C++’s<br>Standard<br>Template Library (STL).</p>
+<h2 id="Background-Information"><a href="#Background-Information" class="headerlink" title="Background Information"></a>Background Information</h2><h3 id="CPU-Simulator"><a href="#CPU-Simulator" class="headerlink" title="CPU Simulator"></a>CPU Simulator</h3><p>Object-oriented programmers are often required to code simulators that model a<br>simulated representation of a physical system. In this project, we will<br>simulate a simple in-order Central Processing Unit (CPU) which will replicate<br>very basic processor functionality in software. We will recreate various parts<br>of the CPU and observe its states, instruction, and data-flow using a Debug<br>Mode. This will allow us to trace instructions as they flow through the CPU to<br>ensure proper functionality, while obtaining an appreciation for computer<br>architecture. Once the simulator is completely coded and bug free, it may be<br>run in execution mode, reflecting al terminal environment where the program<br>will be executed on a simulated CPU.<br>There are numerous CPU simulators that have been created over the past<br>decades. Many of the simulators are designed either for 1) educational<br>purposes, or 2) for research&#x2F;commercial purposes.<br>In the context of education, CPU simulators are mainly used to study single<br>and multi-processor systems, where one may tune various parameters to view<br>performance effects of design choices, and study CPU structure optimization.<br>In the context of research&#x2F;commercial simulators, computer architects must<br>first simulate a physical system and observe potential performance gains<br>before proceeding to create the actual hardware system and fabricating the<br>chip. If performance is negligible, another route or design must be<br>considered. Since tuning or redesigning a simulator is associated with minimal<br>in cost in comparison to fabricating a processor chip (that may or may not<br>work), simulators are widely used as a gateway for determining performance<br>potential before proceeding to the actual hardware design.<br>The CPU simulator we will be designing in this project will not be modeling a<br>complete physical system: a computing system comprises of many layers beyond<br>the scope of this project. Instead, we will be simulating a very simple CPU<br>for educational purposes, however the processor will still be capable of<br>executing various programs and obtaining respective performance statistics<br>from varying parameters. You may refer to this simulator and CPU design<br>principles in your future engineering courses as well, such as ENSC254 and<br>ENSC350.</p>
+<h3 id="Overview-of-a-simple-CPU-pipeline"><a href="#Overview-of-a-simple-CPU-pipeline" class="headerlink" title="Overview of a simple CPU pipeline"></a>Overview of a simple CPU pipeline</h3><p>An instruction which enters a CPU is processed incrementally in a series of<br>steps. All instructions are assigned a number, or ID, as they enter the CPU.<br>Our CPU is an in-order processor, meaning that instructions must be processed<br>in the order which they enter the CPU. Therefore instructions must be<br>identified using a numbering system to process instructions in-order; the<br>younger the instruction, the greater the instruction’s ID value.<br>The series of steps required to execute an instruction is referred to as a<br>pipeline. Since each instruction is divided and processed in a series of<br>steps, several successive instructions may overlap in the pipeline at a given<br>time.<br>Our CPU consists of two memory units: 1) instruction memory which contains all<br>the programs instructions, and 2) a register file, which holds the program’s<br>variable data (data is signed integers)<br>Consider the CPU as an assembly line for processing instructions with the<br>following stages:</p>
+<h4 id="Instruction-Fetch-IF"><a href="#Instruction-Fetch-IF" class="headerlink" title="Instruction Fetch (IF)"></a>Instruction Fetch (IF)</h4><p>The first step is to read an instruction of our program (fetched) from<br>instruction memory according to the address specified by a variable (or<br>“register” in hardware terminology) called the Program Counter (PC). The PC is<br>incremented every time an instruction is fetched from the instruction memory.<br>Therefore, the value held by the PC dictates the location, or address, of the<br>next instruction to be read from the instruction memory. We will assume the<br>first instruction of a program is located at PC&#x3D;0, where instruction_memory[0]<br>contains the first instruction that will be fetched and processed in the<br>pipeline.<br>A “fetch width” parameter may be specified as well, indicating the number of<br>instructions that may be obtained from instruction memory simultaneously at a<br>given time. One unit of time is referred to as a clock cycle in CPU<br>terminology.</p>
+<h4 id="Instruction-Decode-ID"><a href="#Instruction-Decode-ID" class="headerlink" title="Instruction Decode (ID)"></a>Instruction Decode (ID)</h4><p>Once an instruction is fetched, it is decoded according to the processor’s<br>Instruction Set Architecture (ISA). The ISA stipulates the CPU’s supported<br>“instruction set” i.e. instruction operations and their formats recognized and<br>used by the processor to interpret instructions. The decoding process allows<br>the CPU to extract information from the fetched instruction. Specifically, the<br>decoder extracts an instruction’s i) input data locations to be read from the<br>register file (referred to as source operands), ii) operation, and iii) the<br>output destination&#x2F;location where the result will be written to in the<br>register file.<br>Once the instruction’s information is extracted, it is placed in two separate<br>CPU structures: 1) Instruction Queue (IQ), and 2) Retire&#x2F;Commit Buffer, or<br>more commonly referred to as the Reorder Buffer (ROB).<br>The IQ is a finite entry queue which buffers instructions until they are ready<br>for execution. An instruction is ready once all its source operands are marked<br>as “valid”.<br>The ROB is a finite FIFO list which manages and ensures the safe eviction or<br>“retirement” of instructions from the pipeline after execution. This<br>retirement process is completed during the Retirement &#x2F; Commit stage. The ROB<br>has a much bigger role in complex CPUs, as its name implies, however in the<br>context of our project, the ROB will only be used to guarantee that the<br>instructions are executed and released from the pipeline in the order from<br>which they were fetched.<br>Instruction fetch and decode will be performed as one step in our CPU<br>simulator.</p>
+<h4 id="Dispatch-Read-Execute-Writeback-Rd-EXE-WB"><a href="#Dispatch-Read-Execute-Writeback-Rd-EXE-WB" class="headerlink" title="Dispatch&#x2F;Read&#x2F;Execute&#x2F;Writeback (Rd&#x2F;EXE&#x2F;WB)"></a>Dispatch&#x2F;Read&#x2F;Execute&#x2F;Writeback (Rd&#x2F;EXE&#x2F;WB)</h4><p>The term issue, interchangeable with the term dispatch, is the process of<br>releasing an instruction from the IQ and proceeding to execution.<br>In this step, instructions in the IQ wait until all previous instruction have<br>been issued. An instruction may be issued once all of its source operands are<br>ready to be read from the register file, and resources are available for<br>execution.<br>Accordingly in this second pipeline stage, when an instruction is ready in the<br>IQ: i) the instruction is released from the IQ (dispatch) , ii) its input<br>operands are read from the register file, the iii) operation is executed using<br>source operand data, iv) the result is written back to the register file at<br>the instruction’s specified destination register, and v) the destination<br>register is broadcasted to the IQ to inform younger instructions that the<br>contents in the register are ready to be read.<br>The CPU will implement all 5 of these substeps as one pipeline stage in the<br>CPU simulator. More details pertaining to each step of this multi-step process<br>are provided below:<br>Dispatch (Issue): The instructions in the IQ are monitored for operand<br>readiness. Since instructions are dependent on one another, a “consumer”<br>instruction can not execute before a “producer” instruction has finished<br>executing. For instance:<br>    Instruction 1: Z &#x3D; A + B; (“produces” results of variable Z)<br>    Instruction 2: C &#x3D; Z + F; (“consumes” the contents of variable Z)<br>As the example illustrates, Instruction 2 can not execute until the contents<br>of Z are computed and written to the variable Z, signifying that instruction 1<br>must first execute. Instruction 2 may thereafter proceed in the next cycle to<br>read the contents of the Z operand and executed its operation. Consequently,<br>these two instructions can not dispatch nor execute in the same cycle due to<br>this read-after-write (RAW) dependency. We refer to this issue validation<br>process as monitoring an instruction for “valid” operands.<br>Once a given instruction’s operands are valid, the instruction may be<br>dispatched (or “issued”) for execution. Since we are implementing an in-order<br>CPU, this implies that the oldest instruction in the IQ must be ready for<br>execution, implementing a FIFO (First-In, First-Out) scheme; if the oldest<br>instruction is not ready, subsequent younger instructions can not proceed to<br>execute even if they have valid operand data.<br>An “ISSUE_WIDTH” parameter may also be specified at this stage, indicating the<br>maximum number of ready&#x2F;valid in-order instructions that the may execute on<br>the CPU in one clock cycle. This also implies that there are “ISSUE_WIDTH”<br>number of functional units that exist to execute the instructions<br>simultaneously. If multiple execution units exist, the processor model is<br>referred to as Superscalar.<br>Read: As previously mentioned, the working set of program variables are held<br>in the register file. Registers are the fastest access memory in a computing<br>system, yet the most expensive to implement.<br>Once an instruction is dispatched, an instruction’s source operands must be<br>read from the register file to obtain their respective data values. For<br>instance, in the example above, variable Z is associated with a value, let’s<br>say 5. This value must be read from the register file, and hence Z represents<br>a memory address which holds the data content of our variable. In this case, Z<br>would represent an address (or location) in the register file which must be<br>accesses to obtain the value of the variable. In the case of our CPU<br>simulator, we use a finite set of numbered “registers” representing our<br>program variables, which are named with the prefix “r”. We will work with a<br>set of 16 registers, and our operands will be named r0, r1… r15 accordingly.<br>Execute: Once the input operand contents have been read from the register<br>file, they are passed to an Arithmetic Logic Unit (ALU). The ALU is a<br>functional unit which performs a specified input operation on the values input<br>to the unit. Our CPU’s ALU takes 3 inputs: two input operands, and a code<br>representing the operation to be performed on the input values, referred to as<br>an opcode. Based on this information, the ALU computes the operation on the<br>input operand values, and produces an output result.<br>Writeback: The result generated by the ALU is redirected and written back to<br>the register file, at the address specified by the “destination” operand<br>extracted from the instruction at decode.<br>Once the contents have been written, the instruction is marked in the ROB as<br>valid.</p>
+<h4 id="Retirement-Commit"><a href="#Retirement-Commit" class="headerlink" title="Retirement&#x2F;Commit"></a>Retirement&#x2F;Commit</h4><p>Retiring an instruction refers to the safe eviction of an instruction from the<br>pipeline. As mentioned previously, the role of the ROB is to guarantee that<br>the instructions are executed and released from the pipeline in the order from<br>which they were fetched. Accordingly, in the Commit stage, the ROB’s head<br>entry, considering a FIFO list structure, is accessed first. If the head of<br>the list is valid, i.e. has been successfully executed, then it may be safely<br>popped from the ROB. Once popped, the instruction is no longer present in the<br>pipeline. If it is not valid, then it must wait in the ROB until it has been<br>successfully executed.<br>A “COMMIT_WIDTH” parameter may also be specified in the CPU which indicates<br>how many valid in-order instructions may be popped off the list<br>simultaneously.<br>Referring back to Fig. 1, it is evident that since instructions are processed<br>in a series of stages, assuming a FETCH_WIDTH and ISSUE_WIDTH of 1<br>instruction, up to three instructions may be in the midst of being processed<br>by the CPU pipeline simultaneously. As FETCH_WIDTH and ISSUE_WIDTH parameter<br>increase, it is possible that the CPU may increase performance as more<br>instructions exist in the pipeline. This however depends on the number of RAW<br>dependencies and “branch” instructions inherit of the program.</p>
+<h3 id="Instruction-Set-Architectures-ISA"><a href="#Instruction-Set-Architectures-ISA" class="headerlink" title="Instruction Set Architectures (ISA)"></a>Instruction Set Architectures (ISA)</h3><p>The ISA is a functional definition of the operations, instruction encodings,<br>and storage that must be supported by a given processor. The role of the ISA<br>is to divide labour between hardware and software <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Central_processing_unit" title="CPU"> 1
+</a> , allowing for<br>universal software compatibility across various generations and styles of<br>processor models.<br>Using the ISA, the programmer may design a software program which is compiled<br>and converted to a set of instructions encoded for a given ISA as machine<br>language. The processor which supports the target ISA obtains the formatted<br>instructions and executes the software program. Thus, the ISA acts as a<br>hardware&#x2F;software interface allowing programmers and computer architects to<br>work independently with the same computing objective.<br>The simulated CPU designed in this project will abide by an Instruction Set<br>Architecture (ISA) referred to as the Two Fifty One (TFO) ISA. Instructions<br>are read as machine language by the CPU, which we will interpret as assembly<br>language in this document. For our sake, the general format for reading<br>assembly is as follows: operation destination_reg, operand_source1,<br>operand_source2<br>For instance, if an assembly statement were written as follows: add r5, r6, r7<br>This would translate to r5 &#x3D; r6+r7, where our variables are expressed in terms<br>of register locations.<br>Side Note: A word on binary for those who have not yet taken ENSC252: A binary<br>number is expressed in the base-2 numeral system, and represents a decimal<br>number as a set of 1s and 0s. Each 1 or 0 digit in a binary number is referred<br>to as a bit. Depending on the position of the bit, b i , a given decimal<br>number may be expressed using the following formula, assuming a binary number<br>consisting of n bits.<br>Where bit i may only take the value of 1 or 0 and is multiplied by a power of<br>2 depending on the location of the digit. The left most bit represents the<br>most significant bit&#x2F;value, whereas the right-most bit signifies the least<br>significant bit. If you were given the binary number “01010” for instance,<br>this would equate to the decimal value.<br>The TFO ISA supports four instruction type formats: 1) Register type (R-type),<br>2) Immediate type (I-type),<br>3) Jump type (J-type) and 4) Prompt type (P-type). The instruction format type<br>may be obtained from the two left-most bits (or Most Significant Bits (MSB) 31<br>and 30) of the given instruction as shown below. Instructions are represented<br>in this section in binary.<br>All programs and their respective instructions will be provided to you for<br>this project as unsigned integers.<br>To extract each instruction’s information, the unsigned integer must be<br>converted to its binary equivalent, and processed as a string of 1s and 0s,<br>each digit referred to as a bit. The bits must be decoded as shown above to<br>obtain the field encodings, depending on the type of instruction extracted<br>from bits[31,30]. Specifications for each instruction format are provided<br>here.<br>If an instruction’s left most bits are “00”, the instruction is processed by<br>the decoder as an R-Type instruction. Rtype instructions only operate on<br>registers. In this case, both source operands must be read from the register<br>file. The address of the input operands src1 and src2 may be obtained from<br>instruction bits 20 through 16, and 15 through 11, respectively. The bits 29<br>through 26 represent the opcode operation performed on the input operand data,<br>which are all passed to the functional unit during execute. Once the<br>instruction has executed, the result is written back to the dest register<br>specified in bits 25 through 21. Bits 10 through 0 remain unused for this<br>instruction type.<br>Supported instructions: add, sub, mult, div, mod, mov (see Table I for<br>specific formats and descriptions)<br>A special type of instruction is also supported by R-Types, called print,<br>which prints the src1 value to standard output (cout). This is used to present<br>the user with the program’s final result.<br>If an instruction’s left most bits are “01”, the instruction is processed by<br>the decoder as an I-Type instruction. I-type instructions have one register<br>source operand, and one 16bit immediate source operand. The address of the<br>input operand src1 is obtained from bits 20 through 16, and the immediate<br>value from bits 15 through 0, respectively. In the case, only one value must<br>be read from the register file, and the second operand will be the immediate<br>value extracted from the instruction, passed directly to the ALU. Bits 29<br>through 26 represent the opcode (operation code) to be passed to the<br>functional unit during execute. Once the instruction is executed, the result<br>is written back to the dest register specified in bits 25 through 21.<br>Note that there are special types of I-type instructions in the TFO ISA,<br>referred to as branches, which redirect a program’s flow. More details and<br>processing specifications of these types of I-instructions will be provided in<br>the next section for a full elaboration on the topic.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/08/19/C++%E4%BB%A3%E5%86%99%EF%BC%9AENSC251CPUSimulator/">http://saferman.github.io/2020/08/19/C++%E4%BB%A3%E5%86%99%EF%BC%9AENSC251CPUSimulator/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/08/20/C%E4%BB%A3%E5%86%99%EF%BC%9ACS316PerformanceProgram/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="C代写：CS316 Performance Program">
+                        
+                        <span class="card-title">C代写：CS316 Performance Program</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACS5007Dijkstra/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="C代写：CS5007 Dijkstra">
+                        
+                        <span class="card-title">C代写：CS5007 Dijkstra</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

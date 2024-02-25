@@ -1,0 +1,943 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="OS代写：CSC369 Cooperative User Level Threads, 留学生CS|辅导|代写">
+    <meta name="description" content="完成操作系统中，User Level层  Threads
+ 编程。![Thread](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_proce">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>OS代写：CSC369 Cooperative User Level Threads | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">OS代写：CSC369 Cooperative User Level Threads</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">OS代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-31
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>完成操作系统中，User Level层 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Thread_(computing)" title="Thread"> Threads
+</a> 编程。<br>![Thread](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_process.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_process.svg/220px-</a><br>Multithreaded_process.svg.png)</p>
+<h2 id="Background-on-Threads"><a href="#Background-on-Threads" class="headerlink" title="Background on Threads"></a>Background on Threads</h2><p>Threads and processes are key abstractions for enabling concurrency in<br>operating systems. To gain a deeper understanding of how these abstractions<br>are constructed, you will build the core of a userlevel threads package.<br>Implementing kernel-level threads and processes is not much different, but<br>we’ll do this assignment at user level since (a) installing new OS kernels on<br>the teach.cs machines is problematic and (b) debugging user-level code is much<br>easier than debugging kernel-level code.<br>Threads provide the illusion that different parts of your program are<br>executing concurrently. In the de facto standard model of multithreaded<br>execution, threads share the code, heap, and the runtime system. Each thread,<br>however, has a separate stack and, naturally, a separate set of CPU registers.<br>This programming model also provides synchronization primitives so that<br>different threads can coordinate access to shared resources, but we will leave<br>those concerns for the next assignment.</p>
+<h2 id="User-Level-vs-Kernel-Threads"><a href="#User-Level-vs-Kernel-Threads" class="headerlink" title="User-Level vs. Kernel Threads"></a>User-Level vs. Kernel Threads</h2><p>For practical reasons, this assignment is done at user level: you will<br>construct user threads by implementing a set of functions that your program<br>will call directly to provide the illusion of concurrency. In contrast, modern<br>operating systems provide kernel threads, and a user program invokes the<br>corresponding kernel thread functions via system calls. Both types of threads<br>use the same core techniques for providing the concurrency abstraction; you<br>would build kernel threads in essentially the same way you build user threads<br>in this assignment. Also, kernel processes are built using these techniques.<br>However, there are a few differences between kernel and user threads.</p>
+<h3 id="Multiprocessing"><a href="#Multiprocessing" class="headerlink" title="Multiprocessing"></a>Multiprocessing</h3><p>User-level threads provide the illusion of concurrency, but on machines with<br>multiple processors kernel-level threads can provide actual concurrency. With<br>user-level threads, the OS schedules the user process on one CPU, and the<br>user-level threads package multiplexes the kernel thread associated with the<br>process between one or more user-level threads. With kernel-level threads, the<br>OS is aware of the different (kernel) threads, and it can simultaneously<br>schedule these threads from the same process on different processors.<br>A key simplifying assumption for this assignment is that you will allow<br>programs to multiplex some number (e.g., m) of user-level threads on one<br>kernel thread. This means that at most one user-level thread is running at a<br>time and that your runtime system has complete control over the interleaving<br>of user-level threads with each other. More sophisticated systems implement m<br>on n threads packages where m user-level threads are multiplexed across n<br>kernel threads.</p>
+<h3 id="Asynchronous-I-O"><a href="#Asynchronous-I-O" class="headerlink" title="Asynchronous I&#x2F;O"></a>Asynchronous I&#x2F;O</h3><p>When a user-level thread makes a system call that blocks (e.g., reading a file<br>from disk), the OS scheduler moves the process to the Blocked state and will<br>not schedule it until the I&#x2F;O has completed. Thus, even if there are other<br>user-level threads within that process, they also have to wait. In contrast,<br>when a kernel thread blocks for a system call, the OS scheduler may choose<br>another kernel thread from the same process to run. Thus, some kernel threads<br>may be running while others are waiting for I&#x2F;O.</p>
+<h3 id="Timer-interrupts"><a href="#Timer-interrupts" class="headerlink" title="Timer interrupts"></a>Timer interrupts</h3><p>The OS scheduler uses timer interrupts to preempt a running kernel thread and<br>switch the CPU to a different runnable kernel thread. Similar to blocking<br>system calls, this stops the execution of all user-level threads in the<br>process until the kernel thread is scheduled to run again. However, to switch<br>between user-level threads that are multiplexed on a single kernel thread, we<br>cannot rely on timer interrupts (those are delivered to the OS, and not to our<br>thread library runtime). Instead, you will implement a cooperative threading<br>model, where the currently running user-level thread must explicitly yield the<br>processor to another user-level thread by calling a function provided by your<br>library.<br>In the next assignment, we will simulate timer interrupts that cause the<br>scheduler to switch from one thread or process to another by using POSIX<br>signals. In your implementation, the threads library will “turn off<br>interrupts” by blocking delivery of these signals using system calls. However,<br>there is nothing to prevent the threads, themselves, from “turning off<br>interrupts” the same way. Thus, even though we will implement “preemptive”<br>threads, a “malicious” thread could turn off interrupts and not be preempted<br>until it calls yield, thus hogging the CPU. Note that kernel schedulers don’t<br>have this problem. Only the privileged code in the kernel can turn off the<br>real timer interrupts.</p>
+<h2 id="Using-Threads"><a href="#Using-Threads" class="headerlink" title="Using Threads"></a>Using Threads</h2><p>With your threads library, a typical program will look something like this:<br>    int main(int argc, char **argv)<br>    {<br>      &#x2F;&#x2F; Some initialization<br>      &#x2F;&#x2F; Create some threads<br>      &#x2F;&#x2F; wait for threads to finish<br>      &#x2F;&#x2F; exit<br>    }<br>    &#x2F;&#x2F; “main” function for thread i<br>    thread_main_i (…)<br>    {<br>      &#x2F;&#x2F; do some work<br>      &#x2F;&#x2F; yield<br>      &#x2F;&#x2F; do some more work<br>      &#x2F;&#x2F; return (implicit thread exit)<br>    }<br>—|—<br>Here thread_main_i is a programmer-supplied “main” function that the ith<br>thread starts executing when it is first scheduled to run after its creation.<br>(Note that different threads may have the same “main” function.) The thread<br>can perform useful work by calling any other functions in the program, or<br>voluntarily yielding to other threads.<br>A thread exits either explicitly or implicitly. It exits explicitly when it<br>calls the thread_exit function in the thread library. It exits implicitly when<br>its thread_main function returns. Additionally, to add more control to the<br>program, a thread may call thread_kill to force other threads to exit as well.</p>
+<h2 id="Cooperative-Threads-API"><a href="#Cooperative-Threads-API" class="headerlink" title="Cooperative Threads API"></a>Cooperative Threads API</h2><p>A key simplifying assumption in this assignment is that the threads are<br>cooperative, i.e., each thread runs until it explicitly releases the CPU to<br>another thread by yielding or by exiting. In contrast, preemptive threading<br>systems allow a scheduler to interrupt a running thread at any time and switch<br>the CPU to running a different thread.<br>The thread package provides several functions to allow application programs to<br>perform thread management. In addition, there are a few conventions that<br>application programs must adhere to in order to ensure proper and safe<br>operation. A list of the functions that constitute the user-level threads API<br>can be found in the thread.h file. The functions that you will be implementing<br>for this assignment are summarized here:</p>
+<h3 id="void-thread-init-void"><a href="#void-thread-init-void" class="headerlink" title="void thread_init(void)"></a>void thread_init(void)</h3><p>You can use this function to perform any initialization that is needed by your<br>threading system. Here, you should also hand-craft the first user thread in<br>the system. To do so, you should configure your thread state data structures<br>so that the (kernel) thread that is running when your program begins (before<br>any calls to thread_create) will appear as the first user thread in the system<br>(with tid &#x3D; 0). You will not need to allocate a stack for this thread, because<br>it will run on the (user) stack allocated for this kernel thread by the OS.</p>
+<h3 id="Tid-thread-id"><a href="#Tid-thread-id" class="headerlink" title="Tid thread_id()"></a>Tid thread_id()</h3><p>This function returns the thread identifier of the currently running thread.<br>The return value should lie between 0 and THREAD_MAX_THREADS. See Solution<br>Requirements below.</p>
+<h3 id="Tid-thread-yield-Tid-to-tid"><a href="#Tid-thread-yield-Tid-to-tid" class="headerlink" title="Tid thread_yield(Tid to_tid)"></a>Tid thread_yield(Tid to_tid)</h3><p>This function suspends the caller and activates the thread given by the<br>identifier to_tid. The caller is put on the ready queue and can be run later<br>in a similar fashion. A reasonable policy is to add the caller to the tail of<br>the ready queue to ensure fairness (so all other threads are run before this<br>thread is scheduled again - see the THREAD_ANY argument below). The value of<br>to_tid may take the identifier of any available thread. It also can take any<br>of the following constants:</p>
+<ul>
+<li>THREAD_ANY: tells the thread system to run any thread in the ready queue. A reasonable policy is to run the thread at the head of the ready queue, which ensures fairness. This policy is called FIFO (first-in, first-out), since the thread that first entered the ready queue (among the threads that are currently in the ready queue) is scheduled first. </li>
+<li>THREAD_SELF: tells the thread system to continue the execution of the caller. This function could be implemented as a no-op, but it may be useful to explicitly switch to the current thread for debugging purposes.<br>The thread_yield function returns the identifier of the thread that took<br>control as a result of the function call. Note that the caller does not get to<br>see the result until it gets its turn to run (later). The function may also<br>fail and the caller continues execution immediately. To indicate the reason<br>for failure, the call returns one of these constants:</li>
+<li>THREAD_INVALID: alerts the caller that the identifier to_tid does not correspond to a valid thread. </li>
+<li>THREAD_NONE: alerts the caller that there are no more threads, other than the caller, that are available to run, in response to a call with to_tid set to THREAD_ANY.</li>
+</ul>
+<h3 id="Tid-thread-create-void-fn-void-void-arg"><a href="#Tid-thread-create-void-fn-void-void-arg" class="headerlink" title="Tid thread_create(void ( fn)(void ), void *arg):"></a>Tid thread_create(void ( <em>fn)(void</em> ), void *arg):</h3><p>This function creates a thread whose starting point is the function fn. The<br>second argument, arg, is a pointer that will be passed to the function fn when<br>the thread starts executing. The created thread is put on a ready queue but<br>does not start execution yet. The caller of the thread_create function<br>continues to execute after thread_create returns. Upon success, thread_create<br>returns a thread identifier of type Tid. If thread_create fails, it returns a<br>value that indicates the reason for failure as follows:</p>
+<ul>
+<li>THREAD_NOMORE: alerts the caller that the thread package cannot create more threads. See Solution Requirements below. </li>
+<li>THREAD_NOMEMORY: alerts the caller that the thread package could not allocate memory to create a stack of the desired size. See Solution Requirements below.</li>
+</ul>
+<h3 id="void-thread-exit-int-exit-code"><a href="#void-thread-exit-int-exit-code" class="headerlink" title="void thread_exit(int exit_code)"></a>void thread_exit(int exit_code)</h3><p>This function ensures that the current thread does not run after this call,<br>i.e., this function should never return. If there are other threads in the<br>system, one of them should be run. If there are no other threads (this is the<br>last thread invoking thread_exit), then the program should exit with the<br>supplied exit_code. A thread that is created later should be able to reuse<br>this thread’s identifier, but only after this thread has been destroyed. (Note<br>that we will be making more use of the exit_code in the next assignment.)</p>
+<h3 id="Tid-thread-kill-Tid-victim"><a href="#Tid-thread-kill-Tid-victim" class="headerlink" title="Tid thread_kill(Tid victim)"></a>Tid thread_kill(Tid victim)</h3><p>This function kills another thread whose identifier is victim. The victim can<br>be the identifier of any available thread. The killed thread should not run<br>any further and the calling thread continues to execute. Upon success, this<br>function returns the identifier of the thread that was killed. Upon failure,<br>it returns the following</p>
+<ul>
+<li>THREAD_INVALID: alerts the caller that the identifier victim does not correspond to a valid thread, or is the current thread.</li>
+</ul>
+<h2 id="Solution-Requirements"><a href="#Solution-Requirements" class="headerlink" title="Solution Requirements"></a>Solution Requirements</h2><ul>
+<li>The first thread in the system (before the first call to thread_create) should have a thread identifier of 0. </li>
+<li>Your threads system should support the creation of a maximum of THREAD_MAX_THREADS concurrent threads by a program (including the initial main thread). Thus, the maximum value of the thread identifier should be THREAD_MAX_THREADS - 1 (since thread identifiers start from 0). Note that when a thread exits, its thread identifier can be reused by another thread created later. </li>
+<li>Your library must maintain a “thread control block” (a thread structure) for each thread that is running in the system. This is similar to the process control block that an operating system implements to support process management. In addition, your library must maintain a queue of the threads that are ready to run, so that when the current thread yields, the next thread in the ready queue can be run. Your library allows running a fixed number of threads (THREAD_MAX_THREADS threads), so if it is helpful, you could allocate these structures statically (e.g., as a global array). </li>
+<li>Each thread should have a stack of at least THREAD_MIN_STACK bytes. Your implementation must not statically allocate all stacks at initialization time (e.g., using a global data structure). Instead, you must dynamically allocate a stack (e.g., using malloc()) whenever a new thread is created (and delete one each time a thread is destroyed.) </li>
+<li>Your library must use getcontext and setcontext to save and restore thread context state (see Implementation Details below), but it may not usemakecontext or swapcontext or any other existing C library code to manipulate a thread’s context; you need to write the code to do that yourself. </li>
+<li>Your code must not make calls to any existing thread libraries (e.g., Linux pthreads), or borrow code from these libraries for this assignment. </li>
+<li>Do not use any code from other students, or any code available on the Internet. When in doubt, please ask us.</li>
+</ul>
+<h2 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h2><h3 id="Thread-Context"><a href="#Thread-Context" class="headerlink" title="Thread Context"></a>Thread Context</h3><p>Each thread has per-thread state that represents the working state of the<br>thread – the thread’s program counter, local variables, stack, etc. A thread<br>context is a subset of this state that must be saved&#x2F;restored from the<br>processor when switching threads. (To avoid copying the entire stack, the<br>thread context includes a pointer to the stack, not the entire stack.) Your<br>library will store the thread context in a per-thread data structure (this<br>structure is sometimes called the “thread control block”).<br>Think carefully about what you need to include in your thread control block<br>structure, and how these structures will be used to create and manage your<br>threads. Consider how you will implement your ready queue. Remember that the<br>thread_yield function allows a thread to yield the CPU to a specified thread,<br>so you may need to remove a thread from the middle of the ready queue.</p>
+<h3 id="Saving-and-Restoring-Thread-Context"><a href="#Saving-and-Restoring-Thread-Context" class="headerlink" title="Saving and Restoring Thread Context"></a>Saving and Restoring Thread Context</h3><p>When a thread yields the CPU, the threads library must save the current<br>thread’s context, which contains the processor register values at the time the<br>thread yields the CPU. The library restores the saved context later when the<br>thread gets its turn to run on the processor again. Additionally, the library<br>creates a fresh context and a new stack when it creates a thread.<br>Fortunately, the C runtime system allows an application to retrieve its<br>current context and store it in a memory location, and to set its current<br>context to a predetermined value from a memory location. Your library will<br>make use of these two existing C library calls: getcontext and setcontext.<br>Study the manual pages ( <a target="_blank" rel="noopener" href="http://linux.die.net/man/2/setcontext"> http://linux.die.net/man/2/setcontext
+</a> ) of these two calls. Notice that<br>getcontext saves the current context into a structure of type struct ucontext,<br>which is typedef’d as type ucontext_t. So, if you allocate a struct ucontext<br>and pass a pointer to that memory to a call to getcontext, the current<br>registers and other context will be stored to that memory. Later, you can call<br>setcontext to copy that state from that memory to the processor, restoring the<br>saved state. (Hint: You almost certainly want a ‘struct ucontext’ as part of<br>your thread control block data structure.)<br>The struct ucontext is defined in &#x2F;usr&#x2F;include&#x2F;x86_64-linux-gnu&#x2F;sys&#x2F;ucontext.h<br>on the teach.cs servers. Look at the fields of this struct in detail,<br>especially the uc_mcontext and the uc_sigmask fields.<br>You will use getcontext and setcontext in two ways. First, to suspend a<br>currently running thread (to run another one), you will use getcontext to save<br>its state and later use setcontext to restore its state. Second, to create a<br>new thread, you will use getcontext to create a valid context, but you will<br>leave the current thread running; you (the current thread, actually) will then<br>change a few registers in this valid context to initialize it as a new thread,<br>and put this new thread into the ready queue; at some point, the new thread<br>will be chosen by the scheduler, and it will run when setcontext is called on<br>this new thread’s context.</p>
+<h3 id="Changing-Thread-Context"><a href="#Changing-Thread-Context" class="headerlink" title="Changing Thread Context"></a>Changing Thread Context</h3><p>As noted above, when creating a thread, you can’t just make a copy of the<br>current thread’s context (using getcontext). You also need to make a few<br>changes to initialize the new thread:</p>
+<ul>
+<li>You need to change the saved program counter register in the context to point to a stub function, described below, which should be the first function the thread runs. </li>
+<li>You need to change the saved argument registers, described below, in the context to hold the arguments that are to be passed to the stub function. </li>
+<li>You need to allocate a new per-thread stack using malloc. </li>
+<li>You need to change the saved stack pointer register in the context to point to the top of the new stack. (Warning: in x86-64, stacks grow down!)<br>In the real world, you would take advantage of an existing library function,<br>makecontext, to make these changes to the copy of the current thread’s<br>context. The advantage of using this function is that it abstracts away the<br>details of how a context is saved in memory, which simplifies things and helps<br>portability. The disadvantage is that it abstracts away the details of how a<br>context is saved in memory, which might leave you unclear about exactly what’s<br>going on.<br>In the spirit of “there is no magic”, for this assignment you should not use<br>makecontext or swapcontext. Instead, you must manipulate the fields in the<br>saved ucontext_t directly. The tutorial exercise for Week 2 will help you<br>understand the ucontext structure.</li>
+</ul>
+<h3 id="The-Stub-Function"><a href="#The-Stub-Function" class="headerlink" title="The Stub Function"></a>The Stub Function</h3><p>When you create a new thread, you want it to run the thread_main function that<br>defines the work you want the thread to do. A thread exits implicitly when it<br>returns from its thread_main function, much like the main program thread is<br>destroyed by the OS when it returns from its main function in C, even when the<br>main function doesn’t invoke the exit system call. To implement a similar<br>implicit thread exit, rather than having your thread begin by running the<br>thread_main function directly, you should start the thread in a “stub”<br>function that calls the thread_main function of the thread (much like main is<br>actually called from the crt0 stub function in UNIX). In other words,<br>thread_create should initialize a thread so that it starts in the thread_stub<br>function shown below. When the thread runs for the first time, it will execute<br>thread_stub, which will call thread_main. If the thread_main function returns,<br>it will return to the stub function which will call thread_exit to terminate<br>the thread.<br>    &#x2F;* thread starts by calling thread_stub. The arguments to thread_stub are the<br>     * thread_main() function, and one argument to the thread_main() function.<br>     *&#x2F;<br>    void thread_stub(void (*thread_main)(void *), void *arg)<br>    {<br>      thread_main(arg); &#x2F;&#x2F; call thread_main() function with arg<br>      thread_exit(0);<br>    }<br>—|—<br>In the above code, the argument thread_main is a pointer to the thread_main<br>function that describes the real work the thread should do. Notice that in C,<br>a function’s name refers to the address of its code in memory. The second<br>argument to thread_stub (arg) is the argument to pass to the thread_main<br>function. We’ll have the thread_main function take an argument that is a<br>pointer to an arbitrary type so that you can pass it whatever you want.</p>
+<h3 id="Contexts-and-Calling-Conventions"><a href="#Contexts-and-Calling-Conventions" class="headerlink" title="Contexts and Calling Conventions"></a>Contexts and Calling Conventions</h3><p>The context structure contains many data fields, but you only need to deal<br>with four of them when creating new threads: the stack pointer, the program<br>counter, and two argument registers. Other than that, you don’t need to worry<br>about the fields within the context variable, as long as you do not tamper<br>with them. Also, it is a good idea to use variables that have been initialized<br>through a getcontext call in order to not have bizarre behavior.<br>Notice that while a procedure executes, it can allocate stack space by moving<br>the stack pointer down (stack grows downwards). However, it can find local<br>variables, parameters, return addresses, and the old frame pointer (old %rbp)<br>by indexing relative to the frame pointer (%rbp) register because its value<br>does not change during the lifetime of a function call.<br>When a function needs to make a function call, it copies the arguments of the<br>“callee” function (the function to be called) to the registers shown on the<br>right in the x86-64 architure. For example, the %rdi register will contain the<br>first argument, the %rsi register will contain the second argument, etc.<br>Then the caller saves the current instruction pointer (%rip) into the stack<br>(shown as “return address” in the figure), and changes the instruction pointer<br>to the callee function. At this point the stack pointer (%rsp) points to the<br>return address (shown in the figure). Note that the stack pointer points to<br>the last pushed value in the stack.<br>The callee function then starts executing. It first pushes the the frame<br>pointer value of the caller function (shown as old %rbp) into the stack, and<br>then sets the frame pointer (%rbp) to the current stack pointer (%rbp &#x3D; %rsp),<br>so that it points to the old frame pointer value. Then the callee function<br>decrements the stack pointer (shown as %rsp), and uses the space between the<br>frame pointer and the stack pointer for its local variables, for saving or<br>spilling other registers, etc. As an example, these three steps are performed<br>by the first three instructions (push, mov and sub) in the main function shown<br>below. The callee locates its variables, parameters, and the return address,<br>by using addresses relative to the fixed frame pointer (%rbp).<br>To return to the caller, a procedure simply copies the frame pointer (%rbp) to<br>the stack pointer (%rsp &#x3D; %rbp), effectively releasing the current frame. Then<br>it pops the top stack item into %rbp to restore the %rbp of the caller<br>function, and then uses the ret instruction to pop the old instruction pointer<br>off the stack into the instruction register (%rip), returning control to the<br>caller function. These steps are performed by the last two instructions<br>(leaveq, retq) in the main function shown below.<br>This is a gdb listing for the test_basic program that we will provide you for<br>this assignment. Run gdb on it (or on any program that you have compiled on<br>the lab machines), as shown below, to see the instructions at the start and<br>the end of a function (e.g., main function). Make sure that you understand<br>what these instructions are doing, and are able to answer the questions in the<br>listing below.</p>
+<h2 id="Setup-and-Submission"><a href="#Setup-and-Submission" class="headerlink" title="Setup and Submission"></a>Setup and Submission</h2><p>Log in to MarkUs and go to CSC369. (The interface to MarkUs has changed this<br>term - instead of a URL per course, you will be able to select your course<br>after logging in.)<br>You will find the starter files for this assignment on MarkUs. Click the<br>button to ‘Add starter files to repository’, then clone your repository where<br>you want to do your work. You should find the starter code below the a1&#x2F;<br>subdirectory of your cloned repository. Build the starter code by typing make<br>in the a1&#x2F; directory<br>You should only modify the thread.cfiles in this assignment.<br>You can find the files you have modified by running the git status command.<br>You can commit your modified files to your local repository as follows:<br>    git add thread.c<br>    git commit -m “Committing changes for Assignment 1”<br>We suggest committing your changes frequently by rerunning the commands above<br>(with different meaningful messages to the commit command), so that you can go<br>back to see the changes you have made over time, if needed.<br>Once you have tested your code, and committed it locally (check that by<br>running git status), you can git push it back to MarkUs. We will collect and<br>grade the last version pushed to MarkUs when the grace period expires. Grace<br>tokens are consumed automatically based on the timestamp of your last push.</p>
+<h2 id="Hints-and-Advice"><a href="#Hints-and-Advice" class="headerlink" title="Hints and Advice"></a>Hints and Advice</h2><p>This assignment does not require writing a large number of lines of code. It<br>does require you to think carefully about the code you write. Before you dive<br>into writing code, it will pay to spend time planning and understanding the<br>code you are going to write. If you think the problem through from beginning<br>to end, this assignment will not be too hard. If you try to hack your way out<br>of trouble, you will spend many frustrating nights in the lab.<br>As a start, here are some questions you should answer before you write code.</p>
+<ul>
+<li>What fields will you need in your thread structure? Perhaps the most important is the thread state (e.g., running, etc.). Think about all the states that you will need to support. </li>
+<li>getcontext “returns” twice. When it is called directly, it initializes the context structure that is passed as an argument, and then execution continues after the getcontext() call. Then, when setcontext() is called later, execution returns to the instruction following the getcontext() call, which appears to be a second “return”, since the code continues running from the instruction following getcontext(). For this assignment, you will use this behavior, once when you create a context, and again when you switch to that context. What action will you take in each case? How will you tell which case you are in? </li>
+<li>Most threads are created with thread_create, but the initial thread is there before your library is invoked. Nonetheless, the original thread must be able to thread_yield to let other threads run, and other threads must be able to call thread_yield and let the original thread run. How is this going to work? </li>
+<li>A hard bug to find would be an overflow or underflow of the stack you allocate. How might such a bug manifest itself? What defensive programming strategies can you use to detect stack overflow in a more controlled manner as the system runs? </li>
+<li>Note that when the initial thread in a C process returns, it calls the exit system call, which causes the OS to destroy the process, even if you have other user level threads in the process that want to run. How will you ensure that the program exits only when the last thread in your system exits? </li>
+<li>Be careful. It is dangerous to use memory once it has been freed. In particular, you should not free the stack of the currently running thread in thread_exit while it is still running. So how will you make sure that the thread stack is eventually deallocated? How will you make sure that another thread that is created in between does not start using this stack (and then you inadvertently deallocate it)? You should convince yourself that your program would work even if you used a debugging malloc library that overwrites a block with dummy data when that block is free()’d. </li>
+<li>Be careful. If you destroy a thread that is holding or waiting on a resource such as a lock (we will be implementing locks in the next assignment), problems can occur. For example, deadlock may occur because the thread holding the lock may not have a chance to release the lock. Similarly, if the thread waiting on a lock is destroyed, then the thread releasing the lock may wake up some other thread incorrectly (e.g., due to reusing thread id). For this reason, it is important to ensure that when thread_kill is invoked on a thread, the target thread should not exit immediately. Instead, the target thread should exit when it runs the next time. How will you implement this functionality? In practice, operating systems provide a signal handler mechanism that allows threads to clean up their resources (e.g., locks) before they exit. </li>
+<li>What are the similarities and differences between thread_yield and thread_exit? Think carefully. It will be useful to encapsulate all that is similar in a common function, which will help reduce bugs, and possibly make your code simpler.<br>We strongly recommend that your first milestone might be for<br>thread_yield(THREAD_SELF) to work for the initial thread (where your<br>implementation stores and then restores the caller’s state). Get this working<br>before you try to implement thread_create or thread_exit.<br>Use a debugger. As an exercise, put a breakpoint at the instruction after you<br>copy the current thread’s state using getcontext. You can print the current<br>values of the registers (in gdb, type info registers).<br>You can print the values stored in your thread struct and the thread context.<br>For example, say current is a pointer to the thread structure associated with<br>the currently running thread, and context is a field in this structure that<br>stores the thread context. Then, in gdb, you can use p&#x2F;x current]context to<br>print the context stored by a call to getcontext.<br>You may find this particularly useful in making sure that the state you<br>“restore” when you run a newlycreated thread for the first time makes sense.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/31/OS%E4%BB%A3%E5%86%99%EF%BC%9ACSC369CooperativeUserLevelThreads/">http://saferman.github.io/2023/01/31/OS%E4%BB%A3%E5%86%99%EF%BC%9ACSC369CooperativeUserLevelThreads/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">OS代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/31/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSCI2110HuffmanCoding/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Java代写：CSCI2110 Huffman Coding">
+                        
+                        <span class="card-title">Java代写：CSCI2110 Huffman Coding</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-31
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/27/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3023PeertoPeerChat/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="C++代写：COMP3023 Peer to Peer Chat">
+                        
+                        <span class="card-title">C++代写：COMP3023 Peer to Peer Chat</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

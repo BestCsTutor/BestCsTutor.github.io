@@ -1,0 +1,1041 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Haskell代写：FIT2102 Lambda Calculus Parser, 留学生CS|辅导|代写">
+    <meta name="description" content="使用  Haskell 中的解析器组合器将输入字符串转换为lambda演算表达式的解释器。
+OverviewImplement an interpreter that translates input strings into lambda">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Haskell代写：FIT2102 Lambda Calculus Parser | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Haskell代写：FIT2102 Lambda Calculus Parser</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Haskell%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Haskell代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 <a target="_blank" rel="noopener" href="https://www.haskell.org/" title="Haskell"> Haskell </a><br>中的解析器组合器将输入字符串转换为lambda演算表达式的解释器。<br><img src="https://www.haskell.org/img/haskell-logo.svg" alt="Haskell"></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Implement an interpreter that translates input strings into lambda calculus<br>expressions using parser combinators in Haskell. This should highlight your<br>understanding of Haskell, functional programming, and its application; as well<br>as lambda calculus. You will also need to write a report to demonstrate your<br>knowledge and understanding.</p>
+<h2 id="Building-and-using-the-code"><a href="#Building-and-using-the-code" class="headerlink" title="Building and using the code"></a>Building and using the code</h2><p>The code bundle is packaged the same way as tutorial code. To compile the<br>code, run: <code>stack build</code> . To run the main function, run: <code>stack run</code></p>
+<h2 id="Submission-Instructions"><a href="#Submission-Instructions" class="headerlink" title="Submission Instructions"></a>Submission Instructions</h2><p>Submit a zipped file named[studentNo]<em>[name].zip which extracts to a folder<br>named[studentNo]</em>[name]</p>
+<ul>
+<li>It must contain all the code that will be marked including the report and submission&#x2F;LambdaParser.hs </li>
+<li>Your assignment code and your report in PDF format go in the submission&#x2F;folder of the code bundle. To submit you will zip up just the contents of this submission folder </li>
+<li>It should include sufficient documentation so that we can appreciate everything you have done (readme.txt or other supplementary documentation) </li>
+<li>You also need to include a report describing your design decisions. The report must be named[studentNo]_[name].pdf. </li>
+<li>Only Haskell built in libraries should be used (i.e. no additional installation should be required) </li>
+<li>Before zipping, run <code>stack clean --full</code> (to ensure a small bundle) </li>
+<li>Make sure the code you submit executes properly.<br>The marking process will look something like this:</li>
+</ul>
+<ol>
+<li>Extract [studentNo]_[name].zip </li>
+<li>Copy the submission folder contents into the assignment code bundle submission folder </li>
+<li>Execute stack build, stack test, stack run<br>Please ensure that you test this process before submitting. Any issues during<br>this process will make your marker unhappy. Failure to follow these<br>instructions may result in deductions.</li>
+</ol>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, we will use Haskell to develop an interpreter that parses<br>a string into the data types provided inBuilder.hs and Lambda.hs.Using this we<br>can create Lambda Calculus expressions which we are then able to normalise<br>into a simplified but equivalent expression (evaluating the expression).<br>This assignment will be split into multiple parts, of increasing difficulty.<br>While many lambda expressions for earlier tasks have been provided to you in<br>the course notes and in this document, you may have to do your own independent<br>research to find church encodings for more complicated constructs.<br>You are welcome to use any of the material covered in the previous weeks,<br>including solutions for tutorial questions, to assist in the development of<br>your parser. Please reference ideas and code constructs obtained from external<br>sources, as well as anything else you might find in your independent research,<br>for this assignment.</p>
+<h2 id="Goals-Learning-Outcomes"><a href="#Goals-Learning-Outcomes" class="headerlink" title="Goals &#x2F; Learning Outcomes"></a>Goals &#x2F; Learning Outcomes</h2><p>The purpose of this assignment is to highlight lambda calculus as a method of<br>computation and apply the skills you have learned to a practical exercise<br>(parsing).</p>
+<ul>
+<li>Use functional programming and parsing effectively </li>
+<li>Understand and be able to use key functional programming principles (HOF, pure functions, immutable data structures, abstractions) </li>
+<li>Apply Haskell and lambda calculus to implement non-trivial programs</li>
+</ul>
+<h3 id="Scope-of-assignment"><a href="#Scope-of-assignment" class="headerlink" title="Scope of assignment"></a>Scope of assignment</h3><p>It is important to note that you will not need to implement code to evaluate<br>lambda calculus expressions. Functions to evaluate lambda calculus expressions<br>are provided. Rather, you are only required toparsean expression into the data<br>types provided in Builder.hs and then use the given functions to evaluate the<br>expression.<br>You will need to have some understanding of lambda calculus, particularly in<br>the latter parts of the assignment. Revise thenotes on Lambda Calculusand come<br>to consultations early if you have any uncertainty.</p>
+<h3 id="Lambda-Calculus-syntax"><a href="#Lambda-Calculus-syntax" class="headerlink" title="Lambda Calculus syntax"></a>Lambda Calculus syntax</h3><p>Lambda Calculus can be written in an explicit way (long form), using brackets<br>to show ordering of all operations, or in an implicit way (short form), by<br>removing unnecessary syntax.<br>For example, consider the expression for a Church Encoded IF in short form.<br>We introduced this short syntax for lambda expressions as it’s a little easier<br>to read. However, let’s also consider the long form version. First we need to<br>include all lambdas.<br>Then, we need to include brackets around every expression (note that applying<br>the function “b” to two parameters “t” and “f” is one expression)<br>It may be simpler to parse the long-form syntax of lambda calculus compared to<br>the short form.</p>
+<h3 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h3><p>The first step which we recommend is to play around with the code base, and<br>see how you can build Lambda Expressions.</p>
+<ul>
+<li>Step 1. Try to use the builder and GHCI to construct and normalise the following expressions. <ul>
+<li>For extra practice build the lambda expressions in the Week 5 Tutorial Sheet. See which ones successfully build and think about why!</li>
+</ul>
+</li>
+<li>Step 2. Try to describe the syntax for a verbose Lambda Calculus using a BNF Grammar. </li>
+<li>Step 3.Try to construct parsers for and test each part of this grammar separately. </li>
+<li>Step 4.Combine and test your code!</li>
+</ul>
+<h2 id="What-is-provided"><a href="#What-is-provided" class="headerlink" title="What is provided"></a>What is provided</h2><p>Provided to you is an engine which can Beta&#x2F;Eta reduce Lambda Calculus into<br>beta-normal form.<br>This engine is built around the Builder type. This Builder type allows you to<br>create Lambda Calculus expressions, which can then be normalised.<br>First, how do you build a lambda expression? Let’s consider the expression.</p>
+<ul>
+<li>We use build to construct the lambda expression </li>
+<li>We use lam, similar to the way you use in lambda expressions. </li>
+<li>The first argument is the function input, in this casex </li>
+<li>The second argument is the return value of the function. We usetermto identify this is a variable.<br>Let’s look at the types of all these expressions a little more.</li>
+<li>Takes a char, which represents the input variable </li>
+<li>Takes an expression of builder type, which represents the return value of the Lambda Expression </li>
+<li>Returns a value ofBuildertype. <ul>
+<li>Takes achar, which represents the variable </li>
+<li>Returns a value of theBuildertype.<br>This should be the last step, which takes a builder and constructs the <code>Lambda</code> expression.</li>
+</ul>
+</li>
+<li>Takes a Builder type </li>
+<li>Returns a Lambda type. </li>
+<li>Note: this fails if the expression contains free variables.<br>Combines two Builder expressions by applying one builder to another</li>
+<li>Takes a builder </li>
+<li>Takes another builder </li>
+<li>Returns a builder, where the second builder will be applied to the first builder<br>Normalises a Lambda expression by reducing it to Beta-Normal Form.<br>NOTE: This will cause an infinite loop if you try to normalise a divergent<br>expression.<br>While you are not required to evaluate your lambda calculus expressions, we<br>also provide you with some evaluator functions to aid in testing.<br>Normalises a Lambda expression and then returns its Boolean evaluation (if it<br>has one).<br>Normalises a Lambda expression and then returns its numeric evaluation (if it<br>has one).</li>
+</ul>
+<h3 id="Additional-functions-and-types"><a href="#Additional-functions-and-types" class="headerlink" title="Additional functions and types"></a>Additional functions and types</h3><p>Feel free to have a look at the ‘Builder.hs’ file, which will provide some<br>tests showing more usage of this type. Note that it is not important that you<br>understand how these functions work, just that you understand how tousethem.<br>There are many other well-documented functions that you can look at and use.<br>Remember that it is not necessary to understand the implementation, only their<br>usage (think of it like a library that you use).</p>
+<h2 id="Exercises"><a href="#Exercises" class="headerlink" title="Exercises"></a>Exercises</h2><p>These exercises provide a structured approach for creating an interpreter.</p>
+<ul>
+<li>Part 1: parsing lambda expressions </li>
+<li>Part 2: simple arithmetic and boolean operations </li>
+<li>Part 3: extending the interpreter to handle more programmatic operations</li>
+</ul>
+<h3 id="IMPORTANT"><a href="#IMPORTANT" class="headerlink" title="IMPORTANT"></a>IMPORTANT</h3><p>In each of the exercises, there will be</p>
+<ul>
+<li>Deliverables: Functions&#x2F;parsers that you must implement or documentation you have to complete to successfully complete the exercise <ul>
+<li>The functions&#x2F;parsers must be named and have the same type signature as specified in the exercise otherwise they will break our tests </li>
+<li>These functions must be implemented insubmission&#x2F;LambdaParser.hsas per the code bundle otherwise they will break out tests </li>
+<li>Recommended steps: How to get started on the exercise. These are suggestions and you may wish to use a different approach<br>Basic tests will be provided, however it is important to construct your own<br>unit testsand add to the existing tests for each task to aid in your<br>development. Similarly, the tests provided will not be a proof of correctness<br>as they may not be exhaustive, so it’s important you ensure that your code is<br>provably correct.<br>Marks for the tasks will come from</li>
+</ul>
+</li>
+<li>Correct implementations(i.e. passes the tests provided and our own tests) </li>
+<li>Effective usage of course content(HOF, Functor, Applicative, Monad, etc.) </li>
+<li>Good code quality(functional&#x2F;declarative style, readability, structure, documentation etc.).<br>Please refer to the Marking rubric section for more information.</li>
+</ul>
+<h2 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h2><p>By the end of this section, we will have a parser for lambda calculus<br>expressions.</p>
+<h3 id="Exercise-1"><a href="#Exercise-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h3><p>Construct a BNF Grammar for lambda calculus expressions.</p>
+<h4 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h4><p>At the end of this exercise, we should have the following:</p>
+<ul>
+<li>A BNF grammar to demonstrate the structure of the lambda expression parser, representing both short and long form inonegrammar (as your parser should also handle both short and long form).</li>
+</ul>
+<h4 id="Recommended-steps"><a href="#Recommended-steps" class="headerlink" title="Recommended steps"></a>Recommended steps</h4><ol>
+<li>Construct parsers for lambda calculus expression components (“”, “.”, “(“, “)”, “x”, “y”, “z”, etc.) </li>
+<li>Use the component parsers to create parsers for simple combinators to get familiar with parsing lambda expressions and their structure </li>
+<li>Construct a BNF grammar for short form and long form lambda expressions</li>
+</ol>
+<h3 id="Exercise-2"><a href="#Exercise-2" class="headerlink" title="Exercise 2"></a>Exercise 2</h3><p>Construct a parser for long form lambda calculus expressions.</p>
+<h4 id="Deliverables-1"><a href="#Deliverables-1" class="headerlink" title="Deliverables"></a>Deliverables</h4><p>At the end of this exercise, we should have at least the following parser.<br>Your BNF grammar must match your parsers. It is highly recommended to use the<br>same name for your parsers and non-terminals (i.e. a non-terminal like lambda<br>Char should correspond to a lambda Char parser) so your marker can easily<br>validate the grammar.</p>
+<h4 id="Recommended-steps-1"><a href="#Recommended-steps-1" class="headerlink" title="Recommended steps"></a>Recommended steps</h4><ol>
+<li>Build a general purpose lambda calculus parser combinator which: </li>
+<li>Parses general multi variable lambda expressions&#x2F;function bodies<br>Notedefault associativity.</li>
+<li>Parses general multi variable lambda expressions&#x2F;function bodieswith brackets </li>
+<li>Parses any valid lambda calculus expression usinglong-form syntax</li>
+</ol>
+<h3 id="Exercise-3"><a href="#Exercise-3" class="headerlink" title="Exercise 3"></a>Exercise 3</h3><p>Construct a parser for short form lambda calculus expressions.</p>
+<h4 id="Deliverables-2"><a href="#Deliverables-2" class="headerlink" title="Deliverables"></a>Deliverables</h4><p>At the end of this exercise, we should have at least the following parsers.<br>Similar to Exercise 2, yourparser must match your BNF grammar.<br>Recommended steps</p>
+<ol>
+<li>Build a general purpose lambda calculus parser combinator which. </li>
+<li>Parses any valid lambda expression usingshort-form syntax.</li>
+</ol>
+<h2 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h2><p>By the end of this section, we should be able to parse arithmetic and logical<br>expressions intotheir equivalent lambda calculus expressions.</p>
+<h3 id="Exercise-1-1"><a href="#Exercise-1-1" class="headerlink" title="Exercise 1"></a>Exercise 1</h3><p>Construct a parser for logical statements</p>
+<h3 id="Deliverables-3"><a href="#Deliverables-3" class="headerlink" title="Deliverables"></a>Deliverables</h3><p>At the end of this exercise, you should have the following parsers.</p>
+<h3 id="Recommended-steps-2"><a href="#Recommended-steps-2" class="headerlink" title="Recommended steps"></a>Recommended steps</h3><ol>
+<li>Construct a parser for logical literals (“true”, “false”) and operators (“and”, “or”, “not”, “if”) into their church encoding </li>
+<li>Use the logical component parsers to build a general logical parser combinator into the equivalent church encoding, which:<br>* Correctly negates a given expression<br>* Parses complex clauses with nested expressions<br>* Parses expressions with the correct order of operations.</li>
+</ol>
+<h3 id="Exercise-2-1"><a href="#Exercise-2-1" class="headerlink" title="Exercise 2"></a>Exercise 2</h3><p>Construct a parser for arithmetic expressions</p>
+<h4 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h4><p>At the end of this exercise, you should have the following parsers:</p>
+<ul>
+<li>basicArithmeticP - Parser Lambda </li>
+<li>arithmeticP - Parser Lambda</li>
+</ul>
+<h4 id="Recommended-steps-3"><a href="#Recommended-steps-3" class="headerlink" title="Recommended steps"></a>Recommended steps</h4><ol>
+<li>Construct a parser for natural numbers into their church encoding (“1”, “2”, ) </li>
+<li>Construct a parser for simple arithmetic operators with natural numbers into equivalent lambda expressions. (“+”, “-“)<br>See the Parser combinators section of the notes for some examples</li>
+<li>Construct a parser for complex mathematical expressions with natural numbers into their equivalent lambda expressions. (“ <em>“, “*</em> “, “()”). It may be useful to write a BNF for this </li>
+<li>Using the component parsers built previously to build a parser combinator for complex arithmetic expressions.</li>
+</ol>
+<h3 id="Exercise-3-1"><a href="#Exercise-3-1" class="headerlink" title="Exercise 3"></a>Exercise 3</h3><p>Construct a parser for comparison expressions</p>
+<h4 id="Requirements-1"><a href="#Requirements-1" class="headerlink" title="Requirements"></a>Requirements</h4><p>At the end of this exercise, you should have the following parsers:</p>
+<ul>
+<li>complexCalcP :: Parser Lambda<br>Parses expressions with logical connectives, arithmetic and in&#x2F;equality<br>operations<br>Recommended steps</li>
+</ul>
+<ol>
+<li>Construct a parser for complex conditional expressions into their equivalent church encoding. </li>
+<li>Using the parsers from the previous exercises, create a parser which parses arithmetic expressions separated by logical connectives and in&#x2F;equality operations</li>
+</ol>
+<h2 id="Part-3"><a href="#Part-3" class="headerlink" title="Part 3"></a>Part 3</h2><p>This section of the assignment will include a sequence of exercises that may<br>build to parse basic Haskell functionality, which can be used to build more<br>complex Haskell expressions or structures.</p>
+<h3 id="Exercise-1-2"><a href="#Exercise-1-2" class="headerlink" title="Exercise 1"></a>Exercise 1</h3><p>Construct a parser for basic Haskell constructs</p>
+<h4 id="Requirements-2"><a href="#Requirements-2" class="headerlink" title="Requirements"></a>Requirements</h4><p>At the end of this exercise, you should have the following parsers.</p>
+<ul>
+<li>Parses a haskell list of arbitrary length into its equivalent church. </li>
+<li>Parse simple list operations into their church encoding</li>
+</ul>
+<h4 id="Recommended-steps-4"><a href="#Recommended-steps-4" class="headerlink" title="Recommended steps"></a>Recommended steps</h4><ol>
+<li>Construct a parser for Haskell lists (empty lists, lists of n elements, arbitrary sized lists) </li>
+<li>Construct parsers for simple list operations (null, isNull, head, tail, cons)<br>Hint: Haskell uses cons lists to represent lists</li>
+</ol>
+<h3 id="Exercise-2-2"><a href="#Exercise-2-2" class="headerlink" title="Exercise 2"></a>Exercise 2</h3><p>Construct a parser for more advanced concepts</p>
+<h4 id="Requirements-3"><a href="#Requirements-3" class="headerlink" title="Requirements"></a>Requirements</h4><p>At the end of this exercise you should have parsers that:</p>
+<ul>
+<li>Parse some complex language features (of your choice) that bring you closer to defining your own language.</li>
+</ul>
+<h4 id="Recommended-steps-5"><a href="#Recommended-steps-5" class="headerlink" title="Recommended steps"></a>Recommended steps</h4><p>You may choose a number of the below examples, or you can come up with your<br>own (but check with the teaching team if they are considered complex enough).<br>Implementing each of the following may earn you up to 2 marks (depending on<br>the quality of the solution). Choose two or more to achieve up to 4 marks<br>total.<br>Some suggestions include parsers for:</p>
+<ol>
+<li>Recursive list functions (e.g. map, filter, foldr, etc.)<br>* These will involve implementing some form of recursion<br>* Note the discussion ofrecursive lambda calculus functionsin the notes, there are many ways to implement recursive functions, including but not limited to fixed point combinators (e.g. Y or Z combinator). Try to notice the downside of each approach. </li>
+<li>Other functionssuch as:<br>* Fibonacci<br>* Factorial<br>* Euclidean algorithm<br>* Euler’s problem<br>* Division </li>
+<li>Variables </li>
+<li>Parsers with error handling<br>* See week 11 tutorial for how to handle errors that come up in parsing </li>
+<li>Known algorithms<br>* Binary search<br>* Quick&#x2F;Insertion&#x2F;Selection sort </li>
+<li>Negative numbers&#x2F;Decimal numbers </li>
+<li>Create your own language!</li>
+</ol>
+<h2 id="Report"><a href="#Report" class="headerlink" title="Report"></a>Report</h2><p>You are required to provide a report in PDF format of max. 1200 words (markers<br>will not mark beyond this word limit), description of extensions can use up to<br>600 words per extension feature. You should summarise the intention of the<br>code, and highlight the interesting parts and difficulties you encountered.<br>In particular, describe how your strategy (and thus your code) evolved. You<br>should focus on the “why” not the “how”.<br>Additionally, just posting screenshots of code isheavily discouraged, unless<br>it contains something of particular importance. Remember, markers will be<br>looking at your code alongside your report, so we do not need to see your code<br>twice.<br>Importantly, this report must include a BNF grammar and a description about<br>why and how parser combinator helped you complete the parsing.<br>In summary, your report should include the following sections.</p>
+<h2 id="Marking-breakdown"><a href="#Marking-breakdown" class="headerlink" title="Marking breakdown"></a>Marking breakdown</h2><p>There are two main evaluation criteria for your assignment. For each exercise<br>there will be mark designated for the quality of the provided solution, and<br>the remaining markswill be allocated to correctness.</p>
+<h3 id="Correctness"><a href="#Correctness" class="headerlink" title="Correctness"></a>Correctness</h3><p>You will be provided with a handful of tests for each exercise (excluding Part<br>3 - Exercise 2). On top of these tests, tutors will run an additional test<br>suite to measure the robustness of your code. Marks will be awarded<br>proportionally for passing the tests for each exercise. It is highly<br>recommended that you create your own tests as you go, on top of those<br>provided, and that you consider possible edge cases.<br>Correctness also relates to the correctness of your approach. That is, how<br>well you’ve applied concepts covered from the unit content.<br>You must apply concepts from the course. The important thing here is that you<br>need to use what we have taught you effectively. For example, defining a new<br>type and its Monadinstance, but then never actually needing to use it will not<br>give you marks. (Note: using bind)for the sake of using the Monadwhen it is<br>not needed will not count as “effective usage.”)<br>Most importantly, code that does not utilise Haskell’s language features, and<br>that attempts to code in a more imperative style will not be awarded high<br>marks.</p>
+<h3 id="Code-quality"><a href="#Code-quality" class="headerlink" title="Code quality"></a>Code quality</h3><p>Code quality will relate more to how understandable your code is. You must<br>have readable and functional code, commented when necessary. Readable code<br>means that you keep your lines at a reasonable length (80 characters), that<br>you provide comments above non-trivial functions, and that you comment<br>sections of your code whose function may not be clear.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/10/13/Haskell%E4%BB%A3%E5%86%99%EF%BC%9AFIT2102LambdaCalculusParser/">http://saferman.github.io/2022/10/13/Haskell%E4%BB%A3%E5%86%99%EF%BC%9AFIT2102LambdaCalculusParser/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Haskell%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Haskell代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/14/OpenMP%E4%BB%A3%E5%86%99%EF%BC%9AFIT3143SeismicReadingsForEarthquakeDetectionInADistributedWirelessSensorNetwork/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="OpenMP代写：FIT3143 Seismic Readings For Earthquake Detection In A Distributed Wireless Sensor Network">
+                        
+                        <span class="card-title">OpenMP代写：FIT3143 Seismic Readings For Earthquake Detection In A Distributed Wireless Sensor Network</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OpenMP%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">OpenMP代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/08/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS7631Knowledge-BasedAI/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="AI代写：CS7631 Knowledge-Based AI">
+                        
+                        <span class="card-title">AI代写：CS7631 Knowledge-Based AI</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

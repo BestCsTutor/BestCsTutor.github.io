@@ -1,0 +1,900 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Network Programming代写：COMP3331 Link State Routing, 留学生CS|辅导|代写">
+    <meta name="description" content="用Java实现一个网络路由协议，并模拟在各种网络条件下，各个节点在协议下的运行状态。  
+Goal and Learning ObjectivesIn this assignment your task is to implement th">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Network Programming代写：COMP3331 Link State Routing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Network Programming代写：COMP3331 Link State Routing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Network-Programming%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Network Programming代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-02-20
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用Java实现一个网络路由协议，并模拟在各种网络条件下，各个节点在协议下的运行状态。  </p>
+<h2 id="Goal-and-Learning-Objectives"><a href="#Goal-and-Learning-Objectives" class="headerlink" title="Goal and Learning Objectives"></a>Goal and Learning Objectives</h2><p>In this assignment your task is to implement the link state routing protocol.<br>Your program will be running at all nodes in the specified network. At each<br>node the input to your program is a set of directly attached nodes (i.e.<br>neighbours) and the costs of these links. Each node will broadcast link-state<br>packets to all other nodes in the network. Your routing program at each node<br>should report the least-cost path and the associated cost to all other nodes<br>in the network. Your program should be able to deal with failed nodes.</p>
+<h3 id="Learning-Objectives"><a href="#Learning-Objectives" class="headerlink" title="Learning Objectives"></a>Learning Objectives</h3><p>On completing this assignment you will gain sufficient expertise in the<br>following skills:</p>
+<ul>
+<li>Designing a routing protocol </li>
+<li>Link state (Dijkstra’s) algorithm </li>
+<li>UDP socket programming </li>
+<li>Handling routing dynamics</li>
+</ul>
+<h2 id="Assignment-Specification"><a href="#Assignment-Specification" class="headerlink" title="Assignment Specification"></a>Assignment Specification</h2><p>In this assignment, you will implement the link state routing protocol.<br>The program will accept the following command line arguments:</p>
+<ul>
+<li>NODE_ID, the ID for this node. This argument must be a single uppercase alphabet (e.g., A, B, etc). </li>
+<li>NODE_PORT, the port number on which this node will send and receive packets to and from its neighbours. </li>
+<li>CONFIG.TXT, this file will contain the costs to the neighbouring nodes. It will also contain the port number being used by each neighbour for exchanging routing packets. An example of this file is provided below.<br>Since we can’t let you play with real network routers, the routing programs<br>for all the nodes in the simulated network will run on a single desktop<br>machine. However, each instance of the routing protocol (corresponding to each<br>node in the network) will be listening on a different port number. If your<br>routing software executes correctly on a single desktop machine, it should<br>also work correctly on real network routers. Note that, the terms router and<br>node are used interchangeably in the rest of this specification.<br>Assume that the routing protocol is being instantiated for a node A, with two<br>neighbours B and C. A simple example of how the routing program would be<br>executed (assuming it is a Java program named Lsr.java) follows:<br>java Lsr A 2000 config.txt<br>where the config.txt would be as follows:<br>B 5 2001<br>C 7 2002<br>The first line of this file indicates the number of neighbours (NOT the total<br>number of nodes in the network). Following this there is one line dedicated to<br>each neighbour. It starts with the neighbour id, followed by the cost to reach<br>this neighbour and finally the port number that this neighbour is using for<br>communication. For example, the second line in the config.txt above indicates<br>that the cost to neighbour B is 5 and this neighbour is using port number 2001<br>for receiving and transmitting link-state packets. The node ids will be<br>uppercase alphabets and you can assume that there will be no more than 10<br>nodes in the test scenarios. However, do not make assumptions that the node<br>ids will necessarily start from the letter A or that they will always be in<br>sequence. The link costs should be floating point numbers (up to the first<br>decimal) and the port numbers should be integers. These three fields will be<br>separated by a single white space between two successive fields in each line<br>of the configuration file. The link costs will be static and will not change<br>once initialised. Further, the link costs will be consistent in both<br>directions, i.e., if the cost from A to B is 5, then the link from B to A will<br>also have a cost of 5. You may assume that the configuration files used for<br>marking will be consistent with the above description and devoid of any<br>errors.<br>Important: It is worth restating that initially each node is only aware of the<br>costs to its direct neighbours. The nodes do not have global knowledge (i.e.<br>information about the entire network topology) at start-up.<br>The remainder of the specification is divided into two parts, beginning with<br>the base specification as the first part and the subsequent part adding new<br>functionality to the base specification. In order to receive full marks for<br>this assignment you must implement both parts. If you are unable to complete<br>the second part, you will still receive marks for the first part. (The marking<br>guidelines at the end of the specification indicate the distribution of<br>marks).</li>
+</ul>
+<h2 id="Part-1-Base-Specification"><a href="#Part-1-Base-Specification" class="headerlink" title="Part 1: Base Specification"></a>Part 1: Base Specification</h2><p>In link-state routing, each node broadcasts link-state packets to all other<br>nodes in the network, with each link-state packet containing the identities of<br>the node’s neighbours and the associated costs to reach them. You must<br>implement a simple broadcasting mechanism in your program. Uponinitialisation,<br>each node creates a link-state packet (containing the appropriate information<br>– see description of link-state protocol in the textbook&#x2F;lecture notes) and<br>sends this packet to all direct neighbours. The exact format of the link-state<br>packets that you will use is left for you to decide. Upon receiving this link-<br>state packet, each neighbouring router in turn broadcasts this packet to its<br>own neighbours (excluding the router from which it received this link-state<br>packet in the first place). This simple flooding mechanism will ensure that<br>each link-state packet is propagated through the entire network.<br>It is possible that some nodes may start earlier than their neighbours. As a<br>result, a node might send the link-state packet to a neighbour, which has not<br>run yet. You should not worry about this since the routing program at each<br>node will repeatedly send the link-state packet to its neighbours and a slow-<br>starting neighbour will eventually get the information. That said, when we<br>test your assignment, we would ensure that all nodes are initiated<br>simultaneously (using a script).<br>Each node should periodically broadcast the link-state packet to its<br>neighbours every UPDATE_INTERVAL. You should set this interval to 1 second. In<br>other words, a node should broadcast a link state packet every second.<br>Real routing protocols use UDP for exchanging control packets. Hence, you MUST<br>use UDP as the transport protocol for exchanging link-state packets amongst<br>the neighbours. Note that, each router can consult its configuration file to<br>determine the port numbers used by its neighbours for exchanging link-state<br>packets. Do not worry about the unreliable nature of UDP. Since, you are<br>simulating multiple routers on a single machine, it is highly unlikely that<br>link-state packets will be dropped. Furthermore, since link-state packets are<br>broadcast periodically, occasional packet loss will not impact the operation<br>of your protocol. If you use TCP, a significant penalty will be assessed.<br>On receiving link-state packets from all other nodes, a router can build up a<br>global view of the network topology. You may want to review your class notes<br>and consult standard data structures textbooks for standard representations of<br>undirected graphs, which would be an appropriate way to model this view of the<br>network.<br>Given a view of the entire network topology, a router should run Dijkstra’s<br>algorithm to compute least-cost paths to all other routers within the network.<br>Each node should wait for a ROUTE_UPDATE_INTERVAL (the default value is 30<br>seconds) since start-up and then execute Dijkstra’s algorithm. Given that<br>there will be no more than 10 nodes in the network and a periodic link-state<br>broadcast frequency of 1 second, 30 seconds is a sufficiently long duration<br>for each node to discover the global view of the entire topology.<br>Once a router finishes running Dijkstra’s algorithm, it should print out to<br>the terminal, the least-cost path to each destination node (excluding itself)<br>along with the cost of this path. The following is an example output for node<br>A in some arbitrary network:<br>    least-cost path to node B: ACB and the cost is 10<br>    least-cost path to node C: AC and the cost is 2.5<br>We will wait for duration of ROUTE_UPDATE_INTERVAL after running your program<br>for the output to appear (some extra time will be added as a buffer). If the<br>output does not appear within this time, you will be heavily penalised. As<br>indicated earlier, we will restrict the size of the network to 10 nodes in the<br>test topologies. The default value of 30 seconds is sufficiently long for all<br>the nodes to receive link-state packets from every other node and compute the<br>least-cost paths.<br>Your program should execute forever (as a loop). In other words, each node<br>should keep broadcasting link-state packets every UPDATE_INTERVAL and<br>Dijkstra’s algorithm should beexecuted and the output printed out every<br>ROUTE_UPDATE_INTERVAL. To kill an instance of the routing protocol, the user<br>should type CTRL-C at the respective terminal.<br>Restricting Link-state Broadcasts: Note that, a naïve broadcast strategy;<br>wherein each node retransmits every link state packet that it receives will<br>result in unnecessary broadcasts and thus increase the overhead. To elaborate<br>this issue, consider the example topology discussed in the latter part of the<br>spec. The link-state packet created by node A will be sent to its direct<br>neighbours B, C and D. Each of these three nodes will in turn broadcast this<br>link-state packet to their neighbours. Let us consider Node C, which<br>broadcasts A’s link state packet to B, D, E and F. Note that node B has<br>already broadcast A’s link state packet once (when it received it directly<br>from A). Node B has now received this same link-state packet via node C. There<br>should thus be no need for node B to broadcast this packet again. You MUST<br>implement a mechanism to reduce such unnecessary broadcasts. This can be<br>achieved in several ways. You are open to choose any method to achieve this.<br>You must describe your method in the written report.</p>
+<h2 id="Part-2-Dealing-with-Node-Failures"><a href="#Part-2-Dealing-with-Node-Failures" class="headerlink" title="Part 2: Dealing with Node Failures"></a>Part 2: Dealing with Node Failures</h2><p>In this part you must implement additional functionality in your code to deal<br>with random node failures. Recall that in the base assignment specification it<br>is assumed that once all nodes are up and running they will continue to be<br>operational till the end when all nodes are terminated simultaneously. In this<br>part you must ensure that your algorithm is robust to node failures. Once a<br>node fails, its neighbours must quickly be able to detect this and the<br>corresponding links to this failed node must be removed. Further, the routing<br>protocol should converge and the failed nodes should be excluded from the<br>least-cost path computations. The other nodes should no longer compute least-<br>cost paths to the failed nodes. Furthermore, the failed nodes should not be<br>included in the least-cost paths to other nodes.<br>A simple method that is often used to detect node failures is the use of<br>periodic heartbeat (also often known as keep alive) messages. A heartbeat<br>message is a short control message, which is periodically sent by a node to<br>its directly connected neighbours. If a node does not receive a certain number<br>of consecutive hearbeat messages from one of its neighbours it can assume that<br>this node has failed. Note that, each node transmits a link-state packet to<br>its immediate neighbour every UPDATE_INTERVAL (1 second). Hence, this distance<br>vector message could also double up as the hearbeat message. Alternately, you<br>may wish to make use of an explicit heartbeat message (over UDP), which is<br>transmitted more frequently (i.e. with a period less than 1 second) to<br>expedite the detection of a failed node. It is recommended that you wait till<br>at least 3 consequent hearbeat (or link-state) messages are not received from<br>a neighbour before considering it to have failed. This will ensure that if at<br>all a UDP packet is lost then it does not hamper the operation of your<br>protocol.<br>Once a node has detected that one of its neighbours has failed, it should<br>update its link-state packet accordingly to reflect the change in the local<br>topology. Eventually, via the propagation of the updated link-state packets,<br>other nodes in the network will become aware that the failed node is<br>unreachable and it will be excluded from the link-state computations (i.e.<br>Dijkstra’s algorithm).<br>Once a node has failed, you may assume that it cannot be initialised again.<br>While marking, we will only fail a few nodes, so that a reasonable connected<br>topology is still maintained. Furthermore, care will be taken to ensure that<br>the network does not get partitioned. In a typical topology (recall that the<br>largest topology used for testing will consist of 10 nodes), at most 3 nodes<br>will fail. However, note that the nodes do not have to fail simultaneously.<br>Recall that each node will execute Dijkstra’s algorithm periodically after<br>ROUTE_UPDATE_INTERVAL (30 seconds) to compute the least-cost path to every<br>other destination. It may so happen that the updated link-state packets<br>following a node failure may nothave reached certain nodes in the network<br>before this interval expires. As a result, these nodes will use the old<br>topology information (prior to node failure) to compute the least-cost paths.<br>Thus the output at these nodes will be incorrect. This is not an error. It is<br>just an artefact of the delay incurred in propagating the updated link-state<br>information. To account for this, it is necessary to wait for at least two<br>consecutive ROUTE_UPDATE_INTERVAL periods (i.e. 1 minute) after the node<br>failure is initiated. This will ensure that all the nodes are aware of the<br>topology change.<br>While marking, we will wait for 2*ROUTE_UPDATE_INTERVAL following a node<br>failure before checking the output.</p>
+<h2 id="Additional-Notes"><a href="#Additional-Notes" class="headerlink" title="Additional Notes"></a>Additional Notes</h2><p>This is not a group assignment. You are expected to work on this individually.<br>How to start: Sample UDP client and server programs are available on the Week<br>3 lecture material page. They are a good starting point to start your<br>development. You will also find several links to network programming resources<br>on that page.Language and Platform: You are free to use one of C, JAVA or<br>Python to implement this assignment. Please choose a language that you are<br>comfortable with. The programs will be tested on CSE Linux machines. So please<br>make sure that your entire application runs correctly on these machines. This<br>is especially important if you plan to develop and test the programs on your<br>personal computers (which may possibly use a different OS or version or JVM).<br>Note that CSE machines support the following: gcc version 4.9.2, Java 1.7,<br>Python 2.7, 2.8 and 3. Note for Python: In your report, please indicate which<br>version of Python you have used. You may only use the basic socket programming<br>APIs providing in your programming language of choice. Note that, the network<br>will be simulated by running multiple instances of your program on the same<br>machine with a different port number for each node. Make sure that your<br>program will work appropriately under these conditions. See the sequence of<br>operations listed below for details.<br>Error Condition: Note that all the arguments supplied to the programs will be<br>in the appropriate format. The configuration files supplied as an argument to<br>each node will also be consistent with the test topology. Your programs do not<br>have to handle errors in format, etc.<br>Do not worry about the reliability of UDP in your assignment. It is possible<br>for packets to be dropped, for example, but the chances of problems occurring<br>in a local area network are fairly small. If it does happen on the rare<br>occasion, that is fine. Further, your routing protocol is inherently robust<br>against occasional losses since the link state packets are exchanged every 1<br>second. If your program appears to be losing or corrupting packets on a<br>regular basis, then there is likely a fault in your program.<br>Test your assignment out with several different topologies (besides the sample<br>topology provided).<br>Make sure that your program is robust to node failures by creating several<br>failed nodes (however make sure that the topology is still connected). You can<br>very easily work out the least-cost paths manually (as shown in the lecture<br>notes or the textbook) to verify the output of your program.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/02/20/NetworkProgramming%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3331LinkStateRouting/">http://saferman.github.io/2018/02/20/NetworkProgramming%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3331LinkStateRouting/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Network-Programming%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Network Programming代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/02/23/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA48SnakesAndLadders/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Python代写：CSCA48 Snakes And Ladders">
+                        
+                        <span class="card-title">Python代写：CSCA48 Snakes And Ladders</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-02-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/02/15/R%E4%BB%A3%E5%86%99%EF%BC%9ACSC121SmallAssignment/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="R代写：CSC121 Small Assignment">
+                        
+                        <span class="card-title">R代写：CSC121 Small Assignment</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-02-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/R%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">R代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

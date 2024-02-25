@@ -1,0 +1,973 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS4006 Adaboost Classifiers, 留学生CS|辅导|代写">
+    <meta name="description" content="代写实现Adaboost分类器。  
+RequirementIn this assignment, your task is to train an AdaBoost classifier on syntheticdata. For ref">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS4006 Adaboost Classifiers | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS4006 Adaboost Classifiers</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-03-15
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写实现Adaboost分类器。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this assignment, your task is to train an AdaBoost classifier on synthetic<br>data. For reference, you are provided with the posterior <code>P(y = 1 | x)</code> ,<br>with x regularly sampled over the domain <code>X = [0, 1] × [0, 1]</code> , so that you<br>can see, in the end, how the output of the AdaBoost classifier better<br>approximates the posterior at each round.<br>Please read the assignment entirely before you start coding, in order to get a<br>sense of how it is organized. In particular, note that the AdaBoost algorithm<br>is only run at the very last cell of the “Train the classifier” section.<br>Before that, a number of functions are defined, one of which you need to<br>complete.</p>
+<h2 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h2><p>Fill in the missing parts to implement the Adaboost algorithm described in<br>class (slide 64 of the course). This involves iterating over the following<br>steps:</p>
+<ul>
+<li>a. Find the best weak learner h at each round. </li>
+<li>b. Using the weak learner’s weighted error e, compute t. </li>
+<li>c. Update the weight distribution D of the training samples.</li>
+</ul>
+<h2 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h2><p>Modify your loop to compute the loss at each round. Then, plot E and make sure<br>that it is monotonically decreasing with time. Verify that E provides an upper<br>bound for the number of errors.</p>
+<h2 id="Question-3"><a href="#Question-3" class="headerlink" title="Question 3"></a>Question 3</h2><p>First show the approximate posterior of your strong learner side-by-side with<br>the original posterior. Then, show the approximate posteriors for each step at<br>which the learner’s response has been saved. Make sure that they look<br>increasingly similar to the original posterior.</p>
+<h2 id="A-word-on-notation"><a href="#A-word-on-notation" class="headerlink" title="A word on notation"></a>A word on notation</h2><ul>
+<li>The response of a weak learner h for the sample x is <code>h(x) ∈ &#123;−1, 1&#125;</code> . </li>
+<li>At each round we find the best weak learner. The overall response of the strong learner at round t for the sample x. In order to be coherent with the weak learner’s expression, we can also define <code>H(x) = sign(f(x)) ∈ &#123;1, 1&#125;</code> , which can also be called the overall response. However, in this assignment, we are only interested in f .</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Imports"><a href="#Imports" class="headerlink" title="Imports"></a>Imports</h3><pre><code>import matplotlib.pyplot as plt  
+import numpy as np  
+from construct_data import construct_data  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Visualize-training-data-and-posterior"><a href="#Visualize-training-data-and-posterior" class="headerlink" title="Visualize training data and posterior"></a>Visualize training data and posterior</h3><pre><code>features, labels, posterior = construct_data(500, &#39;train&#39;, &#39;nonlinear&#39;, plusminus=True)  
+# Extract features for both classes  
+features_pos = features[labels == 1]  
+features_neg = features[labels != 1]  
+# Display data  
+fig = plt.figure(figsize=plt.figaspect(0.3))  
+ax = fig.add_subplot(1, 2, 1)  
+ax.scatter(features_pos[:, 0], features_pos[:, 1], c=&quot;red&quot;, label=&quot;Positive class&quot;)  
+ax.scatter(features_neg[:, 0], features_neg[:, 1], c=&quot;blue&quot;, label=&quot;Negative class&quot;)  
+ax.set_title(&quot;Training data&quot;)  
+ax.set_xlabel(&quot;Feature 1&quot;)  
+ax.set_ylabel(&quot;Feature 2&quot;)  
+ax.legend()  
+ax = fig.add_subplot(1, 2, 2)  
+ax.imshow(posterior, extent=[0, 1, 0, 1], origin=&#39;lower&#39;)  
+ax.set_title(&quot;Posterior of the positive class $P(y=1 \mid x)$&quot;)  
+ax.set_xlabel(&quot;Feature 1&quot;)  
+ax.set_ylabel(&quot;Feature 2&quot;)  
+plt.show()  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Train-the-classifier"><a href="#Train-the-classifier" class="headerlink" title="Train the classifier"></a>Train the classifier</h3><h4 id="Weak-learner-evaluation"><a href="#Weak-learner-evaluation" class="headerlink" title="Weak learner evaluation"></a>Weak learner evaluation</h4><p>The weak learner we use for this classification problem is a decision stump<br>(see slide 63 of the course), whose response is defined as <code>h(x) = s(2[xd ≥ θ] − 1)</code> , where</p>
+<ul>
+<li>d is the the dimension along which the decision is taken, </li>
+<li>[·] is 1 if is true and 0 otherwise, </li>
+<li>θ is the threshold applied along dimension d and </li>
+<li><code>s ∈ &#123;−1, 1&#125;</code> is the polarity of the decision stump (this is a multiplicative factor, not a func- tion!).<br>For example, if s &#x3D; 1, the decision stump will consider that all samples whose<br>d-th feature is greater than θ are in the positive class <code>(h(x) = +1)</code> , and<br>all samples with a feature strictly lower than are in the negative class <code>(h(x) = -1)</code> .<br>def evaluate_stump(features, coordinate_wl, polarity_wl, theta_wl):<br>“””Evaluate the stump’s response for each point.”””<br>feature_slice &#x3D; features[:, coordinate_wl]<br>weak_learner_output &#x3D; polarity_wl * (2*(feature_slice &gt;&#x3D; theta_wl) - 1)<br>return weak_learner_output<br>def evaluate_stump_on_grid(x_rng, y_rng, coordinate_wl, polarity_wl, theta_wl):<br>“””Evaluate the stump’s response for each point on a rectangular grid.”””<br>feature_slice &#x3D; np.meshgrid(x_rng, y_rng)[coordinate_wl]<br>weak_learner_on_grid &#x3D; polarity_wl * (2*(feature_slice &gt;&#x3D; theta_wl) - 1)<br>return weak_learner_on_grid</li>
+</ul>
+<p>—|—  </p>
+<h3 id="Finding-the-best-weak-learner"><a href="#Finding-the-best-weak-learner" class="headerlink" title="Finding the best weak learner"></a>Finding the best weak learner</h3><p>At each round of AdaBoost, the samples are reweighted, thus producing a new<br>classification prob- lem, where the samples with a larger weigth count more in<br>the classification error. The first step of a new round is to find the weak<br>learner with the best performance for this new problem, that is, with the<br>smallest classification error:<br>Notes on the implementation:</p>
+<ul>
+<li>The error is normalized in the course’s slides, but in practice you don’t need to, since the weights themselves are already normalized in the main loop of the algorithm. </li>
+<li>When searching for the best weak learner, you don’t need to consider all possible combi- nations of θ, d, s. For a given dimension d, the relevant values to try are the x (where i indexes the training samples).<br>def find_best_weak_learner(weights, features, labels):<br>“””Find the best decision stump for the given weight distribution.<br>Returns<br>——-<br>coordinate_wl : int<br>  Dimension ‘d’ along which the threshold is applied.<br>polarity_wl : {-1, 1}<br>  Polarity ‘s’ of the decision stump.<br>theta_wl : float<br>  Threshold ‘theta’ for the decision.<br>err_wl : float<br>  Weighted error for the decision stump.<br>“””<br>coordinate_wl &#x3D; 0<br>polarity_wl &#x3D; 1<br>theta_wl &#x3D; 0.<br>err_wl &#x3D; np.inf<br># TODO (Question 1)<br># &#x2F;TODO (Question 1)<br>return coordinate_wl, polarity_wl, theta_wl, err_wl</li>
+</ul>
+<p>—|—  </p>
+<h3 id="AdaBoost-algorithm"><a href="#AdaBoost-algorithm" class="headerlink" title="AdaBoost algorithm"></a>AdaBoost algorithm</h3><pre><code>npoints = features.shape[0]  
+num_rounds_boosting = 400  
+# Initialize arrays.  
+weights = np.ones(npoints) / npoints # Weight distribution on samples  
+## TODO (Question 1)  
+## /TODO (Question 1)  
+f_on_grid = 0 # Used to plot function  
+x_rng = y_rng = np.linspace(0, 1, 50)  
+for i in range(num_rounds_boosting):  
+  ## TODO (Question 1)  
+  # Find best weak learner at current round of boosting.  
+  coordinate_wl, polarity_wl, theta_wl, err_wl = find_best_weak_learner(weights, feature)  
+  # Estimate alpha.  
+  # Reweight samples.  
+  ## /TODO (Question 1)  
+  ## TODO (Question 2)  
+  # Compute overall response at current round.  
+  # Compute loss at current round.  
+  ## /TODO (Question 2)  
+  # Evaluate f on a grid to produce the images.  
+  weak_learner_on_grid = evaluate_stump_on_grid(x_rng, y_rng, coordinate_wl, polarity_wl, theta_wl, err_wl)  
+  f_on_grid += alpha*weak_learner_on_grid  
+  # Save gridded f at specific iterations.  
+  if i == 10:  
+    f_10 = f_on_grid.copy()  
+  elif i == 50:  
+    f_50 = f_on_grid.copy()  
+  elif i == 100:  
+    f_100 = f_on_grid.copy()  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Visualize-loss-function"><a href="#Visualize-loss-function" class="headerlink" title="Visualize loss function"></a>Visualize loss function</h3><pre><code>## TODO (Question 2)  
+## /TODO (Question 2)  
+plt.show()  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Visualize-strong-learner-progress"><a href="#Visualize-strong-learner-progress" class="headerlink" title="Visualize strong learner progress"></a>Visualize strong learner progress</h3><p>It can be shown (cf. slide 69 of the course*) that the AdaBoost strong<br>classifier’s response con- verges to half the posterior log-ratio:<br>Therefore, we can check how good the response gets in terms of approximating<br>the posterior.<br>*NB: There is a typo in this slide, the 2 1 is missing.<br>    approx_posterior_10 &#x3D; 1 &#x2F; (1 + np.exp(-2 * f_10))<br>    approx_posterior_50 &#x3D; 1 &#x2F; (1 + np.exp(-2 * f_50))<br>    approx_posterior_100 &#x3D; 1 &#x2F; (1 + np.exp(-2 * f_100))<br>    approx_posterior_400 &#x3D; 1 &#x2F; (1 + np.exp(-2 * f_on_grid))<br>    # TODO (Question 3)<br>    # &#x2F;TODO (Question 3)<br>    plt.show()<br>—|—</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/03/15/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4006AdaboostClassifiers/">http://saferman.github.io/2022/03/15/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4006AdaboostClassifiers/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/03/16/DataMining%E4%BB%A3%E5%86%99%EF%BC%9ACSE572ExtractingTimeSeries/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Data Mining代写：CSE572 Extracting Time Series">
+                        
+                        <span class="card-title">Data Mining代写：CSE572 Extracting Time Series</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Data-Mining%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Data Mining代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/03/14/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSCI1101AirlineBookingSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Java代写：CSCI1101 Airline Booking System">
+                        
+                        <span class="card-title">Java代写：CSCI1101 Airline Booking System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CSCI561 Go Game, 留学生CS|辅导|代写">
+    <meta name="description" content="使用  Reinforcement Learning
+ 去实现一个类似Alpha-Go的围棋的AI。![Go](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorG">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CSCI561 Go Game | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CSCI561 Go Game</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-14
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reinforcement_Learning" title="Reinforcement
+learning"> Reinforcement Learning
+</a> 去实现一个类似Alpha-Go的围棋的AI。<br>![Go](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorGoban.JPG/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorGoban.JPG/300px-</a><br>FloorGoban.JPG)</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In this programming homework, you will develop your own AI agents based on<br>some of the learned AI techniques for Search, Game Playing, and Reinforcement<br>Learning to play a small version of the Go game, called Go-5x5 or Little-Go,<br>that has a reduced board size of 5x5. Your agent will play this Little-Go game<br>against some basic AI agents as well as the agents from your fellow<br>classmates. Your agents will be graded and measured by their performance in<br>these online game “tournaments” on Vocareum.com. Your objective is to develop<br>and train your AI agents to play this Little-Go game as best as possible.</p>
+<h2 id="Game-Description"><a href="#Game-Description" class="headerlink" title="Game Description"></a>Game Description</h2><p>Go is an abstract strategy board game for two players, in which the aim is to<br>surround more territory than the opponent. The basic concepts of Go (Little-<br>Go) are very simple:</p>
+<ul>
+<li>Players: Go is played by two players, called Black and White. </li>
+<li>Board: The Go board is a grid of horizontal and vertical lines. The standard size of the board is 19x19, but in this homework, the board size will be 5x5. </li>
+<li>Point: The lines of the board have intersections wherever they cross or touch each other. Each intersection is called a point. Intersections at the four corners and the edges of the board are also called points. Go is played on the points of the board, not on the squares. </li>
+<li>Stones: Black uses black stones. White uses white stones.<br>The basic process of playing the Go (Little-Go) game is also very simple:</li>
+<li>It starts with an empty board, </li>
+<li>Two players take turns placing stones on the board, one stone at a time, </li>
+<li>The players may choose any unoccupied point to play on (except for those forbidden by the “KO” and “no-suicide” rules). </li>
+<li>Once played, a stone can never be moved and can be taken off the board only if it is captured.<br>The entire game of Go (Little-Go) is played based on two simple rules: Liberty<br>(No-Suicide), and KO. The definitions of these rules are outlined as follows:</li>
+</ul>
+<h3 id="Rule1-The-Liberty-Rule"><a href="#Rule1-The-Liberty-Rule" class="headerlink" title="Rule1: The Liberty Rule"></a>Rule1: The Liberty Rule</h3><p>Every stone remaining on the board must have at least one open point, called a<br>liberty, directly orthogonally adjacent (up, down, left, or right), or must be<br>part of a connected group that has at least one such open point (liberty) next<br>to it. Stones or groups of stones which lose their last liberty are removed<br>from the board (called captured).<br>Based on the rule of liberty, players are NOT allowed to play any “suicide”<br>moves. That is, a player cannot place a stone such that the played stone or<br>its connected group has no liberties, unless doing so immediately deprives an<br>enemy group of its final liberty. In the latter case, the enemy group is<br>captured, leaving the new stone with at least one liberty.<br>Examples of capturing:</p>
+<ul>
+<li>Example 1. The white stone is captured after Black play at position 1, because its directly orthogonally adjacent points are occupied. </li>
+<li>Example 2. The 3 white stones are captured as a connected group. </li>
+<li>Example 3. The two groups of white stones are captured. </li>
+<li>Example 4 (Special example). This example illustrates the rule that a capturing stone need not have a liberty until the captured stones are removed.</li>
+</ul>
+<h3 id="Rule-2-The-“KO”-Rule"><a href="#Rule-2-The-“KO”-Rule" class="headerlink" title="Rule 2: The “KO” Rule"></a>Rule 2: The “KO” Rule</h3><p>For the position shown on the left board above, Black can capture the stone by<br>a play at position a. The resulting position is shown on the right board<br>above. Without a KO rule, in this position White could recapture the stone at<br>position b, reverting to the position shown on the left, and then Black could<br>also recapture. If neither player gave way, then we would have Black a, White<br>b, Black a, White b, …, repeated ad infinitum, stalling the progress of the<br>game. This situation is known as KO.<br>The KO rule resolves the situation: If one player captures the KO, the<br>opponent is prohibited from recapturing the KO immediately.</p>
+<ul>
+<li>Example. Given the initial status on the left below, white player puts a stone at position 1, which captures a black stone. Black stone cannot be placed at position 2 immediately after it’s captured at this position. Black must play at a different position this turn. Black can play at position 2 the next turn if this position is still not occupied. </li>
+<li>More examples. KOs need not occur only in the center of the board. They can also show up at the sides or corners of the board, as shown in the diagram below.</li>
+</ul>
+<h3 id="Komi"><a href="#Komi" class="headerlink" title="Komi"></a>Komi</h3><p>Because Black has the advantage of playing the first move, awarding White some<br>compensation is called Komi, which gives White a compensation of score at the<br>end of the game. In this homework (a board size of 5x5), Komi for White player<br>is set to be 5&#x2F;2 &#x3D; 2.5.</p>
+<h3 id="Passing"><a href="#Passing" class="headerlink" title="Passing"></a>Passing</h3><p>A player may waive his&#x2F;her right to make a move, called passing, when<br>determining that the game offers no further opportunities for profitable play.<br>A player may pass his&#x2F;her turn at any time. Usually, passing is beneficial<br>only at the end of the game, when further moves would be useless or even<br>harmful to a player’s position.</p>
+<h3 id="End-of-Game"><a href="#End-of-Game" class="headerlink" title="End of Game"></a>End of Game</h3><p>A game ends when it reaches one of the four conditions:</p>
+<ul>
+<li>When a player’s time for a single move exceeds a time limit (See Section 6. Notes and Hints). </li>
+<li>When a player makes an invalid move (invalid stone placement, suicide, violate KO rule, etc.). </li>
+<li>When both players waive their rights to move. Namely, two consecutive passes end the game. </li>
+<li>When the game has reached the maximum steps. In this homework (a board size of 5x5), the maximum steps is 5*5-1 &#x3D; 24.</li>
+</ul>
+<h3 id="Winning-Condition"><a href="#Winning-Condition" class="headerlink" title="Winning Condition"></a>Winning Condition</h3><p>There are various scoring rules and winning criteria for Go. But we will adopt<br>the following rules for the scope of this Little-Go project.</p>
+<ul>
+<li>“Partial” Area Scoring: A player’s partial area score is the number of stones that the player has occupied on the board. </li>
+<li>Final Scoring: Black player’s final score is the partial area score, while White player’s final score is the sum of the partial area score plus the score of compensation (Komi). </li>
+<li>Winning Criteria: <ul>
+<li>If a player’s time for a single move exceeds a time limit, s&#x2F;he loses the game. </li>
+<li>If a player makes an invalid move (invalid stone placement, suicide, violate KO rule, etc.), s&#x2F;he loses the game. </li>
+<li>If the game reaches the maximum steps or both players waive their rights to move, the winner is the player that has a higher final score at the end of the game. For example, on the following board at the end of a game, White’s partial area score is 10 and Black’s partial area score is 12 at the end of the game, White is the winner because <code>10 + 2.5 = 12.5 &gt; 12</code> .</li>
+</ul>
+</li>
+</ul>
+<h3 id="Clarification-of-the-Game-Rules"><a href="#Clarification-of-the-Game-Rules" class="headerlink" title="Clarification of the Game Rules"></a>Clarification of the Game Rules</h3><p>This particular set of rules references several popular rule sets around the<br>world, but some changes are made in order to best adapt to this project. For<br>example, the “Full” Area Scoring counts the number of stones that the player<br>has on the board, plus the number of empty intersections surrounded by that<br>player’s stones. Go is a very interesting and sophisticated game, please do<br>some more research if you like.</p>
+<h2 id="Playing-against-Other-Agents"><a href="#Playing-against-Other-Agents" class="headerlink" title="Playing against Other Agents"></a>Playing against Other Agents</h2><p>In this homework, your agent will play against another agent, either created<br>by the TAs, or created by another student in the class.</p>
+<h3 id="Program-Structure"><a href="#Program-Structure" class="headerlink" title="Program Structure"></a>Program Structure</h3><p>Figure 1 shows the basic program structure. There is one game host and two<br>players in each game. The Game Host keeps track of the game process, gets the<br>next move from the players in turn, judges if the proposed move is valid,<br>wipes out the dead stones and finally judges the winner. Each of the two<br>Players must output its next move in an exact given format (in a file called<br>output.txt) with the intended point (row and column) coordinates to the Game<br>Host. The job of a player is very simple: take the previous and current states<br>of the board (in a file called input.txt) from the host, and then output the<br>next move back to the host.</p>
+<h3 id="Rule-Parameters"><a href="#Rule-Parameters" class="headerlink" title="Rule Parameters"></a>Rule Parameters</h3><p>The following parameters are adopted in the scope of this homework project.</p>
+<ul>
+<li>In a board, 0 stands for empty point, 1 stands for Black stone, 2 stands for White stone. </li>
+<li>For visualization, X for Black stone and O for White stone. </li>
+<li>Black always plays first. </li>
+<li>The default board size is 5x5. </li>
+<li>The maximum movement is n <em>n 1 , where n is the size of the game. For example, max movement of a board size 5x5 is 5</em> 5-1&#x3D;24. </li>
+<li>Komi for White player is n&#x2F;2 . For example, Komi of a board size 5x5 is 2.5. If White scores 10 and Black scores 12 at the end of the game, then White is the winner ( <code>10 + 2.5 = 12.5 &gt; 12</code> ).</li>
+</ul>
+<h3 id="The-Game-Board"><a href="#The-Game-Board" class="headerlink" title="The Game Board"></a>The Game Board</h3><p>The host keeps the game board while two players make moves in turn. We will<br>use zero-based, vertical-first, start at the top-left indexing in the game<br>board. So, location 0,0 is the top-left corner of the board; location 0,4 is<br>the top-right corner; location 4,0 is the bottom-left corner, and location 4,4<br>is the bottom-right corner. An example of game state is shown in Figure 2, in<br>which “1” denotes black stones, “2” denotes white stones, and 0 denotes empty<br>positions. For manual players, we visualize the board in which X is black<br>stone and O is white stone.</p>
+<h3 id="Players-and-Game-Host"><a href="#Players-and-Game-Host" class="headerlink" title="Players and Game Host"></a>Players and Game Host</h3><h4 id="AI-Players"><a href="#AI-Players" class="headerlink" title="AI Players"></a>AI Players</h4><p>Different AI Players are available for your agent to play against for the<br>purpose of testing and&#x2F;or grading. Examples of these existing AI players<br>include:</p>
+<ul>
+<li>Random Player: moves randomly. </li>
+<li>Greedy Player: places the stone that can kill the most stones from the opponent. </li>
+<li>Aggressive Player: looks on the next two possible moves and tries to kill the most stones from the opponent. </li>
+<li>Alphabeta Player: use Minimax algorithm (Depth[&#x3D;2; Branching factor[&#x3D;10) with alpha-beta pruning technique. </li>
+<li>QLearningPlayer: use the Q-Learning technique to learn Q values from practice games to make moves intelligently under different game conditions.</li>
+</ul>
+<h4 id="Manual-Player"><a href="#Manual-Player" class="headerlink" title="Manual Player"></a>Manual Player</h4><p>To familiarize yourself with the game rules, you can manually play this game<br>on Vocareum as “Player1” against one chosen agent (e.g., the Random Player)<br>“Player2”. When there is at least one manual player, the game board will be<br>visualized. On vocareum, please click the “Run” button to play YouSelf vs.<br>RandomPlayer game. You are highly encouraged to do so, and hope you may win in<br>the end.</p>
+<h4 id="Your-Programed-Agent-Player"><a href="#Your-Programed-Agent-Player" class="headerlink" title="Your Programed Agent Player"></a>Your Programed Agent Player</h4><p>You will need to write your own agent in this project. Name your agent as<br>my_player.xx, where xx is the conventional extension used in homework 1 (See<br>Section 6 Notes and Hints), and upload your my_player.xx into the work<br>directory on Vocareum. Then, when you click the “Submit” button, your uploaded<br>agent will be called by the Game Host to play against the random player, the<br>greedy player, and the aggressive player. The results of these games will be<br>reported for you to view after these games.</p>
+<h4 id="The-Game-Host"><a href="#The-Game-Host" class="headerlink" title="The Game Host"></a>The Game Host</h4><p>The Game Host integrates Go game with players. During a game play process, the<br>Game Host will do the following steps:<br>Loop until game ends:</p>
+<ul>
+<li>Alter the CurrentPlayer; </li>
+<li>Clean up any input.txt and output.txt in the player’s directory; </li>
+<li>Provide the current and previous game boards by creating a new input.txt (see format below); </li>
+<li>Call the CurrentPlayer’s agent, which reads input.txt and creates a new output.txt; </li>
+<li>Validate the new file output.txt, and process the proposed move; <ul>
+<li>The validity of your move will be checked. If the format of output.txt is incorrect or your move is invalid according to the rules of the game, your agent loses the game.</li>
+</ul>
+</li>
+<li>Check if the game ends. If so, the winning agent will be declared.<br>For testing purposes, You player can play this game on Vocareum against one<br>chosen (The Random Player) AI agent. On vocareum, please click the “Build”<br>button to play YourPlayer vs. RandomPlayer game once you have my_player.xx<br>uploaded into the “work” directory.<br>To help you start, the basic source code (in Python) for playing the Little-Go<br>game (i.e., the host, the random player, and the read and write functions) are<br>available for you to see. You can download them from<br>HW2&#x2F;stage1&#x2F;resource&#x2F;$ASNLIB&#x2F;public&#x2F;myplayer_play onto your local machine and<br>play there. For example, you can</li>
+<li>Duplicate ranndom_player.py and rename one of them to my_player3.py, </li>
+<li>Download build.sh to the same directory, modify line 36: prefix&#x3D;”.&#x2F;“, </li>
+<li>Start a game between two random_players on your machine by the following command. <code>$ sh build.sh</code><br>On Vocareum, you can do the same by copying the random_player.py into your<br>work directory and rename it as my_player3.py, and then click “Build” for the<br>two random_players to play against each other.</li>
+</ul>
+<h2 id="Project-Instructions"><a href="#Project-Instructions" class="headerlink" title="Project Instructions"></a>Project Instructions</h2><h3 id="Task-Description"><a href="#Task-Description" class="headerlink" title="Task Description"></a>Task Description</h3><p>Your task is to implement your agent in my_player.xx. Note that in the grading<br>and&#x2F;or the second stage of competition, your agent will play against the<br>agents from other students or TAs, so it is important that your agent inputs<br>and outputs in the exact same format as specified. Other helper files (either<br>.json or .txt) or scripts are acceptable, such as files to store Q-value<br>tables or other types of helper functions, but they are not required. Please<br>note that only source code files (.java, .py or .cpp) and helper files (.json<br>or .txt) are acceptable.<br>You are required to use the AI techniques you learned from the class for your<br>implementation. In addition to the regular game playing techniques, such as<br>MinMax or Alpha-beta pruning, you are also highly encouraged to use<br>reinforcement learning in this homework in order to win the honorary<br>competition against other students in the second stage. You are encouraged to<br>research other possible methods or Go tactics that may help you defeat your<br>opponent.<br>In your implementation, please do not use any publicly available library calls<br>for minmax, alpha-beta, or Q- Learning. You must implement the algorithms from<br>scratch yourself. Please develop your code yourself and do not copy from other<br>students or from the Internet.</p>
+<h3 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h3><p>There will be 2 stages in this project, the 1st stage is for the course grade,<br>and the 2nd stage is for the competition to win a Google interview or other<br>Prizes (for honorary purpose).</p>
+<h4 id="The-First-Stage-100-pts"><a href="#The-First-Stage-100-pts" class="headerlink" title="The First Stage (100 pts)"></a>The First Stage (100 pts)</h4><p>In the first stage, you will be graded by playing 100 times against each of<br>the four existing AI players (random, greedy, aggressive, and alpha-beta) in<br>the table below. 50 times as Black and 50 times as White. Note that when you<br>click the “submit” button, your agent will play against only the random,<br>greedy, and aggressive agents. The agent alpha-beta is reserved for the<br>grading purpose.<br>Example:</p>
+<ul>
+<li>VS random player: win 95 games out of 100 games 25 pts. </li>
+<li>VS greedy player: win 85 games out of 100 games 15 * 0.85 &#x3D; 12.75 pts </li>
+<li>VS aggressive player: win 80 games out of 100 games 20 * 0.8 &#x3D; 16 pts </li>
+<li>VS alpha-beta player: win 67 games out of 100 games 10 * 0.67 &#x3D; 6.7 pts<br>So the total points for the 1st stage will be: 25 + 12.75 + 16 + 6.7 &#x3D; 60.45<br>pts.</li>
+</ul>
+<h4 id="The-Second-Stage-for-extra-pts"><a href="#The-Second-Stage-for-extra-pts" class="headerlink" title="The Second Stage (for extra pts)"></a>The Second Stage (for extra pts)</h4><p>Students’ agents that <code>get &gt;=80 points</code> will enter the second stage. In the<br>second stage, your agent will compete against other agents that have also<br>entered this stage to win the Google Interview and the honorary prizes.</p>
+<ul>
+<li>Students’ agents will play against each other in the second stage. </li>
+<li>For student A and student B, they will play 11 games. Whoever wins more in the 11 games is the winner of A and B, counted as one WIN for the winning player. </li>
+<li>The extra chance to move first is decided randomly. </li>
+<li>Each student will play with all the other students entering this second stage. </li>
+<li>The student will be ranked according to the WIN counts.</li>
+</ul>
+<h3 id="Input-and-Output-Format"><a href="#Input-and-Output-Format" class="headerlink" title="Input and Output Format"></a>Input and Output Format</h3><p>The format of input and output of your agent must follow the exact same<br>format, otherwise, your agent will never win any game. The input and output<br>format is described as follows. End-of-line character is LF (since Vocareum is<br>a Unix system and follows the Unix convention).<br>Input: Your agent should read input.txt from the current (“work”) directory.<br>The format is as follows:</p>
+<ul>
+<li>Line 1: A value of “1” or “2” indicating which color you play (Black&#x3D;1, White&#x3D;2); </li>
+<li>Line 2-6: Description of the previous state of game board, with 5 lines of 5 values. This is the state after your last move. (Black&#x3D;1, White&#x3D;2, Unoccupied&#x3D;0); </li>
+<li><h1 id="Line-7-11-Description-of-the-current-state-of-game-board-with-5-lines-of-5-values-This-is-the-state-after-your-opponent’s-last-move-Black-1-White-2-Unoccupied-0-At-the-beginning-of-a-game-the-default-initial-values-from-line-2-11-are-0-For-example-input-txt"><a href="#Line-7-11-Description-of-the-current-state-of-game-board-with-5-lines-of-5-values-This-is-the-state-after-your-opponent’s-last-move-Black-1-White-2-Unoccupied-0-At-the-beginning-of-a-game-the-default-initial-values-from-line-2-11-are-0-For-example-input-txt" class="headerlink" title="Line 7-11: Description of the current state of game board, with 5 lines of 5 values. This is the state after your opponent’s last move. (Black&#x3D;1, White&#x3D;2, Unoccupied&#x3D;0); At the beginning of a game, the default initial values from line 2 - 11 are 0.For example:&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;input.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;    "></a>Line 7-11: Description of the current state of game board, with 5 lines of 5 values. This is the state after your opponent’s last move. (Black&#x3D;1, White&#x3D;2, Unoccupied&#x3D;0); At the beginning of a game, the default initial values from line 2 - 11 are 0.<br>For example:<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;input.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;    </h1><h1 id="Output-To-make-a-move-your-agent-should-generate-output-txt-in-the-current-“work”-directory-The-format-of-placing-a-stone-should-be-two-integers-indicating-i-and-j-as-inFigure-2-separated-by-a-comma-without-whitespace-For-example-output-txt-2-3"><a href="#Output-To-make-a-move-your-agent-should-generate-output-txt-in-the-current-“work”-directory-The-format-of-placing-a-stone-should-be-two-integers-indicating-i-and-j-as-inFigure-2-separated-by-a-comma-without-whitespace-For-example-output-txt-2-3" class="headerlink" title="Output: To make a move, your agent should generate output.txt in the current(“work”) directory.The format of placing a stone should be two integers, indicating i and j as inFigure 2, separated by a comma without whitespace.For example:&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;output.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;2,3"></a>Output: To make a move, your agent should generate output.txt in the current<br>(“work”) directory.<br>The format of placing a stone should be two integers, indicating i and j as in<br>Figure 2, separated by a comma without whitespace.<br>For example:<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;output.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>2,3</h1><h1 id="If-your-agent-waives-the-right-to-move-it-should-write-a-“PASS”-all-lettersare-capital-in-output-txt-For-example-output-txt-PASS"><a href="#If-your-agent-waives-the-right-to-move-it-should-write-a-“PASS”-all-lettersare-capital-in-output-txt-For-example-output-txt-PASS" class="headerlink" title="If your agent waives the right to move, it should write a “PASS” (all lettersare capital) in output.txt. For example:&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;output.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;PASS"></a>If your agent waives the right to move, it should write a “PASS” (all letters<br>are capital) in output.txt. For example:<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;output.txt&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>PASS</h1></li>
+</ul>
+<h3 id="About-Stages-and-Your-Agent"><a href="#About-Stages-and-Your-Agent" class="headerlink" title="About Stages and Your Agent"></a>About Stages and Your Agent</h3><p>All students shall submit their one agent named my_player.xxx to Vocareum<br>before the due date and the submitted agent will be used for grading in the<br>1st stage. After the grading in the 1st stage is completed, we will inform all<br>those students whose agent has been advanced into the 2nd stage. At that time,<br>the students who are in the 2nd stage will have a one-time chance if they want<br>to update their agent for the competition before the 2nd stage starts.<br>For both stages, you are free to choose the AI methods you have learned in the<br>class to build your agent. For example, you may choose to best implement the<br>alpha-beta pruning for the 1st stage and then submit a Q-Learning agent for<br>the 2nd stage. Or, you may build the best agent and use it for both stages.<br>To facilitate the learning process of your Q-Learning agent, you may use the<br>Game Host to conduct as many training games as you like to train your<br>Q-Learning agent, and submit the well-trained Q-Learning agent for grading or<br>for competition.</p>
+<h2 id="Notes-and-Hints"><a href="#Notes-and-Hints" class="headerlink" title="Notes and Hints"></a>Notes and Hints</h2><ul>
+<li>Please name your program “my_player.xxx” where ‘xxx’ is the extension for the programming language you choose (“py” for python, “cpp” for C++, and “java” for Java). If you are using C++11, then the name of your file should be “my_player11.cpp” and if you are using python3 then the name of your file should be “my_player3.py”. Please use the programming languages mentioned above for this homework. </li>
+<li>In order to better recognize who you are in the later games, please put your USC id and name as a comment at the first line of your my_player.xxx. The format can be “1234567890:Your Name”. </li>
+<li>To allow grading the whole class in a reasonable amount of time, each program is suggested to finish within 60 minutes ( to complete 300 games against AI players when you click the “submit” button on Vocareum). Please note that running out of time may lead to all points lost. </li>
+<li>In order to avoid infinite loop and other unexpected situations, the maximum time for each move is 10 seconds. Please note that running out of time may lead to points lost for the ongoing game. This doesn’t mean you should fully utilize these 10s. Please note the 60-minute-300-game-per-player policy is on the top of it (when you click “submit”). </li>
+<li>The time limits mentioned above are the actual CPU time on Vocareum. Your local machine may be more powerful, thus faster than Vocareum. It’s highly suggested to make your plan of testing on Vocareum at the later stage of this project. </li>
+<li>Try first to fully understand the game rules before developing your own code. </li>
+<li>There may be a lot of Q&amp;A on Piazza. Please always search for relevant questions before posting a new one. Duplicated questions make everyone’s life hard. </li>
+<li>Some source code (e.g. host.py and random_player.py) are provided for your reference. You are NOT allowed to directly copy&#x2F;use the source code. </li>
+<li>Only submit the source code files (in .java, .py or .cpp) and helper files (if any, in .json or<br>.txt). All other files should be excluded.</li>
+<li>Please submit your homework code through Vocareum ( <a target="_blank" rel="noopener" href="https://labs.vocareum.com/"> https://labs.vocareum.com/ </a> ) under the assignment HW2. Useranme is your email address. Click “forgot password” for the first time login. You should have been enrolled in this course on Vocareum. If not, please post a private question with your email address and USC ID on Piazza so that we will invite you again. </li>
+<li>You can submit your homework code (by clicking the “submit” button on Vocareum) as many times as you want. Only the latest submission will be considered for grading. Late penalty will be applied as specified in the syllabus if your latest submission is after the deadline. </li>
+<li>Every time you click the “submit” button, you can view your submission report to see if your code works, while the grading report will be released after the due date of the project. </li>
+<li>You don’t have to keep the page open while the scripts are running.</li>
+</ul>
+<h2 id="Discussion-and-Feedback"><a href="#Discussion-and-Feedback" class="headerlink" title="Discussion and Feedback"></a>Discussion and Feedback</h2><p>If you have questions about the Little-Go game, the Game Host, or the<br>available AI agents, please feel free to post them on Piazza. However, all<br>students must complete their first and second stage on their own. To be fair<br>for all students, no discussion about implementation details on Piazza for<br>both stages would be allowed. In addition, you should check Piazza frequently<br>for any new announcements for the progress of the project. During the second<br>stage, the teaching staff team may adjust certain parameters of the<br>competition according to the actual situation.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Go_(game"> https://en.wikipedia.org/wiki/Go_(game) </a> ) </li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Rules_of_Go"> https://en.wikipedia.org/wiki/Rules_of_Go </a></li>
+<li><a target="_blank" rel="noopener" href="https://senseis.xmp.net/?BasicRulesOfGo"> https://senseis.xmp.net/?BasicRulesOfGo </a></li>
+<li><a target="_blank" rel="noopener" href="https://senseis.xmp.net/?Ko"> https://senseis.xmp.net/?Ko </a></li>
+</ol>
+<h2 id="Appendix-An-Example-QLearningPlayer-for-the-Game-of-TicTacToe"><a href="#Appendix-An-Example-QLearningPlayer-for-the-Game-of-TicTacToe" class="headerlink" title="Appendix: An Example QLearningPlayer for the Game of TicTacToe"></a>Appendix: An Example QLearningPlayer for the Game of TicTacToe</h2><p>To assist the development of your MinMax&#x2F;Alpha-Beta or your QlearningPlayer<br>for the Little-Go game, we are also providing you with an example for the game<br>of TicTacToe (not the game of Little-Go). In this example, you can see as an<br>example how a QLearning agent is trained and learn how to play the game of<br>Tic-tac-toe. This example is to assist your development only, and feel free to<br>implement your own program in your own way.<br>The source code of this example can be obtained from<br>HW2&#x2F;stage1&#x2F;resource&#x2F;startercode on Vocareum.<br>There are 6 files which are given In this example, and they are:,</p>
+<ul>
+<li>Board.py: tic-tac-toe board, 3 by 3 grid </li>
+<li>RandomPlayer.pyc, SmartPlayer.pyc, PerfectPlayer.pyc (cpython-3.6): think of them as 3 blackboxes. You do not need to know how things work inside of each player, but it may be helpful to know how they behave (see below). </li>
+<li>QLearner.py: Q-Learning Player that has been implemented for your reference. </li>
+<li>TicTacToe.py: where all players will be called to play tic-tac-toe games and where your<br>QLearner will be trained and tested. This is similar to the Game Host in<br>Figure 1 (except not using input.txt and output.txt). To play with the<br>TicTacToe games with these agents, you can run the following command line: <code>$ python3 TicTacToe.py</code><br>The most important functions in QLearner.py include the method move() and<br>learn(). The parameter GAME_NUM is set to be the number of “exercise” games<br>for training the Q-Learner to learn its Q values for the game. Please see the<br>file QLearner.py for these details. Please also read TicTacToe.py for more<br>details about how the methods move(), learn(), and the variable GAME_NUM are<br>used. For example, you would notice that if you set GAME_NUM&#x3D;1000 that would<br>train your Q-Learner to be reasonably good to win some games but not all<br>games. But increasing the number to be GAME_NUM&#x3D;100000 would enable your<br>Q-Learner to learn and become the perfect player for the Tic-Tac-Toe game. You<br>can change the value of GAME_NUM and observe its effects on Q-learning.<br>You may write your own QLearner.py, but no other files in this directory need<br>to be modified. To get familiar with how the games are played, you can change<br>TicTacToe.py and experiment the process as you like. The three available<br>“opponent” agents are:</li>
+<li>RandomPlayer: moves randomly </li>
+<li>SmartPlayer: somehow better than RandomPlayer, but cannot beat PerfectPlayer </li>
+<li>PerfectPlayer: never lose<br>You are free to choose values for all Q-Learning parameters, i.e. the reward<br>values for WIN,DRAW,LOSE, the learning rate alpha, the discount factor gamma,<br>and other initial conditions. Hint: The rewards will only be assigned for the<br>last action taken by the agent. Your Qlearner agent will be called inside<br>TicTacToe.py to first “learn&#x2F;train” itself from a number (set by the parameter<br>GAME_NUM) of training games against other agents, and then, the<br>learned&#x2F;trained agent will be called to play against other agents for<br>competition. Again, please see the details inside the file TicTacToe.py.<br>After you run python3 TicTacToe.py, the game results will be printed out as<br>follows.<br>Finally, you are encouraged to make experiments and improvements of the<br>Q-Learner here in terms of speed and performance, and that will help you to<br>get prepared for building your own Q-Learner agent for the game of Little-Go<br>in the first or the second stage.<br>We wish you the best in this exciting and rewarding project!</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/02/14/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561GoGame/">http://saferman.github.io/2023/02/14/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561GoGame/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/02/15/Vim%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97(%E4%B9%9D)%EF%BC%9A%E5%A4%9A%E7%AA%97%E5%8F%A3%E7%BC%96%E8%BE%91/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Vim实战指南(九)：多窗口编辑">
+                        
+                        <span class="card-title">Vim实战指南(九)：多窗口编辑</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Vim%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97-%E4%B9%9D/">
+                        <span class="chip bg-color">Vim实战指南(九)</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/02/13/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA08Earth'sSurface/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Python代写：CSCA08 Earth&#39;s Surface">
+                        
+                        <span class="card-title">Python代写：CSCA08 Earth&#39;s Surface</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-02-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

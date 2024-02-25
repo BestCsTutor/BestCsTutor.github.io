@@ -1,0 +1,923 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：COMP202 Make A Difference, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个类似Make的命令行工具，功能和Make完全一样，可以根据Makefile进行编译。  
+IntroductionMake is a system utility for building software. After editi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：COMP202 Make A Difference | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：COMP202 Make A Difference</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-05-07
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个类似Make的命令行工具，功能和Make完全一样，可以根据Makefile进行编译。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Make is a system utility for building software. After editing a source file,<br>the programmer runs make on the project. Make examines the modification date-<br>time stamp of the source files and works out what commands need to be executed<br>in order to bring the entire project up to date. Make is more efficient than a<br>shell script that compiles everything, because make won’t recompile source<br>files unnecessarily. However, make has some limitations that can, at times, be<br>frustrating.<br>In this lab assignment, you will develop an implementation of make with a<br>difference. Your make program will still have the basic functionality of make,<br>but it will have some different capabilities that set it apart. Because it is<br>an assignment to be completed in four weeks, there will also be some advanced<br>features of make (particularly the advanced macros) that you do not implement.<br>However, perhaps one day some of the ideas in this lab may be incorporated<br>into make - in that case, your work may help make a difference to make! Even<br>if that never happens, you will learn about system calls, implement some<br>interesting ideas and become an accomplished C systems programmer.<br>Because the program you will develop is a different make, we have named it<br>dmake. When explaining the command line, we will use this name even though you<br>can use any name you wish during your development and testing.</p>
+<h2 id="Overview-and-learning-outcomes"><a href="#Overview-and-learning-outcomes" class="headerlink" title="Overview and learning outcomes"></a>Overview and learning outcomes</h2><p>The primary goal of this lab is for you to gain experience with Unix system<br>calls. For this reason, we will in some cases specify that your program must<br>use a particular system call or one of a group of related system calls. In<br>other cases, we leave it to you to discover the relevant system calls. In all<br>cases, we expect you to read the Unix manual pages as a primary source of<br>information about the parameters and usage of the various system calls. You<br>may access the manual pages on the Internet, but the definitive version for<br>our system is on the system itself and is accessed through the man command.<br>You are responsible to ensure that you are not misled by documentation that<br>may refer to a different operating system.<br>The learning outcomes of this lab include the following:</p>
+<ul>
+<li>Ability to write a significant systems program in C </li>
+<li>Ability to understand Unix man pages and use them as an information source </li>
+<li>Ability to choose systems calls appropriate to a task </li>
+<li>Ability to employ systems calls and library calls to achieve a systems task<br>As with other labs in COMP202, there is an auto-marker for each lab stage that<br>tests your submission, awards a mark and provides feedback. The lab command<br>functions for this lab in the same way as it did for the first lab.</li>
+</ul>
+<h2 id="Incremental-development"><a href="#Incremental-development" class="headerlink" title="Incremental development"></a>Incremental development</h2><p>In this lab you are incrementally developing your implementation of dmake. The<br>features that you develop for stage 1 should remain in your solution for later<br>stages so that your final solution has all the capabilities of all the stages.<br>Instead of having different programs for each stage, you will have one program<br>that behaves differently depending on the command line options. You should<br>periodically test your submissions for later stages as submissions for the<br>earlier stages to ensure that you have not broken the earlier features.</p>
+<h2 id="Fetching-your-lab-stage"><a href="#Fetching-your-lab-stage" class="headerlink" title="Fetching your lab stage"></a>Fetching your lab stage</h2><p>Use the lab command to fetch sample test files for each stage. Refer to this<br>lab specification for the requirements of each lab stage and also to the<br>marking guide that is downloaded with each stage.</p>
+<h2 id="Stage-1-Reading-and-parsing-the-make-file"><a href="#Stage-1-Reading-and-parsing-the-make-file" class="headerlink" title="Stage 1: Reading and parsing the make file"></a>Stage 1: Reading and parsing the make file</h2><p>The first task for dmake is to read the make input file and parse it into an<br>internal representation that can be processed in later stages. To verify that<br>you have parsed the input correctly, you are required to dump the parsed<br>information in a specific debugging syntax.<br>We do not specify the internal representation that you should use, but we<br>encourage good design. Specifically, we encourage simplicity, ease of<br>programming, and ease of future extensions. It is likely that you will use<br>familiar C constructs such as arrays, structs, character strings, and<br>pointers. Your program should contain suitable comments describing the<br>internal representation of the make file.<br>You should also consider Some Important Comments on Code Style and Systems<br>Programming Style guidelines.<br>The system <code>make</code> command reads its input file from <code>Makefile</code> by default.<br>We encourage you to use the system <code>make</code> command to manage your source<br>compilations for this project, so we specify the default input file for <code>dmake</code> as <code>Dmakefile</code> to avoid confusion.<br>The input file is a text file. Some lines of the input file are empty, some<br>are comments, and the remaining lines are (in this stage) rules. Rules<br>commence with a rule header line that defines targets and dependencies. Each<br>rule contains zero or more commands that are to be executed if the rule fires</p>
+<ul>
+<li>i.e. if the targets need to be created or updated.<br>The syntax of each type of line is as follows. The syntax for dmake is similar<br>to make, but is not the same.<ul>
+<li>Continuation of a line is indicated by a backslash () as the last character. Continuation means that the following line is joined to the end of the current line after removing the backslash, and then the result is treated as a single line. There may be multiple lines of continuation. Continuation may be applied to any type of line: command, header or command. </li>
+<li>Empty lines contain only zero or more white-space characters - tabs and&#x2F;or spaces. Empty lines are ignored completely. However, an empty line after a continuation becomes part of the previous line. </li>
+<li>Comment lines have the character ‘#’ as the first non-white-space character on the line. (White-space characters are tab and space). Comment lines are completely ignored by the parser. </li>
+<li>Rule header lines commence with a non-white-space character (other than ‘#’) in the first position of the line, and they have a colon (‘:’) somewhere in the line. The contents of dependency lines are file names. The file name(s) appearing before the colon are target(s) - they are the file(s) that the dmake rule is designed to create. The file names appearing after the colon are the dependencies - the files that are required in order to execute the command(s) that create the target(s). </li>
+<li>Command lines commence with one or more white-space characters (tab or space). Each command line indicates a Unix command that is to be executed. The leading white space should be removed from the command.<br>For example, consider the following Dmakefile:<h1 id="This-is-a-comment"><a href="#This-is-a-comment" class="headerlink" title="This is a comment"></a>This is a comment</h1>project: project.c defs.h<br>gcc -o project project.c</li>
+</ul>
+</li>
+</ul>
+<p>In this simple dmake input file, there is a single comment line and an empty<br>line - both are ignored by the parser. There is also one rule. The rule header<br>indicates that the file project is the target and it depends on project.c and<br>defs.h. The command line provides a gcc command that could be used to create<br>or update the file project from the files project.c and defs.h. In general,<br>rules may have one or more targets, zero or more dependencies and zero or more<br>commands.<br>It is useful for a systems program such as dmake to have a debug option that<br>reports the internal operation of the program. Indeed, the Linux make command<br>has such an option. However, dmake’s debug option (-z) will behave<br>differently. The debug output from dmake will be appropriate to the lab stage<br>specified in the option and specific to the operation of dmake.<br>The download for stage 1 includes several sample dmake folders, and<br>corresponding stage 1 debug output. The dmake files are each in their own<br>subdirectory test1, test2, test3, …; the corresponding debug output files are<br>test1.out, test2.out, test3.out, … and the error files are test1.err,<br>test2.err, test3.err, …. The dmake command for each test case is available as<br>test1.cmd, test2.cmd, test3.cmd, … - a this shows you the command-line options<br>for each test case. Note that test9 is the case where the Dmakefile is missing<br>and an error response is required.<br>Please note the following requirements:</p>
+<ol>
+<li>Use getopt(3) (i.e. getopt as described in section 3 of the Unix manual) to parse the dmake command line. </li>
+<li>The dmake debug option -z accepts a parameter which is the stage number. So, for stage 1 debug output the option is either “-z1” or “-z 1”, because getopt permits both forms. Clearly, this is different than the debug option for the Unix make command. With this option, dmake should print the stage 1 debug output and then exit without error. </li>
+<li>The dmake file name option -f accepts a parameter which is the input file name. Without this option, dmake will read Dmakefile. This option is convenient for testing dmake with several different input files. Your program will be tested both with and without the -f option. </li>
+<li>Your program output needs to match the sample output files except for differences in white spacing (see below). The syntax of the debug output is intended to be simple, but should require your program to parse the input file and accurately report the information that has been extracted. The sample output captures both standard output and standard error. </li>
+<li>It is required that your program parses the input file and produces an internal data structure representing the dmake rules. A program that produces the correct output but does not fully parse the input is not considered a correct solution and will hinder your progress in the future lab stages. Fully parsing the input means: separating the target file names, separating the dependency file names, and removing leading white space from the commands.cd stages&#x2F;stage1 </li>
+<li>Syntax errors in the dmake file should be detected and reported to standard error. The error messages are captured in the appropriate sample output files. </li>
+<li>You may read the dmake file using stdio facilities (such as fopen, fgetc, fgets, etc) but you should handle arbitrarily long lines and arbitrarily large files.<br>Examples:<br>$ dmake -z1<br>This command reads Dmakefile and prints out the stage 1 debug report for that<br>input file.<br>$ dmake -f Dmakefile2 -z1<br>This command reads Dmakefile2 and prints out the stage 1 debug report for that<br>input file.</li>
+</ol>
+<h2 id="Marking"><a href="#Marking" class="headerlink" title="Marking"></a>Marking</h2><p>The auto-marker will test your submission for this stage with the test files<br>provided to you and with additional hidden test files. Some tests will be<br>performed using the -f option and some will be performed by using an input<br>file with the name Dmakefile. Therefore, your program must support both modes<br>of operation. You may assume that the hidden test files have similar features<br>as the test files that are provided to you - for example, instances of<br>comments, of rules with and without commands, and both small and large files,<br>and errors. While there are additional features that are introduced in later<br>stages, your program will never be auto-marked using the -z1 option with those<br>additional features. This means that, in later stages, you can add those<br>features to the -z1 debug output (if you wish) without being concerned about<br>failing the stage 1 tests because those features will not be tested with the<br>-z1 option.<br>When your dmake program is executed with the -z1 option, it should print out<br>the -z1 debugging output and then terminate. It should not continue with stage<br>2 or other additional processing.<br>A detailed marking guide is provided to you when you download the stage.<br>Please note the following:</p>
+<ul>
+<li>Most marks are awarded for correctly passing the test cases that are supplied to you. </li>
+<li>A significant number of marks are awarded for correctly passing the hidden test cases. </li>
+<li>Some marks are awarded for meeting specific programming requirements. In particular, you are expected to use relevant system calls and library routines to assist with the parsing of the input file. Also, you are expected to dynamically allocate memory to store the information that you read from the input file, and the amount of memory used will vary depending on the size of the input file.</li>
+</ul>
+<h2 id="Stage-2-Determining-the-commands-to-be-executed"><a href="#Stage-2-Determining-the-commands-to-be-executed" class="headerlink" title="Stage 2: Determining the commands to be executed"></a>Stage 2: Determining the commands to be executed</h2><p>Each rule header specifies one or more target files and zero or more<br>dependencies. The meaning is the same as in <code>make</code> : If the target file does<br>not exist or if it is older than any of the dependency files then the rule<br>should fire. When the rule fires, the commands in the rule are executed. After<br>executing the commands, the targets will have been updated and this may lead<br>to additional rules firing.</p>
+<h2 id="Stage-3-Executing-commands"><a href="#Stage-3-Executing-commands" class="headerlink" title="Stage 3: Executing commands"></a>Stage 3: Executing commands</h2><p>The primary task of <code>dmake</code> is to execute the commands that will create or<br>update the targets. In this stage you will implement this feature.</p>
+<h2 id="Stage-4-The-difference"><a href="#Stage-4-The-difference" class="headerlink" title="Stage 4: The difference"></a>Stage 4: The difference</h2><p>One of the annoying features of <code>make</code> is that small edits can cause the<br>entire project to be rebuilt. For example, if you edit a comment in a C source<br>file, then that file’s modification time is updated so the file itself is<br>recompiled, then everything that depends on the recompiled object file is also<br>rebuilt even though the object file is actually unchanged. Of course, this<br>behaviour is not incorrect - it merely wastes some time rebuilding parts of<br>the project unnecessarily. For small projects, the impact is not noticeable,<br>but for large projects (such as an OS kernel) it may take a long time to<br>rebuild everything that is potentially affected by the edited file.<br>The difference in <code>dmake</code> is that it is intended to detect trivial changes<br>and suppress unnecessary execution of other rules. This means comparing a new<br>file with the original file, looking for differences and deciding whether to<br>fire other rules based not only on the timestamp but also on the file content<br>differences.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/05/07/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP202MakeADifference/">http://saferman.github.io/2019/05/07/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP202MakeADifference/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/05/12/C%E4%BB%A3%E5%86%99%EF%BC%9ACS3305OperatingSystems/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="C代写：CS3305 Operating Systems">
+                        
+                        <span class="card-title">C代写：CS3305 Operating Systems</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-05-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/05/06/C++%E4%BB%A3%E5%86%99%EF%BC%9ACIS657Nachos/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="C++代写：CIS657 Nachos">
+                        
+                        <span class="card-title">C++代写：CIS657 Nachos</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-05-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

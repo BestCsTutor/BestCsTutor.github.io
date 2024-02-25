@@ -1,0 +1,1010 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CSE340 Type Checker, 留学生CS|辅导|代写">
+    <meta name="description" content="代写一个自定义编程语言的类型检查器，除了常规的类型检查外，还需要对错误、异常进行判断解析。  
+GoalYour goal is to finish an incomplete parser and write a type checker">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CSE340 Type Checker | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CSE340 Type Checker</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-07-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写一个自定义编程语言的类型检查器，除了常规的类型检查外，还需要对错误、异常进行判断解析。  </p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>Your goal is to finish an incomplete parser and write a type checker for a<br>given language. The input to your project will be a program and the output<br>will be either error messages if there is a type mismatch or lists of<br>equivalent types if there is no type mismatch. Your type checker will enforce<br>semantic checks on the input program, and will be described in the following.</p>
+<h2 id="Grammar-Description"><a href="#Grammar-Description" class="headerlink" title="Grammar Description"></a>Grammar Description</h2><pre><code>program → decl body
+decl → type_decl_section var_decl_section
+type_decl_section → TYPE type_decl_list
+type_decl_section → ε
+type_decl_list → type_decl type_decl_list
+type_decl_list → type_decl
+type_decl → id_list COLON type_name SEMICOLON
+type_name → REAL
+type_name → INT
+type_name → BOOLEAN
+type_name → STRING
+type_name → LONG
+type_name → ID
+var_decl_section → VAR var_decl_list
+var_decl_section → ε
+var_decl_list → var_decl var_decl_list
+var_decl_list → var_decl
+var_decl → id_list COLON type_name SEMICOLON
+id_list → ID COMMA id_list
+id_list → ID
+body → LBRACE stmt_list RBRACE
+stmt_list → stmt stmt_list
+stmt_list → stmt
+stmt → while_stmt
+stmt → assign_stmt
+stmt → do_stmt
+stmt → switch_stmt
+while_stmt → WHILE condition body
+assign_stmt → ID EQUAL expr SEMICOLON
+do_stmt → DO body WHILE condition SEMICOLON
+switch_stmt → SWITCH ID LBRACE case_list RBRACE
+case_list → case case_list
+case_list → case
+case → CASE NUM COLON body
+expr → term PLUS expr
+expr → term MINUS expr
+expr → term
+term → factor MULT term
+term → factor DIV term
+term → factor
+factor → LPAREN expr RPAREN
+factor → NUM
+factor → REALNUM
+factor → ID
+condition → ID
+condition → primary relop primary
+primary → ID
+primary → NUM
+primary → REALNUM
+relop → GREATER
+relop → GTEQ
+relop → LESS
+relop → NOTEQUAL
+relop → LTEQ
+</code></pre>
+<p>The tokens used in the grammar description are:<br>    TYPE &#x3D; TYPE<br>    COLON &#x3D; :<br>    SEMICOLON &#x3D; ;<br>    REAL &#x3D; REAL<br>    INT &#x3D; INT<br>    BOOLEAN &#x3D; BOOLEAN<br>    STRING &#x3D; STRING<br>    LONG &#x3D; LONG<br>    VAR &#x3D; VAR<br>    COMMA &#x3D; ,<br>    LBRACE &#x3D; {<br>    RBRACE &#x3D; }<br>    WHILE &#x3D; WHILE<br>    EQUAL &#x3D; &#x3D;<br>    DO &#x3D; DO<br>    SWITCH &#x3D; SWITCH<br>    CASE &#x3D; CASE<br>    PLUS &#x3D; +<br>    MINUS &#x3D; ‐<br>    MULT &#x3D; *<br>    DIV &#x3D; &#x2F;<br>    LPAREN &#x3D; (<br>    RPAREN &#x3D; )<br>    GREATER &#x3D; &gt;<br>    GTEQ &#x3D; &gt;&#x3D;<br>    LESS &#x3D; &lt;<br>    LTEQ &#x3D; &lt;&#x3D;<br>    NOTEQUAL &#x3D; &lt;&gt;<br>    ID &#x3D; letter(letter | digit)*<br>    NUM &#x3D; 0 | (digit digit*)<br>    REALNUM &#x3D; NUM . digit*</p>
+<h2 id="Language-Semantics"><a href="#Language-Semantics" class="headerlink" title="Language Semantics"></a>Language Semantics</h2><p>As can be seen from the grammar, in this language types are first declared,<br>then variables are declared, then the body of the program follows.</p>
+<h3 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h3><p>The language has five built­in types: INT, REAL, BOOLEAN, STRING, and LONG.<br>Programmers can declare types either explicitly or implicitly.</p>
+<ul>
+<li>Explicit types are names that are not built­in types and that have their first appearance in the program as part of the id_list of a type_decl. </li>
+<li>Implicit types are not built­in types and not explicit programmer­declared types. Implicit types have their first appearance as a type_name in a var_decl or a type_decl.</li>
+</ul>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>Consider the following program written in our language:<br>    TYPE<br>      a : INT;<br>      b : a;<br>    VAR<br>      x : b;<br>      y : c;<br>    {<br>      y &#x3D; x;<br>    }<br>—|—<br>There are three types declared by the programmer in this example, a, b, and c,<br>where a and b are explicit types and c is an implicit type.</p>
+<h2 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h2><p>Programmers can declare variables either explicitly or implicitly.</p>
+<ul>
+<li>Explicit variables are declared in an id_list of a var_decl. </li>
+<li>A variable is declared implicitly if it is not declared explicitly but it appears in the program body.</li>
+</ul>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><p>Consider the following program written in our language:<br>    TYPE<br>      a : INT;<br>      b : a;<br>    VAR<br>      x : b;<br>      y : c;<br>    {<br>      y &#x3D; x;<br>      z &#x3D; 10;<br>      w &#x3D; z * 5;<br>    }<br>—|—<br>This program has four variables declared: x, y, z, and w, with x and y<br>explicitly declared and z and w implicitly declared. Note that the implicitly<br>declared variables z and w also have an implicitly declared type.</p>
+<h2 id="Declaration-vs-Use"><a href="#Declaration-vs-Use" class="headerlink" title="Declaration vs. Use"></a>Declaration vs. Use</h2><p>Any appearance of a name (type or variable) in the program is either a<br>declaration or a use.<br>The following lists all possible declarations of a name:</p>
+<ol>
+<li>Any appearance of a name in the (left of COLON) id_list part of a type_decl is a type declaration </li>
+<li>Any appearance of a name in the (left of COLON) id_list part of a var_decl is a variable declaration </li>
+<li>The first appearance of a name in the entire program, if the name appears as type_name in a type_decl </li>
+<li>The first appearance of a name in the entire program, if the name appears as type_name in a var_decl </li>
+<li>The first appearance of a name inside the body of a program is a variable declaration<br>Any other appearance of a name is considered a use of that name.<br>Note that the above definitions exclude the built­in type names.<br>Given the following example (the line numbers are not part of the input):<br>TYPE<br> a : INT;<br> b : a;<br>VAR<br> x : b;<br> y : c;<br>{<br> y &#x3D; x;<br> z &#x3D; 10;<br> w &#x3D; z * 5;<br>}<br>—|—<br>We can categorize all appearances of names as declaration or use:</li>
+</ol>
+<ul>
+<li>Line 2, the appearance of name a is a declaration </li>
+<li>Line 3, the appearance of name b is a declaration </li>
+<li>Line 3, the appearance of name a is a use </li>
+<li>Line 5, the appearance of name x is a declaration </li>
+<li>Line 5, the appearance of name b is a use </li>
+<li>Line 6, the appearance of name y is a declaration </li>
+<li>Line 6, the appearance of name c is a declaration </li>
+<li>Line 8, the appearance of name y is a use </li>
+<li>Line 8, the appearance of name x is a use </li>
+<li>Line 9, the appearance of name z is a declaration </li>
+<li>Line 10, the appearance of name w is a declaration </li>
+<li>Line 10, the appearance of name z is a use</li>
+</ul>
+<h2 id="Type-System"><a href="#Type-System" class="headerlink" title="Type System"></a>Type System</h2><p>Our language uses structural equivalence for checking type equivalence.<br>Implicit types (in variable declarations or on implicitly declared variables)<br>will be inferred from the usage (in a simplified form of Hindley­Milner type<br>inference).<br>Here are all the type rules&#x2F;constraints that your type checker will enforce<br>(constraints are labeled from C1 to C5 for reference):</p>
+<ul>
+<li>C1: The left hand side of an assignment should have the same type as the right hand side of that assignment </li>
+<li>C2: The operands of an operation (PLUS, MINUS, MULT, and DIV) should have the same type (it can be any type, including STRING and BOOLEAN) </li>
+<li>C3: The operands of a relational operator (see relop in grammar) should have the same type (it can be any type, including STRING and BOOLEAN ) </li>
+<li>C4: condition should be of type BOOLEAN </li>
+<li>C5: The variable that follows the SWITCH keyword in switch_stmt should be of type INT </li>
+<li>The type of an expr is the same as the type of its operands </li>
+<li>The result of p1 relop p2 is of type BOOLEAN (assuming that p1 and p2 have the same type) </li>
+<li>NUM constants are of type INT </li>
+<li>REALNUM constants are of type REAL </li>
+<li>If two types cannot be determined to be the same according to the above rules, the two types are different</li>
+</ul>
+<h2 id="Incomplete-Parser"><a href="#Incomplete-Parser" class="headerlink" title="Incomplete Parser"></a>Incomplete Parser</h2><p>The parser given on the submission site is incomplete, as it is missing an<br>implementation for while_stmt, condition, do_stmt, switch_stmt, case_list, and<br>case.<br>As described in the evaluation section, you must implement parsing for<br>while_stmt, condition, and do_stmt, while switch_stmt, case_list, and case are<br>extra credit (though note that to receive full extra credit, you must<br>implement all of the type checks in addition to the parsing cases.<br>It is strongly recommended that you finish the incomplete parser before<br>implementing the type checking part. You should make sure that your parser<br>generates a syntax error message if the input program does not follow the<br>proper syntax. We recommend that you check your code on the submission website<br>to make sure it passes all the syntax error test cases before moving on to<br>implementing the type checking part.</p>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>Your program will check for the following semantic errors and output the<br>correct message when it encounters that error. Note that there will only be at<br>most one error per test case.</p>
+<h3 id="Duplication-Errors"><a href="#Duplication-Errors" class="headerlink" title="Duplication Errors"></a>Duplication Errors</h3><ul>
+<li>Errors involving programmer­defined types: <ul>
+<li>Programmer­defined type declared more than once: <ul>
+<li>Explicit type redeclared explicitly (error code 1.1)<br>An explicitly declared type can be declared again explicitly by appearing as<br>part of an id_list in a type declaration.</li>
+<li>Implicit type redeclared explicitly (error code 1.2)<br>An implicitly declared type can be declared again explicitly by appearing as<br>part of an id_list in a type declaration.</li>
+</ul>
+</li>
+<li>Programmer­defined type redeclared as variable (error code 1.3)<br>If a previously declared type appears again in an id_list of a variable<br>declaration, the type is redeclared as a variable.</li>
+<li>Programmer­defined type used as variable (error code 1.4)<br>If a previously declared type appears in the body of the program, the type is<br>used as a variable.</li>
+</ul>
+</li>
+<li>Errors involving variable declarations: <ul>
+<li>Variable declared more than once (error code 2.1)<br>An explicitly declared variable can be declared again explicitly by appearing<br>as part of an id_list in a variable declaration.</li>
+<li>Variable used as a type (error code 2.2)<br>If an explicitly declared variable is used as type_name in a variable<br>declaration, the variable is used as a type.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Duplication-Error-Output-Format"><a href="#Duplication-Error-Output-Format" class="headerlink" title="Duplication Error Output Format"></a>Duplication Error Output Format</h3><p>For these errors, you should output one line in the following format:<br>    ERROR CODE <code> <symbol_name></p>
+<h3 id="Type-Mismatch"><a href="#Type-Mismatch" class="headerlink" title="Type Mismatch"></a>Type Mismatch</h3><p>If any of the type constraints (listed in the Type System section above) is<br>violated in the input program, then the output of your program should be:<br>    TYPE MISMATCH <line_number> <constraint></p>
+<h3 id="No-Semantic-Errors"><a href="#No-Semantic-Errors" class="headerlink" title="No Semantic Errors"></a>No Semantic Errors</h3><p>If there are no semantic errors in the program, then your program should<br>output lists of types and variables that are type­equivalent. The symbols<br>should be listed in the order they appear in the program and built­in types<br>should be listed first in the following order: BOOLEAN, INT, LONG, REAL,<br>STRING. Each list must be on a single line of the output and each symbol in<br>the list should be separated by a single space character. Each list must be<br>terminated by a # character.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/07/21/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE340TypeChecker/">http://saferman.github.io/2022/07/21/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSE340TypeChecker/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/07/23/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACS111981HousingVirginia/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="JavaScript代写：CS111981 Housing Virginia">
+                        
+                        <span class="card-title">JavaScript代写：CS111981 Housing Virginia</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/07/20/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACSE154Pokedex/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="JavaScript代写：CSE154 Pokedex">
+                        
+                        <span class="card-title">JavaScript代写：CSE154 Pokedex</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,943 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CIS2750 SVG Parser, 留学生CS|辅导|代写">
+    <meta name="description" content="使用libxml2对  SVG  文件进行解析，提取文件中关于Group, Rectangle, Circle, Path以及Attribute的信息。![SVG](https://upload.wikimedia.org/wikipedi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CIS2750 SVG Parser | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CIS2750 SVG Parser</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-01-30
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用libxml2对 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" title="SVG"> SVG </a> 文件进行解析，提取文件中关于Group, Rectangle, Circle, Path以及Attribute的信息。<br>![SVG](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bitmap_VS_SVG.svg/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bitmap_VS_SVG.svg/300px-</a><br>Bitmap_VS_SVG.svg.png)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>This is Module 1 of Assignment 1. It will focus on creating a set of structs<br>representing SVG files using libxml2. Module 2 will describe a set of accessor<br>and search functions that will accompany the parser and the structs. Module 2<br>may also contain additional submission details.</p>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>In this assignment, you need to implement a library to parse the SVG files.<br>SVG is one of the most common vector graphics formats, and is supported by<br>every Web browser.<br>The link to the format description is posted in the Assignment 1 description.<br>format before doing the assignment. Make sure you understand the<br>According to the specification, an SVG object contains:</p>
+<ul>
+<li>one or more svg elements </li>
+<li>0 or more groups, which can contain other groups </li>
+<li>a large number of primitives, along with text, colour attributes, fill attributes, etc..<br>Our Assignment 1 parser will assume a somewhat simpler SVG file:</li>
+<li>one svg element </li>
+<li>0 or more groups, which can contain other groups </li>
+<li>rectangles, circles, and paths - no other geometric primitives<br>Read the specification and pay attention to the specification details, e.g.<br>what to do if the attributes x or y are not specified in a circle or<br>rectangle.<br>This structure is represented by the various types in SVGParser.h.<br>The SVG standard uses the common XML language. To help you build the parser,<br>you will use the libxml2 library, once of the most common C XML parsers. It<br>will build an XML tree for you from an SVG file. You will then use it to<br>create an SVGimage struct with all of its components. The XML parser will do<br>most of the heavy lifting for you.<br>The documentation on libxml2 is available here: <a target="_blank" rel="noopener" href="http://www.xmlsoft.org/html/index.html"><br>http://www.xmlsoft.org/html/index.html
+</a> . You can use the sample code to get<br>started, but you must site it in your submission. You cannot use any other<br>sample code.<br>Your assignment will be graded using an automated test suite, so you must<br>follow all requirements exactly, or you will lose marks.</li>
+</ul>
+<h2 id="Required-Functions"><a href="#Required-Functions" class="headerlink" title="Required Functions"></a>Required Functions</h2><p>Read the comments in SVGParser.h carefully. They provide additional<br>implementation details. You must implement every function in SVGParser.h; they<br>are also listed below. If you do not complete any of the functions, you must<br>provide a stub for every one them.<br>Applications using the parser library will include SVGParser.h in their main<br>program. The SVGParser.h header has been provided for you. Do not change it in<br>any way. SVGParser.h is the public “face” our our vector image API. All the<br>helper functions are internal implementation details, and should not be<br>publicly&#x2F; globally visible. When we grade your code, we will use the standard<br>SVGParser.h to compile and run it.<br>If you create additional header files, include them in the c. files that use<br>them.<br>SVG parser functions<br>    SVGimage* createSVGimage(char* fileName)<br>—|—<br>This function does the parsing and allocated a SVG image object. It accepts a<br>filename If the file has been parsed successfully, a pointer to the newly<br>created SVGimage object is returned. If the parsing fails for any reason, the<br>function must return NULL.<br>Parsing can fail for a number of reasons, but libxml hides them from us. The<br>xmlReadFile function will simply return NULL instead of an XML doc if the file<br>is invalid for any reason.<br>    char* SVGimageToString(SVGimage* img)<br>—|—<br>This function returns a humanly readable string representation of the entire<br>vector image object. It will be used mostly by you, for debugging your parser.<br>It must not modify the vector image object in any way. The function must<br>allocate the string dynamically.<br>    Void deleteSVGimage(SVGimage* img);<br>—|—<br>This function deallocates the object, including all of its subcomponents.</p>
+<h2 id="Helper-functions"><a href="#Helper-functions" class="headerlink" title="Helper functions"></a>Helper functions</h2><p>In addition the above functions, you must also write a number of helper<br>functions. We will need to store the types Group, Rectangle, Circle, Path, and<br>Attribute in lists.<br>    void deleteAttribute(void* data);<br>    char* attributeToString(void* data);<br>    int compareAttributes(const void <em>first, const void <em>second);<br>    void deleteGroup(void</em> data);<br>    char</em> groupToString(void* data);<br>    int compareGroups(const void <em>first, const void <em>second);<br>    void deleteRectangle(void</em> data);<br>    char</em> rectangleToString(void* data);<br>    int compareRectangles(const void <em>first, const void <em>second);<br>    void deleteCircle(void</em> data);<br>    char</em> circleToString(void* data);<br>    int compareCircles(const void <em>first, const void <em>second);<br>    void deletePath(void</em> data);<br>    char</em> pathToString(void* data);<br>    int comparePaths(const void *first, const void *second);<br>—|—  </p>
+<h2 id="Additional-guidelines-and-requirements"><a href="#Additional-guidelines-and-requirements" class="headerlink" title="Additional guidelines and requirements"></a>Additional guidelines and requirements</h2><p>In addition, it is strongly recommended that you write additional helpers<br>functions for parsing the file - e.g. creating a Circle, Group, etc. from an<br>xmlNode. You are free to create your additional “helper functions” in a<br>separate .c file, if you find some recurring processing steps that you would<br>like to factor out into a single place.<br>Do not place headers for these additional helper function in SVGParser.h. They<br>must be in a separate header file, since they are internal to your<br>implementation and not for public users of the parser package.<br>For your own test purposes, you will also want to code a main program in<br>another .c file that calls your functions with a variety of test cases,<br>However, you must not submit that file with your assignment. Also, do not put<br>your main() function in SVGParser.h. Failure to do this may cause the test<br>program will fail if you incorrectly include main() in our shared library<br>file; you will lose marks for that, and may get a 0 for the assignment.<br>Your functions are supposed to be robust. They will be tested with various<br>kinds of invalid data and must detect problems without crashing. If your<br>functions encounter a problem, they must free all memory and return.</p>
+<h3 id="Function-naming"><a href="#Function-naming" class="headerlink" title="Function naming"></a>Function naming</h3><p>You are welcome to name your helper functions as you see fit. However, do not<br>put the underscore (_) character at the start of your function names. That is<br>reserved solely for the test harness functions. Failure to do so may result in<br>run-time errors due to name collisions - and a grade of zero (0) as a result.</p>
+<h3 id="Linked-list"><a href="#Linked-list" class="headerlink" title="Linked list"></a>Linked list</h3><p>You are expected to use a linked list for storing various vector image<br>components. You can use the list implementation that I use in the class<br>examples (and that you use for A0). You can also use your own. However, your<br>implementation must be compliant with the List API defined in LinkedListAPI.h.<br>Failure to do so may result in a grade deductions, up to and including a grade<br>of zero.</p>
+<h2 id="Strongly-Recommended-development-path"><a href="#Strongly-Recommended-development-path" class="headerlink" title="(Strongly) Recommended development path"></a>(Strongly) Recommended development path</h2><ol>
+<li>Implement a simple XML parser </li>
+<li>Implement a simple SVGimage parser that that extracts the required property of the SVG image component and a namespace). (an svg </li>
+<li>Add a basic deleteSVGimage functionality and test for memory leaks </li>
+<li>Add a basic SVGimageToString functionality and test for memory leaks </li>
+<li>Add handling of multiple attributes for an svg component<br>* Update deleteSVGimage and SVGimageToString functionality.<br>* Test for memory leaks </li>
+<li>Add handling of one of the geometric primitive types, e.g. Rectangles.<br>* Update deleteSVGimage and SVGimageToString functionality.<br>* Test for memory leaks </li>
+<li>Add handling of Rectangles with attributes </li>
+<li>Add handling of Circles and Paths (one at a time) </li>
+<li>Add handling of Circles and Paths with attributes </li>
+<li>Add handling of Groups<br>* you guessed it<br>* you guessed it </li>
+<li>Add handling of Groups with attributes<br>* Have a beer, and ignore the rest of the assignment.<br>* Just kidding. Yes, keep updating delete&#x2F;toString functions, and testing for leaks </li>
+<li>Implement proper the Module2 functions </li>
+<li>Test for memory leaks</li>
+</ol>
+<h2 id="Important-points"><a href="#Important-points" class="headerlink" title="Important points"></a>Important points</h2><p>Do:</p>
+<ul>
+<li>Do be careful about upper&#x2F;lower case. </li>
+<li>Do include comments with your name and student ID at the top of every file you submit<br>Do not:</li>
+<li>Do not submit SVGParser.h or LinkedListAPI.h. If they are submitted, they will be overwritten. </li>
+<li>Do not change the given typedefs or function prototypes in SVGParser.h </li>
+<li>Do not hardcode any path or directory information into #include statements, e.g. <code>#include &quot;../include/SomeHeader.h</code></li>
+<li>Do not submit any main() functions </li>
+<li>Do not use exit() function calls anywhere in your code. Since you’re writing a library, it must always return the control to the caller using the return statement </li>
+<li>Do not exit the program from one of the parser functions if a problem is encountered, return an error value instead. </li>
+<li>Do not print anything to the command line. </li>
+<li>Do not assume that your pointers are valid. Always check for NULL pointers in function arguments.<br>Failure to follow any of the above points may result in loss of marks, or even<br>a zero for the assignment if they cause compiler errors with the test harness.</li>
+</ul>
+<h2 id="Submission-structure"><a href="#Submission-structure" class="headerlink" title="Submission structure"></a>Submission structure</h2><p>The submission must have the following directory structure:<br>    assign1&#x2F;        - contains the Makefile file.<br>    assign1&#x2F;bin     - should be empty, but this is where the Makefile will place the shared lib files. Note: be careful if you use Git, since it can ignore empty directories, and mess up your submission.<br>    assign1&#x2F;src     - contains SVGParser.c , LinkedListAPI.c, and your additional source files.<br>    assign1&#x2F;include - contains your additional headers. Do not submit SVGParser.h and LinkedListAPI.h.</p>
+<h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h3><p>You will need to provide a Makefile with the following functionality:</p>
+<ul>
+<li>make parser creates a shared library libsvgparse.so in assign1&#x2F;bin </li>
+<li>make clean removes all .o and .so files</li>
+</ul>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Your code will be tested by an automated harness. You will submit a Makefile,<br>which will be used to produce a shared library. This library will then be<br>tested on the SoCS Linux servers by a precompiled executable file containing<br>the test harness, as well as another executable file with simple memory leak<br>tests. Your library must implement the assignment API exactly as specified, or<br>you will get run-time errors because the executable files will not find<br>functions in the library that they expect.<br>Your code must compile, run, and have all of the specified functionality<br>implemented. Any compiler errors will result in the automatic grade of zero<br>for the assignment.<br>Marks will be deducted for:</p>
+<ul>
+<li>Incorrect and missing functionality </li>
+<li>Deviations from the assignment requirements </li>
+<li>Run-time errors, including infinite loops </li>
+<li>Compiler warnings </li>
+<li>Memory leaks reported by valgrind </li>
+<li>Memory errors reported by valgrind </li>
+<li>Failure to follow submission instructions</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Infinite loops will also result in a grade of zero.<br>Submit your files as a Zip archive using Moodle. File name must be<br>A1FirstnameLastname.zip.<br>Late submissions: see course outline for late submission policies.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/01/30/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2750SVGParser/">http://saferman.github.io/2021/01/30/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2750SVGParser/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/01/31/Hadoop%E4%BB%A3%E5%86%99%EF%BC%9AANLY502LearningMapReduce/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Hadoop代写：ANLY502 Learning MapReduce">
+                        
+                        <span class="card-title">Hadoop代写：ANLY502 Learning MapReduce</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-31
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Hadoop%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Hadoop代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/30/HTML%E4%BB%A3%E5%86%99%EF%BC%9ABN107AudioandVideoEditingandWebsiteCreation/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="HTML代写：BN107 Audio and Video Editing and Website Creation">
+                        
+                        <span class="card-title">HTML代写：BN107 Audio and Video Editing and Website Creation</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/HTML%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">HTML代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

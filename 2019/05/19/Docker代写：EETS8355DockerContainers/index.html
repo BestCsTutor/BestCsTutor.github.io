@@ -1,0 +1,967 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Docker代写：EETS8355 Docker Containers, 留学生CS|辅导|代写">
+    <meta name="description" content="按照步骤，练习部署虚拟化容器  Docker  .
+RequirementVirtualization is very important, useful and widely used technology in DataCenters ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Docker代写：EETS8355 Docker Containers | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Docker代写：EETS8355 Docker Containers</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Docker%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Docker代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-05-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>按照步骤，练习部署虚拟化容器 <a target="_blank" rel="noopener" href="https://www.docker.com/" title="Docker"> Docker </a> .<br><img src="https://www.dev-diaries.com/assets/images/docker.png" alt="Docker"></p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>Virtualization is very important, useful and widely used technology in Data<br>Centers today, and we all know that by now. All the labs we have covered were<br>based on technologies which virtualize the Data Center. We will continue<br>further in exploring few more technologies in the same category. In today’s<br>lab we will discover and learn another widely used technology (which is quite<br>old but has found a new way of implementation and hence gained popularity and<br>wide acceptance) called containerization.<br>We can say VM is an abstraction of physical hardware turning one server into<br>many servers. Hypervisor allows many VM’s to run on single machine and each VM<br>includes a full copy of OS, apps, binaries and libraries<br>Container is a standard unit of software that packages up code and all its<br>dependencies so that application runs quickly and reliably from one computing<br>environment to other. Multiple containers can run on same machine and share<br>operating system kernel with other containers, each running an isolated<br>process in user space.<br>Note: You have to submit screenshots for this lab. Paste screenshots for each<br>and every step you performed including all data files and Dockerfiles.</p>
+<h2 id="Launching-Ubuntu-VM-for-this-Lab"><a href="#Launching-Ubuntu-VM-for-this-Lab" class="headerlink" title="Launching Ubuntu VM for this Lab"></a>Launching Ubuntu VM for this Lab</h2><ul>
+<li>Create a new VM using ubuntu20.4 image file. Name the VM as “your name-Docker”. </li>
+<li>Power on the VM. </li>
+<li>Get the IP address of the VM and access the machine using Putty. </li>
+<li>Change hostname to “yourname-Docker”. </li>
+<li>Add a user with “  “, set password as “Dcne123”, add it to root group, reboot machine and login with new user credentials. Perform entire lab with newly created user. </li>
+<li>Upgrade and update your host. </li>
+<li>Install curl on your machine. (Attach a screenshot showing curl installed)</li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><ol>
+<li>For Docker Installation, we will run a script to install the latest version of Docker.<br>The official installation guide to install Docker CE version on ubuntu: <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/"><br>https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
+</a></li>
+<li>The docker service by default can be run only by root. If a user needs to use docker, it needs to be added in the docker group. This can be done by issuing the command ‘usermod -aG docker user-name’. Add your user in the docker group and verify by issuing command ‘id user-name’. </li>
+<li>Once this is done, reboot the system for the changes to take effect. </li>
+<li>Login back into your host and check which version of docker is running. Issue the command ‘docker info’ to get more detailed information such as number of containers running&#x2F;paused&#x2F;stopped, root directory, server mode, runtime, logging drivers, etc… </li>
+<li>Verify that Docker Engine - Community Edition is installed correctly by verifying its version and running a simplecontainer with the help of an image.</li>
+</ol>
+<h2 id="Launching-a-Docker-Container"><a href="#Launching-a-Docker-Container" class="headerlink" title="Launching a Docker Container"></a>Launching a Docker Container</h2><ol>
+<li>Pull the centos6 and latest ubuntu image from Docker Hub (repository) using the following commands.<br>* a. docker pull centos:centos6<br>* b. docker pull ubuntu:latest </li>
+<li>To list the currently available images, issue ‘docker images’. </li>
+<li>To run a centos container using docker, issue ‘docker run centos’<br>If you check the output carefully, it says that new image ‘centos:latest’ is<br>downloaded from repository. It means if image was not available locally, so<br>Docker pulled image and created a container out of it. Both tasks are<br>performed with a single command “docker run”.</li>
+<li>Run two containers based on ubuntu and centos6 images which were pulled before. Make sure that Ubuntu container has your name. </li>
+<li>Check all containers created? Are they running? Justify. </li>
+<li>Deploy a new centos container which should sleep for 1 minute. And check if the container is running or not? Monitor it for a minute by checking its status again and again. What did you observed and why is the container not running? </li>
+<li>Run a new “nginx” container but this time the container should be in running state and should be seen in ‘docker ps’. </li>
+<li>Deploy a “ubuntu” container and shell session should get attached to the container you deploy. Here you will notice that you are inside your container and can explore or start performing your tasks specific to that container such as creating an application or webserver, etc. Update your container and then do a SSH to your docker host (Ubuntu desktop machine) and run the following command to see the list of containers running: ‘docker ps’ . Issue ‘docker ps -a’ to list the containers which are stopped&#x2F;exited.<br>Once checked all containers, exit out of your “ubuntu” container and return to<br>Docker Host.</li>
+<li>To delete a container, use ‘docker rm container-name_OR_ID’. Delete all containers created. </li>
+<li>Check all images present on host. Images are deleted by running ‘docker rmi image- name_OR_ID’. Delete all images from the host.</li>
+</ol>
+<h2 id="Creating-Image-using-Dockerfile"><a href="#Creating-Image-using-Dockerfile" class="headerlink" title="Creating Image using Dockerfile"></a>Creating Image using Dockerfile</h2><p>A Dockerfile is a text file written in a specific format that docker can<br>understand. It contains all the commands a user could call on the command line<br>to assemble an image. It is in Instruction and Argument format.<br>Dockerfile always begin by defining a base image FROM which the build process<br>starts. Followed by various other instructions (commands) and arguments. In<br>return it provides a new image which can be used for creating docker<br>containers.</p>
+<ol>
+<li>Create a Dockerfile with “busybox” image and name it as ‘busybox:your-name’. Refer attached screenshot. </li>
+<li>In your home directory create a folder named “MyDir” and navigate to it and create 2 blank files named - Container1 and Container2. Then create a Dockerfile with following specifications. </li>
+<li>Run a container using an image you created in step #2. </li>
+<li>Now check contents of “&#x2F;opt&#x2F;source-code&#x2F;“ directory of container you created in last step. Do this without getting inside the container. </li>
+<li>Write the difference between ENTRYPOINT and CMD instruction.</li>
+</ol>
+<h2 id="Modifying-and-Creating-your-own-Image"><a href="#Modifying-and-Creating-your-own-Image" class="headerlink" title="Modifying and Creating your own Image"></a>Modifying and Creating your own Image</h2><ol>
+<li>Get back to your home directory and launch a container based on centos6 image with an interactive terminal attached to it. </li>
+<li>Once inside the container’s shell, install and enable the following packages.<br>* a. initscripts<br>* b. nano<br>* c. python<br>* d. httpd<br>* e. iproute<br>* f. sudo<br>* g. openssh-server<br>* h. telnet<br>* i. enable sshd and httpd service on boot by using command ‘chkconfig sshd on’ and ‘chkconfig httpd on’<br>* j. start sshd and httpd services. </li>
+<li>Once the above packages and services are installed, verify the ssh and http service are running or not. </li>
+<li>exit the container. The container will be stopped. </li>
+<li>Now create a new image from this container and name it as centos6:WEB </li>
+<li>Launch a new container using the newly created image in step #5 of this task. You will notice the new container is already having all packages installed and you just need to enable the services now and check status. Once done, return back to Docker host by exiting the container.<br>This is the most important feature of docker which makes it an integral part<br>of CI&#x2F;CD.</li>
+<li>Containers we launch on a docker host are running inside the hosted network. Services you enable on them are not available over the network. To expose the services running inside a container, we will have to expose the TCP&#x2F;UDP port running on a container to local host. Exit the container you launched in previous step and relaunch it using the following command: <code>docker run -it --name=&quot;test_web&quot; -p 8080:80 centos:WEB /bin/bash</code><br>Once the container is launched, start the httpd service and verify the web<br>page from any browser by accessing your docker host’s IP with port 8080.</li>
+</ol>
+<h2 id="Docker-Container-Networking"><a href="#Docker-Container-Networking" class="headerlink" title="Docker Container Networking"></a>Docker Container Networking</h2><p>When we install Docker, process creates 3 networks automatically: Bridge,<br>None, Host.</p>
+<ul>
+<li>a. Bridge network offer the easiest solution for creating our own Docker network. It is the default network to which containers gets attached upon creation. It is the private internal network created by Docker on host. Containers from this network get an IP address from range of 172.17.x.x . Containers can communicate with each other using IP address. To access containers from this network we need to map their ports to Docker host. </li>
+<li>b. In None Network containers are not attached to any network. Hence it doesn’t have any access to external network or other containers. Containers from this network run in an isolated network. </li>
+<li>c. Host network takes out any type of network isolation between Docker Host and Docker containers. Here we don’t need to map containers to host. We are not able to run multiple containers on same host using same port as all ports are common to all containers in network.<br>You can create multiple networks with Docker and add containers to one or more<br>networks. Any other container you create on a particular network gets<br>immediately connected to all other containers on the same network. The network<br>isolates containers from other (including external) networks. Any containers<br>on the same network may communicate with one another via IP addresses.</li>
+</ul>
+<ol>
+<li>The ‘docker network’ command is used for managing the networks on your docker host. List all the network in the Docker host. </li>
+<li>Inspect the previously created “test_web” container and identify the network attached to it. </li>
+<li>Run a container named “mustangs” using the alpine image and attach it to the none network and verify it. </li>
+<li>Create a new network named”your-name-network”using thebridgedriver. Allocate subnet182.18.0.1&#x2F;24. ConfigureGateway 182.18.0.1. Verify bridge network you created. </li>
+<li>Run a container using ‘docker run -it –network your-name-network centos:centos6 &#x2F;bin&#x2F;bash’ and note down the IP address of the container. Get detached from the container but leave it in running state. </li>
+<li>Run another container using the same command above and check its IP address. See if this container can ping the container created in previous step, also ping from previous container to this container. </li>
+<li>Deploy a mysql database using the “mysql” image and name it as “SMU-DB”. Attach it to the newly created network in step #4 of task E. Set the database password to use “db_pass123”. The environment variable to set is MYSQL_ROOT_PASSWORD. Leave this container running for 10 minutes. </li>
+<li>Again, check the details of the bridge that you created in step #4 of task E. You should see 3 containers attached to this network. </li>
+<li>Delete all containers and images.</li>
+</ol>
+<h2 id="Docker-Volumes"><a href="#Docker-Volumes" class="headerlink" title="Docker Volumes"></a>Docker Volumes</h2><ol>
+<li>Deploy a centos container named DCNE and create a text file containing the text “SMU Rocks” in &#x2F;root directory of the container. Exit the container.<br>Now, start the container and get into the container and check if the data is<br>present or not.</li>
+<li>In step 1 you must have observed that data remains inside container even after exit&#x2F;stopping and starting the container. But it will not be there after deleting the container. There are times when we want to save the data and use it later. Docker Volumes allows us to store data in the Docker host machine and let us access the data even after the container has deleted. Now create a container named DCNE-volume which will store all the data from “&#x2F;root” directory of container to “&#x2F;home&#x2F;  &#x2F;volume” of Docker Host. Again, create a text file named “test” containing the text “SMU Rocks” in &#x2F;root directory of the container. Then exit the container. </li>
+<li>Check if the data reflected in “&#x2F;home&#x2F;  &#x2F;volume” of the host machine. </li>
+<li>There are times when containers have to share data amongst themselves, create a (shared) Docker Volume named “Shared-Volume” and attach it to a new container named ‘DCNE-Shared1’. Use “centos” image to create it. “DCNE-Shared1” will store all the data from “&#x2F;root&#x2F;  -shared” directory to “Shared-Volume”. Once you launch the container, get inside the “&#x2F;root&#x2F;  -shared” directory and create a file named “DATA” which should contain data such as your-name, SMU ID, SMU Email ID. </li>
+<li>Create a new container named ‘DCNE-Shared2’ and attach this container to “Shared-Volume”. Again, use a “centos” image. “Dcne-Shared2” will store all the data from “&#x2F;root&#x2F;  -shared2” directory to “Shared-Volume”. Once you launched the container, get inside the “&#x2F;root&#x2F;  -shared2” directory and create a file named “DATA2” which should contain a line “This data is being shared with DCNE-Shared1”. Also, can you see the file created by DCNE-Shared1? If yes, paste the output. </li>
+<li>Now delete both “DCNE-Shared1” and “DCNE-Shared2” containers. </li>
+<li>Create a new container named “  “. Attach it to “Shared-Volume”. Use a “ubuntu” image to create it. This container will store all the data from its “&#x2F;root&#x2F;“ directory to “Shared-Volume”. Once container is launched, get inside the “&#x2F;root&#x2F;“ directory and check if any data is present or not? What did you observed? Justify. </li>
+<li>Check “Shared-Volume” on the host machine. Check its content if anything is present. </li>
+<li>Delete all images and containers you created till now.</li>
+</ol>
+<h2 id="Docker-Registry"><a href="#Docker-Registry" class="headerlink" title="Docker Registry"></a>Docker Registry</h2><p>Docker Registry is a central repository for all docker images. While pulling<br>image or creating container in all above tasks we haven’t specified the path<br>from where the images should be pulled from, Docker assumed it should be its<br>default repository - Docker Hub, so it pulled them from Docker Hub. If we want<br>image to be pulled from any other repository or account, we can specify same<br>in image path.<br>We can create our own private repository&#x2F;registry as well. And use it to run a<br>container, pull&#x2F;push image, etc.</p>
+<ol>
+<li>Create your own private registry with exposing its API on port 5000 of Docker Host. Run it in detached mode. </li>
+<li>Create a directory named “  “ and then create your own image having a simple instruction for base image (centos) and display “Hello,  “ message. Image should have a name - “smu”. </li>
+<li>Tag newly created image with your private registry URL and then push it to your (local) private registry. </li>
+<li>Remove the locally cached centos and localhost:5000&#x2F;smu images, so that you can test pulling the image from your registry. This does not remove the localhost:5000&#x2F;smu image from your registry.<br>After this step only your private registry container and its associated image<br>should be there.</li>
+<li>Now pull your image from your local registry. </li>
+<li>Now create a container using the image you just pulled from your private registry.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/05/19/Docker%E4%BB%A3%E5%86%99%EF%BC%9AEETS8355DockerContainers/">http://saferman.github.io/2019/05/19/Docker%E4%BB%A3%E5%86%99%EF%BC%9AEETS8355DockerContainers/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Docker%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Docker代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/05/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACMPS101Graph/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="C代写：CMPS101 Graph">
+                        
+                        <span class="card-title">C代写：CMPS101 Graph</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-05-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/05/18/Java%E4%BB%A3%E5%86%99%EF%BC%9AIS4415ClinicAppointmentsSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Java代写：IS4415 Clinic Appointments System">
+                        
+                        <span class="card-title">Java代写：IS4415 Clinic Appointments System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-05-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

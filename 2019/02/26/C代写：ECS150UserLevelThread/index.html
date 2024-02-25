@@ -1,0 +1,927 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：ECS150 User Level Thread, 留学生CS|辅导|代写">
+    <meta name="description" content="代写操作系统中的用户态线程的实现。  
+SpecificationsNote that the specifications for this project are subject to change at anytimefor addi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：ECS150 User Level Thread | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：ECS150 User Level Thread</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-02-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写操作系统中的用户态线程的实现。  </p>
+<h2 id="Specifications"><a href="#Specifications" class="headerlink" title="Specifications"></a>Specifications</h2><p>Note that the specifications for this project are subject to change at anytime<br>for additional clarification.</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The goal of this project is to understand the idea of threads, by implementing<br>a basic user-level thread library for Linux. Your library will provide a<br>complete interface for applications to create and run independent threads<br>concurrently.<br>Similar to existing lightweight user-level thread libraries, your library must<br>be able to:</p>
+<ol>
+<li>Create new execution threads </li>
+<li>Schedule the execution of threads in a round-robin fashion </li>
+<li>Provide a thread synchronization API, namely semaphores </li>
+<li>Be preemptive, that is to provide an interrupt-based scheduler<br>A working example of the thread library can be found on the CSIF.</li>
+</ol>
+<h2 id="Skeleton-code"><a href="#Skeleton-code" class="headerlink" title="Skeleton code"></a>Skeleton code</h2><p>The skeleton code that you are expected to complete is available in the<br>archive uthread.zip. This code already defines most of the prototypes for the<br>functions you must implement, as explained in the following sections.<br>The code is organized in two parts. At the root of the directory, there are<br>some test applications which make use of the thread library. You can compile<br>these applications and run them. In the subdirectory libuthread, there are the<br>files composing the thread library that you must complete. The files to<br>complete are marked with a star (you normally should not have to touch any of<br>the files which are not marked with a star).</p>
+<h2 id="Phase-1-queue-API"><a href="#Phase-1-queue-API" class="headerlink" title="Phase 1: queue API"></a>Phase 1: queue API</h2><p>In this first phase, you must implement a simple FIFO queue. The interface to<br>this queue is defined in libuthread&#x2F;queue.h and your code should be added into<br>libuthread&#x2F;queue.c.<br>The constraint for this exercise is that all operations (apart from the<br>iterate and delete operation) must be O(1). This implies that you must choose<br>the underlying data structure for your queue implementation carefully.</p>
+<h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h3><p>Complete the file libuthread&#x2F;Makefile in order to generate a library archive<br>named libuthread&#x2F;libuthread.a .<br>This library archive must be the default target of your Makefile, because your<br>Makefile is called from the root Makefile without any argument.<br>Note that at first, only the file libuthread&#x2F;queue.c should be included in<br>your library. You will add the other C files as you start implementing them in<br>order to expand the API provided by your library.</p>
+<h3 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h3><p>Add a new test program in the root directory (e.g. test-queue.c) which tests<br>your queue implementation. It is important that your test program is<br>comprehensive in order to ensure that your queue implementation is as<br>resistant as possible. It will ensure that you don’t encounter bugs when using<br>your queue later on.<br>A few tests can be to create queues, enqueue some items, make sure that these<br>items are dequeued in the same order, delete some items, test the length of<br>the queue, etc.<br>For example, make sure to try your implementation doesn’t crash when receiving<br>NULL pointers as arguments:<br>    assert(queue_destroy(NULL) &#x3D;&#x3D; -1);<br>    assert(queue_enqueue(NULL, NULL) &#x3D;&#x3D; -1);<br>—|—  </p>
+<h2 id="Phase-2-thread-API"><a href="#Phase-2-thread-API" class="headerlink" title="Phase 2: thread API"></a>Phase 2: thread API</h2><p>In this second phase, you must implement most of the thread management (some<br>is provided to you for free). The interface to this thread API is defined in<br>libuthread&#x2F;uthread.h and your code should be added into libuthread&#x2F;uthread.c.<br>Note that the thread API is actually composed of two sets: a public API and a<br>private API, as explained below.</p>
+<h3 id="Thread-definition"><a href="#Thread-definition" class="headerlink" title="Thread definition"></a>Thread definition</h3><p>Threads are independent execution flows that run concurrently in the address<br>space of a single process (and thus, share the same heap memory, open files,<br>process identifier, etc.). Each thread has its own execution context, which<br>mainly consists of:</p>
+<ol>
+<li>a state (running, ready, blocked, etc.) </li>
+<li>the set of CPU registers (for saving the thread upon descheduling and restoring it later) </li>
+<li>a stack<br>The goal of a thread library is to provide applications that want to use<br>threads an interface (i.e. a set of library functions) that the application<br>can use to create and start new threads, terminate threads, or manipulate<br>threads in different ways.<br>For example, the most well-known and wide-spread standard that defines the<br>interface for threads on Unix-style operating systems is called POSIX thread<br>(or pthread). The pthread API defines a set of functions, a subset of which we<br>want to implement for this project. Of course, there are various ways in which<br>the pthread API can be realized, and existing libraries have implemented<br>pthread both in the OS kernel and in user mode. For this project, we aim to<br>implement a few pthread functions at user level on Linux.</li>
+</ol>
+<h3 id="Public-API"><a href="#Public-API" class="headerlink" title="Public API"></a>Public API</h3><p>The public API of the thread library defines the set of functions that<br>applications and the threads they create can call in order to interact with<br>the library.<br>From the point of view of applications, threads are designated by a number of<br>type uthread_t. Think of it as the equivalent of pid_t for Unix processes.<br>The first function an application has to call in order to initialize your<br>library is uthread_start(). This function must perform three actions:</p>
+<ol>
+<li>It registers the so-far single execution flow of the application as the idle thread that the library can schedule </li>
+<li>It creates a new thread, the initial thread, as specified by the arguments of the function </li>
+<li>The function finally execute an infinite loop which<br>* When there are no more threads which are ready to run in the system, it stops the idle loop and exits the program.<br>* Or it simply yields to next available thread<br>Once the initial thread created, it can interact with the library to create<br>new threads, exit, yield execution, etc.<br>For this step, we expect the library to be non-preemptive. Threads must call<br>the function uthread_yield() in order to ask the library’s scheduler to<br>schedule the next available thread. In non-preemptive mode, a non-compliant<br>thread that never yields can keep the processing resource for itself.</li>
+</ol>
+<h3 id="Private-API"><a href="#Private-API" class="headerlink" title="Private API"></a>Private API</h3><p>The private API of the thread library defines the set of functions that can<br>only be accessed from the code of the library itself, and not by applications<br>using the library.<br>In order to deal with the creation and scheduling of threads, you first need a<br>data structure that can store information about a single thread. This data<br>structure will likely need to hold, at least, information mentioned above such<br>as the state of the thread (its set of registers), information about its stack<br>(e.g., a pointer to the thread’s stack area), and information about the status<br>of the thread (whether it is running, ready to run, or has exited).<br>This data structure is often called a thread control block (TCB) and will be<br>described by struct uthread_tcb.<br>At this point, the functions defined in the private API could theoretically be<br>only defined in libuthread&#x2F;uthread.c and not exported to the rest of the<br>library. But with the implementation of the semaphore API, semaphores will<br>need to have access to these functions in order to manipulate the thread when<br>necessary.</p>
+<h3 id="Internal-context-API"><a href="#Internal-context-API" class="headerlink" title="Internal context API"></a>Internal context API</h3><p>Some code located in libuthread&#x2F;context.c, and which interface is defined in<br>libuthread&#x2F;context.h, is accessible for you to use. The four functions<br>provided by this library allow you to:</p>
+<ul>
+<li>Allocate a stack when creating a new thread (and conversely, destroy a stack when a thread is deleted) </li>
+<li>Initialize the stack and the execution context of the new thread so that it will run the specified function with the specified argument </li>
+<li>Switch between two execution contexts</li>
+</ul>
+<h3 id="Testing-1"><a href="#Testing-1" class="headerlink" title="Testing"></a>Testing</h3><p>Two applications can help test this phase: - test1: creates a single thread<br>that displays “hello world” - test2: creates three threads in cascade and test<br>the yield feature of the scheduler</p>
+<h2 id="Phase-3-semaphore-API"><a href="#Phase-3-semaphore-API" class="headerlink" title="Phase 3: semaphore API"></a>Phase 3: semaphore API</h2><p>Semaphores are a way to control the access to common resources by multiple<br>threads.<br>Internally, a semaphore has a certain count, that represent the number of<br>threads able to share a common resource at the same time. This count is<br>determined when initializing the semaphore for the first time.<br>Threads can then ask to grab a resource (known as “down” or “P” operation) or<br>release a resource (known as “up” or “V” operation).<br>Trying to grab a resource when the count of a semaphore is down to 0 adds the<br>requesting thread to the list of threads that are waiting for this resource.<br>The thread is put in a blocked state and shouldn’t be eligible to scheduling.<br>When a thread releases a semaphore which count was 0, it checks whether some<br>other threads were currently waiting on it. In such case, the first thread of<br>the waiting list can be unblocked and run.<br>As you can now understand, your semaphore implementation will make use of the<br>functions defined in the private thread API.<br>The interface of the semaphore API is defined in libuthread&#x2F;semaphore.h and<br>your implementation should go in libuthread&#x2F;semaphore.c .</p>
+<h3 id="Testing-2"><a href="#Testing-2" class="headerlink" title="Testing"></a>Testing</h3><p>Three testing programs are available in order to test your semaphore<br>implementation:</p>
+<ul>
+<li>test3: simple test with two threads and two semaphores </li>
+<li>test4: producer&#x2F;consumer exchanging data in a buffer </li>
+<li>test5: prime sieve implemented with a growing pipeline of threads<br>(this test really stresses both the thread management and the semaphore part<br>of the library)</li>
+</ul>
+<h2 id="Phase-4-preemption"><a href="#Phase-4-preemption" class="headerlink" title="Phase 4: preemption"></a>Phase 4: preemption</h2><p>Up to this point, uncooperative threads could keep the processing resource for<br>themselves if they never called uthread_yield() or never blocked on a<br>semaphore.<br>In order to avoid such dangerous behaviour, you will add preemption to your<br>library. The interface of the preemption API is defined in<br>libuthread&#x2F;preempt.h and your code should be added to libuthread&#x2F;preempt.c.<br>The function that sets up preemption, preempt_start(), is already provided for<br>you to call when you start the thread library. This function configures a<br>timer which will fire an alarm (through a SIGVTALRM signal) a hundred times<br>per second.<br>Internally, you must provide a timer handler which will force the currently<br>running thread to yield, so that another thread can be scheduled instead.<br>The other functions that you must implement deal with: - enabling&#x2F;disabling<br>preemption - saving&#x2F;restoring preemption (saving means that the current<br>preemption state must be saved and preemption must be disabled; restoring that<br>the previously saved preemption state must be restored) - checking if<br>preemption is currently disabled</p>
+<h3 id="About-disabling-preemption…"><a href="#About-disabling-preemption…" class="headerlink" title="About disabling preemption…"></a>About disabling preemption…</h3><p>Preemption is a great way to enable reliable and fair scheduling of threads,<br>but it comes with some pitfalls.<br>For example, if the library is accessing sensitive data structures in order to<br>add a new thread to the system and gets preempted in the middle, scheduling<br>another thread of execution that might also manipulate the same data<br>structures can cause the internal share state of the library to become<br>inconsistent.<br>Therefore, when manipulating shared data structures, preemption should<br>probably be temporarily disabled so that such manipulations are guaranteed to<br>be performed atomically.<br>However, avoid disabling preemption each time a thread calls the library. Try<br>to disable preemption only when necessary. For example, the creation of a new<br>thread can be separated between sensitive steps that need to be done<br>atomically and non-sensitive steps that can safely be interrupted and resumed<br>later without affecting the consistency of the shared data structures.<br>A good way to figure out whether preemption should be temporarily disabled<br>while performing a sequence of operations is to imagine what would happen if<br>this sequence was interrupted in the middle and another thread scheduled.<br>As a hint, in the reference implementation, the preempt API is used in the<br>following files:<br>    $ grep -l preempt* libuthread&#x2F;*.c | uniq<br>    libuthread&#x2F;preempt.c<br>    libuthread&#x2F;semaphore.c<br>    libuthread&#x2F;uthread.c<br>    libuthread&#x2F;context.c</p>
+<h2 id="Deliverable"><a href="#Deliverable" class="headerlink" title="Deliverable"></a>Deliverable</h2><h3 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints"></a>Constraints</h3><p>Your library must be written in C, be compiled with GCC and only use the<br>standard functions provided by the GNU C Library. It cannot be linked to any<br>other external libraries.<br>Your source code should follow the relevant parts of the Linux kernel coding<br>style and be properly commented.</p>
+<h3 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h3><p>Your submission should contain, besides your source code, the following files:<br>AUTHORS: full name, student ID and email of each partner, one entry</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/02/26/C%E4%BB%A3%E5%86%99%EF%BC%9AECS150UserLevelThread/">http://saferman.github.io/2019/02/26/C%E4%BB%A3%E5%86%99%EF%BC%9AECS150UserLevelThread/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/03/02/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS4103VerificationConditionGenerator/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Java代写：CS4103 Verification Condition Generator">
+                        
+                        <span class="card-title">Java代写：CS4103 Verification Condition Generator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-03-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/02/25/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP1405Files,Functions,andLists/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：COMP1405 Files, Functions, and Lists">
+                        
+                        <span class="card-title">Python代写：COMP1405 Files, Functions, and Lists</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-02-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

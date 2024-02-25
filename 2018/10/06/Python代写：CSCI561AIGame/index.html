@@ -1,0 +1,914 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CSCI561 AI Game, 留学生CS|辅导|代写">
+    <meta name="description" content="代写游戏AI，用MINIMAX和ALPHABETA算法实现最优策略。  
+Problem Description (Rules of the game)This game is played by two players, on oppos">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CSCI561 AI Game | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CSCI561 AI Game</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-10-06
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写游戏AI，用MINIMAX和ALPHABETA算法实现最优策略。  </p>
+<h2 id="Problem-Description-Rules-of-the-game"><a href="#Problem-Description-Rules-of-the-game" class="headerlink" title="Problem Description (Rules of the game)"></a>Problem Description (Rules of the game)</h2><p>This game is played by two players, on opposite sides of the game board. The<br>game is played on a board of fixed size 8x8. One player has the Star pieces;<br>the other has the Circle pieces. Player Star plays from the bottom of the<br>board to the top (from A to H) and player Circle plays from the top of the<br>board to the bottom (from H to A). The initial state of the board is shown in<br>the figure below.<br>Only the dark squares of the board are used. Players alternate turns. When it<br>is a player’s turn (say player Star’s turn), it can do one of the following:</p>
+<ol>
+<li>Move one of its pieces diagonally to an adjacent unoccupied square on the next row. See figure below. </li>
+<li>If the adjacent square contains an opponent’s piece, and the square immediately beyond it (diagonally) is vacant, the opponent’s piece can be captured (and removed from the game) by jumping over it. See figures below. </li>
+<li>Pass the move to the other player. A player can only pass if it cannot move any of its pieces.<br>Note that no backward movement is allowed in this game. According to the<br>description above, any non-pass move in this game is specified by “{row letter<br>of initial position}{ column number of initial position}-{row letter of final<br>position}{ column number of final position}” of the piece the player chooses<br>to move. For example, “C5-D4” describes a move where a piece has been moved<br>from square C5 to square D4. The pass move is denoted by “pass”.</li>
+</ol>
+<h2 id="Last-Row-Properties"><a href="#Last-Row-Properties" class="headerlink" title="Last Row Properties"></a>Last Row Properties</h2><p>Multiple pieces can be placed on each dark square of the last row (row H for<br>player Star and row A for player Circle), as no valid move is available for<br>pieces located in the last row. See figures below.</p>
+<h2 id="Pass-Move-and-End-of-Game"><a href="#Pass-Move-and-End-of-Game" class="headerlink" title="Pass Move and End of Game"></a>Pass Move and End of Game</h2><p>If one player cannot make a valid move, it must play a “pass” move, which<br>makes no change on the board, and the game goes to the other player’s turn. A<br>player cannot pass when it has at least one valid move.<br>The game ends in two cases:</p>
+<ol>
+<li>When neither player can make a valid move, the game ends. In other words, when a player plays a “pass”, and the other player in response also plays a “pass”, the game ends. </li>
+<li>When the game reaches a state where only one player has pieces on the board.</li>
+</ol>
+<h2 id="Your-Task"><a href="#Your-Task" class="headerlink" title="Your Task"></a>Your Task</h2><p>In this assignment, you will implement the Minimax and Alpha-Beta algorithms<br>to determine the depth-bounded minimax values of given game positions. Your<br>program will take the input from the file “input.txt” and print out its output<br>to the file “output.txt”. Each input file contains a game position (including<br>the board state and the player to move), a search cut-off depth D, the values<br>of board rows, and the name of the algorithm to be used (Minimax or Alpha-<br>Beta). Your program should output the corresponding information after running<br>the specified search algorithm to depth D. That is, the leaf nodes of the<br>corresponding game tree should be either a game position after exactly D moves<br>(alternating between Star and Circle) or an end-game position after no more<br>than D moves.</p>
+<h3 id="Evaluation-function-positional-weights"><a href="#Evaluation-function-positional-weights" class="headerlink" title="Evaluation function: positional weights"></a>Evaluation function: positional weights</h3><p>Each square of the board has a certain strategic value, Wi . We assume all<br>squares of a row have the same value. The figure below shows a possible set of<br>values for the rows. Given the weights of the squares, the evaluation function<br>of a given game position, s, (with respect to a specific player) can be<br>computed.</p>
+<h3 id="Expansion-order-and-Tie-breaking"><a href="#Expansion-order-and-Tie-breaking" class="headerlink" title="Expansion order and Tie breaking"></a>Expansion order and Tie breaking</h3><p>When it is a player’s turn (either Star player or Circle player) to play and<br>it has more than one valid move, you must follow this rule for expanding the<br>moves:<br>First, sort the moves based on the initial position according to the figure<br>below. If two moves have the same initial position, sort them based on the<br>final position according to the figure below. For example, if the valid moves<br>are “C3-D4”, “C3-D2”, “E5-F4”, you should expand them in this order: “E5-F4”,<br>“C3-D2”, “C3-D4”.<br>Ties between the legal moves are also broken by handling the moves in<br>positional order shown in the figure below (that is, first favor squares in<br>upper rows, and in the same row favor squares in the left side). For example,<br>if a player has the three possible moves “C3-D4”, “C3-D2”, and “E5-F4”, and<br>all of them will end up in the same utility for this player, it should choose<br>“E5-F4”.</p>
+<h3 id="File-Formats"><a href="#File-Formats" class="headerlink" title="File Formats"></a>File Formats</h3><p>Input format:<br>[PLAYER] which will be either “Star” or “Circle”.<br>[ALGORITHM] which will either be “MINIMAX” or “ALPHABETA” and determines the<br>algorithm that you must use to come up with next move<br>[DEPTH LIMIT] which is a number up to 10 and determines the maximum depth of<br>your minimax or alpha&#x2F;beta pruning tree<br>[CURRENT BOARD STATE] contains 8 lines where each line includes 8 square<br>indicators separated by a comma “,”. These 8 lines represent the rows of the<br>board from H to A. A square indicator could be “S{i}”, “C{i}”, or “0” where<br>{i} indicates the number of pieces (Star or Circle) at that square, and “0”<br>indicates that no pieces are on that square. Note that only squares of row H<br>(for Star) and row A (for Circle) can have more than one Star or Circle piece,<br>respectively. The initial board state will contain at least one piece for each<br>player. Further, the initial board state may not necessarily happen as a<br>result of playing a game from the beginning.<br>[ROW VALUES] contains one line including 8 increasing numbers separated by a<br>comma “,’. This line indicates the values of rows A to H for player Star and<br>the values of rows H to A for player Circle.<br>Output format:<br>[NEXT MOVE] the next move played by the player [PLAYER]. Remember that the<br>pass move should be denoted by “pass” and any non-pass move in this game<br>should be denoted by “{row letter of initial position}{ column number of<br>initial position}-{row letter of final position}{ column number of final<br>position}” of the piece the player chooses to move. For example, “C5-D4”<br>describes a move where a piece has been moved from square C5 to square D4.<br>[MYOPIC_UTILITY] the instant utility of the player [PLAYER] after playing<br>[NEXT MOVE].<br>[FARSIGHTED_UTILITY] the utility of the player [PLAYER] at the terminal node<br>of the search tree (considering the maximum depth of [DEPTH LIMIT]) for the<br>game under the assumption that both players select moves maximizing their<br>utilities.<br>[NUMBER OF NODES] number of nodes visited during the execution of the<br>algorithm [ALGORITHM]. Note that when you implement either “MINIMAX” or<br>“ALPHABETA” algorithm, it takes a state as an input. Here, you need to count<br>the number of states (or nodes of the tree) your algorithm visits during the<br>execution.<br>Note: there should not be any empty new line after [NUMBER OF NODES] line in<br>the “output.txt” file generated by your code.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Your homework submission will be tested as follows: Your program should take<br>no command-line arguments. It should read a text file called “input.txt” in<br>the current directory that contains a problem definition. It should write a<br>file “output.txt” with your solution. The format for files “input.txt” and<br>“output.txt” is specified below. End-of-line convention is Unix (because<br>Vocareum is a Unix system).<br>During grading, 50 test cases will be used. If your homework submission passes<br>all 50 test cases, you receive 100 points. For each test case that fails, you<br>will lose 2 points.<br>Note that if your code does not compile, or somehow fails to load and parse<br>input.txt, or writes an incorrectly formatted output.txt, or no output.txt at<br>all, or OuTpUt.TxT, you will get zero points.</p>
+<h2 id="Sample-Test-Cases"><a href="#Sample-Test-Cases" class="headerlink" title="Sample Test Cases"></a>Sample Test Cases</h2><p>You are provided with sample test cases and outputs (see below). The goal of<br>the samples is to help you check if you have correctly parsed the input and<br>generated a correctly formatted output. You should not assume that if your<br>program works on the sample test cases it will work on all test cases.</p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><p>Input:<br>    Star<br>    MINIMAX<br>    0,S1,0,0,0,0,0,0<br>    0,0,C1,0,0,0,0,0<br>    0,0,0,S1,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    10,20,30,40,50,60,70,80<br>Output:<br>    F4-H2<br>Clarification (search tree): In the search tree below, the initial state of<br>the board is denoted by a node named “root”. The name of a move is denoted<br>beside the arrows, and the name of the node resulting from a move is denoted<br>by that move.</p>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h3><p>Input:<br>    Star<br>    ALPHABETA<br>    0,S1,0,0,0,0,0,0<br>    0,0,C1,0,0,0,0,0<br>    0,0,0,S1,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    10,20,30,40,50,60,70,80<br>Output:<br>    F4-H2<br>Clarification (search tree):<br>Note that Examples 1 and 2 are the same except for their search algorithms<br>which is MINIMAX for the former and ALPHABETA for the latter. Compare these<br>two examples and observe how alpha-beta pruning eliminated one node from the<br>search tree compared to the search tree of Example 1.</p>
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3"></a>Example 3</h3><p>Input:<br>    Star<br>    MINIMAX<br>    0,S1,0,0,0,0,0,0<br>    S1,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,C1<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    10,20,30,40,50,60,70,80<br>Output:<br>    G1-H2</p>
+<h3 id="Example-4"><a href="#Example-4" class="headerlink" title="Example 4"></a>Example 4</h3><p>Input:<br>    Circle<br>    ALPHABETA<br>    0,S2,0,0,0,0,0,0<br>    S1,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,C1<br>    0,0,0,0,0,0,S1,0<br>    0,0,0,0,0,S1,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    10,20,30,40,50,60,70,80<br>Output:<br>    pass<br>    -290<br>    -300<br>Note that in this case, Circle has no moves available and it has to play<br>“pass”. Even if it had only one valid move, it had to play that one. Hence, in<br>these cases, doing the search seems unnecessary, but you still need to do the<br>search to calculate [FARSIGHTED_UTILITY], that is, the utility of this player<br>at the terminal node of the search tree.</p>
+<h3 id="Example-5"><a href="#Example-5" class="headerlink" title="Example 5"></a>Example 5</h3><p>Input<br>    Star<br>    ALPHABETA<br>    0,C1,0,C1,0,C1,0,C1<br>    C1,0,C1,0,C1,0,C1,0<br>    0,S1,0,S1,0,S1,0,S1<br>    S1,0,S1,0,S1,0,S1,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    0,0,0,0,0,0,0,0<br>    10,20,30,40,52,70,90,1000<br>Output:<br>    pass</p>
+<h2 id="Homework-Rules"><a href="#Homework-Rules" class="headerlink" title="Homework Rules"></a>Homework Rules</h2><ol>
+<li>You must use Python 2.7 to implement your homework assignment. You are allowed to use standard libraries only. You have to implement any other functions or methods by yourself. </li>
+<li>You need to create a file named “hw1cs561s2018.py”. When you submit the homework on labs.vocareum.com, the following commands will be executed: python hw1cs561s2018.py </li>
+<li>Your code must create a file named “output.txt” and print its output there. For each test case, the grading script will put an “input.txt” file in your work folder, runs your program (which reads “input.txt”), and check the “output.txt” file generated by your code. The grading script will replace the files automatically, so you do NOT need to do anything for that part. </li>
+<li>Homework should be submitted through Vocareum. Homework submitted through email, in person during office hours, or through any channel other than Vocareum will not be accepted. Please only upload your code to the “&#x2F;work” directory. Don’t create any subfolder or upload any other files. </li>
+<li>Your program should handle all test cases within a reasonable time. A maximum runtime of 3 minutes per test case will be set on Vocareum. </li>
+<li>You are strongly recommended to submit at least two hours ahead of the deadline, as the submission system around the deadline might be slow and possibly cause late submission. Late submissions will not be graded.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/10/06/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561AIGame/">http://saferman.github.io/2018/10/06/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561AIGame/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/10/12/Java%E4%BB%A3%E5%86%99%EF%BC%9APSA4ModifyingPictures/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Java代写：PSA4 Modifying Pictures">
+                        
+                        <span class="card-title">Java代写：PSA4 Modifying Pictures</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/10/02/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS27355Battleship/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="C++代写：CS27355 Battleship">
+                        
+                        <span class="card-title">C++代写：CS27355 Battleship</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

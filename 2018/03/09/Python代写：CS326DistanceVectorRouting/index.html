@@ -1,0 +1,933 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS326 Distance Vector Routing, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Distance Vector Routing协议，算法使用Bellman-Ford来计算路径。  
+RequirementIn the lectures, you learned about Distance Vector routi">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS326 Distance Vector Routing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS326 Distance Vector Routing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-03-09
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Distance Vector Routing协议，算法使用Bellman-Ford来计算路径。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In the lectures, you learned about Distance Vector routing protocols, one of<br>the two classes of routing protocols. DV protocols, such as RIP, use a fully<br>distributed algorithm that finds shortest paths by solving the Bellman-Ford<br>equation at each node. In this project, you will develop a distributed<br>Bellman-Ford algorithm and use it to calculate routing paths in a network.<br>This project is similar to Project 2, except that we are solving a routing<br>problem, not a switching problem. As we did in Project 2, we will be<br>simulating a small network running the Bellman-Ford algorithm.<br>In “pure” distance vector routing protocols, the hop count (the number of<br>links to be traversed) determines the distance between nodes. However, some<br>distance vector routing protocols that operate at higher levels like BGP must<br>make routing decisions based on business relationships in addition to hop<br>count. These protocols are sometimes referred to as Path Vector protocols. We<br>will explore this by using weighted links (including negatively weighted<br>links) in our network topologies.<br>We can think of Nodes in this simulation as individual Autonomous Systems<br>(ASes), and the weights on the links as a reflection of the business<br>relationships between ASes. Links are directed, originating at one Node and<br>terminating at another.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>You should review some materials on Bellman-Ford. Some resources include:</p>
+<ul>
+<li>Wikipedia </li>
+<li>YouTube<br>You will need to update your student code repository using the following<br>commands in a terminal in the cs-6250-spring-2017 directory:<br>git commit -a -m “Saving work”<br>git pull –rebase</li>
+</ul>
+<h2 id="Project-Layout"><a href="#Project-Layout" class="headerlink" title="Project Layout"></a>Project Layout</h2><p>In the Project-3 directory, you can see quite a few files. They’re described<br>below:</p>
+<ul>
+<li>DistanceVector.py - This is where all your work will be. It is a specialization (subclass) of the Node class that represents a network node (i.e., router) running the Distance Vector algorithm. You will have to implement the algorithm in this file. This is the only file that you need to make any changes to. </li>
+<li>Node.py - Represents a network node, i.e., a router. </li>
+<li>Topology.py - Represents a network topology. Basically it’s a container class for a collection of DistanceVector nodes and the network links between them. </li>
+<li>run_topo.py - A simple “driver” that loads a topology file (see *Topo.txt below), uses that data to create a Topology object containing the network Nodes, and starts the simulation. </li>
+<li>helpers.py - This contains logging functions that implement that majority of the logging code for you. </li>
+<li>*Topo.txt - These are valid topology files that you will pass as input to the run.sh script (see below). </li>
+<li>BadTopo.txt - This is an invalid topology file, provided as an example of what not to do (and so you can see what the program says if you pass it a bad topology). </li>
+<li>output_validator.py - This script can be run on the log output from the simulation to verify that the output file is formatted correctly. It does not verify that the contents are correct, just that the format is correct. If your output contains formatting errors, they will be announced by the validator. If it completes without announcing an error, then your output matches what is expected! </li>
+<li>run.sh - Helper script that launches the simulation on a specified topology and automatically runs the output validator on the log output when the simulation finishes. This script is basically a convenient wrapper for run_topo.py and output_validator.py.<br>There are a few TODOs in DistanceVector.py that you will have to complete:</li>
+</ul>
+<ol>
+<li>Decide on your data structure that each node will use to keep track of path weights (i.e., the distance vector). </li>
+<li>Implement the Bellman-Ford algorithm. Similarly to Project 2, each Node will send out an initial message to it’s neighbors, and develop its view of the rest of the network (weighted distance to other nodes in the topology) by processing messages received from other Nodes (and sending out updates as needed). </li>
+<li>Write a logging function that is specific to your particular data structures. We have provided much of the framework for you to use, along with logging helper files to take care of the bulk of the logging.<br>To run your algorithm on a specific topology, execute the run.sh bash script<br>like so:<br>run.sh *Topo<br>This will execute your implementation of the algorithm in DistanceVector.py on<br>the topology defined in <em>Topo.txt and log the results (per your logging<br>function) to</em> Topo.log . NOTE: You should not include the full filename of the<br>topology when executing the run.sh script. For example, to run the algorithm<br>on topo1.txt you should only specify topo1 as the argument to run.sh .<br>For this project, you will be able to create as many topologies as you wish<br>and share them on Piazza. We encourage that you do share new topologies, and<br>your log outputs to confirm correctness of your algorithm. If there’s a bug<br>with a created topology, you will get an error back when you try to run it.<br>We’ve included four good topologies for you to use in testing and one bad<br>topology so that you can see what will happen with an invalid topology.</li>
+</ol>
+<h2 id="What-topologies-will-and-won’t-look-like"><a href="#What-topologies-will-and-won’t-look-like" class="headerlink" title="What topologies will (and won’t) look like"></a>What topologies will (and won’t) look like</h2><p>We will be using many topologies to test your project. This includes but is<br>not limited to:</p>
+<ol>
+<li>topologies with and without cycles (loops), including odd length cycles </li>
+<li>topologies of varying sizes, including topologies with more than 26 nodes (meaning node names may be longer than 1 character) </li>
+<li>topologies with multiple paths to different nodes </li>
+<li>topologies with positive weights, zero weight, or negative weight </li>
+<li>topologies with negative cycles, meaning a node may reach another at infinitely low cost </li>
+<li>topologies with Nodes that do not have incoming or outgoing links<br>We will NOT test your submission against the following topologies (which means<br>your algorithm does not need to account for them):</li>
+<li>topologies with more than one link from the same origin to the same destination (multi-graphs) </li>
+<li>topologies with portions of the network disconnected from each other (partitioned networks)<br>If you have any other questions about what topologies will and won’t include,<br>please ask on Piazza.</li>
+</ol>
+<h2 id="Key-assumptions-and-clarifications"><a href="#Key-assumptions-and-clarifications" class="headerlink" title="Key assumptions and clarifications"></a>Key assumptions and clarifications</h2><p>In order to avoid confusion, there are some assumptions we will make about<br>behaviors of Nodes in this project:</p>
+<ol>
+<li>The direction of a link indicates how traffic will flow, and two nodes connected with a link may pass messages regardless of that direction. Specifically, if a node A has an incoming link from node B, but has no outgoing link to that node B, node A will still send its distance vector to node B to “advertise” other nodes it can reach. Thus, a Node’s distance vector is comprised of the nodes it can reach via its outgoing links (and a vector to itself of size 0), and it advertises this vector to nodes that can reach it via an incoming link. </li>
+<li>Negative cycles are defined as a series of directed links that originate and terminate at a single node, where the sum of the link weights is less than 0. When negative cycles are present in a topology, it is possible that we will encounter a version of the count-to-infinity problem: where the distance vector from one node to another will continue to decrease by the weight of the negative cycle every few rounds. Your code must be able to detect and label negative cycles in order to terminate. Any node that can reach a destination node and infinitely traverse a negative cycle en route will set the distance to that node to -99. </li>
+<li>Assume for this project that nodes will not advertise the distance to itself as any value less than zero. This reflects that Nodes will not intentionally route its own traffic externally. This is especially relevant when considering negative cycles - a Node will not intentionally route traffic destined for itself through a cycle. </li>
+<li>Continuing point 3 above, a Node will send traffic bound for other destinations through a negative cycle. This means that if one node can reach a destination via an infinite cycle (its vector is -99) then it will advertise that vector to its upstream neighbors. Further, a Node seeing an advertised vector of -99 from a downstream neighbor can assume this means it can reach that same destination at infinitely low cost (-99).</li>
+</ol>
+<h2 id="What-to-turn-in"><a href="#What-to-turn-in" class="headerlink" title="What to turn in"></a>What to turn in</h2><p>You will need to turn in only one file, DistanceVector.py.<br>There are some very important guidelines for this file you must follow:</p>
+<ol>
+<li>Your submission must terminate! If your submission runs indefinitely (i.e. contains an infinite loop) it will not receive full credit. Termination here is defined as self-termination by the process. Manually killing your submission via console commands or interrupts is NOT an acceptable means of termination. </li>
+<li>Remove any print statements from your code before turning it in! Print statements left in the simulation, particularly for inefficient but logically sound implementations, have drastic effects on run-time. Your submission should take well less than 10 seconds to process a topology. If your leave print statements in your code and they adversely affect the grading process, your work will not receive full credit. Feel free to use print statements during the project and during debugging, but please remove them before you submit to T-Square. </li>
+<li>Logging is important for this project! It is the only way that we can verify that your algorithm is running correctly. The output validator will catch most formatting mistakes, but you should inspect your output by hand to make sure it matches the requested format just in case the script missed something. The proper logging format is specified in the TODO comment for logging located in DistanceVector.py .</li>
+</ol>
+<h2 id="Spirit-of-the-Project"><a href="#Spirit-of-the-Project" class="headerlink" title="Spirit of the Project"></a>Spirit of the Project</h2><p>As with Project 2, the goal of this project is to implement a simplified<br>version of a network protocol using a distributed algorithm. This means that<br>your algorithm should be implemented at the network node level. Each network<br>node only knows it’s internal state, and the information passed to it by its<br>direct neighbors.<br>The skeleton code we provide you runs a simulation of the larger network<br>topology. For simplicity, the Node class defines a link to the overall<br>topology. This means it is possible using the provided code for one Node to<br>access another Node’s internal state. This goes against the spirit of the<br>project, and is not permitted.<br>When we grade your code, we will use a special version of Node.py that will<br>have a randomly generated variable name for the topology object, and if you<br>access it directly in order to generate your distance vectors in<br>DistanceVector.py , your code will throw a runtime error, and receive no<br>credit. If you have questions about whether your code is accessing data it<br>should not, please ask on Piazza or during office hours!</p>
+<h2 id="What-you-can-and-cannot-share"><a href="#What-you-can-and-cannot-share" class="headerlink" title="What you can (and cannot) share"></a>What you can (and cannot) share</h2><p>Do not share the content of your DistanceVector.py file with your fellow<br>students, on Piazza, or elsewhere publicly. You may share any log files for<br>any topology, and you may also share new topologies. Additionally, code that<br>you write that is not required for turn-in, like testing suites may be shared.<br>It may be a good idea to share a “correct” logs for a particular topology, if<br>you have one, when you share the code for that topology. When sharing log<br>files, you should leave alphabetization on. This allows your classmates to use<br>the diff tool to see if you are getting the same log outputs as they are.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Grading Note: Zero credit will be given if logging is incorrect. Incorrectly<br>formatted logs will not match properly and fail the autograder, and we will<br>not be manually inspecting incorrectly named&#x2F;formatted&#x2F;etc. logs due to the<br>number of students in the class. Additionally, partial credit will not be<br>awarded to distance vector logs that are mostly correct. If the output<br>contains some paths that are between nodes that are not the shortest available<br>route, then there is an issue with the algorithm with respect to that test<br>case.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/03/09/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS326DistanceVectorRouting/">http://saferman.github.io/2018/03/09/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS326DistanceVectorRouting/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/03/09/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC311HierarchicalRAMBackedFilesystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Operating System代写：CMPSC311 Hierarchical RAM Backed Filesystem">
+                        
+                        <span class="card-title">Operating System代写：CMPSC311 Hierarchical RAM Backed Filesystem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-03-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/03/07/C%E4%BB%A3%E5%86%99%EF%BC%9ACS261MiniELFLoader/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="C代写：CS261 Mini ELF Loader">
+                        
+                        <span class="card-title">C代写：CS261 Mini ELF Loader</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-03-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

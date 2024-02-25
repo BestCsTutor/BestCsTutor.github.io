@@ -1,0 +1,902 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS4640 RC4, 留学生CS|辅导|代写">
+    <meta name="description" content="代写密码算法中的RC4算法，对明文进行加密，并抵御常见攻击，通过测试。  
+ObjectiveFor your previous homework, you have implemented the random one-time pad ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS4640 RC4 | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS4640 RC4</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-05-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写密码算法中的RC4算法，对明文进行加密，并抵御常见攻击，通过测试。  </p>
+<h2 id="Objective"><a href="#Objective" class="headerlink" title="Objective"></a>Objective</h2><p>For your previous homework, you have implemented the random one-time pad and<br>its approximation (i.e., stream cipher) RC4. I have mentioned in class that it<br>is often futile to design or implement cryptographic constructs. This is a<br>sound advice, for most of us, because often in-house designed cryptographic<br>constructs do not have the theoretically proven, rigorous, and well-vetted<br>security assurances that the existing well studied constructs have.<br>Furthermore, implementing an existing construct adds another level of<br>challenge because the security of some of the existing constructs requires<br>carefully chosen parameter values which are not often mentioned in the initial<br>specification. Overall, it is always a good idea to use a well-established<br>cryptographic library which has been vetted by experts and also attackers. The<br>overarching goal of this project is to give you hands-on experience on using<br>cryptographic constructs and libraries.</p>
+<h2 id="Participants"><a href="#Participants" class="headerlink" title="Participants"></a>Participants</h2><p>This is a group project. I highly recommend doing it in a group of two people.<br>If you do it alone, please note that the workload may be high and you will be<br>responsible for the consequences. You can choose your group members.</p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>This project requires you to design and develop a simple but secure password<br>manager with 256-bit security. Please read the security requirement and<br>adversary model section to understand what I mean by a secure password<br>manager.<br>Note that your password manager does not need to auto-fill your password<br>fields in the browser.<br>You will run your password manager from the command line or terminal.</p>
+<h2 id="Adversary-Model"><a href="#Adversary-Model" class="headerlink" title="Adversary Model"></a>Adversary Model</h2><p>You can assume the adversary can read the file your password manager uses to<br>store the username, domain, and password of each account. You can also assume<br>that the adversary may modify the password file (i.e., passwd file) in an<br>arbitrary fashion. You can safely assume that the adversary will not delete<br>the files.</p>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>You are going to provide 3 electronic documents along with your full source<br>code. The first document will state the compilation process of your source<br>code from the terminal or command prompt. The second document will detail your<br>design and your choice of implementationlevel functions and constructs with<br>necessary information. It should also argue how your design provides the<br>security guarantees expected. For instance, what is the format of your<br>password file, and what is your IV length and which functions did you use to<br>generate them? The final document will precisely state the work division among<br>the group members.</p>
+<h2 id="Programming-Languages-allowed"><a href="#Programming-Languages-allowed" class="headerlink" title="Programming Languages allowed"></a>Programming Languages allowed</h2><p>For this programming project, you can use C&#x2F;C++, Java, and Python. Please note<br>that the instructor is not proficient in Python. Hence, the instructor may not<br>be able to provide language level assistance if you are using Python.</p>
+<h2 id="Cryptographic-Libraries-to-use"><a href="#Cryptographic-Libraries-to-use" class="headerlink" title="Cryptographic Libraries to use"></a>Cryptographic Libraries to use</h2><p>Depending on the language of your choice use one of the following<br>cryptographic libraries: C&#x2F;C++ (OpenSSL), Java (BouncyCastle), Python<br>(OpenSSL). For groups using C&#x2F;C++&#x2F;Python on MAC OSX, please use the Common<br>Crypto Library ( <a target="_blank" rel="noopener" href="https://opensource.apple.com//source/CommonCrypto/"> https://opensource.apple.com//source/CommonCrypto/
+</a> ) as it is often<br>difficult to install OpenSSL for MAC OSX.</p>
+<h2 id="Cryptographic-Constructs-to-use"><a href="#Cryptographic-Constructs-to-use" class="headerlink" title="Cryptographic Constructs to use"></a>Cryptographic Constructs to use</h2><p>For all your encryption purposes, please use AES with CTR (counter) mode with<br>256-bit block size. For hashing, you should use SHA512. For HMAC or MAC, you<br>can use any built-in functions provided by the respective cryptographic<br>libraries. When generating keys and IVs, please make sure you use a secure<br>pseudo-random number generators (PRNG) provided by the cryptographic<br>libraries. Please do not use the PRNGs provided by the standard libraries of<br>the language you are using; they are often not secure.</p>
+<h2 id="Functionality-expected-from-your-password-manager"><a href="#Functionality-expected-from-your-password-manager" class="headerlink" title="Functionality expected from your password manager"></a>Functionality expected from your password manager</h2><p>The password manager you are required to design will interact with the user<br>through the standard input. When you first run your password manager, it is<br>going to look for two files named “passwd file” and “master passwd,”<br>respectively, in the same directory, the executable is executing. If it cannot<br>find any of those files, your program will assume that the user has not<br>registered yet, and the password manager is running for the first time. In<br>that case, the user will be given a prompt to submit a master password. After<br>the master password has been obtained from the user, the password manager will<br>generate two files: one file named “passwd file” where it will store all the<br>encrypted account information; the other file named “master passwd” where it<br>will store a 256-byte salt followed by the master password hashed with the<br>salt.<br>After this registration phase, every time you execute the password manager, it<br>is going to first prompt the user for the master password. It will then check<br>whether the password matches according to the salted hash. If it does not<br>match, your program should output the following error message without quote<br>signs in the standard output: “WRONG MASTER PASSWORD!\n”. Note that your<br>program should not recreate either the passwd file or master passwd file after<br>the registration phase.<br>It will then perform an integrity check as to verify that no one has modified<br>the passwd file in an unauthorized fashion. If it fails the integrity check,<br>your program should output the following error message without the quote signs<br>in the standard output: “INTEGRITY CHECK OF PASSWORD FILE FAILED!\n”. If in<br>the case the integrity check passes, your program should not print anything to<br>the standard output.<br>Then your password manager will wait for input commands from the user. The<br>user can pose one of the following commands. When your program receives one of<br>the following commands, it will perform the functions as described below. For<br>processing commands, you may need to create</p>
+<ul>
+<li>check_integrity: Your program should check the integrity of the password file and output either “PASSED!\n” or “FAILED!\n” in the standard output without the quotes. </li>
+<li>register_account: Your program should take as input the username, password, and the domain name, and should store it in the passwd file encrypted. You can safely assume that username, password, and the domain name will have a length less than 80 characters. Note that when you register for a new account, you should re-encrypt the whole passwd file with a new random IV. If you are registering for an account that already exists (if all of the following matches: username, domain), your program should output the following message without quotes in the standard output: “USER ACCOUNT ALREADY EXISTS!\n”. You do not need to print anything when the operation is successful. </li>
+<li>delete_account: Your program should take as input the username, password, and the domain name to delete, and should delete it from the passwd file. Note that when you delete an existing account, you should re-encrypt the whole passwd file with a new random IV. If you are trying to delete an account that does not exist, your program should output the following message without quotes in the standard output: “USER ACCOUNT DOES NOT EXIST!\n”. You do not need to print anything when the operation is successful. </li>
+<li>change_account: Your program should take as input the username, the old password, the new password, and the domain name to delete, and should change the old password with the new password in the passwd file. Note that when you change an existing account, you should re-encrypt the whole passwd file with a new random IV. If you are trying to change the password for an account that does not exist, your program should output the following message without quotes in the standard output: “USER ACCOUNT DOES NOT EXIST!\n”. You do not need to print anything when the operation is successful. </li>
+<li>get_password: Your program should take as input the domain name, and should print the username and the password for that domain obtained from the passwd file. Your program should print the username, password in the following format without quotes in the standard output: “username[SPACE][username][SPACE]password[SPACE][password]\n” where [username], [password], and [SPACE] are the actual username, password, and the space character, respectively. If you are trying to retrieve the password for an account that does not exist, your program should output the following message without quotes in the standard output: “USER ACCOUNT DOES NOT EXIST!\n”.</li>
+</ul>
+<h2 id="Hint-and-Other-Information"><a href="#Hint-and-Other-Information" class="headerlink" title="Hint and Other Information"></a>Hint and Other Information</h2><p>There is a question of how would you connect a master password to an<br>encryption key. There are secure algorithms for generating encryption keys<br>from textual passwords. For instance, you can use PKCS5 PBKDF2 HMAC from<br>OpenSSL. Such functions are available for other libraries too.<br>Please do not use any insecure cryptographic constructs or constructs which<br>have been proven to be insecure, e.g., SHA1, MD5, RC4.<br>Assume all the passwords, domain names, and also the usernames that can be<br>submitted by the user can contain all printable ASCII characters except the<br>space character and ‘!’.</p>
+<h2 id="Security-guarantees-expected-from-your-design"><a href="#Security-guarantees-expected-from-your-design" class="headerlink" title="Security guarantees expected from your design"></a>Security guarantees expected from your design</h2><p>The first security guarantee expected from your design and implementation is<br>the confidentiality guarantee. Precisely, anyone without the correct master<br>password should not be able to know any one of the following information: (1)<br>Which accounts you have registered for; (2) Username of any of the accounts<br>you have registered for; (3) Passwords of any of the registered accounts. This<br>security guarantee dictates that the file in which your password manager<br>stores the password should be encrypted. Note that we want a 256-bit security<br>of our system.<br>The second security requirement your design and implementation should provide<br>is integrity guarantees. More precisely, if anyone has modified your file, you<br>should be able to detect it. This security guarantee dictates that you should<br>use some form of message authentication code (MAC) or Merkle hash tree.<br>Your design does not need to protect the integrity of the contents of the<br>master passwd file. You can assume there is some other way to protect this<br>file.<br>Note that your design does not need to provide freshness guarantees. A<br>password manager with freshness guarantee ensures that if the adversary<br>replaces the current version of your password file with an old version, it<br>will be able to detect it.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/05/13/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4640RC4/">http://saferman.github.io/2018/05/13/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4640RC4/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/05/15/R%E4%BB%A3%E5%86%99%EF%BC%9AFE590RProgramming/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="R代写：FE590 R Programming">
+                        
+                        <span class="card-title">R代写：FE590 R Programming</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-05-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/R%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">R代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/05/06/C%E4%BB%A3%E5%86%99%EF%BC%9AEECS65SegmentIntersectionProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="C代写：EECS65 Segment Intersection Problem">
+                        
+                        <span class="card-title">C代写：EECS65 Segment Intersection Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-05-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

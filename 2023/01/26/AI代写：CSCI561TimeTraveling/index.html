@@ -1,0 +1,921 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CSCI561 Time Traveling, 留学生CS|辅导|代写">
+    <meta name="description" content="使用BFS, UCS以及A*搜索算法，探索时间旅行最短路径的问题。![TimeTraveling](https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Time_dilatio">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CSCI561 Time Traveling | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CSCI561 Time Traveling</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-26
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用BFS, UCS以及A*搜索算法，探索时间旅行最短路径的问题。<br>![Time<br>Traveling](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Time_dilation02.gif/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Time_dilation02.gif/220px-</a><br>Time_dilation02.gif)</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>This is a programming assignment in which you will apply AI search techniques<br>to some future “ <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Time_travel" title="Time Travel"> time traveling </a> “ problems with some limited simplifications. As shown in<br>Figure 1, there are many possible worlds along with the timeline indexed by<br>the years. Each world is a grid of space with (x, y) locations in which your<br>agent can use some elementary actions to move to one of the eight neighboring<br>grid locations. Within a possible grid world, there are some special bi-<br>directional time-traveling channels located at certain locations that will<br>allow your agent to travel in time forward or backward in the history. For<br>example, in Figure 1, there is a time-travel channel located at (x&#x3D;3,y&#x3D;4) in<br>the year 2020 that could allow your agent to time-travel to the future year<br>2023, or vice versa. Similarly, there is a channel at (x&#x3D;9, y&#x3D;7) in the year<br>2020 that could allow your agent to time-travel back to the year 2018, or vice<br>versa.<br>At a special location where there is a time-travel channel, your agent may use<br>an action called “jaunt” to time-travel to a different year in the history at<br>the other end of the channel. To represent your agent’s time-location in the<br>history configuration, we may use the term “year-location.” For example, if<br>your agent is at (year&#x3D;2020, x&#x3D;4, y&#x3D;7), that means your agent is in the year<br>2020 at the grid location (x&#x3D;4, y&#x3D;7). If there is a time-travel channel at<br>your agent’s current year-location, then your agent may choose to jaunt and<br>time-travel. For example, at (2020,3,4), your agent may jaunt to the year-<br>location (2023,3,4). Similarly, jaunting at (2020,9,7) will take your agent<br>back in history to (2018,9,7). Of course, at such a location, your agent may<br>choose not to jaunt but move normally inside the same grid world of the same<br>year. For example, moving north at (2020,3,4) will take your agent to<br>(2020,3,5); moving southwest at (2020,3,4) will result in (2020,2,3); moving<br>southeast at (2020,3,4) will go to (2020,2,5); and moving south at (2020,3,4)<br>will go to (2020,3,3). Notice that if your agent is trying to move outside the<br>grid world, then that action will have no effect and result your agent to stay<br>where it is.<br>Your programming task is as follows. Given three inputs: (1) a time-traveling<br>configuration, such as the one in Figure 1; (2) an initial year-location, and<br>(3) a goal or target year-location, your program must search in the<br>configuration and find the optimal shortest path from the initial year-<br>location to the target year-location, using the elementary move actions and<br>jaunt.<br>Conceptually, the specification of a time-traveling problem is given as a list<br>of max-x, max-y, initial-year-location, target-year-location, plus a list<br>time-travel channels. For example (Note: The exact input format will be given<br>in section 5 and 6 below),<br>    INPUT: 100,100, (2020,1,3), (2023,4,6), [(2020,3,4,2023), (2018,9,7,2020)]<br>is a specification for grid worlds of size 100 x 100, with the initial year-<br>location of (2020,1,3), the target year-location of (2023,4,6), and the two<br>time-travel channels as illustrated in Figure 1. Notice that the number of<br>time-travel channels may vary from one problem to another. This example input<br>indicates that your agent is given a time-travel configuration of grid worlds<br>of size 100x100, plus two time-travel channels as shown in Figure 1, and your<br>agent is required to find the shortest path from the initial year-location<br>(2020,1,3) to the target year-location (2023,4,6). Given such inputs, your<br>program may find and output a shortest path as follows. Notice that every step<br>in your output must be a legal action as specified above (Note: the exact<br>output format will be given in section 5 and 6 below.)<br>    OUTPUT: (2020,1,3), (2020,2,4), (2020,3,4), (2023,3,4), (2023,4,5), (2023,4,6).<br>To assist your programming, you will be provided some sample inputs and<br>outputs (see below). Please understand that the goal of these samples is to<br>check that you can correctly parse the problem definitions and generate a<br>correctly formatted output. The samples are very simple and it should not be<br>assumed that if your program works on the samples it would definitely work on<br>all test cases for grading. There will be more complex test cases and it is<br>your task to make sure that your program will work correctly on any valid<br>input. You are encouraged to design and try your own test cases to check how<br>your program would behave in some complex special cases that you might think<br>of. Since each homework is checked via an automated A.I. script, your output<br>should match the specified format exactly. Failure to do so will most<br>certainly cost some points. The output format is simple and examples are<br>provided. You should upload and test your code on vocareum.com at their<br>terminal window which is a linux-like environment. Please make sure you test<br>your program at the terminal window at vocareum.com before you click the<br>submit button there. You can submit as many times as you like, and the last<br>submission before the due time will be used to grade your results. You may use<br>any of the following programming languages: C++, Java, Python, but Python may<br>be the preferred language to use in today’s large-scale AI program<br>applications.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Your code will be tested and graded as follows: Your program should not<br>require any command-line argument. It should read a text file called<br>“input.txt” in the current directory that contains a problem definition. It<br>should create and write a file “output.txt” with your solution in the same<br>current directory. Format for input.txt and output.txt are specified as in<br>section 5 below, and will be supplemented with some details in section 6. End-<br>of-line character is LF (since vocareum is a Unix system and follows the Unix<br>convention).<br>The grading A.I. script will test your program for 50 test cases for grading<br>as follows:</p>
+<ul>
+<li>Create an input.txt file, and delete any old output.txt file. </li>
+<li>Run your code to create your output.txt file. </li>
+<li>Check correctness of your program’s output.txt file. </li>
+<li>If your outputs for all 50 test cases are correct, you get 100 points. </li>
+<li>If one or more test case fails, you get 50-N points where N is the number of failed test cases.<br>Note that if your code does not compile, or somehow fails to load and parse<br>input.txt, or writes an incorrectly formatted output.txt, or no output.txt at<br>all, or OuTpUt.TxT, you will get zero points. Anything you write to stdout or<br>stderr will be ignored and is ok to leave in the code you submit (but it will<br>likely slow you down). Please test your program on Vocareum’s terminal window<br>with the provided sample files to avoid any problems.</li>
+</ul>
+<h2 id="Project-Description"><a href="#Project-Description" class="headerlink" title="Project Description"></a>Project Description</h2><p>In this project, we twist the problem of path planning a little bit just to<br>give you the opportunity to deepen your understanding of search algorithms by<br>modifying search techniques to fit the criteria of a more realistic<br>application. To give you a realistic context for expanding your ideas about<br>search algorithms, we invite you to take part in a time-traveling mission in<br>the future. The goal of this mission is to send your sophisticated and<br>intelligent agent from a specific year-location to a target year-location. You<br>are invited to develop an algorithm to find the optimal and shortest path and<br>navigate through a complex time-traveling configuration based on a particular<br>objective.<br>We assume a time-travel configuration that is specified by a set of possible<br>grid worlds along the timeline indicated by the year. Every grid world has the<br>same format and is a matrix (X, Y) with H rows (where H is a strictly positive<br>integer) and W columns (W is also a strictly positive integer). For example, a<br>grid world may be a map with W&#x3D;3 columns and H&#x3D;2 rows. By convention, we will<br>use East (E) as the positive direction for X; West (W) as the negative<br>direction of X; North (N) as positive direction for Y; and South (S) as the<br>negative direction for Y. In addition, each possible grid world has a time<br>value specified as a year in the timeline history, as illustrated in Figure 1.<br>The input of your program includes three elements: a time-travel<br>configuration, an initial year-location, and a target year-location, plus<br>perhaps some other quantities that control the quality of the solution. Each<br>possible grid world can be imagined as a surface in a 2-dimensional space. A<br>popular way to represent “time” is to use a year value assigned to each grid<br>world. At each location of a grid world, your agent can move to each of the 8<br>possible neighbor grid locations: North, Northeast, East, Southeast, South,<br>Southwest, West, and Northwest. Actions are assumed to be deterministic and<br>error-free. If your agent’s action is legal, then your agent will always end<br>up at the intended neighbor grid location. If your agent tries to move outside<br>a grid world, the result will be nil and your agent will remain in its current<br>location.<br>In addition to the eight normal move actions, the jaunting action will allow<br>your agent to time-travel to a different year in the history if your agent is<br>located at the same location of a bi-directional time-travel channel. If there<br>is no time-travel channel at the current location, the jaunting action will<br>have no effect and your agent will remain stay at its current location.</p>
+<h2 id="Search-for-the-Optimal-Paths"><a href="#Search-for-the-Optimal-Paths" class="headerlink" title="Search for the Optimal Paths"></a>Search for the Optimal Paths</h2><p>You will write a program that will take an input file that describes the time-<br>travel configuration, the initial year-location, the target year-locations,<br>and characteristics of the agent. For each target year-location, you should<br>find the optimal (shortest) path from the initial year-location to that target<br>year-location. A path is composed of a sequence of legal moves. Each legal<br>move consists of moving the agent to one of its 8 neighbors in the same grid<br>world in the current year, or a jaunting action through a time-travel channel<br>at the current location.<br>Your agent must search through all possible paths of normal and time-travel<br>movements and find the shortest path to travel from the initial year-location<br>to the target year-location, and then output the results. Ideally, your agent<br>can go anywhere in the space-time configuration, and usually the shortest path<br>is defined as the optimal path.<br>To find the solution you will use the following algorithms:</p>
+<ul>
+<li>Breadth-first search (BFS) </li>
+<li>Uniform-cost search (UCS) </li>
+<li>A* search (A*).<br>Your algorithm should return an optimal path, that is, with shortest possible<br>operational path length. Operational path length is further described below<br>and is not equal to geometric path length as per the specifications given<br>ahead. If an optimal path cannot be found, your algorithm should return “FAIL”<br>as further described below.<br>To help us distinguish between your three algorithm implementations, you must<br>follow the following conventions for computing operational path length:</li>
+<li>Breadth-first search (BFS)<br>In BFS, each move from one location to any of its 8 neighbors counts for a<br>unit path cost of 1. You do not need to worry about the fact that moving<br>diagonally (e.g., Northeast) actually is a bit longer than moving along the<br>North to South or East to West directions. So, any allowed move from one<br>location to an adjacent location costs 1. A jaunting action will cost 1 as<br>well regardless of the size of the jump in time.</li>
+<li>Uniform-cost search (UCS)<br>When running UCS, you should compute unit path costs in 2D. Let us assume that<br>a location’s center coordinates projected to a 2D ground plane are spaced by a<br>2D distance of 10 North-South and East-West. That is, a North or South or East<br>or West move from a grid location to one of its 4-connected straight neighbors<br>incurs a unit path cost of 10, while a diagonal move to a neighbor incurs a<br>unit path cost of 14 as an approximation to 10 when running UCS. As usual, a<br>jaunting action will cost the number of years it time-travels.</li>
+<li>A* search (A*).<br>When running A*, you should compute an approximate integer unit path cost of<br>each move as in the UCS case (unit cost of 10 when moving North to South or<br>East to West, and unit cost of 14 when moving diagonally). A jaunting action<br>will cost the number of years it time-travels. Notice that for A*, you need to<br>design an admissible heuristic for A* for this problem.<br>Input: The file input.txt in the current directory of your program will be<br>formatted as follows:</li>
+<li>First line: Instruction of which algorithm to use, as a string: BFS, UCS or A* </li>
+<li>Second line: Two strictly positive 32-bit integers separated by one space character, for “W H” the number of columns (width) and rows (height) for all grid worlds. </li>
+<li>Third line: Three positive 32-bit integers separated by a space character, “Year X Y” for the initial year-location, where <code>0 ≤ X ≤ W-1</code> and <code>0 ≤ Y ≤ H-1</code> . That is, we use 0-based indexing into a grid world: X increases when moving east, Y increases when moving north, and (0,0) is the southwest corner of the grid world. </li>
+<li>Fourth line: Three positive 32-bit integers separated by a space character, “Year X Y” for the target year-location, where <code>0 ≤ X ≤ W-1</code> and <code>0 ≤ Y ≤ H-1</code> . That is, we use 0-based indexing into a grid world: X increases when moving east, Y increases when moving north, and (0,0) is the southwest corner of the grid world. </li>
+<li>Fifth line: A strictly positive 32-bit integer N, indicating the number of time-travel channels in the configuration. </li>
+<li>Next N lines:<br>Four positive 32-bit integers separated by one space character, for “Year X Y<br>Year”, specifying the coordinates of the time-travel channel and the two years<br>at the ends of the channel. Again, we <code>have 0 ≤ X ≤ W-1</code> , <code>0 ≤ Y ≤ H-1</code> ,<br>and 0-based indexing into the grid worlds.<br>For example:<br>A*<br>100 200<br>2020 8 12<br>3472 13 17<br>2020 12 16 3011<br>3011 56 77 2487<br>3011 14 19 3472<br>In this example, all grid worlds are of size 100 x 200, the initial year-<br>location is (year&#x3D;2020,x&#x3D;8,y&#x3D;12), and the target year-location is<br>(year&#x3D;3472,x&#x3D;13,y&#x3D;17). There are three time-travel channels, the first one is<br>located at (12,16) between the years 2020 and 3011, the second one located at<br>(56,77) between the years 3011 and 2487, and the third one located at (14,19)<br>between the years 3011 and 3472.<br>Output: The file output.txt that your program creates in the current directory<br>should be formatted as follows:</li>
+<li>First line: A single integer C, indicating the total cost of your found solution. If no solution was found (target year-location is unreachable from the given initial year-location), then write the word “FAIL”. </li>
+<li>Second line: A single integer N, indicating the total number of steps in your solution including the starting position. </li>
+<li>N lines: Report the steps in your solution travelling from the initial year-location to the target year-location as were given in the input.txt file. <ul>
+<li>Write out one line per step with cost. Each line should contain a tuple of four integers: Year, X, Y, Cost, separated by a space character, specifying the year-location with the step cost to visit that year-location by your agent during its (time) traveling from the initial year-location to the target year-location.<br>For example, the following is a sample output of the corresponding input<br>above:<br>2020 8 12 0<br>2020 9 13 14<br>2020 10 14 14<br>2020 11 15 14<br>2020 12 16 14<br>3011 12 16 991<br>3011 13 17 14<br>3011 14 18 14<br>3011 14 19 10<br>3472 14 19 461<br>3472 13 18 14<br>3472 13 17 10</li>
+</ul>
+</li>
+</ul>
+<h2 id="Notes-and-hints"><a href="#Notes-and-hints" class="headerlink" title="Notes and hints:"></a>Notes and hints:</h2><ul>
+<li>Please name your program “homework.xxx” where ‘xxx’ is the extension for the programming language you choose (“py” for python, “cpp” for C++, and “java” for Java). If you are using C++11, then the name of your file should be “homework11.cpp” and if you are using python3 then the name of your file should be “homework3.py”. Please use the programming languages mentioned above for this homework. </li>
+<li>Likely (but no guarantee) we will create 15 BFS, 15 UCS, and 20 A* test cases. </li>
+<li>Your program will be killed after some time if it appears stuck on a given test case, to allow us to grade the whole class in a reasonable amount of time. We will make sure that the time limit for a given test case is at least five times longer than the time it took for the reference Python algorithm written by the TA to solve that test case correctly. </li>
+<li>There is no limit on input size, number of time-travel channels, etc., other than specified above (32-bit integers, etc). If several optimal solutions exist, then any of them will count as correct. </li>
+<li>Please submit your homework code through Vocareum ( <a target="_blank" rel="noopener" href="https://labs.vocareum.com/"> https://labs.vocareum.com/ </a> ) under the assignment HW1. Useranme is your email address. Click “forgot password” for the first time login. You should have been enrolled in this course on Vocareum. If not, please post a private question with your email address and USC ID on Piazza so that we will invite you again. </li>
+<li>You can submit your homework code (by clicking the “submit” button on Vocareum) as many times as you want. Only the latest submission will be considered for grading. Late penalty will be applied as specified in the syllabus if your latest submission is after the deadline.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/26/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561TimeTraveling/">http://saferman.github.io/2023/01/26/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561TimeTraveling/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/27/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3023PeertoPeerChat/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="C++代写：COMP3023 Peer to Peer Chat">
+                        
+                        <span class="card-title">C++代写：COMP3023 Peer to Peer Chat</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/25/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2402BAFastDefaultList/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Java代写：COMP2402B A Fast Default List">
+                        
+                        <span class="card-title">Java代写：COMP2402B A Fast Default List</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

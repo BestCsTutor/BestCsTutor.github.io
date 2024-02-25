@@ -1,0 +1,933 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="CUDA代写：CME213 Neural Networks on CUDA Part2, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction用GPU编写Neural Network算法的第二部分作业，这部分要求做性能的优化。In this second part of the final project, we provide further detai">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>CUDA代写：CME213 Neural Networks on CUDA Part2 | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CUDA代写：CME213 Neural Networks on CUDA Part2</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">CUDA代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-08-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>用GPU编写Neural Network算法的第二部分作业，这部分要求做性能的优化。<br>In this second part of the final project, we provide further details about the<br>grading policy and introduce you to the starter code. You can also find<br>instructions for running and profiling the code on the cluster and submitting<br>your work.</p>
+<h2 id="Grading-details"><a href="#Grading-details" class="headerlink" title="Grading details"></a>Grading details</h2><p>Please refer to Part I for an overall grading information. Here we explain in<br>detail how we determine the correctness of the code and test the performance.<br>We have setup four testcases (with corresponding grading modes in the code)<br>for testing correctness and performance. These testcases or grading modes can<br>be run by passing command line arguments to the program. More details about<br>them are given in later sections.</p>
+<h3 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h3><p>You can find the grading outline below. More details about them are in the<br>subsections that follow.</p>
+<ul>
+<li>Preliminary Report: <ul>
+<li>Correctness (15%) </li>
+<li>GEMM correctness </li>
+<li>Overall correctness </li>
+<li>Profiling (5 %)</li>
+</ul>
+</li>
+<li>Final Report: <ul>
+<li>Correctness (32%) </li>
+<li>GEMM correctness </li>
+<li>Overall correctness </li>
+<li>Correctness analysis (3%) </li>
+<li>Performance (20%) </li>
+<li>GEMM performance </li>
+<li>Overall performance </li>
+<li>Profiling and analysis (20%) </li>
+<li>Overall quality of report (5%)</li>
+</ul>
+</li>
+</ul>
+<h3 id="GEMM-correctness"><a href="#GEMM-correctness" class="headerlink" title="GEMM correctness"></a>GEMM correctness</h3><p>Since the GEMM function is a building block of any neural network<br>implementation and will be an important tool in your arsenal, we test the GEMM<br>implementation separately from the overall code testing. We have provided a<br>function prototype called myGEMM for you in gpu_func.cu, which takes inputs as<br>two scalars a, b, three matrices A, B, C, and returns the result of D &#x3D; a * A</p>
+<ul>
+<li>B + b * C in C (in place).<br>Your job is to fill in this function, and we will test your implementation on<br>two sets of inputs that are relevant to this project. You are welcome to, but<br>you don’t have to use this myGEMM function in your parallel training; this is<br>only for the purpose of grading.<br>We test this correctness by running grading mode 4, which runs the myGEMM<br>function alone. This myGEMM function is called only by rank 0 in the grading<br>mode, i.e., for this part you just need to write kernels to do GEMM on a<br>single GPU.</li>
+</ul>
+<h3 id="Overall-correctness"><a href="#Overall-correctness" class="headerlink" title="Overall correctness"></a>Overall correctness</h3><p>In large neural network problems, a common issue encountered is the<br>aggregation of rounding errors or inconsistencies. Unfortunately, the<br>implementations of several operations are not exactly same on CPU and GPU.<br>Some of the sources for differences include exp() operations used in Softmax<br>and Sigmoid functions, FMA (fused multiply add), the order of operations etc.<br>There are some differences at the hardware level of implementation too. These<br>discrepancies are usually of the order of 1e-16 for double precision<br>calculations. However, such discrepancies can build up over time. In general,<br>as the learning rate gets larger, the instability of the algorithm due to<br>roundoff errors is high. These discrepancies might not lead to any parameter<br>blow-up, but might create significant differences between the CPU and GPU<br>solutions. This makes determining correctness challenging.<br>In order to tackle this, we have setup three testcases for determining<br>correctness in the form of grading modes. In all those modes, a max. norm of<br>the difference between final CPU and GPU results (parameters W(1) , W(2) ,<br>b(1) , b(2) ) is considered. If this max. norm is greater than a set threshold<br>(1e-7) for any case, your code will fail correctness for that case. The actual<br>max. norm values we get are much lower than this, but we want to provide some<br>leeway in this regard and have relaxed the threshold. Apart from passing the<br>three correctness tests, the precision on the validation set of the CPU and<br>GPU implementations must be very close.<br>The hyper-parameters for the three testcases are as follows,</p>
+<ol>
+<li>Low learning rate: 0.001, large # iterations: 40 epochs; </li>
+<li>Medium learning rate: 0.01, medium # iterations: 10 epochs; </li>
+<li>High learning rate: 0.025, small # iterations: 1 epoch.<br>The grading modes 1,2 and 3 run the above three testcases respectively.<br>Note: In order to get full credit on overall code correctness, these above<br>thresholds must be met by a fully parallel code running on 4 GPUs through four<br>different processes (or CPU threads) using MPI and CUDA. If the code is<br>running on a single GPU or is not using GPUs (just MPI), you will lose a<br>significant portion of the grade. Similarly, if you are running four processes<br>but only one of them is using GPUs, you will again lose points. Here, when we<br>say running on GPUs, we expect that all the GEMM, Softmax and Sigmoid<br>calculations be done on GPUs.</li>
+</ol>
+<h3 id="GEMM-Performance"><a href="#GEMM-Performance" class="headerlink" title="GEMM Performance"></a>GEMM Performance</h3><p>This refers to the performance of your myGEMM function. To test this we run<br>the code in grading mode 4. The grade for this will be based on the<br>performance of your GEMM function (in terms of the time taken) relative to<br>other students in the class. The exact method for calculating this relative<br>grade will be determined by us later depending on the range of performances we<br>get.<br>In the code, we run this myGEMM function repeatedly for a number of<br>iterations. This has been currently set to 10, but we might change this based<br>on the performance we see in the submissions. We believe that this should not<br>affect your implementation.<br>Caveat: If your GEMM implementation does not pass the GEMM correctness test,<br>you will not receive any points for performance.</p>
+<h3 id="Overall-Performance"><a href="#Overall-Performance" class="headerlink" title="Overall Performance"></a>Overall Performance</h3><p>This refers to the performance of your full NN code. Here we use the default<br>settings of the program for benchmarking the performance (time taken). Here<br>again, the grade is based on your performance relative to other students in<br>the class. The exact method for calculating this relative grade will be<br>determined by us later depending on the range of performances we get.<br>Caveat: If you do not pass the overall correctness tests, you will be<br>penalized and we will determine the penalty on a case by case basis.</p>
+<h2 id="Starter-code"><a href="#Starter-code" class="headerlink" title="Starter-code"></a>Starter-code</h2><p>The starter code integrates the GPU CUDA code and other C++ code. The GPU code<br>is first compiled by nvcc into object files, and then linked with other parts<br>of the project and libraries by g++ linker. The project is using the Armadillo<br>library for matrices and vectors. The details about the files are below. Those<br>marked with a star(*) will not be submitted by the submission script. You are<br>free to modify those files for debugging purposes, but make sure you test with<br>the original version of those files before you submit. In the other files, you<br>may write any number of functions you wish to.<br>Note: Please make sure you adequately comment your code and also structure it<br>well. Although we will avoid going through the code in detail, it will help us<br>read your code in case we have to.</p>
+<ul>
+<li>sample_bashrc.txt: This file contains a list of modules to be loaded to run the program. You can choose to copy this into your ̃&#x2F;.bashrc in the cluster. </li>
+<li>init.sh: This file contains the script to download the MNIST dataset and install Armadillo. This only needs to be run once. Please see the running instructions before you run this script. </li>
+<li>run.sh: This file contains the script to run the program using sbatch. See 3.2 for further details. </li>
+<li>main.cpp: This is the main file for the project. You do not need to change this file except for your own debugging purposes. </li>
+<li>gpu_func.cu, gpu_func.h: You should implement your GPU CUDA wrapper functions and kernels in gpu_func.cu and declare them in gpu_func.h. This separates the source code so that nvcc only compiles the CUDA code into object files, which can be linked into other parts of the project by the g++ linker. </li>
+<li>two_layer_net.h: This file contains a basic C++ class to implement the two layer neural network. Note that all members in two_layer_net are declared to be public, and you can access them directly, which allows an easier MPI implementation than with a more encapsulated class. </li>
+<li>two_layer_net.cpp: This file already contains a serial implementation of the neural network. Your objective is to fill the parallel_train function with the parallel implementation. </li>
+<li>utils&#x2F;tests.cpp utils&#x2F;tests.h: These files contain the tests used for determining correctness and testing performance. </li>
+<li>utils&#x2F;common.cpp, utils&#x2F;common.h: These files contain common operations on arma::mat that may be useful. You can make your own GPU CUDA implementation accordingly in gpu_func.cu. </li>
+<li>utils&#x2F;test_utils.h: This file contains helper functions useful for debugging and testing, e.g., a function to compare a memory space representing a matrix with an Armadillo Matrix to check if the GPU implementation is correct. </li>
+<li>utils&#x2F;mnist.cpp, utils&#x2F;mnist.h: These files contain code that reads in the MNIST dataset. </li>
+<li>Outputs folder: All the output files go into this folder. There is another folder named CPUmats inside this folder. All the CPU matrices that are written out during debug mode go into this folder.</li>
+</ul>
+<h2 id="Running-instructions"><a href="#Running-instructions" class="headerlink" title="Running instructions"></a>Running instructions</h2><p>We have provided a sample .bashrc file in sample_bashrc. You can replace your<br>current ̃&#x2F;.bashrc (or bash profile) file on the cluster with this. You can<br>also copy the relevant portions to your current bashrc file. The modules that<br>have been loaded are as follows:<br>    module add shared<br>    module add slurm<br>    module add gcc&#x2F;4.8.5<br>    module add cuda75<br>    module add mvapich2&#x2F;gcc&#x2F;64&#x2F;2.1<br>    module add intel-cluster-runtime&#x2F;intel64&#x2F;3.7<br>(Please load gcc&#x2F;4.8.5 instead of gcc, because the nvcc does not support gcc<br>version 4.9 and up.)<br>Make sure all the above modules are loaded. If you changed your .bashrc file,<br>you may have to source it for the changes to take effect. Alternatively you<br>can exit your ssh session and log back in. You can see the modules that have<br>been loaded by using<br>    module list<br>With the correct modules loaded, run<br>    .&#x2F;init.sh<br>This downloads the MNIST dataset and installs the Armadillo library. You only<br>need to do this the first time after you download the code.<br>Edit the job script run.sh to add command line arguments or change number of<br>processes you want to run with. By default, we request for 4 processes on a<br>single node in the cluster and request for 4 GPUs. The single node is to<br>reduce MPI overhead. Communication across nodes is slower than within a single<br>node. Note that the program prints out the number of MPI processes and CUDA<br>devices used in the very beginning to help you make sure you are running it<br>correctly.<br>Submit the job script run.sh using sbatch as follows<br>    sbatch run.sh<br>You can check whether your job is still running via the command squeue.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2018/08/13/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACME213NeuralNetworksonCUDAPart2/">http://saferman.github.io/2018/08/13/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACME213NeuralNetworksonCUDAPart2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">CUDA代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/08/16/Python%E4%BB%A3%E5%86%99%EF%BC%9AFIT1043VisualisingAirportTraffic/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：FIT1043 Visualising Airport Traffic">
+                        
+                        <span class="card-title">Python代写：FIT1043 Visualising Airport Traffic</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-08-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/07/26/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMS227YahtzeePart2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java代写：COMS 227 Yahtzee Part2">
+                        
+                        <span class="card-title">Java代写：COMS 227 Yahtzee Part2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

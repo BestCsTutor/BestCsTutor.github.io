@@ -1,0 +1,1060 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CIS657 Virtual Memory System, 留学生CS|辅导|代写">
+    <meta name="description" content="研究  TLB ，虚拟内存(  Virtual Memory  )以及文件交换(Swapping Space)，在Nachos上设计并实现。![VirtualMemory](https://upload.wikimedia.org/wiki">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CIS657 Virtual Memory System | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CIS657 Virtual Memory System</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-01-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>研究 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Translation_lookaside_buffer" title="TLB"> TLB </a><br>，虚拟内存( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Virtual_memory" title="Virtual Memory"> Virtual Memory </a> )以及文件交换(Swapping Space)，在Nachos上设计并实现。<br>![Virtual<br>Memory](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Virtual_memory.svg/250px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Virtual_memory.svg/250px-</a><br>Virtual_memory.svg.png)</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Up to now, all the code you have written has been part of the kernel. In a<br>real operating system, the kernel not only uses its procedures internally, but<br>allows user-level programs to access some of its routines via “system calls”.<br>Since Nachos executes MIPS instructions, these user programs must be compiled<br>into MIPS format using the cross compiler (that’s why we build and run Nachos<br>on the VM) The user programs need to be written in C using the system calls<br>you implement, and located under ~&#x2F;test directory. There are several example<br>programs provided, including halt, shell, etc. The command “.&#x2F;nachos -x<br>..&#x2F;test&#x2F;prog” will load the program “prog” to Nachos memory (physical frames)<br>and run it on Nachos.<br>In this project, you will investigate the TLB, the Virtual Memory System, and<br>Swapping space (or disk&#x2F;file system). You need to design your own Virtual<br>Memory System and get it working. You will have the freedom to choose how to<br>create address space, how to do address translation, how to handle TLB miss,<br>how to handle Page fault, how to represent the swap space, how to implement<br>paging, etc. You need to prove why your choices are reasonable in terms of<br>handling TLB miss, minimizing the number of page faults, simplicity, etc.<br>There is no “correct” or “perfect” solution.<br>TLB is used to speed address translation. Given a memory address, the<br>processor first looks in the TLB. If it finds a match (TLB hit), translation<br>is done. If not (TLB miss), page tables (the inverted page table in our case)<br>will be used. A TLB miss causes a trap to OS kernel, which does the address<br>translation, loads the mapping entry to the TLB, and starts the program again.<br>Physical memory is used as a cache for disk to provide the abstraction of an<br>(almost) unlimited virtual memory size. For this assignment, page translation<br>allows us the flexibility to get pages from your choice of backing store as<br>they are needed. Each entry in the TLB has a valid bit: if the valid bit is<br>set, the virtual page is in memory. If the valid bit is clear or if the<br>virtual page is not found in the TLB, software translation is needed to tell<br>whether the page is in memory (with the TLB to be loaded with the<br>translation), or the page must be brought in from backing store. The reference<br>(use) bit and dirty bit are set whenever the page is reference and modified.<br>Caching performance depends on the policy used to decide which things are kept<br>in memory. On a page fault, the kernel must decide which page to replace.</p>
+<h2 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h2><p>Implement system calls and exception handling for user programs:<br>userprog&#x2F;syscall.h defines the system call prototypes of Nachos. These are<br>kernel procedures that user programs can invoke. You need to implement the<br>system calls: halt(already done), Fork, Exit, Exec, Read, and Write.</p>
+<ul>
+<li>Read and Write for console read and write, not for file read and write. <ul>
+<li>We’re faking these, therefore Write syscall always writes to the screen. This system calls take three arguments: a char* buffer, an int size, and an OpenFileId. Since we’re faking and not utilizing the Nachos console system, we can ignore the OpenFileId parameter. You need to obtain the rst two arguments from the user program. Refer to the comments in exception.cc for hints on how to obtain the parameter values. </li>
+<li>Can be tested with a single user program</li>
+</ul>
+</li>
+<li>Implement Fork system call. Fork() create a child process (Nachos Thread) and return SpaceId </li>
+<li>Implement Exec system call. Exec() takes one string argument that is the le name of a user program. The way Exec() creates threads is similar to what you did for the -x ag in Task 2. When a user program calls Exec(), Nachos kernel creates a new thread for the executable le name given as the argument for Exec(). Nachos creates address space, initializes states and registers, and jumps to user level, as is done in RunUserProg(). Exec() also needs to return a SpaceId (dened in syscall.h) of the new thread, which can be used as the argument of Join(). <ul>
+<li>SpaceId id &#x3D; Exec(“..&#x2F;test&#x2F;prog”); <ul>
+<li>Must copy the filename argument from user memory to kernel memory safely</li>
+</ul>
+</li>
+<li>Refer to the comments in exception.cc for hints on how to return a value from system call. </li>
+<li>This should be tested with Memory Manager.</li>
+</ul>
+</li>
+<li>Exit() can be implemented with a simple call to Thread::Finish(). <ul>
+<li>But you have to be careful. All resources including AddrSpace must be returned&#x2F;freed. </li>
+<li>The kernel handles an Exit system call by destroying the process (Nachos Thread) data structures and thread(s), reclaiming any memory assigned to the process </li>
+<li>No return value</li>
+</ul>
+</li>
+<li>You need to protect the Nachos kernel from user program errors. <ul>
+<li>User programs can do nothing to crash the operating system except “halt” system call.</li>
+</ul>
+</li>
+<li>For this task, syscall.h, exception.cc, start.s (assembly routine for system calls and under test&#x2F; directory), and scheduler.cc must be modified. The userprog&#x2F;exception.cc implements the handlers for system calls and other user-level exceptions. In the original file, only the Halt() system call is supported. <ul>
+<li>Hint: you can find a good example from system call Add.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Task-2"><a href="#Task-2" class="headerlink" title="Task 2"></a>Task 2</h2><p>Implement multiprogramming: the original Nachos code is restricted to running<br>one user program at a time. You need to come up with a way of allocating<br>physical memory frames so multiple programs can be loaded into the machine’s<br>memory, and provide a way of copying data from&#x2F;to the user’s virtual address<br>space (this task is highly related to the Task 3).</p>
+<ul>
+<li>when the ‘-x’ flag is used, the ‘main’ function of Nachos calls the RunUserProg() function with the string following ‘-x’ as parameter. Remember that every user program should have its own thread structure, but for now there’s only one thread, the ‘main’ thread.<br>.&#x2F;nachos -x ..&#x2F;test&#x2F;prog1 -x ..&#x2F;test&#x2F;prog2 -x<br>What this means is that when you type this command, Nachos will load multiple<br>user programs into its main memory and start executing them as threads with<br>round-robin scheduling. o Use -quantum option for setting different time slice<br>quantum for round-robin</li>
+<li>In order to test this task, you need to implement a memory manager of Task 3 or at least linear (contiguous) memory allocation for multi-programming o Keep track of which frames are free and which are in use o Allow multiple processes (Nachos Threads) to be resident in the physical memory at the same time o New AddrSpace object per user program creation o When the user process (Nachos Thread) is destroyed, release the allocated page frames and AddrSpace object</li>
+</ul>
+<h2 id="Task-3"><a href="#Task-3" class="headerlink" title="Task 3"></a>Task 3</h2><p>Implement Memory Manager (Virtual Memory) with software TLB: how to create<br>address space for user programs and put them all in the physical memory<br>without overlapping is the main issue in this Virtual Memory task. If you run<br>matmul or sort program now, you’ll get an assertion failure in<br>userprog&#x2F;addrspace.cc because there’s not enough memory to load it. So what<br>you need to accomplish is to create a virtual address space (size can be<br>unlimited), let Nachos run the program with part of the address space loaded,<br>and load the other part(s) when they are accessed.</p>
+<ul>
+<li>Address space related functions <ul>
+<li>Allocate with number of pages </li>
+<li>ReAllocate with number of new pages <ul>
+<li>Allocate a new address space of new pages long, and move old pages from old address space to the new address space </li>
+<li>Think about Fork() system call you implement</li>
+</ul>
+</li>
+<li>Free (DeAllocate) <ul>
+<li>Think about Exit() system call</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Implement the Page Table per user process (Nachos Thread) <ul>
+<li>PTE contains the virtual address, owner’s pid, other control bits (dirty, referenced, ) </li>
+<li>Page fault handler <ul>
+<li>Your choice of page replacement algorithm </li>
+<li>How to find a page on backing store</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Implement demand-paging <ul>
+<li>Move a page from backing store (swapping space: disk or file) to memory and from memory to backing store <ul>
+<li>Your choice of backing store </li>
+<li>May need a data structure to keep track of virtual pages in a particular backing store (Swap Table)</li>
+</ul>
+</li>
+<li>Find free physical pages (Frame Table) <ul>
+<li>Linear search is not recommended</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Page replacement algorithm <ul>
+<li>You can design your own or </li>
+<li>You can choose one of replacement algorithms discussed in the class, not FIFO <ul>
+<li>You must need to compare the performance with random</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>(BONUS 10 pts) Implement software TLB with software translation via the page table <ul>
+<li>Handle TLB miss properly </li>
+<li>Make sure TLB is set up properly on a context switch <ul>
+<li>It is up to you <ul>
+<li>You can invalidate all TLB entries on a context switch, reload the entries as pages are referenced </li>
+<li>Or you can associate a process id (Nachos thread id) with the entries in the TLB</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Task-4"><a href="#Task-4" class="headerlink" title="Task 4"></a>Task 4</h2><p>Implement your user programs in test directory: Write your own user programs<br>to verify that the system call handling and multiprogramming are working<br>properly with your own memory management.</p>
+<ul>
+<li>Write test programs to test each Task <ul>
+<li>Task 1, run a single user program <ul>
+<li>you need to test read&#x2F;write&#x2F;exit syscalls </li>
+<li>you need to test exec&#x2F;exit syscalls by calling Exec x times </li>
+<li>you need to test fork syscall</li>
+</ul>
+</li>
+<li>Task 2, stress things more and run multiple programs <ul>
+<li>Run at least 4 your own test programs you write using new syscalls</li>
+</ul>
+</li>
+<li>Task 3, run larger memory need programs (no need to write) <ul>
+<li>You need to run two matmul and one sort programs under test directory</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>You need to update Makefile under test directory to compile user programs using the MIPS cross-compiler.</li>
+</ul>
+<h2 id="Your-document-must-include-the-followings"><a href="#Your-document-must-include-the-followings" class="headerlink" title="Your document must include the followings"></a>Your document must include the followings</h2><ul>
+<li>Cover Page </li>
+<li>Disclosure Form </li>
+<li>How much time did you spend to do: <ul>
+<li>Analyze the problem, determine specifications, and create your design </li>
+<li>Implement the design <ul>
+<li>write the program</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Test&#x2F;debug the program <ul>
+<li>Find&#x2F;fix errors </li>
+<li>Create test cases, and try them out</li>
+</ul>
+</li>
+<li>List of your files with directory name that you modified or created for this assignment </li>
+<li>Design&#x2F;your solution for each requirement <ul>
+<li>We are looking for your own answers</li>
+</ul>
+</li>
+<li>Implementation of your solution (Code snippet with good comments) <ul>
+<li>Do not include Nachos original code </li>
+<li>We want to see your own code&#x2F;modification </li>
+<li>Should be text (no image&#x2F;photo of code)</li>
+</ul>
+</li>
+<li>Testing <ul>
+<li>How to run your tests </li>
+<li>What each test case is testing (you need to prove your implementation of each requirement in the following output snapshots) </li>
+<li>You must test multiple user programs including matmul and sort for larger memory allocation needed Nachos physical memory size. </li>
+<li>You need to verify that all system calls are correctly working. </li>
+<li>Show meaningful result of performance measurement for your virtual memory management system per process (Nachos Thread) or entire system <ul>
+<li>Demand paging </li>
+<li>Page replacement and handling dirty pages </li>
+<li>Swapping (backing storage) </li>
+<li>Page fault handling </li>
+<li>Performance measurement <ul>
+<li>Number of memory references </li>
+<li>TLB handler (TLB hit&#x2F;miss rate) </li>
+<li>Page Fault handler (Page hit&#x2F;fault rate) </li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Output Snapshots</li>
+</ul>
+</li>
+</ul>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing:"></a>Testing:</h2><p>We will build and run your Nachos on the VM. You must test your program on the<br>VM and also should provide proper test scenario in your document.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><ul>
+<li>Syntax&#x2F;Runtime&#x2F;Logic Errors with proper Makefile [-50, -15] </li>
+<li>Data structure design&#x2F;class definition&#x2F;declaration respectively [-40, -10] </li>
+<li>Quality of your report&#x2F;comments [-20, -5] </li>
+<li>Quality of user programs [-30, -5] </li>
+<li>Satisfy all implementation requirements [-50, -5] </li>
+<li>Garbage collection (handle all objects at the end) [-10, -5] </li>
+<li>Input&#x2F;output design (meaningful messages to prove your implementation) [-30, -10] </li>
+<li>Output(by Students)&#x2F;Test(by TAs) [-50] </li>
+<li>If you only did Task 1 and 2 with linear memory allocation without Task 3, you can get up to 50%.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/01/22/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACIS657VirtualMemorySystem/">http://saferman.github.io/2020/01/22/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACIS657VirtualMemorySystem/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/01/23/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS1591TheCamelGame/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Python代写：CS1591 The Camel Game">
+                        
+                        <span class="card-title">Python代写：CS1591 The Camel Game</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-01-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/01/20/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS6300EncodeUtility/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Java代写：CS6300 Encode Utility">
+                        
+                        <span class="card-title">Java代写：CS6300 Encode Utility</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-01-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：COMP30023 Process Management, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个 [ Process Manager ](https://developer.ibm.com/tutorials/l-linux-process-management&amp;#x2F; “Process Manager”) , 为进程分配">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：COMP30023 Process Management | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：COMP30023 Process Management</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-04-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个 [ Process Manager ](<a target="_blank" rel="noopener" href="https://developer.ibm.com/tutorials/l-linux-process-">https://developer.ibm.com/tutorials/l-linux-process-</a><br>management&#x2F; “Process Manager”) , 为进程分配内存并调度执行。<br><img src="https://docs.oracle.com/cd/E19683-01/806-5222/images/kernelovr.arch.epsi.gif" alt="Process
+Manager"></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>In this project, you will implement a process manager capable of allocating<br>memory to processes and scheduling them for execution. This project has two<br>phases. In the first phase, a scheduling algorithm will allocate the CPU to<br>processes, making the assumption that memory requirements are always<br>satisfied. In the second phase, a memory allocation algorithm will be used to<br>allocate memory to processes, before the scheduling takes place. Both the<br>memory allocation and the process scheduling are simulated. There is also a<br>challenge task that requires controlling the execution of real processes<br>during the process scheduling. Process scheduling decisions will be based on a<br>scheduling algorithm with the assumption of a single CPU (i.e, only one<br>process can be running at a time).</p>
+<h2 id="The-Process-Manager"><a href="#The-Process-Manager" class="headerlink" title="The Process Manager"></a>The Process Manager</h2><p>The process manager runs in cycles. A cycle occurs after one quantum has<br>elapsed. The process manager has its own notion of time, referred to from here<br>on as the simulation time. The simulation time starts at 0 and increases by<br>the length of the quantum every cycle. Hence, at any given cycle, the<br>simulation time is equal to the number of completed cycles times the length of<br>the quantum:<br>    TS &#x3D; N * Q<br>where TS is the current simulation time, N is the number of cycles that have<br>elapsed, and Q is the length of the quantum. For this project, Q will be an<br>integer value between 1 and 3.<br>At the start of each cycle, the process manager must carry out the following<br>tasks in sequence:</p>
+<ol>
+<li>Identify whether the currently running process (if any) has completed. If so, it should be terminated and its memory deallocated before subsequent scheduling tasks are performed. </li>
+<li>Identify all processes that have been submitted to the system since the last cycle occurred and add them to the input queue in the order they appear in the process file. A process is considered to have been submitted to the system if its arrival time is less than or equal to the current simulation time Ts .<br>The input queue contains processes that have been submitted to the system and<br>are waiting to be brought into memory (from disk) to compete for CPU time. At<br>no time should the input queue contain processes whose arrival time is larger<br>than the current simulation time.</li>
+<li>Move processes from the input queue to the ready queue upon successful memory allocation.<br>The ready queue holds processes that are ready to run.<br>The process manager will use ONE of the following methods to allocate memory<br>to processes:<br>* Assume that the memory requirements of the arrived processes are always immediately satisfied (e.g., there is an infinite amount of memory). All the arrived processes will automatically enter a READY state, and be placed at the end of the ready queue in the same order as they appear in the input queue. OR,<br>* Allocate memory to processes in the input queue according to a memory allocation algorithm. Processes for which memory allocation is successful enter a READY state, and are placed at the end of the ready queue in order of memory allocation to await CPU time (Section 3.3). </li>
+<li>Determine the process (if any) which runs in this cycle. Depending on the scheduling algorithm (Section 3.1, 3.2), this could be the process that was previously running, a resumed process that was previously placed back into the ready queue, or a READY process which has not been previously been executed.<br>After completing these tasks, the process manager should sleep for Q seconds,<br>after which a new cycle begins.</li>
+</ol>
+<h3 id="Process-Lifecycle"><a href="#Process-Lifecycle" class="headerlink" title="Process Lifecycle"></a>Process Lifecycle</h3><p>The lifecycle of a process is as follows:</p>
+<ol>
+<li>The process is submitted to the manager via an input file (See Section 4 for more details). Note that you may read all the processes in the input file into a data structure and use said data structure to determine which processes should be added to the input queue based on their arrival time and the current simulation time. </li>
+<li>The process is in a READY state after it has arrived (arrival time less than or equal to the simulation time), and memory has been successfully allocated to it. </li>
+<li>Once a process is in the READY state, it can now be considered by a process scheduling algorithm as a candidate to enter the RUNNING state, i.e., be allocated to the CPU. </li>
+<li>Once a process is in the RUNNING state, it runs on the CPU for at least one quantum. If the scheduling algorithm decides to allocate CPU time to a different process, the RUNNING process is suspended and placed in the ready queue. At this point, the state of the process will change from RUNNING to READY. </li>
+<li>The total time a process gets to run on the CPU (i.e., is in the RUNNING state) must be equal to or greater than its service time. Note that the service time of a process is the amount of CPU time (not wall time) it requires before completion. </li>
+<li>After the service time of a process has elapsed, the process moves to the FINISHED state. When a process terminates, its memory must be deallocated and it should cease competing for the CPU (must not enter the ready queue).</li>
+</ol>
+<h3 id="Program-termination"><a href="#Program-termination" class="headerlink" title="Program termination"></a>Program termination</h3><p>The process manager exits when all the processes in the input file have<br>finished execution, that is, there are no more processes in the input queue<br>and no READY or RUNNING processes.</p>
+<h2 id="Programming-Tasks"><a href="#Programming-Tasks" class="headerlink" title="Programming Tasks"></a>Programming Tasks</h2><h3 id="Task-1-Process-Scheduling-Non-preemptive"><a href="#Task-1-Process-Scheduling-Non-preemptive" class="headerlink" title="Task 1: Process Scheduling (Non-preemptive)"></a>Task 1: Process Scheduling (Non-preemptive)</h3><p>In this task, your program selects the next process to run among the READY<br>processes based on the Shortest Job First (SJF) scheduling algorithm.<br>Shortest Job First (SJF): The process with the shortest service time should be<br>chosen among all the READY processes to run. The process should be allowed to<br>run for the entire duration of its service time without getting suspended or<br>terminated (i.e., non-preemptive). If there is a tie when choosing the<br>shortest process (i.e. two or more processes have the same service time),<br>choose the process which has the earlier arrival time. If there are two or<br>more processes that have the same service time as well as the same arrival<br>time, select the process whose name comes first lexicographically.<br>In the case of SJF, after one quantum has elapsed:</p>
+<ul>
+<li>If the process has completed its execution, the process is terminated and moves to the FINISHED state. </li>
+<li>If the process requires more CPU time, the process continues to run for another quantum.</li>
+</ul>
+<h3 id="Task-2-Process-Scheduling-Preemptive"><a href="#Task-2-Process-Scheduling-Preemptive" class="headerlink" title="Task 2: Process Scheduling (Preemptive)"></a>Task 2: Process Scheduling (Preemptive)</h3><p>In this task, your program selects the next process to run among the READY<br>processes based on the Round Robin (RR) scheduling algorithm.<br>Round Robin (RR): The process at the head of the READY queue is chosen to run<br>for one quantum. After a process has run for one quantum, it should be<br>suspended and placed at the tail of the ready queue unless there are no other<br>processes currently in the ready queue.<br>In the case of RR, after one quantum has elapsed:</p>
+<ul>
+<li>If the process has completed its execution, the process is terminated and moves to the FINISHED state. </li>
+<li>If the process requires more CPU time and there are other READY processes, the process is suspended and enters the READY state again to await more CPU time. </li>
+<li>If the process requires more CPU time and there are no other READY processes, the process can continue to run for another quantum.</li>
+</ul>
+<h3 id="Task-3-Memory-Allocation"><a href="#Task-3-Memory-Allocation" class="headerlink" title="Task 3: Memory Allocation"></a>Task 3: Memory Allocation</h3><p>In this task, you have to implement an additional memory allocation phase<br>before your program starts the scheduling phase of the simulation. Note that<br>memory allocation is also simulated, i.e. the process manager only has to<br>track of and report simulated memory addresses.<br>In each process management cycle (i.e., after each quantum), your program must<br>attempt to allocate memory to all the processes in the input queue, serving<br>processes in the order of appearance (i.e. from the first process in the input<br>queue to the last), and move successfully allocated processes to the ready<br>queue in order of allocation. Processes for which memory allocation cannot be<br>currently met should remain in the input queue.<br>Processes whose memory allocation has succeeded are considered READY to run.<br>The input queue should not contain any READY processes.<br>When allocating memory to a particular process, you are required to implement<br>the Best Fit memory allocation algorithm1 as explained in the lectures and in<br>the textbook.<br>Important Notes:</p>
+<ol>
+<li>The memory capacity (in MB) of the simulated computer is static. For this project, you will assume a total of 2048 MB is available to allocate to user processes. </li>
+<li>The memory requirement (in MB) of each process is known in advance and is static, i.e., the amount of memory a process is allocated remains constant throughout its execution. </li>
+<li>A process’s memory must be allocated in its entirety (i.e., there is no paging) and in a contiguous block. The allocation remains for the duration of the process’s runtime (i.e., there is no swapping). Always choose the block with the lowest sequence number. e.g. Consider a sequence number [0..2048) for all the blocks. If there are 2 equal-sized blocks, say [100, 199], and [300, 399], choose the block starting at address 100. </li>
+<li>Once a process terminates, its memory must be freed and merged into any adjacent holes if they exist.</li>
+</ol>
+<h3 id="Task-4-Challenge-Task-Creating-and-Controlling-Real-Processes"><a href="#Task-4-Challenge-Task-Creating-and-Controlling-Real-Processes" class="headerlink" title="Task 4 (Challenge Task): Creating and Controlling Real Processes"></a>Task 4 (Challenge Task): Creating and Controlling Real Processes</h3><p>If you choose to complete this task, every process scheduled by the manager<br>should trigger the execution of a process.c program, supplied as part of this<br>project.<br>Include the following line in your code for this task to be marked:<br>    define IMPLEMENTS_REAL_PROCESS<br>—|—<br>Get a copy of process.c from the Project 1 repository on GitLab. Compile this<br>into an executable named process, which will be exec-ed by your code. In the<br>marking environment, the process executable will be automatically placed into<br>the same directory as your program.<br>Implement these additional steps in your program:</p>
+<ol>
+<li>When a scheduling algorithm selects a process to run for the first time, the process is created. </li>
+<li>In the case of RR, after one quantum has elapsed:<br>* If the process has completed its execution, the process is terminated.<br>* If the process requires more CPU time and there are other READY processes, the process is suspended and enters the READY state again to await for more CPU time. The next time that the suspended process is scheduled, it is resumed.<br>* If the process requires more CPU time and there are no other READY processes, the process is continued to run for another quantum. </li>
+<li>In the case of SJF, after one quantum has elapsed:<br>* If the process has completed its execution, the process is terminated.<br>* If the process requires more CPU time, it is continued to run for another quantum.<br>The command line specification for process is as follows:<br>Usage: process [-v|–verbose] [process-name]</li>
+</ol>
+<h4 id="Creating-process"><a href="#Creating-process" class="headerlink" title="Creating process"></a>Creating process</h4><ol>
+<li>fork() and exec an instance of process from your program.<br>Provide the name of the scheduled process as a command line argument.<br>Optionally specify the -v flag to get process to print debug logs to standard<br>error.</li>
+<li>Send the 32 bit simulation time (See Section 5.1 RUNNING) of when the process starts running to the standard input of process2 , in Big Endian Byte Ordering (See Section A). </li>
+<li>Read 1 byte from the standard output of process, and verify that it’s the same as the least significant byte (last byte) that was sent.</li>
+</ol>
+<h4 id="Suspending-process"><a href="#Suspending-process" class="headerlink" title="Suspending process"></a>Suspending process</h4><ol>
+<li>Send the 32 bit simulation time of when the process is suspended (Similar to FINISHED - See Section 5.1) to the standard input of process, in Big Endian Byte Ordering. </li>
+<li>Send a SIGTSTP signal to process, and wait for process to enter a stopped state. e.g.:<br>kill(child_pid, SIGTSTP);<br>pid_t w &#x3D; waitpid(child_pid, &amp;wstatus, WUNTRACED); &#x2F;&#x2F; See $ man 2 waitpid<br>if (WIFSTOPPED(wstatus)) {<br> &#x2F;&#x2F; Loop until this condition is met (Loop ommitted for brevity)<br>}<br>—|—</li>
+</ol>
+<h4 id="Resuming-or-Continuing-process"><a href="#Resuming-or-Continuing-process" class="headerlink" title="Resuming or Continuing process"></a>Resuming or Continuing process</h4><ol>
+<li>Send the 32 bit simulation time of when the process is resumed or continued (See Section 5.1 RUNNING) to the standard input of process, in Big Endian Byte Ordering. </li>
+<li>Send a SIGCONT signal to process. </li>
+<li>Read 1 byte from the standard output of process, and verify that it’s the same as the least significant byte (last byte) that was sent.</li>
+</ol>
+<h4 id="Terminating-process"><a href="#Terminating-process" class="headerlink" title="Terminating process"></a>Terminating process</h4><ol>
+<li>Send the 32 bit simulation time of when the process is finished (See Section 5.1 FINISHED) to the standard input of process, in Big Endian Byte Ordering. </li>
+<li>Send a SIGTERM signal to process. </li>
+<li>Read a 64 byte string from the standard output of process, and include it in the execution transcript (Section 5.1) for marking.</li>
+</ol>
+<h2 id="Program-Specification"><a href="#Program-Specification" class="headerlink" title="Program Specification"></a>Program Specification</h2><p>Your program must be called allocate and take the following command line<br>arguments. The arguments can be passed in any order but you can assume that<br>all the arguments will be passed correctly, and each argument will be passed<br>exactly once.<br>    Usage: allocate -f <filename> -s (SJF | RR) -m (infinite | best-fit) -q (1 | 2 | 3)</p>
+<ul>
+<li>-f filename will specify a valid relative or absolute path to the input file describing the processes. </li>
+<li>-s scheduler where scheduler is one of {SJF, RR}. </li>
+<li>-m memory-strategy where memory-strategy is one of {infinite, best-fit}. </li>
+<li>-q quantum where quantum is one of {1, 2, 3}.<br>The filename contains the list of processes to be executed, with each line<br>containing a process. Each process is represented by a space-separated tuple<br>(time-arrived, process-name, service-time, memory-requirement).<br>You can assume:</li>
+<li>The file will be sorted by time-arrived which is an integer in [0, 232 ) indicating seconds </li>
+<li>All process-names will be distinct uppercase alphanumeric strings of minimum length 1 and maximum length 8. </li>
+<li>The first process will always have time-arrived set to 0. </li>
+<li>service-time will be an integer in [1, 232 ) indicating seconds. </li>
+<li>memory-requirement will be an integer in [1, 2048] indicating MBs of memory required. </li>
+<li>The file is space delimited, and each line (including the last) will be terminated with an LF (ASCII 0x0a) control character.<br>You can read the whole file before starting the simulation or read one line at<br>a time. Note that there can be inputs with large gaps in the process arrival<br>time, like in a batch system.<br>We will not give malformed input (e.g., negative memory requirement or more<br>than 4 columns in the process description file). If you want to reject<br>malformed command line arguments or input, your program should exit with a<br>non-zero exit code per convention.</li>
+</ul>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><pre><code>./allocate -f processes.txt -s RR -m best-fit -q 3.
+</code></pre>
+<p>The allocation program is required to simulate the execution of processes in<br>the file processes.txt using the Round Robin scheduling algorithm and the Best<br>Fit memory strategy with a quantum of 3 seconds.<br>Given processes.txt with the following information:<br>    0 P4 30 16<br>    29 P2 40 64<br>    99 P1 20 32<br>The program should simulate the execution of 3 processes where process P4<br>arrives at time 0, needs 30 seconds of CPU time to finish, and requires 16 MB<br>of memory; process P2 arrives at time 29, needs 40 seconds of time to complete<br>and requires 64 MB of memory, etc.</p>
+<h2 id="Expected-Output"><a href="#Expected-Output" class="headerlink" title="Expected Output"></a>Expected Output</h2><p>In order for us to verify that your code meets the above specification, it<br>should print to standard output (stderr will be ignored) information regarding<br>the states of the system and statistics of its performance. All times are to<br>be printed in seconds.</p>
+<h3 id="Execution-transcript"><a href="#Execution-transcript" class="headerlink" title="Execution transcript"></a>Execution transcript</h3><p>For the following events the code should print out a line in the following<br>format:</p>
+<ul>
+<li>If completing memory management (Task 3.3), when a process is allocated memory with the best-fit memory strategy and becomes READY. </li>
+<li>When a process starts and every time it resumes its execution. </li>
+<li>Every time a process finishes.</li>
+</ul>
+<h3 id="Task-5-Performance-Statistics"><a href="#Task-5-Performance-Statistics" class="headerlink" title="Task 5: Performance Statistics"></a>Task 5: Performance Statistics</h3><p>When the simulation is completed, 3 lines with the following performance<br>statistics about your simulation performance should be printed:</p>
+<ul>
+<li>Turnaround time: average time (in seconds, rounded up to an integer) between the time when the process is completed (transitioned to FINISHED state) and when it arrived. </li>
+<li>Time overhead: maximum and average time overhead when running a process, both rounded to the first two decimal points, where overhead is defined as the turnaround time of the process divided by its service time (i.e., the one specified in the process description file). </li>
+<li>Makespan: the simulation time (in seconds) of when the simulation ended.</li>
+</ul>
+<h2 id="Marking-Criteria"><a href="#Marking-Criteria" class="headerlink" title="Marking Criteria"></a>Marking Criteria</h2><p>The marks are broken down as follows:</p>
+<ol>
+<li>Shortest Job First Algorithm (Section 3.1) </li>
+<li>Round Robin Algorithm (Section 3.2) </li>
+<li>Best Fit Memory Allocation (Section 3.3) </li>
+<li>Controlling Real processes (Section 3.4) </li>
+<li>Performance statistics computation (Section 5.2) </li>
+<li>Build quality </li>
+<li>Quality of software practices</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/04/18/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP30023ProcessManagement/">http://saferman.github.io/2022/04/18/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP30023ProcessManagement/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/04/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP605JavaPractice/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Java代写：COMP605 Java Practice">
+                        
+                        <span class="card-title">Java代写：COMP605 Java Practice</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/04/17/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS3251TraversalApplication/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="C++代写：CS3251 Traversal Application">
+                        
+                        <span class="card-title">C++代写：CS3251 Traversal Application</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

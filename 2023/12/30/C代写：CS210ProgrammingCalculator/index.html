@@ -1,0 +1,914 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS210 Programming Calculator, 留学生CS|辅导|代写">
+    <meta name="description" content="实现数据结构中的  Stack  ，练习GDB的使用。![Stack](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lifo_stack.png/350px-Lifo_">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS210 Programming Calculator | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS210 Programming Calculator</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-12-30
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现数据结构中的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)" title="Stack"> Stack </a> ，练习GDB的使用。<br>![Stack](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lifo_stack.png/350px-">https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lifo_stack.png/350px-</a><br>Lifo_stack.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>For many reasons, a programmer might not want to use statically defined<br>memory. So, in this assignment you will be learning to write and debug code<br>that manages its own dynamically allocated memory. Specifically we will use<br>the standard allocators to create or remove memory on the Heap.<br>The Heap is a large area of memory, a range of addresses, set aside by the<br>compiler and operating systems which is free for arbitrary use. In other words<br>there is no other part of you program’s variables or code placed within the<br>Heap.<br>The C standard library provides a Heap memory allocator called the malloc<br>package. C programs allocate a block of memory by calling the “malloc”<br>function, and free a block by calling the “free” function.<br>A block of memory is simple a contiguous set of bytes starting at a specific<br>address and ending at a specific address.<br>As your program executes it can use the function malloc to request a new block<br>of memory of a particular size. malloc will return the starting address of a<br>block that is at least as big as the size requested. If it cannot find enough<br>space it returns NULL, the zero address. malloc ensures that the block it<br>returns does not overlap with any other allocated or free blocks. In this way<br>your program can safely use this memory to store whatever it likes. Similarly,<br>your program can free a block it has previously allocated by calling the free<br>function passing the starting address of a block it allocated with malloc<br>earlier.<br>Dynamically allocated memory is very powerful and the heart of how most real<br>programs work. Most languages like Java, python, ruby, javascript, etc are<br>really just programs themselves that make heavy use dynamic memory in their<br>operation. These languages, however, largely hide the details of dynamic<br>memory management from the programmer.<br>While dynamically allocated memory is very powerful it can be very tricky to<br>get right. Many bugs can occur if you don’t fully understand how things work.<br>For example, if your program allocates memory for something that is temporary,<br>for some operation it has been requested to do, and then never frees that<br>memory it creates what’s called a ‘leak’. Given how fast a computer can<br>operate, in time such leaks can exhaust the memory capacity of your computer<br>and things will begin to fail. Or perhaps your program attempts to use memory,<br>read or write it, that it has already freed. This can lead to very difficult<br>bugs as there will be no immediate error. In fact, it may have no noticeable<br>affect for a very long time until one day some other part of your program<br>reallocates a block that ends up overlapping with the free memory that is<br>being still actively used. All of a sudden your data structures seem to be<br>magically changing for no apparent reason. Another common bug, is freeing<br>memory that you already freed before, this too can lead to nasty bugs.<br>Unfortunately there are many more mistakes one can make.<br>In order to write powerful programs such as new programming languages,<br>operating systems, databases, and high performance programs one must learn to<br>program with dynamic memory and perhaps more importantly become familiar with<br>debugging the bugs that can arise from the common mistakes made. Remember<br>despite other languages hiding it from you someone wrote the dynamic memory<br>management code in that language and they too had to learn how to properly use<br>dynamic memory and debug the code they wrote.<br>In this assignment, we will explore programming and debugging with dynamic<br>memory in the construction of an infix calculator. We will build a calculator<br>that uses two types of stacks, data and operator stacks that store items on<br>it. The stacks and the items will use dynamically allocated memory.<br>Additionally, we will use this assignment to explore how large more complex<br>programs, composed of multiple source files are constructed. In Part A of the<br>assignment you will construct a Stack Abstract Data Type (StackADT) module, in<br>a separate set of files, that you will use in Part B to implement the actual<br>calculator.<br>Careful analysis of your code, defensive programming and knowledge of the<br>debugger is critical to getting dynamic memory management code working<br>correctly.<br>You can also read Chapter 19 for more details about the Heap and how it grows.</p>
+<h2 id="Logistics"><a href="#Logistics" class="headerlink" title="Logistics"></a>Logistics</h2><p>The only “hand-in” will be electronic. Any clarifications and revisions to the<br>assignment will be posted on the course Piazza site.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Some building blocks are needed to understand this assignment.</p>
+<h3 id="Linked-Lists"><a href="#Linked-Lists" class="headerlink" title="Linked Lists"></a>Linked Lists</h3><p>A linked list is a linear collection of data elements whose order is not given<br>by their physical placement in memory. Instead, each element points to the<br>next. It is a data structure consisting of a collection of nodes which<br>together represent a sequence. So, each node, contains the data and also a<br>pointer to the next node, as shown in Fig. ??. Linked lists are great tools to<br>master as they can be used to not just create uni-directional lists but bi-<br>directional, circular or any fun shape you can imagine. As they have no fixed<br>size, when a new node is added memory needs to be dynamically initialized for<br>that node via C code and later when we remove the node it should be freed as<br>to not run out of memory.</p>
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><p>A Stack is a data structure that is used to store information in a distinct<br>order.<br>Two key operations on a stack are, (1) push operation which inserts an element<br>into the stack, and (2) pop operation which removes the last element that was<br>added into the stack. The way a stack grows is, last in first out (LIFO), i.e.<br>when a push occurs the element is added to the top of the list and when it is<br>popped is the first to be removed. We are using a one directional linked list<br>implementation for the stack.<br>Looking at figure, the first element that created the stack was 2, hence it is<br>at the bottom and does not have a pointer to another node but has null. Then 7<br>is pushed and last element to be pushed onto the stack is 4. Hence the stack<br>pointer is pointing to memory address 709. If pull was called on this stack.<br>The node with data 4 and addr. pointer 351 will be deleted by freeing the<br>memory and moving the stack pointer to point at address 351 as the top should<br>now me element 6.</p>
+<h3 id="Part-A-StackADT"><a href="#Part-A-StackADT" class="headerlink" title="Part A: StackADT"></a>Part A: StackADT</h3><p>Readings:</p>
+<ol>
+<li>Please read Chapter 19 of your text. This introduces the concept of dynamically allocated memory. Also provides various implementation of STack Data Structure that will be useful in part A of the homework assignment. </li>
+<li>Chapter 15 will help you understand how the various files of this assignment are used to create the program. It helps understand the use of header files and building a makefile. </li>
+<li>You will also likely find it useful to review the material of chapter 17.<br>Part A of this assignment is essentially programming project 4 on page 506 of<br>your textbook. However, we have provided some additional support and guidance.</li>
+</ol>
+<h3 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h3><p>Begin by clone a copy of the your assignment-5A repository from you<br>cs210-gitlab account. In the repository you will find several files.</p>
+<ul>
+<li>Makefile<br>This file describes how to construct your program from the other files. In<br>particular when you run the program called make it will read this file and run<br>the compiler on the various files to produce intermediate fragments called<br>object files. It then uses the compiler again to link them together to produce<br>the executables. See chapter 15 for more information on make and makefiles. In<br>partA the makefile will direct make to try and build two executables<br>stackclient and stackclient memtrace (discussed below). Initially, make will<br>not work as the solution in stackADT4.c is not implemented.</li>
+<li>stackADT.h This is the header file on page 496 of the textbook. We have modified the names by prefixing them with Stack . We have also modified. as per programming project 4 to remove the use of the Item typedef. Instead it is written around the idea of using void *. You should not have to modify this but you should carefully review in context of the material in Chapter 19 so you understand what it is you are trying to write. </li>
+<li>stackADT4.c this is the file that you will spend most of your effort on. We have seeded the file with some includes that you should not have to modify. You main goal is to write implementations of the functions listed in stackADT.h. As suggested in the textbook you should use stackADT3.c on page 500 as your starting point. You will need to type this in and modify as you go. Be very careful to analyze and understand what you are doing. Remember dynamic memory bugs find their way into code very easily. </li>
+<li>stackclient.c to make your life easier we are providing you with a version of the stackclient.c code on page 494 that has been modified to exercise the new version of the stackADT that you are writing in stackADT4.c. You should carefully study this code!. By understanding it you can better understand what you stack code has to do. In it you can see examples of the client code using malloc and free to create memory items that it uses the stack code to store and recall. It is careful to free the memory when it is done with an item. Pay attention to this as this will be used in part B when you have to manage the stacks for the calculator! </li>
+<li>memtrace.h This is a header file that must be included to use the memory tracing infrastructure. This is required for the tests and will aid in your debugging. You should not have to modify it and by default it is already included in the necessary c files. See the appendix on memtrace for more information. </li>
+<li>memtrace.c This is the implementation associated with memtrace.h. You should not have to modify it. </li>
+<li>uthash.h This is hashtable code used by the memtrace code to track the each malloc and match up the frees. You should not have to modify it. test.sh As always, use this file to see how your code is working. There is a slight modification as to how you run it. Now test.sh takes an argument. Type .&#x2F;test.sh 1 to run the test. It take stackclient.c and use your implementation in stackADT4.c to test the code. </li>
+<li>stackclient This should just be the executable version of stackclient.c. If you run .&#x2F;reference stackclient, the output should match for both if your implementation of the stack code is correct. </li>
+<li>stackcient_memtrace This is another executable that can be executed by typing .&#x2F;stackclient memtrace. This will help you know if you are leaking memory in your code. The full potential of this is explained in the Appendix. This along with GDB will be the most useful tools for debugging your code.</li>
+</ul>
+<h3 id="Tips-and-Hints"><a href="#Tips-and-Hints" class="headerlink" title="Tips and Hints"></a>Tips and Hints</h3><ol>
+<li>You may find it useful to simply get the code from the textbook working first by creating your own copy of stackclient.c and stackADT3.c from the textbook. To do this you might create two new files (bookstackclient.c and stackADT3.c). Then add lines to the makefile so that you can compile these into a new binary eg. bookstackclient that you can then play with. This will also be good practice in managing big projects. </li>
+<li>Learn to use the debugger! See appendix GDB. </li>
+<li>Be careful to think about what Stack make empty should do given that the stack is now storing items that are dynamically allocated. </li>
+<li>Figure out how to use the memtrace infrastructure we have provided. See appendix memtrace. </li>
+<li>It is very important you see how the stack data type has been changed from Item to void *. How does this change each individual function? </li>
+<li>Read stackclient.c, it has comments to explain how having a void * type changes use of malloc for using an int vs char.</li>
+</ol>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Auto-grader will be grading most of the assignment, but as always there will<br>be points for comments, gitlog and coding style.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/12/30/C%E4%BB%A3%E5%86%99%EF%BC%9ACS210ProgrammingCalculator/">http://saferman.github.io/2023/12/30/C%E4%BB%A3%E5%86%99%EF%BC%9ACS210ProgrammingCalculator/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/12/31/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS5005SortingAlgorithms/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="C++代写：CS5005 Sorting Algorithms">
+                        
+                        <span class="card-title">C++代写：CS5005 Sorting Algorithms</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-31
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/12/29/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMS204Enterprise2D/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="C++代写：COMS204 Enterprise 2D">
+                        
+                        <span class="card-title">C++代写：COMS204 Enterprise 2D</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

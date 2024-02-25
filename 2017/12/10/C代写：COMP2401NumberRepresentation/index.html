@@ -1,0 +1,991 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMP2401 Number Representation, 留学生CS|辅导|代写">
+    <meta name="description" content="使用C语言对二进制数值进行位处理，以及进制转换。  
+Objectives
+a. Understanding number representation of integers and floats 
+b. Bit manipulation">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMP2401 Number Representation | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMP2401 Number Representation</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-12-10
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用C语言对二进制数值进行位处理，以及进制转换。  </p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><ul>
+<li>a. Understanding number representation of integers and floats </li>
+<li>b. Bit manipulation of integers<br>The assignment is divided into two sections a written part, which solves<br>problems with number representations, and a programming part, which looks at,<br>bit manipulation.</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Submission must be in cuLearn by the due date.<br>Part I - submission in cuLearn.<br>Part II - Program submission: submit a single tar file with all the .c and .h<br>files and readme files.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>You can earn points as you submit you assignment. Namely, marks will be added<br>as you correctly complete the assignment.</p>
+<h2 id="Part-I"><a href="#Part-I" class="headerlink" title="Part I"></a>Part I</h2><p>4 points for each question.</p>
+<h2 id="Part-II-programming"><a href="#Part-II-programming" class="headerlink" title="Part II - programming"></a>Part II - programming</h2><ul>
+<li>a. Proper documentation, meaning variables, ease of reviewing program compiles with no errors and no warnings. </li>
+<li>b. Functions in the bit_manipulation.c were correctly coded. </li>
+<li>c. Transmit program is correct <ul>
+<li>a. correctly setting the parity bits </li>
+<li>b. Providing an example of the input and output of the program </li>
+<li>c. Providing a transmitReadMe file that describes how to compile and use the program.</li>
+</ul>
+</li>
+<li>d. Receive program is correct <ul>
+<li>a. Correctly completing the function for error correction </li>
+<li>b. Correctly completing the function for converting from short integer to char </li>
+<li>c. Providing an example of the input and output of the program </li>
+<li>d. Providing a receiveReadMe file that describes how to compile and use the program.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Part-I-Number-representation"><a href="#Part-I-Number-representation" class="headerlink" title="Part I: Number representation"></a>Part I: Number representation</h2><p>Show your work.</p>
+<ul>
+<li><ol>
+<li>How many different values can be represented using 7 digits in Binary Systems? In Hexadecimal Systems? Justify your answer</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>Find the decimal equivalent of the following:<br>(a) (631)8 (b) (FCA1)16 (c) (3738)8 (d) (10110100)2 (e) (010101)2</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>What is the simple binary, octal and hexa equivalent of following decimal numbers:<br>(i) 201 (ii) 1193 (iii) 1925</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>Assume that there are 7-bits that are available to store a binary number. Specify the range of numbers that can be represented by the following number systems:<br>a) Unsigned Integers (i.e. only positive numbers) b) 2’s Complement c) 1’s<br>Complement</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>Perform the operation on the following 8-bit binary numbers assuming that the numbers are represented in 2’s-complement notation.<br>a) 01011101 + 10100101 b) 10110111 - 11001011 c) 00000111 * 00000101</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>Convert the following decimal numbers into 1’s complement, and 2’s complement representations. Assume that 8 bits are used to store the numbers.<br>a) 70 b) 0 c) -128 d) -2</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>Find the decimal equivalent of the following binary numbers assuming that each number is expressed in: (i) unsigned integer (ii) 1’s complement (iii) 2’s complement iv) Excess 127<br>(a) 01011000 (b) 10101001</li>
+</ol>
+</li>
+<li><ol start="8">
+<li>Convert the following binary integers directly into (i) octal (ii) hexadecimal<br>(a) 101111110010 (b) 000101111110</li>
+</ol>
+</li>
+<li><ol start="9">
+<li>Assuming that you are required to make an 8 bit floating point representation, with a 3 bit exponent using excess-3 notation and a 4 bit mantissa using normalized notation. How would the number 0.5 be stored in the byte?</li>
+</ol>
+</li>
+</ul>
+<h2 id="Part-II-Programming-Error-Correction-Code"><a href="#Part-II-Programming-Error-Correction-Code" class="headerlink" title="Part II Programming - Error Correction Code"></a>Part II Programming - Error Correction Code</h2><p>First: A Note on The Hamming Code: Used for Error Detection and Correction<br>Typically data is transmitted along a transmission line by moving a byte to a<br>register in a “serial interface chip” which converts the eight bit byte into a<br>stream of bits which are transmitted from the serial port of the computer one<br>at a time. At the other end the bits come into the serial port of the computer<br>at the other end where there is a similar chip which collects the bits coming<br>in serial fashion and then outputs the reconstituted byte to the CPU.<br>Unfortunately, during the transmission, there is a possibility of noise in the<br>line which can result in bit flipping that is can result in a change in the<br>value of the occasional bit. We assume that the noise level is such that at<br>most one bit will be flipped.<br>Error Detection:The simplest approach to error detection is the parity check.<br>An extra bit is added to the byte and is set so that the total number of ones<br>in the pattern (including the parity bit) is, say, always even. This is called<br>even parity. The other choice is odd parity, if the total numbers of ones in<br>the pattern is odd. If after transmission, the total number of ones is found<br>to be odd, then an error has been detected. However, it is impossible to say<br>which bit has been flipped and so there is no correction possible.<br>Error Correction: An approach, which can both detect and correct errors, is<br>called the Hamming code. It involves adding not one but four extra bits to the<br>data to allow both error detection and correction. These bits are called check<br>bits. Using this particular version of the code, one can encode up to 15 bits<br>(including the 4 check bits which can also suffer errors in transmission).<br>There are other versions of the hamming code which can encode larger numbers<br>of bits using more check bits.<br>For purposes of the algorithm, the four check bits are labelled bits 1, 2, 4<br>and 8 although they can go anywhere. They are indicated by the letter “c”<br>below. The data bits are labelled with the letter “d” below.<br>We are using the ASCII code which uses only eight bits. Therefore, bits in<br>position 0. 13,14,15 are not used.<br>Setting the error detection bits: If we assume even parity, then the check<br>bits are set using the following equations: The plus signs mean either (mod 2<br>addition) or (exclusive or). To encode, we calculate the 4 check bits using<br>the following equations:<br>    X8 &#x3D; X9 + X10 + X11 + X12<br>    X4 &#x3D; X5 + X6 + X7 + X12<br>    X2 &#x3D; X3 + X6 + X7 + X10 + X11<br>    X1 &#x3D; X3 + X5 + X7 + X9 + X11<br>    [e.g., X8 &#x3D; (X9 + X10 + X11 + X12 ) % 2 or X8 &#x3D; (X9 ^ X10 ^ X11 ^ X12 ) ]<br>Error Detection and Correction: Now the entire group of 15 bits are assumed to<br>be transmitted and received at the other end. And now one has to look for<br>possible errors in transmission. To decode we see if the parity of each of the<br>groups has been maintained. To decode, form the mod 2 sums or the EXCLUSIVE<br>OR’s of the following:<br>    X8 + X9 + X10 + X11 + X12 should be zero (checksum for X8)<br>    X4 + X5 + X6 + X7 + X12 should be zero (checksum for X4)<br>    X2 + X3 + X6 + X7 + X10 + X11 should be zero (checksum for X2)<br>    X1 + X3 + X5 + X7 + X9 + X11 should be zero (checksum for X1)<br>Suppose the checksums for X8 and for X2 both give one rather then zero and the<br>other two check sums give the correct value of zero. Then the bit in error is<br>found by forming the following binary number:<br>    X8 X4 X2 X1<br>    1  0  1  0  the incorrect bit is thus bit 10.<br>So to get the incorrect bit you just have to form the following formula:<br>Incorrect bit &#x3D; 8 <em>(checksum for X8) + 4</em> (checksum for X4) + 2* (checksum for<br>X2) + (checksum for X1)<br>If all check sums are zero then this gives a zero which means that all is<br>well.</p>
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h2><p>In this assignment you will write two short programs that would simulate the<br>transmission a message over a communication line: one program would simulate<br>the transmission of a message (an array of characters) and one that simulate<br>the receiving of a message.<br>You will use the skeleton in the files transmit.c and receive.c. Helper<br>functions that manipulate bit data should be written in a file<br>bit_manipulation.c</p>
+<h2 id="Coding-Instructions"><a href="#Coding-Instructions" class="headerlink" title="Coding Instructions"></a>Coding Instructions</h2><ul>
+<li><ol>
+<li>Commenting in Code - as provided in the slides given in class</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>No usage of global variables. All data must be passed or received via function parameters.</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>Write short and simple functions.</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>Suggestion - as you code your small helper functions write small test functions to ensure that the code is correct. This will allow you to focus on the logic of your program without worrying about the simple functions.</li>
+</ol>
+</li>
+</ul>
+<h3 id="bit-manipulation-file"><a href="#bit-manipulation-file" class="headerlink" title="bit_manipulation file"></a>bit_manipulation file</h3><p>The file contains some functions that are required by the main programs.</p>
+<ol>
+<li>Review the functions in the file and their purpose </li>
+<li>Complete the code for each of the functions. </li>
+<li>Add other functions as needed</li>
+</ol>
+<h2 id="Transmit-program"><a href="#Transmit-program" class="headerlink" title="Transmit program"></a>Transmit program</h2><ol>
+<li>Add a function to bit_manipulation.c that takes as input an a short integer num and returns the number of bits that are set to 1. For example if num is 0x9 then the function returns 2. Here you need to declare the function and also add the prototype to the bit_manipulation.h header file. </li>
+<li>Using the function that you created in 1 above add the code to the setParityBits function. </li>
+<li>Use the functions in the bit_manipulation.c file</li>
+</ol>
+<h3 id="Receive-program"><a href="#Receive-program" class="headerlink" title="Receive program"></a>Receive program</h3><p>The provided code can already read the encoded message that is provided into<br>an array of integers. The program uses the output from the Transmit program as<br>input to the receive program. Using the provided skeleton do the following:</p>
+<ol>
+<li>Write a function to collects (unpacks) the bits from the encoded short integer into a character. The function is int short2Char(short encodedChar, char *c) which takes an encodedChar (a short integer) and updates the character with the correct bits. Namely, it maps bits 3,5,6,7,9,10,11,12 of the encodedChar onto bits 0,1,2,3,4,5,6,7 of c. Review the code of the function char2Short() in the Transmit program. </li>
+<li>Complete the code of correctCode using the function that you coded in step 1 of the Transmit program and the functions in bit_manipulation.c </li>
+<li>Use the functions in the bit_manipulation.c file</li>
+</ol>
+<h2 id="Compiling-the-programs"><a href="#Compiling-the-programs" class="headerlink" title="Compiling the programs."></a>Compiling the programs.</h2><h3 id="Compile-the-transmit-program"><a href="#Compile-the-transmit-program" class="headerlink" title="Compile the transmit program"></a>Compile the transmit program</h3><p>Here we have two files for each program (e.g., transmit.c and<br>bit_manipulation.c). Compiling the program will be as follows:<br>    gcc -o tran transmit.c bit_manipulation.c<br>Compiling for the debugger will be as follows:<br>    gcc -g -o tran transmit.c bit_manipulation.c</p>
+<h3 id="Compile-the-receive-program"><a href="#Compile-the-receive-program" class="headerlink" title="Compile the receive program"></a>Compile the receive program</h3><p>Here we have two files for each program (e.g., transmit.c and<br>bit_manipulation.c). Compiling the program will be as follows:<br>    gcc -o recv receive.c bit_manipulation.c<br>Compiling for the debugger will be as follows:<br>    gcc -g -o recv receive.c bit_manipulation.c</p>
+<h2 id="Execution"><a href="#Execution" class="headerlink" title="Execution"></a>Execution</h2><ul>
+<li>a. Start the transmit program. The program will prompt the user to enter a message. The program will then print the transmitted message as a sequence of short integers. </li>
+<li>b. Start the receive message. The program will prompt the user to enter the transmitted message. Here you will have to copy the output from transmit program. The program should output the uncorrected transmitted message and the corrected message.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2017/12/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2401NumberRepresentation/">http://saferman.github.io/2017/12/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2401NumberRepresentation/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/12/11/NetworkProgramg%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3331ReliableTransportProtocol/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Network Programg代写：COMP3331 Reliable Transport Protocol">
+                        
+                        <span class="card-title">Network Programg代写：COMP3331 Reliable Transport Protocol</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2017-12-11
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Network-Programg%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Network Programg代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/12/09/Python%E4%BB%A3%E5%86%99%EF%BC%9AANLY550ArithmeticProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Python代写：ANLY550 Arithmetic Problem">
+                        
+                        <span class="card-title">Python代写：ANLY550 Arithmetic Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-12-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

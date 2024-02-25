@@ -1,0 +1,930 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS524983 Primary-Backup Service, 留学生CS|辅导|代写">
+    <meta name="description" content="使用primary&amp;#x2F;backup replication架构，实现  fault-tolerant
+ 服务。![fault-tolerant](https://networkencyclopedia.com/wp-content&amp;">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS524983 Primary-Backup Service | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS524983 Primary-Backup Service</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-06-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用primary&#x2F;backup replication架构，实现 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/availability/fault-tolerance/" title="fault
+tolerance"> fault-tolerant
+</a> 服务。<br>![fault-tolerant](<a target="_blank" rel="noopener" href="https://networkencyclopedia.com/wp-">https://networkencyclopedia.com/wp-</a><br>content&#x2F;uploads&#x2F;2019&#x2F;09&#x2F;fault-tolerance-example-300x202.jpg)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the previous lab, you guaranteed exactly-once execution of RPCs despite<br>unreliable network conditions. Your server maintained state, but it was not<br>fault-tolerant. Lab 2 is a first step towards fault tolerance for services<br>with state.</p>
+<h3 id="Road-Map-for-Labs-2-4"><a href="#Road-Map-for-Labs-2-4" class="headerlink" title="Road Map for Labs 2-4"></a>Road Map for Labs 2-4</h3><p>In the next 3 labs you will build several systems for replicating stateful<br>services. The labs differ in the degree of fault tolerance and performance<br>they provide:</p>
+<ul>
+<li>Lab 2 uses primary&#x2F;backup replication, assisted by a view service that decides which machines are alive. The view service allows the primary&#x2F;backup service to work correctly in the presence of network partitions. The view service itself is not replicated and is a single point of failure. </li>
+<li>Lab 3 uses the Paxos protocol for replication with no single point of failure and handles network partitions correctly. This service is slower than a non-replicated server would be, but is fault tolerant. </li>
+<li>Lab 4 is a sharded, transactional key&#x2F;value database, where each shard replicates its state using Paxos. This key&#x2F;value service can perform operations in parallel on different shards, allowing it to support applications that can put a high load on a storage system. Lab 4 has a replicated configuration service, which tells the shards for what key range they are responsible. It can change the assignment of keys to shards, for example, in response to changing load. It also supports transactions, allowing atomic update of keys held on different shards. Lab 4 has the core of a real-world design for thousands of servers.<br>In each lab you will have to do substantial design. We give you a sketch of<br>the overall design, but you will have to flesh it out and nail down a complete<br>protocol. The tests explore your protocol’s handling of failure scenarios as<br>well as general correctness and basic performance. You may need to re-design<br>(and thus re-implement) in light of problems exposed by the tests, or even by<br>future labs; careful thought and planning may help you avoid too many re-<br>design cycles. We don’t give you a description of the test cases (other than<br>the code); in the real world, you would have to come up with them yourself.</li>
+</ul>
+<h3 id="Overview-of-Lab-2"><a href="#Overview-of-Lab-2" class="headerlink" title="Overview of Lab 2"></a>Overview of Lab 2</h3><p>In this lab you’ll make a fault-tolerant service using a form of<br>primary&#x2F;backup replication. In order to ensure that all parties (clients and<br>servers) agree on which server is the primary, and which is the backup, we’ll<br>introduce a kind of master server, called the <code>ViewServer</code> . The <code>ViewServer</code> monitors whether each available server is alive or dead. If the<br>current primary or backup becomes dead, the <code>ViewServer</code> selects a server to<br>replace it. A client checks with the <code>ViewServer</code> to find the current<br>primary. The servers cooperate with the <code>ViewServer</code> to ensure that at most<br>one primary is active at a time.<br>Your service will allow replacement of failed servers. If the primary fails,<br>the <code>ViewServer</code> will promote the backup to be primary. If the backup fails,<br>or is promoted, and there is an idle server available, the <code>ViewServer</code> will<br>cause it to be the backup. The primary will send its complete application<br>state to the new backup, and then send subsequent operations to the backup to<br>ensure that the backup’s application remains identical to the primary’s.<br>It turns out the primary must send read operations ( <code>Get</code> ) as well as<br>write operations (Puts&#x2F;Appends) to the backup (if there is one), and must wait<br>for the backup to reply before responding to the client. This helps prevent<br>two servers from acting as primary (a “split brain”). An example: S1 is the<br>primary and S2 is the backup. The <code>ViewServer</code> decides (incorrectly) that S1<br>is dead, and promotes S2 to be primary. If a client thinks S1 is still the<br>primary and sends it an operation, S1 will forward the operation to S2, and S2<br>will reply with an error indicating that it is no longer the backup (assuming<br>S2 obtained the new view from the <code>ViewServer</code> ). S1 can then return an<br>error to the client indicating that S1 might no longer be the primary<br>(reasoning that, since S2 rejected the operation, a new view must have been<br>formed); the client can then ask the <code>ViewServer</code> for the correct primary<br>(S2) and send it the operation.<br>Servers fail by crashing. That is, they can fail permanently but not restart.<br>However, other servers (including the <code>ViewServer</code> ) do not have access to a<br>reliable failure detector. There is no way to distinguish between a failed<br>server and one which is temporarily unavailable.<br>The design outlined in the lab has some fault-tolerance and performance<br>limitations:</p>
+<ul>
+<li>The <code>ViewServer</code> is vulnerable to failures, since it’s not replicated. </li>
+<li>The primary and backup must process operations one at a time, limiting their performance. </li>
+<li>A recovering server must copy the complete application state from the primary, which will be slow, even if the recovering server has an almost-up-to-date copy of the data already (e.g. only missed a few minutes of updates while its network connection was temporarily broken). </li>
+<li>The servers don’t store the application data on disk, so they can’t survive simultaneous crashes. </li>
+<li>If a temporary problem prevents primary to backup communication, the system has only two remedies: change the view to eliminate the backup, or keep trying; neither performs well if such problems are frequent. </li>
+<li>If a primary fails before acknowledging the view in which it is primary, the <code>ViewServer</code> cannot make progress—it will spin forever and not perform a view change. This will be explained in more detail in part 1.<br>We will address these limitations in later labs by using better designs and<br>protocols. This lab will make you understand what the tricky issues are so<br>that you can design better design&#x2F;protocols. Also, parts of this lab’s design<br>(e.g., a separate <code>ViewServer</code> ) are uncommon in practice.<br>The primary&#x2F;backup scheme in this lab is not based on any published protocol.<br>In fact, this lab doesn’t specify a complete protocol; you must flesh out the<br>protocol. The protocol has similarities with <a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/osdi12/osdi12-final-75.pdf"> Flat Datacenter Storage
+</a><br>(the <code>ViewServer</code> is like FDS’s metadata server, and the primary&#x2F;backup<br>servers are like FDS’s tractservers), though FDS pays far more attention to<br>performance.<br>It’s also a bit like a MongoDB replica set (though MongoDB selects the leader<br>with a Paxos-like election). For a detailed description of a (different)<br>primary-backup-like protocol, see <a target="_blank" rel="noopener" href="http://www.cs.cornell.edu/home/rvr/papers/osdi04.pdf"> Chain Replication
+</a> . Chain Replication<br>has higher performance than this lab’s design, though it assumes that the <code>ViewServer</code> never declares a server dead when it is merely partitioned. See <a target="_blank" rel="noopener" href="http://www.pmg.csail.mit.edu/papers/harp.pdf"><br>Harp </a> and <a target="_blank" rel="noopener" href="http://pmg.csail.mit.edu/papers/vr-revisited.pdf"> Viewstamped<br>Replication </a> for a detailed<br>treatment of high-performance primary&#x2F;backup and reconstruction of system<br>state after various kinds of failures.</li>
+</ul>
+<h3 id="A-Note-About-Search-Tests"><a href="#A-Note-About-Search-Tests" class="headerlink" title="A Note About Search Tests"></a>A Note About Search Tests</h3><p>Now that the solutions are more complex, you may find your code failing either<br>the correctness or the liveness search tests.<br>If your code fails a correctness test, the next step is relatively easy: the<br>checker provides you the counterexample, and you can use the debugger to<br>visualize it. However, note that our model checking is incomplete - your code<br>might have an error but we don’t find it. For example, the sequence of<br>messages that triggers the problem may be longer than our search depth. This<br>is a fundamental problem for these types of tests.<br>The liveness tests have the opposite problem: if they pass then your code can<br>produce the right result, but they will flag an error if they can’t find a<br>valid event sequence in the time allowed. This is also a fundamental problem<br>for these types of tests. It is why we include both correctness and liveness<br>tests - you have more assurance if you pass both than if you pass only one.<br>For example, the null solution that does nothing can sometimes pass a<br>correctness test - it doesn’t do anything wrong! - but it will not pass the<br>liveness test. Similarly, passing a liveness test alone doesn’t imply that<br>your solution is bug free.<br>If your code does flag a liveness error, here are some steps to take:</p>
+<ol>
+<li><code>./run-tests --checks</code> will check that your handlers are deterministic, etc. If not, try fixing those issues first and rerunning the tests. By allowing faster search, this may also allow the model checker to find a liveness example, but it may also allow it to find additional correctness counterexamples. That’s a good thing, in our view. </li>
+<li>If you believe your solution is live, you can use the visual debugger to create by hand a sequence of messages that achieves the stated goal. You may find doing that that your code doesn’t behave as you expected, ie., that there is a bug you need to fix.</li>
+</ol>
+<h2 id="Part-1-The-View-Server"><a href="#Part-1-The-View-Server" class="headerlink" title="Part 1: The View Server"></a>Part 1: The View Server</h2><p>First you’ll implement a view service ( <code>ViewServer</code> ) and make sure it<br>passes our tests; in Part 2 you’ll build the <code>PBServer</code> . Your <code>ViewServer</code> won’t itself be replicated, so it will be relatively straightforward. Part 2<br>is much harder than part 1, because the primary-backup service is replicated,<br>and you have to flesh out the replication protocol.<br>The <code>ViewServer</code> goes through a sequence of numbered views, each with a<br>primary and (if possible) a backup. A view consists of a view number and the<br>identity of the view’s primary and backup servers.<br>Valid views have a few properties that are enforced:</p>
+<ul>
+<li>The primary in a view must always be either the primary or the backup of the previous view. This helps ensure that the key&#x2F;value service’s state is preserved. An exception: when the <code>ViewServer</code> first starts, it should accept any server at all as the first primary. </li>
+<li>The backup in a view can be any server (other than the primary), or can be altogether missing if no server is available (i.e., null).<br>These two properties – a view can have no backup and the primary from a view<br>must be either the primary or backup of the previous view – lead to the view<br>service being stuck if the primary fails in a view with no backup. This is a<br>flaw of the design of the <code>ViewServer</code> that we will fix in later labs.<br>Each key&#x2F;value server should send a <code>Ping</code> message once per <code>PING_MILLIS</code><br>(use<br><code>PingTimer</code> for this purpose on the <code>PBServer</code> s). The <code>ViewServer</code><br>replies to the <code>Ping</code> with a <code>ViewReply</code> . A <code>Ping</code> lets the <code>ViewServer</code> know that the server is alive; informs the server of the current<br>view; and informs the <code>ViewServer</code> of the most recent view that the server<br>knows about. The ViewServer should use the <code>PingCheckTimer</code> for deciding<br>whether a server is alive or (potentially) dead. If the ViewServer doesn’t<br>receive a Ping from a server in-between two consecutive <code>PingCheckTimer</code> s,<br>it should consider the server to be dead. <strong>Important:</strong> to facilitate search<br>tests, you should <strong>not</strong> store timestamps in your <code>ViewServer</code> ; your<br>message and timer handlers should be <strong>deterministic</strong> .<br>The <code>ViewServer</code> should return <code>STARTUP_VIEWNUM</code> with <code>null</code> primary and<br>backup when it has not yet started a view and use <code>INITIAL_VIEWNUM</code> for the<br>first started view. It then proceeds to later view numbers sequentially. The<br>view service can proceed to a new view in one of two cases:</li>
+</ul>
+<ol>
+<li>It hasn’t received a <code>Ping</code> from the primary or backup between two consecutive <code>PingCheckTimer</code> s. </li>
+<li>There is no backup and there’s an idle server (a server that’s been pinging but is neither the primary nor the backup).<br>An important property of the <code>ViewServer</code> is that it will not change views<br>(i.e., return a different view to callers) until the primary from the current<br>view acknowledges that it is operating in the current view (by sending a <code>Ping</code> with the current view number). If the <code>ViewServer</code> has not yet<br>received an acknowledgment for the current view from the primary of the<br>current view, the <code>ViewServer</code> should not change views even if it thinks<br>that the primary or backup has died.<br>The acknowledgment rule prevents the <code>ViewServer</code> from getting more than one<br>view ahead of the servers. If the <code>ViewServer</code> could get arbitrarily far<br>ahead, then it would need a more complex design in which it kept a history of<br>views, allowed servers to ask about old views, and garbage-collected<br>information about old views when appropriate. The downside of the<br>acknowledgment rule is that if the primary fails before it acknowledges the<br>view in which it is primary, then the <code>ViewServer</code> cannot change views,<br>spins forever, and cannot make forward progress.<br>It is important to note that servers may not immediately switch to the new<br>view returned by the <code>ViewServer</code> . For example, S1 could continue sending <code>Ping(5)</code> even if the <code>ViewServer</code> returns view 6. This indicates that the<br>server is not ready to move into the new view, which will be important for<br>Part 1 of this lab.<br>The <code>ViewServer</code> should not consider the view to be acknowledged until the<br>primary sends a ping with the view number (i.e., S1 sends <code>Ping(6)</code> ).<br>You should not need to implement any messages, timers, or other data<br>structures for this part of the lab. Your <code>ViewServer</code> should have handlers<br>for <code>Ping</code> and <code>GetView</code> messages (replying with a <code>ViewReply</code> for each,<br>where <code>GetView</code> simply returns the current view without the sender<br>“pinging”) and should handle and set <code>PingCheckTimer</code> s. Our solution took<br>approximately 100 lines of code.<br>You should pass the part 1 tests before moving on to part 2; execute them with<br><code>run-tests.py --lab 2 --part 1</code> .</li>
+</ol>
+<h3 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h3><ul>
+<li>There will be some states that your <code>ViewServer</code> cannot get out of because of the design of the view service. For example, if the primary fails before acknowledging the view in which it is the primary. This is expected. We will fix these flaws in the design in future labs. </li>
+<li>You’ll want to add field(s) to <code>ViewServer</code> in order to keep track of which servers have pinged since the second-most-recent <code>PingCheckTimer</code> ; you’ll need to differentiate between servers which have pinged since the most recent <code>PingCheckTimer</code> and servers which have not. </li>
+<li>Add field(s) to <code>ViewServer</code> to keep track of the current view. </li>
+<li>There may be more than two servers sending <code>Ping</code> s. The extra ones (beyond primary and backup) are volunteering to be backup if needed. You’ll want to track these extra servers as well in case one of them needs to be promoted to be the backup.</li>
+</ul>
+<h2 id="Part-2-The-Primary-Backup-Key-Value-Service"><a href="#Part-2-The-Primary-Backup-Key-Value-Service" class="headerlink" title="Part 2: The Primary&#x2F;Backup Key&#x2F;Value Service"></a>Part 2: The Primary&#x2F;Backup Key&#x2F;Value Service</h2><p>Next, you will implement the client and primary-backup servers ( <code>PBClient</code><br>and <code>PBServer</code> ).<br>Your service should continue operating correctly as long as there has never<br>been a time at which no server was alive. It should also operate correctly<br>with partitions: a server that suffers temporary network failure without<br>crashing, or can talk to some computers but not others. If your service is<br>operating with just one server, it should be able to incorporate an idle<br>server (as backup), so that it can then tolerate another server failure.<br>Correct operation means that operations are executed linearizably. All<br>operations should provide exactly-once semantics as in lab 1.<br>You should assume that the <code>ViewServer</code> never halts or crashes.<br>It’s crucial that only one primary be active at any given time. You should<br>have a clear story worked out for why that’s the case for your design. A<br>danger: suppose in some view S1 is the primary; the <code>ViewServer</code> changes<br>views so that S2 is the primary; but S1 hasn’t yet heard about the new view<br>and thinks it is still primary. Then some clients might talk to S1, and others<br>talk to S2, and not see each other’s operations.<br>A server that isn’t the active primary should either not respond to clients,<br>or respond with an error.<br>A server should not talk to the <code>ViewServer</code> for every operation it<br>receives, since that would put the <code>ViewServer</code> on the critical path for<br>performance and fault-tolerance. Instead servers should <code>Ping</code> the <code>ViewServer</code> periodically (once every <code>PING\\_MILLIS</code> ) to learn about new<br>views. Similarly, the client should not talk to the <code>ViewServer</code> for every<br>operation it sends; instead, it should cache the current view and only talk to<br>the <code>ViewServer</code> (by sending a <code>GetView</code> message) on initial startup, when<br>the current primary seems to be dead (i.e., on <code>ClientTimer</code> ), or when it<br>receives an error.<br>When servers startup initially, they should <code>Ping</code> the <code>ViewServer</code> with <code>ViewServer.STARTUP\\_VIEWNUM</code> . After that, they should <code>Ping</code> with the<br>latest view number they’ve seen, unless they’re the primary for a view that<br>has not yet started.<br>Part of your one-primary-at-a-time strategy should rely on the <code>ViewServer</code><br>only promoting the backup from view <code>i</code> to be primary in view <code>i+1</code> . If<br>the old primary from view <code>i</code> tries to handle a client request, it will<br>forward it to its backup. If that backup hasn’t heard about view <code>i+1</code> ,<br>then it’s not acting as primary yet, so no harm done. If the backup has heard<br>about view <code>i+1</code> and is acting as primary, it knows enough to reject the old<br>primary’s forwarded client requests.<br>You’ll need to ensure that the backup sees every update to the application in<br>the same order as the primary, by a combination of the primary initializing it<br>with the complete application state and forwarding subsequent client<br>operations.<br>The at-most-once semantics of <code>AMOApplication</code> (which you should once again<br>wrap your application in) should handle the backup receiving duplicate<br>operations from the primary. However, you will need to keep some state on the<br>primary to ensure that the backup processes operations in the correct order.<br>You will have to define your own messages and timers for this part of the lab.<br>Our solution took approximately 200 lines of code.<br>You should pass the part 2 tests; execute them with <code>run-tests.py --lab 2 --part 2</code> .</p>
+<h3 id="Hints-1"><a href="#Hints-1" class="headerlink" title="Hints"></a>Hints</h3><ul>
+<li>You’ll probably need to create new messages and timers to forward client requests from primary to backup, since the backup should reject a direct client request but should accept a forwarded request. </li>
+<li>You’ll probably need to create new messages and timers to handle the transfer of the complete application state from the primary to a new backup. You can send the whole application in one message. </li>
+<li>Even if your <code>ViewServer</code> passed all the tests in Part 1, it may still have bugs that cause failures in Part 2. </li>
+<li>Your <code>PBClient</code> should be very similar to the <code>SimpleClient</code> from lab 1</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/06/18/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS524983Primary-BackupService/">http://saferman.github.io/2019/06/18/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS524983Primary-BackupService/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/06/18/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP250Trie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Java代写：COMP250 Trie">
+                        
+                        <span class="card-title">Java代写：COMP250 Trie</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-06-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/06/12/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC521MonteCarloSimulate/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：CSC521 Monte Carlo Simulate">
+                        
+                        <span class="card-title">Python代写：CSC521 Monte Carlo Simulate</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-06-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

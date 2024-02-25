@@ -1,0 +1,948 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CSI352 wsh, 留学生CS|辅导|代写">
+    <meta name="description" content="代写实现一个shell，实现shell的基本语法解析，pipe，redirection等等。  
+RequirementIn this project you will create your own shell. Projects mus">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CSI352 wsh | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CSI352 wsh</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-03-04
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写实现一个shell，实现shell的基本语法解析，pipe，redirection等等。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this project you will create your own shell. Projects must be written in C<br>or C++. As you will see, some aspects of the project are not specified; it<br>will be your responsibility to take whatever steps you feel are appropriate to<br>complete the task.<br>Please start early! This project requires a lot of time!</p>
+<h2 id="wsh-Overview"><a href="#wsh-Overview" class="headerlink" title="wsh Overview"></a>wsh Overview</h2><p>The shell you will implement will be quite functional, but will lack most of<br>the fancier features normally found in a shell. Like more powerful shells,<br>your “Wimpy SHell” will use a command line interface, and will support<br>foreground (interactive) processing, background (batch) processing,<br>redirection, pipes, and job control. Your shell must support only a very small<br>number of built-in commands (see below for details). Except for the built-in<br>commands, all commands issued to your shell will be executed by creating a new<br>process (using fork) and loading the appropriate executable (using execvp).<br>Commands in a pipeline will require multiple processes!<br>You will need to use the following system calls. For more information, consult<br>sections 2 and 3 of the man pages.</p>
+<ul>
+<li>fork </li>
+<li>execvp </li>
+<li>waitpid </li>
+<li>exit </li>
+<li>open </li>
+<li>close </li>
+<li>dup2 </li>
+<li>pipe </li>
+<li>chdir </li>
+<li>getcwd</li>
+</ul>
+<h2 id="Required-Features"><a href="#Required-Features" class="headerlink" title="Required Features"></a>Required Features</h2><h3 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h3><p>Yes, you get 5 points for simply using a makefile. Name your source files<br>whatever you like.<br>Please name your executable wsh. Be sure that “make” will build your<br>executable.</p>
+<h3 id="Documentation"><a href="#Documentation" class="headerlink" title="Documentation"></a>Documentation</h3><p>If you have more than one source file, then you must submit a Readme file<br>containing a brief explanation of the functionality of each source file. Your<br>source file(s) must be welldocumented. There should be a paragraph or so at<br>the beginning of each source file describing the code; functions and data<br>structures should also be explained. Basically, another programmer should be<br>able to understand your code from the comments.</p>
+<h3 id="Main-loop"><a href="#Main-loop" class="headerlink" title="Main loop"></a>Main loop</h3><p>The main loop of your shell is quite simple:</p>
+<ol>
+<li>Write the prompt “wsh: “ to standard output. </li>
+<li>Read a command line from standard input. You may limit the number of characters that may be typed on a command line to 256. </li>
+<li>Execute the command. Your shell must handle empty lines and unknown commands gracefully (i.e., without dumping core, spawning another shell, etc). </li>
+<li>Show the status of all background jobs, if any (see below). </li>
+<li>If the end of standard input has not yet been reached, go to (1).</li>
+</ol>
+<h3 id="Foreground-jobs"><a href="#Foreground-jobs" class="headerlink" title="Foreground jobs"></a>Foreground jobs</h3><p>A “foreground job” is a command of the form ARG0 ARG1 … ARGn . Examples:<br>    cp file1 file2<br>    cp -R dir1 dir2<br>    rm -f -R dir1 dir2 file1 file2<br>    xterm<br>A foreground job should be executed as follows:</p>
+<ol>
+<li>Create a new process using fork </li>
+<li>Replace the image of the created process with the desired command using execvp. </li>
+<li>Wait for the process to terminate using waitpid.</li>
+</ol>
+<h3 id="Background-jobs"><a href="#Background-jobs" class="headerlink" title="Background jobs"></a>Background jobs</h3><p>A “background job” is a command of the form ARG0 ARG1 … ARGn &amp; . Examples:<br>    cp file1 file2 &amp;<br>    cp -R dir1 dir2 &amp;<br>    rm -f -R dir1 dir2 file1 file2 &amp;<br>    xterm &amp;<br>A background job is just like a foreground job, except the shell does not wait<br>for the process to terminate. Thus, a background job should be executed as<br>follows:</p>
+<ol>
+<li>Create a new process using fork </li>
+<li>In the newly created process, replace its image with the desired command using using execvp.<br>Unlike foreground jobs, your shell must keep track of background job<br>information using an appropriate data structure. This allows the shell to<br>display the status of each background job (and is required for other features<br>described later). Each background job should be assigned a “job number”, to be<br>used as an index when displaying the information about the job. A background<br>job’s number should remain fixed for its life. The job numbers should be<br>incremented for each new background job, and when no background jobs exist,<br>the job number should reset to 1.<br>As mentioned earlier, the main loop of your shell must display the status of<br>all background jobs. This is done by displaying two lists: the list of<br>background jobs still running, and the list of background jobs that have<br>finished execution since the last time the status was displayed. The lists<br>should contain the job number and the command line for each job. For example:<br>Running:<br>[1] cp file1 file2<br>[2] cp -R dir1 dir2<br>[4] xterm<br>Finished:<br>[3] rm -f -R dir1 dir2 file1 file2<br>If the xterm is then closed, the next status report might be:<br>Running:<br>[1] cp file1 file2<br>[2] cp -R dir1 dir2<br>Finished:<br>[4] xterm<br>(assuming file1 is very large, as is dir1). Note that job [3] is not listed<br>the second time. You should clear out the background job information from your<br>jobs data structure after a job has been displayed in the “Finished” list.</li>
+</ol>
+<h3 id="Redirection-of-standard-input-and-output"><a href="#Redirection-of-standard-input-and-output" class="headerlink" title="Redirection of standard input and output"></a>Redirection of standard input and output</h3><p>Both background and foreground jobs should be able to redirect standard input<br>and output using <code>&lt;</code> and <code>&gt;</code> , respectively. For example,<br>    ls -a -l -F &gt; file1<br>    ls -a -l -F &gt; file2 &amp;<br>should send the output of ls to file1 and file2,<br>    cat -n &lt; file1<br>should read from file1 instead of standard input, and<br>    cat &lt; file1 &gt; file2<br>    cat &gt; file3 &lt; file1<br>should read from file1 and write to file2 and file3.<br>Your shell must recover gracefully if an input file does not exist. For<br>example, this is “graceful”:<br>    wsh: cat &lt; bogusfile<br>    cat: Input file error<br>    wsh:<br>but something like this is NOT graceful:<br>    wsh: cat &lt; bogusfile<br>    Segmentation fault - core dumped<br>    pyrite&gt;<br>If output files exist already, you may quietly overwrite them, or “gracefully”<br>refuse.</p>
+<h3 id="Built-in-commands"><a href="#Built-in-commands" class="headerlink" title="Built-in commands"></a>Built-in commands</h3><p>The main difference between your shell and an industrial-strength shell is the<br>lack of built-in commands. Your shell must handle the following commands<br>internally, without creating a new process:</p>
+<ul>
+<li>cd newdir<br>Change the current working directory to “newdir” (using chdir() system call),<br>then display the current working directory (using getcwd() system call).<br>“newdir” may be either an absolute or relative path. Do something graceful<br>(i.e., don’t dump core) if “newdir” is illegal.</li>
+<li>wait jobnum<br>Wait for background job with specified job number to terminate. Do something<br>graceful (i.e., don’t dump core or block indefinitely) if jobnum is an illegal<br>job number.</li>
+<li>exit<br>Exit the shell.</li>
+</ul>
+<h3 id="Pipes"><a href="#Pipes" class="headerlink" title="Pipes"></a>Pipes</h3><p>Your shell must be able to handle a command pipeline of the form job1 | job2 |<br>… | jobn , where each job is a sequence of arguments (like a foreground job).<br>Examples:<br>    cat -n file | less<br>    ls -alF | sort -n -r +4 | head -5<br>    cat -n file1.cc file2.cc | grep #include | sed -e s&#x2F;include&#x2F;exclude&#x2F; | head 5<br>    yes + | head -15 | cat -n | sed s&#x2F;10&#x2F;10x&#x2F; | tr -d \n | tr x \n | head -1 | bc<br>A pipeline should be executed as follows (not necessarily in this exact<br>order):</p>
+<ul>
+<li>Create a new process for each job using fork. </li>
+<li>Replace the image of each process with the appropriate executable using execvp. </li>
+<li>Create n-1 pipes using pipe. </li>
+<li>Re-direct the output of job i to the write end of pipe i. </li>
+<li>Re-direct the input of job i to the read end pipe i-1. </li>
+<li>Keep the input of job1 as standard input. </li>
+<li>Keep the output of jobn as standard output. </li>
+<li>Close any unnecessary file descriptors. </li>
+<li>Wait for all jobs to terminate.</li>
+</ul>
+<h2 id="Things-you-don’t-need-to-implement"><a href="#Things-you-don’t-need-to-implement" class="headerlink" title="Things you don’t need to implement"></a>Things you don’t need to implement</h2><p>When testing your shell, you probably will discover that certain things do not<br>work like they would in an industrial-strength shell. Here is a list of<br>notable features that you do NOT need to implement.</p>
+<ul>
+<li>Background pipelines (e.g., yes | head -5 &amp;). </li>
+<li>Pipelines mixed with redirection to and from files (e.g., cat -n [ file1 | head -5 ] file2). </li>
+<li>Tab completion of filenames. </li>
+<li>Wildcard characters <em>and ? (Try ls</em> .cc in your shell…) </li>
+<li>Quotes (‘, “). Normally, quotes will protect special characters like , |. (Try echo “This probably ] will break | your shell”). Also, a quoted string normally counts as a single argument. </li>
+<li>Escape characters. Normally, special characters can be protected by “escaping” them. (Try echo ] hi). </li>
+<li>~ for your home directory. (Try ls ~).</li>
+</ul>
+<h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>Q: If user types exit while background commands are running, should they be<br>terminated immediately? Should we print a final time?<br>A: You should wait for the background commands to terminate, and then<br>terminate the shell. You should print a list of background commands that have<br>terminated before you terminate the shell.<br>Q: What is the desired behavior if one launches an interactive command that<br>doesn’t redirect input as a background command?<br>A: You can assume that a user never does this.<br>Q: How do we decide what numbers to assign to a background process, especially<br>when there are gaps (like Running: [1] [3]), and then another background job<br>need to be added.<br>A: As long as there exists one or more background jobs, the job numbers should<br>be incremented for each new background job. When no background jobs exist, the<br>job number should reset to 1. For example, suppose we have 4 background jobs<br>running with job numbers 1, 2, 3, 4. Now jobs 2, 3, 4 terminate and then a new<br>background job is submitted. The new job will have job number 5 and the<br>running list contains jobs 1 and 5. When jobs 1 and 5 both terminate, the job<br>number will reset to 1 so that a new background job will get job number 1.<br>Q: When I try and run emacs in the background, it doesn’t work at ALL, it<br>really fritzes out. Is it supposed to work in the background, like the spec<br>has in the example?<br>A: emacs cannot run in the background on pyrite. We will not type ‘emacs &amp;’<br>when testing your shell. The xterm command also doesn’t work on pyrite. The<br>example given in the spec is for illustration only.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/03/04/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSI352wsh/">http://saferman.github.io/2021/03/04/C++%E4%BB%A3%E5%86%99%EF%BC%9ACSI352wsh/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/03/05/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108HBridges/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Python代写：CSC108H Bridges">
+                        
+                        <span class="card-title">Python代写：CSC108H Bridges</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/03/04/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS301Plotting/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Python代写：CS301 Plotting">
+                        
+                        <span class="card-title">Python代写：CS301 Plotting</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

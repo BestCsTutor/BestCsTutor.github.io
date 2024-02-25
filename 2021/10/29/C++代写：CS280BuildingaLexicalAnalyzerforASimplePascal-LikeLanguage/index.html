@@ -1,0 +1,1051 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：CS280 Building a Lexical Analyzer for A Simple Pascal-Like Language, 留学生CS|辅导|代写">
+    <meta name="description" content="为Pascal语言实现一个 [ Lexical analyzer ](https://www.geeksforgeeks.org/working-of-lexical-analyzer-in-compiler&amp;#x2F; “Lexical ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：CS280 Building a Lexical Analyzer for A Simple Pascal-Like Language | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：CS280 Building a Lexical Analyzer for A Simple Pascal-Like Language</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-10-29
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>为Pascal语言实现一个 [ Lexical analyzer ](<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/working-of-">https://www.geeksforgeeks.org/working-of-</a><br>lexical-analyzer-in-compiler&#x2F; “Lexical analyzer”) .<br><img src="https://web.cs.wpi.edu/~kal/courses/cs4533/images/mod3ex2.gif" alt="Lexical
+analyzer"></p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this programming assignment, you will be building a lexical analyzer for<br>small programming language, called Simple Pascal-Like, and a program to test<br>it. This assignment will be followed by two other assignments to build a<br>parser and an interpreter to the language. Although, we are not concerned<br>about the syntax definitions of the language in this assignment, we intend to<br>introduce it ahead of Programming Assignment 2 in order to determine the<br>language terminals: reserved words, constants, identifier, and operators. The<br>syntax definitions of the Simple Pascal-Like language are given below using<br>EBNF notations. However, the details of the meanings (i.e. semantics) of the<br>language constructs will be given later on.</p>
+<ol>
+<li>Prog ::&#x3D; PROGRAM IDENT ; DeclPart CompoundStmt . </li>
+<li>DeclPart ::&#x3D; VAR DeclStmt { ; DeclStmt } </li>
+<li>DeclStmt ::&#x3D; IDENT {, IDENT } : Type [:&#x3D; Expr] </li>
+<li>Type ::&#x3D; INTEGER | REAL | BOOLEAN | STRING </li>
+<li>Stmt ::&#x3D; SimpleStmt | StructuredStmt </li>
+<li>SimpleStmt ::&#x3D; AssignStmt | WriteLnStmt | WriteStmt </li>
+<li>StructuredStmt ::&#x3D; IfStmt | CompoundStmt </li>
+<li>CompoundStmt ::&#x3D; BEGIN Stmt {; Stmt } END </li>
+<li>WriteLnStmt ::&#x3D; WRITELN (ExprList) </li>
+<li>WriteStmt ::&#x3D; WRITE (ExprList) </li>
+<li>IfStmt ::&#x3D; IF Expr THEN Stmt [ ELSE Stmt ] </li>
+<li>AssignStmt ::&#x3D; Var :&#x3D; Expr </li>
+<li>Var ::&#x3D; IDENT </li>
+<li>ExprList ::&#x3D; Expr { , Expr } </li>
+<li>Expr ::&#x3D; LogOrExpr ::&#x3D; LogAndExpr { OR LogAndExpr } </li>
+<li>LogAndExpr ::&#x3D; RelExpr {AND RelExpr } </li>
+<li>RelExpr ::&#x3D; SimpleExpr [ ( &#x3D; | [ | ] ) SimpleExpr ] </li>
+<li>SimpleExpr :: Term { ( + | - ) Term } </li>
+<li>Term ::&#x3D; SFactor { ( * | &#x2F; | DIV | MOD ) SFactor } </li>
+<li>SFactor ::&#x3D; [( - | + | NOT )] Factor </li>
+<li>Factor ::&#x3D; IDENT | ICONST | RCONST | SCONST | BCONST | (Expr)<br>Based on the language definitions, the lexical rules of the language and the<br>assigned tokens to the terminals are as follows:</li>
+<li>The language has identifiers, referred to by IDENT terminal, which are defined as a word that starts by a letter, and followed by zero or more letters, digits, underscores ‘_‘, or ‘$’ characters. Note that all identifiers are case sensitive. It is defined as:<br>IDENT ::&#x3D; Letter {( Letter | Digit | _ | $ )}<br>Letter ::&#x3D; [a-z A-Z]<br>Digit ::&#x3D; [0-9]</li>
+<li>Integer constant is referred to by ICONST terminal, which is defined as one or more digits. It is defined as:<br>ICONST ::&#x3D; [0-9]+</li>
+<li>Real constant is a fixed-point real number referred to by RCONST terminal, which is defined as one or more digits followed by a decimal point (dot) and zero or more digits. It is defined as:<br>RCONST ::&#x3D; ([0-9]+).([0-9]*)<br>For example, real number constants such as 12.0, 0.2, and 2. are accepted as<br>real constants, but .2, and 2.45.2 are not. Note that “.2” is recognized as a<br>DOT followed by the integer constant 2.</li>
+<li>A string literal is referred to by SCONST terminal, which is defined as a sequence of characters delimited by single quotes, that should all appear on the same line. For example, ‘Hello to CS 280.’ is a string literal. While, “Hello to CS 280.” Or ‘Hello to CS 280.” are not. </li>
+<li>Boolean constant is referred to by the BCONST terminal, which is defined by either of the constant values “true” or “false”. Note that the “true” and “false are treated as keywords.<br>BCONST ::&#x3D; (TRUE | FALSE )</li>
+<li>The reserved words of the language and their corresponding tokens are:<br>and begin boolean div end else false if integer mod not or program real string<br>write writeln var</li>
+<li>The operators of the language and their corresponding tokens are:<br>PLUS MINUS MULT DIV ASSOP EQ LTHAN GTHAN AND OR NOT IDIV MOD</li>
+<li>The delimiters of the language are:<br>COMMA SEMICOL LPAREN RPAREN COLON DOT</li>
+<li>A comment is defined by all the characters following the character “{“ as starting delimiter to the closing delimiter “}”. Comments may overlap one line, as multi-line comments. A recognized comment is skipped and does not have a token. </li>
+<li>White spaces are skipped. However, white spaces between tokens are used to improve readability and can be used as a one way to delimit tokens. </li>
+<li>An error will be denoted by the ERR token. </li>
+<li>End of file will be denoted by the DONE token.</li>
+</ol>
+<h2 id="Lexical-Analyzer-Requirements"><a href="#Lexical-Analyzer-Requirements" class="headerlink" title="Lexical Analyzer Requirements"></a>Lexical Analyzer Requirements</h2><p>A header file, lex.h, is provided for you. It contains the definitions of the<br>LexItem class, and an enumerated type of token symbols, called Token, and the<br>definitions of three functions to be implemented. These are:<br>    extern ostream&amp; operator&lt;&lt;(ostream&amp; out, const LexItem&amp; tok);<br>    extern LexItem id_or_kw(const string&amp; lexeme, int linenum);<br>    extern LexItem getNextToken(istream&amp; in, int&amp; linenum);<br>—|—<br>You MUST use the header file that is provided. You may NOT change it.</p>
+<h3 id="Part-I"><a href="#Part-I" class="headerlink" title="Part I"></a>Part I</h3><p>You will write the lexical analyzer function, called getNextToken, in the file<br>“lex.cpp”. The getNextToken function must have the following signature:<br>    LexItem getNextToken (istream&amp; in, int&amp; linenumber);<br>—|—<br>The first argument to getNextToken is a reference to an istream object that<br>the function should read from. The second argument to getNextToken is a<br>reference to an integer that contains the current line number. getNextToken<br>should update this integer every time it reads a newline from the input<br>stream. getNextToken returns a LexItem object. A LexItem is a class that<br>contains a token, a string for the lexeme, and the line number as data<br>members.<br>Note that the getNextToken function performs the following:</p>
+<ol>
+<li>Any error detected by the lexical analyzer should result in a LexItem object to be returned with the ERR token, and the lexeme value equal to the string recognized when the error was detected. </li>
+<li>Note also that both ERR and DONE are unrecoverable. Once the getNextToken function returns a LexItem object for either of these tokens, you shouldn’t call getNextToken again. </li>
+<li>Tokens may be separated by spaces, but in most cases are not required to be. For example, the input characters “3+7” and the input characters “3 + 7” will both result in the sequence of tokens ICONST PLUS ICONST. Similarly, The input characters ‘Hello’ ‘World’, and the input characters ‘Hello’’World’ will both result in the token sequence SCONST SCONST.</li>
+</ol>
+<h3 id="Part-II"><a href="#Part-II" class="headerlink" title="Part II"></a>Part II</h3><p>You will implement the id_or_kw() function. Id_or_kw function accepts a<br>reference to a string of identifier lexeme (i.e., keyword, or IDENT) and a<br>line number and returns a LexItem object. It searches for the lexeme in a<br>directory that maps a string value of a keyword to its corresponding Token<br>value, and it returns a LexItem object containing the lexeme, the keyword<br>Token, and the line number, if it is found, or IDENT Token otherwise. Except<br>for the “true” and “false” lexemes, the corresponding Token is a BCONST.</p>
+<h3 id="Part-III"><a href="#Part-III" class="headerlink" title="Part III"></a>Part III</h3><p>You will implement the overloaded function operator[[. The operator[[ function<br>accepts a reference to an ostream object and a reference to a LexItem object,<br>and returns a reference to the ostream object. The operator[[ function should<br>print out the string value of the Token in the tok object. If the Token is<br>either an IDENT, ICONST, RCONST, SCONST, or BCONST it will print out its token<br>followed by its lexeme between parentheses. See the example in the slides.</p>
+<h2 id="Testing-Program-Requirements"><a href="#Testing-Program-Requirements" class="headerlink" title="Testing Program Requirements:"></a>Testing Program Requirements:</h2><p>It is recommended to implement the lexical analyzer in one source file, and<br>the main test program in another source file. The testing program is a main()<br>function that takes several command line flags. The notations for input flags<br>are as follows:</p>
+<ul>
+<li>-v (optional): if present, every token is printed out when it is seen followed by its lexeme using the format described below. </li>
+<li>-nconst (optional): if present, prints out all the unique numeric constants (i.e., integer or real) in numeric order. </li>
+<li>-sconst (optional): if present, prints out all the unique string constants in alphabetical order </li>
+<li>-bconst (optional): if present, prints out all the Boolean constants in order. </li>
+<li>-ident (optional): if present, prints out all of the unique identifiers in alphabetical order. </li>
+<li>filename argument must be passed to main function. Your program should open the file and read from that filename.<br>Note, your testing program should apply the following rules:</li>
+</ul>
+<ol>
+<li>The flag arguments (arguments that begin with a dash) may appear in any order, and may appear multiple times. Only the last appearance of the same flag is considered. </li>
+<li>There can be at most one file name specified on the command line. If more than one filename is provided, the program should print on a new line the message “ONLY ONE FILE NAME IS ALLOWED.” and it should stop running. If no file name is provided, the program should print on a new line the message “NO SPECIFIED INPUT FILE.”. Then the program should stop running. </li>
+<li>If an unrecognized flag is present, the program should print on a new line the message “UNRECOGNIZED FLAG {arg}”, where {arg} is whatever flag was given. Then the program should stop running. </li>
+<li>If the program cannot open a filename that is given, the program should print on a new line the message “CANNOT OPEN THE FILE arg”, where arg is the filename given. Then the program should stop running. </li>
+<li>If getNextToken function returns ERR, the program should print out the message “Error in line N: Unrecognized Lexeme {lexeme}”, where N is the line number of the input file in which an unrecognized lexeme is detected, and then it should stop running. For example, a file that contains an unrecognized symbol, such as “?”, in line 1 of the file, the program should print out the message: Error in line 1: Unrecognized Lexeme {?} </li>
+<li>The program should repeatedly call getNextToken until it returns DONE or ERR. If it returns DONE, the program prints the list of all tokens if the “-v” is specified, followed by the summary information, then handles the flags using the following order: “-idents”, “nconst”, “-bconst”, then “-sconst”. If no flags are found, only the summary information is displayed. The summary information is displayed according to following format:<br>Lines: L<br>Total Tokens: M<br>Identifiers: N<br>Numbers: O<br>Booleans: P<br>Strings: Q<br>Where L is the number of input lines, M is the number of tokens (not counting<br>DONE), N is the number of identifiers tokens (e.g., IDENT), O is the number of<br>numeric constants, P is the number of Boolean constants, and Q is the number<br>of string literals. If the file is empty, the following output message is<br>displayed.<br>Empty File.</li>
+<li>If the -v option is present, the program should print each token as it is read and recognized, one token per line. The output format for the token is the token name in all capital letters (for example, the token LPAREN should be printed out as the string LPAREN. In the case of the IDENT, ICONST, RCONST, SCONST, BCONST, and ERR tokens, the token name should be followed by a colon and the lexeme between double quotes. For example, if an identifier “circle” and a string literal ‘The center of the circle through these points is’ are recognized, the -v output for them would be:<br>IDENT: “circle”<br>SCONST: “The center of the circle through these points is”</li>
+<li>The -sconst option should cause the program to print the label STRINGS: on a line by itself, followed by every unique string constant found, one string per line with double quotes, in alphabetical order. If there are no SCONSTs in the input, then nothing is printed. </li>
+<li>The -nconsts option should cause the program to print the label NUMBERS: on a line by itself, followed by every unique numeric constant found, one number per line, in numeric order. If there are no NCONSTs in the input, then nothing is printed. </li>
+<li>The -bconsts option should cause the program to print the label BOOLEANS: on a line by itself, followed by every unique boolean constant found, one per line, in order. If there are no BCONSTs in the input, then nothing is printed. </li>
+<li>The -ident option should cause the program to print the label IDENTIFIERS: followed by a comma-separated list of every identifier found, in alphabetical order. If there are no identifiers in the input, then nothing is printed.</li>
+</ol>
+<h3 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h3><p>You are provided by a set of 16 testing files associated with Programming<br>Assignment 1.<br>Vocareum automatic grading will be based on these testing files. You may use<br>them to check and test your implementation. These are available in compressed<br>archive “PA 1 Test Cases.zip” on Canvas assignment. The testing case of each<br>file is defined in the Grading table below.</p>
+<h2 id="Submission-Guidelines"><a href="#Submission-Guidelines" class="headerlink" title="Submission Guidelines"></a>Submission Guidelines</h2><p>1.1. Submit all your implementation files for the “lex.cpp” and the testing<br>program through Vocareum. The “lex.h” header file will be propagated to your<br>Work Directory.<br>1.2. Submissions after the due date are accepted with a fixed penalty of 25%<br>from the student’s score.</p>
+<h2 id="Grading-Table"><a href="#Grading-Table" class="headerlink" title="Grading Table"></a>Grading Table</h2><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Test File</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Successful compilation</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cannot Open the File (cantopen)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Empty File (emptyfile)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Only one file name allowed (onefileonly)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>No Specified Input File</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Numeric constants (numers)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bad argument (badarg)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Real constant error (realerr)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Invalid strings I (invstr1)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Invalid strings II (invstr2)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Noflags (noflags)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Multi-line comments (comments)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Valid operators (validops)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Invalid Symbol (invsymbol)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Comment error (errcomm)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Identifiers (idents)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>17</td>
+<td>All flags set (allflags)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>20</td>
+<td></td>
+</tr>
+</tbody></table>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/10/29/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS280BuildingaLexicalAnalyzerforASimplePascal-LikeLanguage/">http://saferman.github.io/2021/10/29/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS280BuildingaLexicalAnalyzerforASimplePascal-LikeLanguage/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/10/30/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS5915DatabaseDesign/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Database代写：CS5915 Database Design">
+                        
+                        <span class="card-title">Database代写：CS5915 Database Design</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/10/28/Python%E4%BB%A3%E5%86%99%EF%BC%9ACP164Stacks/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Python代写：CP164 Stacks">
+                        
+                        <span class="card-title">Python代写：CP164 Stacks</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

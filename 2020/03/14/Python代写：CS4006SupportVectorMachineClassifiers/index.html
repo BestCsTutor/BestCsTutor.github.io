@@ -1,0 +1,991 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CS4006 Support Vector Machine Classifiers, 留学生CS|辅导|代写">
+    <meta name="description" content="代写实现SVM分类器。  
+RequirementIn this assignment, we use the scikit-learn package to train an SVMclassifier. To do so, we nee">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CS4006 Support Vector Machine Classifiers | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CS4006 Support Vector Machine Classifiers</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-14
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写实现SVM分类器。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this assignment, we use the scikit-learn package to train an SVM<br>classifier. To do so, we need to tune 2 hyperparameters: the cost C and<br>precision γ (gamma). We are going to use K-fold cross-validation to determine<br>the best combination of values for this pair.</p>
+<h2 id="Question-0"><a href="#Question-0" class="headerlink" title="Question 0"></a>Question 0</h2><p>Have a look at the 3 first cells. In the third one, take note of how the SVC<br>object is instantiated and trained, how labels are predicted, and finally how<br>the fitting error is computed. In this assignment, the prediction error after<br>a given training is simply defined as the number of misclassified labels.</p>
+<h2 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h2><p>Using an SVM classifier with an RBF kernel, use 10-fold cross-validation to<br>find the best cost and precision parameters. The range of test values for each<br>parameter is provided. a. First compute the cross-validation error matrix: for<br>each parameter combination, instantiate an SVM classifier; for each split<br>provided by the KFold object, re-train this classifier and compute the<br>prediction error; the cross- validation error is the average of these errors<br>over all splits. b. Use the error matrix to select the best parameter<br>combination. c. Visualize the error matrix using imshow and the ‘hot’<br>colormap.</p>
+<h2 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h2><p>Plot the decision boundaries of this classifier, by appropriately modifying<br>the code from the previous assignments. Display the support vectors on the<br>same figure.</p>
+<h2 id="Question-3"><a href="#Question-3" class="headerlink" title="Question 3"></a>Question 3</h2><p>Evaluate and print the generalization error of this classifier, computed on<br>the test set.</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="imports"><a href="#imports" class="headerlink" title="imports"></a>imports</h3><pre><code>import matplotlib.pyplot as plt  
+import numpy as np  
+from sklearn.model_selection import KFold  
+from sklearn.svm import SVC  
+%matplotlib inline  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Load-and-display-the-training-data"><a href="#Load-and-display-the-training-data" class="headerlink" title="Load and display the training data"></a>Load and display the training data</h3><pre><code>features = np.load(&quot;features.npy&quot;)  
+labels = np.load(&quot;labels.npy&quot;)  
+print(&quot;features size:&quot;, features.shape)  
+print(&quot;labels size:&quot;, labels.shape)  
+# Extract features for both classes  
+pos = labels == 1 # 1D array of booleans, with pos[i] = True if labels[i] == 1  
+features_pos = features[pos] # filter the array with the boolean array  
+neg = labels != 1  
+features_neg = features[neg]  
+# Display data  
+fig, ax = plt.subplots()  
+ax.scatter(features_pos[:, 0], features_pos[:, 1], c=&quot;red&quot;, label=&quot;Posit ive class&quot;)  
+ax.scatter(features_neg[:, 0], features_neg[:, 1], c=&quot;blue&quot;, label=&quot;Nega tive class&quot;)  
+ax.set_title(&quot;Training data&quot;)  
+ax.set_xlabel(&quot;Feature 1&quot;)  
+ax.set_ylabel(&quot;Feature 2&quot;)  
+ax.legend()  
+plt.show()  
+</code></pre>
+<p>—|—<br>features size: (500, 2)<br>labels size: (500,)</p>
+<h3 id="Training-the-SVM-classifier-with-arbitrary-hyperparameters"><a href="#Training-the-SVM-classifier-with-arbitrary-hyperparameters" class="headerlink" title="Training the SVM classifier with arbitrary hyperparameters"></a>Training the SVM classifier with arbitrary hyperparameters</h3><pre><code>cost = 1  
+gamma = 1  
+# Train the SVM classifier.  
+svm = SVC(C=cost, kernel=&#39;rbf&#39;, gamma=gamma)  
+svm.fit(features, labels)  
+# Predict labels.  
+# Note that here we use the same set for training and testing,  
+# which is not the case in the remainder of the assignment.  
+predicted_labels = svm.predict(features)  
+# Compute the error.  
+# Note: since in Python, True and False are equivalent to 1 and 0, we ca n  
+# directly sum over the boolean array returned by the comparison operato r.  
+error = sum(labels != predicted_labels)  
+print(&quot;Prediction error:&quot;, error)  
+</code></pre>
+<p>—|—<br>Prediction error: 98</p>
+<h2 id="Training-with-K-fold-cross-validation"><a href="#Training-with-K-fold-cross-validation" class="headerlink" title="Training with K-fold cross-validation"></a>Training with K-fold cross-validation</h2><h3 id="Define-test-values-for-the-cost-and-precision-parameters"><a href="#Define-test-values-for-the-cost-and-precision-parameters" class="headerlink" title="Define test values for the cost and precision parameters"></a>Define test values for the cost and precision parameters</h3><pre><code>def logsample(start, end, num):  
+  return np.logspace(np.log10(start), np.log10(end), num, base=10.0)  
+num_gammas = 20  
+num_costs = 20  
+gamma_range = logsample(1e-1, 1e3, num_gammas)  
+cost_range = logsample(1e-1, 1e3, num_costs)  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Compute-the-cross-validation-error-for-each-parameter-combination"><a href="#Compute-the-cross-validation-error-for-each-parameter-combination" class="headerlink" title="Compute the cross-validation error for each parameter combination"></a>Compute the cross-validation error for each parameter combination</h3><p>The KFold class from scikit-learn is a “cross-validation” object, initialized<br>with a number of folds. For each fold, it randomly partitions the input data<br>into a training set and a validation set. The documentation ( [ <a target="_blank" rel="noopener" href="http://scikit-/">http://scikit-</a><br>learn.org&#x2F;stable&#x2F;modules&#x2F;generated&#x2F;sklearn.model_selection.KFold.html<br>](<a target="_blank" rel="noopener" href="http://scikit-/">http://scikit-</a><br>learn.org&#x2F;stable&#x2F;modules&#x2F;generated&#x2F;sklearn.model_selection.KFold.html) )<br>provides an example of use.<br>    K &#x3D; 10 # number of folds for cross validation<br>    kf &#x3D; KFold(n_splits&#x3D;K)<br>    cv_error &#x3D; np.zeros((num_gammas, num_costs)) # error matrix<br>    # TODO (Question 1)<br>    # &#x2F;TODO (Question 1)<br>—|—  </p>
+<h3 id="Train-the-classifier-with-the-best-parameter-combination"><a href="#Train-the-classifier-with-the-best-parameter-combination" class="headerlink" title="Train the classifier with the best parameter combination"></a>Train the classifier with the best parameter combination</h3><pre><code># Find gamma and cost giving the smallest error  
+# TODO (Question 1)  
+# /TODO (Question 1)  
+# Train the SVM classifier using these parameters  
+svm = SVC(C=cost, kernel=&#39;rbf&#39;, gamma=gamma)  
+svm.fit(features, labels)  
+support_vectors = svm.support_vectors_  
+</code></pre>
+<p>—|—  </p>
+<h3 id="Display-cross-validation-results-and-decision-function"><a href="#Display-cross-validation-results-and-decision-function" class="headerlink" title="Display cross-validation results and decision function"></a>Display cross-validation results and decision function</h3><pre><code># Sample points on a grid  
+num_points = 100  
+x_rng = np.linspace(0, 1, num_points)  
+y_rng = np.linspace(0, 1, num_points)  
+grid_x, grid_y = np.meshgrid(x_rng, y_rng)  
+# Evaluate decision function for each point  
+xy_list = np.column_stack((grid_x.flat, grid_y.flat))  
+values = svm.decision_function(xy_list)  
+values = values.reshape((num_points, num_points))  
+# Display  
+fig = plt.figure(figsize=plt.figaspect(0.25))  
+ax = fig.add_subplot(1, 3, 1)  
+ax.set_title(&quot;Cross-validation error&quot;)  
+ax.set_xlabel(&quot;Log10 of the cost parameter&quot;)  
+ax.set_ylabel(&quot;Log10 of the precision parameter&quot;)  
+# TODO (Question 1)  
+# /TODO (Question 1)  
+ax = fig.add_subplot(1, 3, 2)  
+ax.set_title(&quot;Decision function&quot;)  
+ax.set_xlabel(&quot;Feature 1&quot;)  
+ax.set_ylabel(&quot;Feature 2&quot;)  
+ax.imshow(values, extent=[0, 1, 0, 1], origin=&#39;lower&#39;)  
+ax = fig.add_subplot(1, 3, 3)  
+ax.set_title(&quot;Support vectors and isolevels of the decision function&quot;)  
+ax.set_xlabel(&quot;Feature 1&quot;)  
+ax.set_ylabel(&quot;Feature 2&quot;)  
+# TODO (Question 2)  
+# /TODO (Question 2)  
+plt.show()  
+</code></pre>
+<p>—|—  </p>
+<h2 id="Generalization-error"><a href="#Generalization-error" class="headerlink" title="Generalization error"></a>Generalization error</h2><h3 id="Load-the-test-data"><a href="#Load-the-test-data" class="headerlink" title="Load the test data"></a>Load the test data</h3><pre><code># Load the training data  
+test_features = np.load(&quot;test_features.npy&quot;)  
+test_labels = np.load(&quot;test_labels.npy&quot;)  
+print(test_features.shape)  
+print(test_labels.shape)  
+</code></pre>
+<p>—|—<br>(500, 2)<br>(500,)</p>
+<h3 id="Print-the-number-of-misclassified-points-in-the-test-set"><a href="#Print-the-number-of-misclassified-points-in-the-test-set" class="headerlink" title="Print the number of misclassified points in the test set"></a>Print the number of misclassified points in the test set</h3><pre><code># TODO (Question 3)  
+# /TODO (Question 3)  
+</code></pre>
+<p>—|—  </p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/03/14/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4006SupportVectorMachineClassifiers/">http://saferman.github.io/2020/03/14/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS4006SupportVectorMachineClassifiers/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/16/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS2360PatternMatching/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Java代写：CS2360 Pattern Matching">
+                        
+                        <span class="card-title">Java代写：CS2360 Pattern Matching</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/13/Security%E4%BB%A3%E5%86%99%EF%BC%9AECE498AttacksonRSA/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Security代写：ECE498 Attacks on RSA">
+                        
+                        <span class="card-title">Security代写：ECE498 Attacks on RSA</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

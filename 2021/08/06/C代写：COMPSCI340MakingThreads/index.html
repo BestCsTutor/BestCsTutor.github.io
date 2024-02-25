@@ -1,0 +1,902 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMPSCI340 Making Threads, 留学生CS|辅导|代写">
+    <meta name="description" content="代写操作系统作业，实现用户态线程。  
+IntroductionUser level threads are surprisingly easy to make, as long as the operatingsystem provide">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMPSCI340 Making Threads | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMPSCI340 Making Threads</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-08-06
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写操作系统作业，实现用户态线程。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>User level threads are surprisingly easy to make, as long as the operating<br>system provides a few basic requirements. In this assignment you are going to<br>finish writing a thread library using some of the standard Unix system calls.</p>
+<h2 id="Threads-without-preemption"><a href="#Threads-without-preemption" class="headerlink" title="Threads without preemption"></a>Threads without preemption</h2><p>The file OSA1.c is a program which creates a thread, executes that thread and<br>then on completion of the thread returns to the main function (which is<br>executing in a sort of thread too).<br>This program runs fine on the Mac and Linux (including the Windows Subsystem<br>for Linux). However I recommend using Linux in the lab or in a virtual machine<br>because later parts of the assignment (in particular Part3) become OS<br>dependent. The markers will test the programs on the lab Linux image.<br>Compile and run the program either from the command line:<br>    gcc OSA1.c -o OSA1<br>    .&#x2F;OSA1<br>or from within an IDE such as Eclipse. I recommend the command line.<br>In this case there was no need for a thread as the main function merely waits<br>for the thread to finish before it finishes, just like a very fancy subroutine<br>call. However by the end of the assignment you will have a proper pre-emptive<br>threading system.<br>The first thing you need to do is to read and understand the code in OSA1.c. I<br>will also cover this in lectures.</p>
+<h2 id="What-is-a-thread"><a href="#What-is-a-thread" class="headerlink" title="What is a thread?"></a>What is a thread?</h2><p>The littleThread.h header file defines a thread structure as:<br>    typedef struct thread {<br>      int tid;             &#x2F;&#x2F; thread identifier<br>      void (*start)();     &#x2F;&#x2F; the start function<br>      jmp_buf environment; &#x2F;&#x2F; saved registers<br>      enum state_t state;  &#x2F;&#x2F; the state<br>      void *stackAddr;     &#x2F;&#x2F; the stack address<br>      struct thread *prev; &#x2F;&#x2F; pointer to the previous thread<br>      struct thread *next; &#x2F;&#x2F; pointer to the next thread<br>    } *Thread;<br>—|—<br>So a thread has a unique identifier tid (the first thread is 0, add 1 for each<br>subsequent thread), a start function, this is the function which gets called<br>when the thread begins executing. It has an environment (which is used by<br>setjmp and longjmp), a state, the address of the bottom of the thread’s stack<br>stackAddr and pointers to previous and next threads (not used in OSA1.c at the<br>moment but you will have to use them). The thread states are simply: SETUP,<br>RUNNING, READY, and FINISHED. SETUP means that the thread is in the process of<br>being created or setup. READY means the thread is all set to run but it is not<br>running. RUNNING and FINISHED are obvious.<br>The environment of a thread includes the values of the processor’s registers<br>so that the thread can resume after not running for a while. See the section<br>on setjmp and longjmp later in this handout.<br>The code for the thread is in threads0.c. This way the markers can supply<br>different threads to test your code.</p>
+<h2 id="What-about-the-stack"><a href="#What-about-the-stack" class="headerlink" title="What about the stack?"></a>What about the stack?</h2><p>Each thread requires its own stack. This could be allocated by reserving some<br>space in memory and then setting the stack pointer register to the top of this<br>space. However there is a way of doing this without having to use any assembly<br>language.<br>When signals are sent to Unix processes they normally execute the signal<br>handler on the normal user stack, but it is possible to request that when a<br>signal handler is called it uses an alternate stack. This is partially set up<br>in the setUpStackTransfer function.<br>The createThread function allocates space for the stack (and the thread<br>structure). Before it sends a signal to the current process with the kill<br>system call it also makes the new stack for the thread act as the signal<br>stack, using the sigaltstack function.<br>Then when the SIGUSR1 signal is received it will cause the process to jump to<br>the handler function associateStack using the new stack for this function.</p>
+<h2 id="Each-Part"><a href="#Each-Part" class="headerlink" title="Each Part"></a>Each Part</h2><p>There are 3 parts to this assignment. Do each part in its own directory:<br>Part1, Part2, Part3. Each directory must have your source code for the part:<br>OSA1.1.c, OSA1.2.c, OSA1.3.c, the unmodified header littleThread.h and the<br>example thread file for the part: threads1.c, threads2.c, threads3.c.<br>When the markers are testing your code they will first run each part using the<br>code you provide then they will replace the threads?.c files with other thread<br>files to make sure your code works with different threads and different<br>numbers of threads.</p>
+<h2 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h2><p>Take OSA1.c change its name to OSA1.1.c and put your name and login&#x2F;UPI in the<br>opening comment. You have to change the code so that if multiple threads are<br>created they will be switched between as each thread finishes. There is no<br>pre-emption. After all threads have finished, execution returns to the main<br>function and the process stops. You can change the existing code in any way<br>you like as long as it still works in the same way. You will certainly have to<br>change the switcher function.<br>You should keep all created threads in a circular linked list (that is what<br>the prev and next pointers are for in the thread struct). You will need to<br>keep track of the current thread (the thread currently running), this will<br>initially be the first thread created. Always insert new threads at the end of<br>the list. Each thread must have a unique thread identifier.<br>The main thread (the one executing the main function) is different, it doesn’t<br>have an identifier and should not be inserted in the circular list of threads.<br>It should only be returned to when there are no other threads still able to<br>run.<br>When the currently running thread finishes you need to remove it from the list<br>and switch to the next thread in the list. You must free the stack space of<br>all finished threads. Keep the message saying you are disposing of the stack<br>space for the finished thread. Do not free the thread structure memory as you<br>need this to print the state of the thread.<br>Add a scheduler function called scheduler to choose the next thread to run.<br>You need to ensure that all thread states are correct. e.g. Threads which have<br>completed have their state changed to FINISHED, threads which are waiting to<br>run are READY and only the currently executing thread is RUNNING.<br>Add a new function printThreadStates which prints out the thread ids and the<br>state of each thread in the order they were created. The const NUMTHREADS is<br>the number of threads created. Output should look like this:<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>In this case thread 0 is the current thread, and hence running, and thread 1<br>is ready to run. Even when threads have finished their state should still be<br>shown by the printThreadStates function.<br>Call the printThreadStates function whenever there is a switch to a new<br>thread. Also call it after creating the threads but before any of them are<br>started, and one last time just as the process finishes.<br>The output when using the threads1.c file must be like this (extra empty lines<br>and spaces can be ignored):<br>    robert@ubuntu:Part1$ .&#x2F;OSA1.1<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:ready<br>    switching to first thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    hi<br>    hi<br>    hi<br>    hi<br>    hi<br>    disposing 0<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:running<br>    bye<br>    bye<br>    bye<br>    bye<br>    bye<br>    disposing 1<br>    back to the main thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished</p>
+<h2 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h2><p>Copy OSA1.1.c from Part 1 and save it as OSA1.2.c. Use the thread2.c file for<br>the threads. Add a threadYield function to OSA1.2.c which will call the<br>scheduler. This should immediately stop the current thread from running and<br>start up the next READY thread in the circular linked list. If the current<br>thread is the only existing READY thread then it continues.<br>The output should look like this:<br>    robert@ubuntu:Part2$ .&#x2F;OSA1.2<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    switching to first thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    hi<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:running<br>    threadID: 2 state:ready<br>    bye<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:ready<br>    threadID: 2 state:running<br>    bye<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    hi<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:running<br>    threadID: 2 state:ready<br>    bye<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:ready<br>    threadID: 2 state:running<br>    bye<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    disposing 0<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:running<br>    threadID: 2 state:ready disposing 1<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:running<br>    disposing 2<br>    back to the main thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:finished</p>
+<h2 id="Part-3"><a href="#Part-3" class="headerlink" title="Part 3"></a>Part 3</h2><p>All we need to add now is a way of pre-empting a running thread to enable<br>other threads to get a turn. We can do this with another signal. Look up how<br>to use setitimer to send a signal to your process every 20 milliseconds (how<br>many microseconds?). This is where the assignment becomes OS dependent. You<br>must use ITIMER_VIRTUAL and its corresponding signal SIGVTALRM.<br>Save the program either from Part 1 or Part 2 as OSA1.3.c . Add setUpTimer and<br>a call to it, just before starting the threads in threads3.c. The output<br>should show all three threads taking turns running, similar to this:<br>    robert@ubuntu:Part3$ .&#x2F;OSA1.3<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    switching to first thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    …(lots of missing output)<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:running<br>    threadID: 1 state:ready<br>    threadID: 2 state:ready<br>    hi<br>    hi<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:ready<br>    threadID: 1 state:running<br>    threadID: 2 state:ready<br>    bye<br>    …(lots of missing output)<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:running<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:running<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:running<br>    bye<br>    disposing 2<br>    back to the main thread<br>    Thread States<br>    &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>    threadID: 0 state:finished<br>    threadID: 1 state:finished<br>    threadID: 2 state:finished<br>The output will be different every time the program is run.</p>
+<h2 id="Questions-put-the-answers-to-these-in-a-file-called-A1answers-txt"><a href="#Questions-put-the-answers-to-these-in-a-file-called-A1answers-txt" class="headerlink" title="Questions (put the answers to these in a file called A1answers.txt)"></a>Questions (put the answers to these in a file called A1answers.txt)</h2><h3 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h3><p>There is a comment saying “Wow!” in the switcher function in OSA1.c. This is<br>to indicate something very bad is happening here. Explain what it is.</p>
+<h3 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h3><p>Why are the time consuming calculations in threads3.c required in order to<br>demonstrate the effectiveness of the pre-emptive scheduler?</p>
+<h3 id="Question-3"><a href="#Question-3" class="headerlink" title="Question 3"></a>Question 3</h3><p>In threads3.c there is some code around the call to rand() to block signals<br>and then allow them again.<br>Explain what can happen if this is not done. Also give an explanation as to<br>why this can happen.</p>
+<h3 id="Extra-info"><a href="#Extra-info" class="headerlink" title="Extra info"></a>Extra info</h3><ul>
+<li>There are definitely differences in the behaviour of programs like this on different Unix&#x2F;Linux operating systems. For this reason you eventually have to get your solution working on the lab image of Linux. </li>
+<li>As one example, I found that the Windows subsystem for Linux wouldn’t allow me to use ITIMER_VIRTUAL when calling setitimer, I had to use ITIMER_REAL instead. Whereas ITIMER_VIRTUAL worked fine on an Ubuntu virtual machine on my Mac. </li>
+<li>Remember that the Unix man command gives very useful information about system and C function calls, in particular for this assignment: malloc, sigaction, sigaltstack, setitimer, kill</li>
+</ul>
+<h3 id="setjmp-and-longjmp"><a href="#setjmp-and-longjmp" class="headerlink" title="setjmp and longjmp"></a>setjmp and longjmp</h3><p>The C functions setjmp and longjmp are used to store the current environment<br>(actually the registers) and restore them at a later time. This means we can<br>effectively store the computation of a thread at this point and then come back<br>to this point when we want to. Just what we need to freeze and unfreeze a<br>thread. But because C uses a stack to keep track of function calls (the<br>corresponding arguments, local variables and return addresses) we must make<br>sure that longjmp is called before the stack has lost or overwritten the<br>position where setjmp was called.<br>    setjmp(thread-&gt;environment)<br>—|—<br>will save the current registers in the environment field of the thread<br>structure. When setjmp is called it returns 0. When we come back to exactly<br>the same position in the code because of the matching longjmp we can return<br>another value (traditionally 1) so that we can do different things when we<br>return.<br>    longjmp(thread-&gt;environment, 1);<br>—|—<br>In this way a thread can be setup to run by skipping the code to call its<br>start function when the return value from setjmp is zero. When we do a longjmp<br>with one as the return value back to the same point the thread’s start<br>function is executed. See the associateStack and switcher functions in OSA1.c<br>.</p>
+<h2 id="Part-4-Extra-for-Experts-just-because-you-can"><a href="#Part-4-Extra-for-Experts-just-because-you-can" class="headerlink" title="Part 4 - Extra for Experts (just because you can)"></a>Part 4 - Extra for Experts (just because you can)</h2><p>Save your OSA1.3.c file as OSA1.4.c in a Part4 directory and modify it in the<br>following way. Rather than use the clever but hacky system to set up a new<br>stack for each thread using an alternate signal stack, you have to descend<br>into the murky depths of assembly language to modify the stack pointer<br>directly.<br>You will have to look up inline assembly on the Web in order to change the<br>stack pointer for each thread.<br>Remove all the unnecessary pieces of code which are to do with alternate<br>signal stacks and the associated kill call.<br>You could also use setcontext and getcontext for switching between contexts<br>rather than using setjmp and longjmp.</p>
+<h2 id="Submit"><a href="#Submit" class="headerlink" title="Submit"></a>Submit</h2><p>Zip up all of your solutions into one file (Part1, Part2, Part3 (and possibly<br>Part4) directories and the A1answers.txt file).<br>Submit the zipped file to Canvas. If you resubmit Canvas adds a suffix to the<br>filename. Do not worry about this.<br>Remember: Your code is going to be tested on the Linux lab image. If your code<br>does not run correctly in this environment you will not get the marks :(.<br>Include your name and UPI in all files.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/08/06/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI340MakingThreads/">http://saferman.github.io/2021/08/06/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI340MakingThreads/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/08/11/C++%E4%BB%A3%E5%86%99%EF%BC%9AICS214IcemanPart5/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="C++代写：ICS214 Iceman Part5">
+                        
+                        <span class="card-title">C++代写：ICS214 Iceman Part5</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-11
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/08/05/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS122Searching/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="C++代写：CS122 Searching">
+                        
+                        <span class="card-title">C++代写：CS122 Searching</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

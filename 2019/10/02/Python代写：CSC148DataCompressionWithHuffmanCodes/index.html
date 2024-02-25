@@ -1,0 +1,926 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CSC148 Data Compression With Huffman Codes, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction代写一个Huffman编码的小程序，生成树部分和传统的Huffman Tree不太一样，略有改进。  
+OverviewData compression involves reducing the amount of">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CSC148 Data Compression With Huffman Codes | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CSC148 Data Compression With Huffman Codes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-02
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>代写一个Huffman编码的小程序，生成树部分和传统的Huffman Tree不太一样，略有改进。  </p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Data compression involves reducing the amount of space taken up by files.<br>Anyone who has listened to an MP3 file or extracted a file from a zip archive<br>has used compression. Reasons for compressing a file include saving disk space<br>and reducing the time required to transfer the file to another computer.<br>There are two broad classes of compression algorithms: lossy compression and<br>lossless compression. Lossy compression means that the file gets smaller, but<br>that some information is lost. MP3 is a form of lossy compression: it saves<br>space by throwing away some audio information, and therefore the original<br>audio file can not be recovered. Lossless compression means that the file gets<br>smaller and that the original file can be recovered from the compressed file.<br>FLAC is a form of lossless audio compression: it can’t save as much space as<br>MP3, but it does let you perfectly recover the original file.<br>In this assignment, we’ll be working with a lossless kind of compression<br>called Huffman coding. When you’re finished the assignment, you’ll be able to<br>compress a file, and then decompress that file to get back the original file.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Fixed-and-Variable-Length-Codes"><a href="#Fixed-and-Variable-Length-Codes" class="headerlink" title="Fixed- and Variable-Length Codes"></a>Fixed- and Variable-Length Codes</h3><p>Suppose that we had an alphabet of four letters: a, b, c, and d. Computers<br>store only 0s and 1s (each 0 and 1 is known as a bit), not letters directly.<br>So, if we want to store these letters in a computer, it is necessary to choose<br>a mapping from these letters to bits. That is, it’s necessary to agree on a<br>unique code of bits for each letter.<br>How should this mapping work? One option is to decide on the length of the<br>codes, and then assign letters to codes in whatever way we wish. Choosing a<br>code length of 2, we could assign codes as follows: a gets 00, b gets 01, c<br>gets 10, and d gets 11. (Note that I chose a code length of 2 because it is<br>the minimum that supports an alphabet of four letters. Using just one bit<br>gives you only two choices | 0 and 1 | and that isn’t sufficient for our four-<br>letter alphabet.) How many bits are required to encode text using this scheme?<br>If we have a text of 50 letters, for example, then it takes 100 bits (two per<br>letter) to encode the text.<br>Another option is to drop the requirement that codes be the same length, and<br>assign the shortest possible codes to each letter. This might give us the<br>following: a gets 0, b gets 1, c gets 10, and d gets 11. Notice that the codes<br>for a and b are shorter than before, and that the codes for c and d are the<br>same length as before. Using this scheme, we’ll very likely use fewer bits to<br>encode text. For example, the text aaaaa takes only 5 bits, not 10!<br>Unfortunately, there’s a catch. Suppose that someone gives us the encoding<br>0011. What text does this code represent? It could be aabb if you take one<br>character at a time from the code. However, it could also equally be cd, if<br>you break up the code into its 00 (c) and 11 (d) pieces. Our encoding is<br>ambiguous! Which is really too bad, because it seemed that we had a way to<br>reduce the number of bits required to encode text. Is there some way we can<br>still proceed with the idea of using variable-length codes?<br>To see how we can proceed, consider the following encoding scheme: a gets 1, b<br>gets 00, c gets 010, and d gets 011. The trick here is that no code is a<br>prefix of any other code. This kind of code is called a prefix code, and it<br>leads to unambiguous decoding. For example, 0000 decodes to the text bb; there<br>is no other possibility.<br>What we have here is seemingly the best of both worlds: variable-length codes<br>(not fixed-length codes), and unambiguous decoding. However, note that some of<br>our codes are now longer than before. For example, the code for c is now 010.<br>That’s a three-bit code, even longer than the 2-bit codes we were getting with<br>the fixed-length encoding scheme. This would be OK if c letters didn’t show up<br>very often. If c letters were rare, then we don’t care much that they cause us<br>to use 3 bits. If c letters did show up often, then we’d worry because we’d be<br>spending 3 bits for every occurrence of c.</p>
+<h3 id="Goal-of-Algorithm"><a href="#Goal-of-Algorithm" class="headerlink" title="Goal of Algorithm"></a>Goal of Algorithm</h3><p>In general, as hinted above, we want to have short codes for frequently-<br>occurring letters and longer codes for letters that show up less often. For<br>example, if the frequency of a in our text is 10000 and the frequency of b in<br>our text is 50, we’d hope that the code for a would be much shorter than the<br>code for b.<br>Our goal is to generate the best prefix code for a given text. The best prefix<br>code depends on the frequencies in the text. What do we mean by best prefix<br>code? It’s the one that minimizes the average number of bits per symbol or,<br>alternately, the one that maximizes the amount of compression that we get. If<br>we let C be our alphabet, f (x) denote the frequency of symbol x, and d (x)<br>denote the number of bits used to encode x, then we’re seeking to minimize the<br>sum x 2 C f (x) d (x). That is, we want to minimize the sum of bits over all<br>symbols, where each symbol contributes its frequency times its length.<br>Let’s go back to our four-letter alphabet: a, b, c, and d. Suppose that the<br>frequencies of the letters in our text are as follows: a occurs 600 times, b<br>occurs 200 times, c occurs 100 times, and d occurs 100 times. The best prefix<br>code for these frequencies turns out to be the one we gave earlier: a gets 1,<br>b gets 00, c gets 010, and d gets 011. Calculate the above sum and you’ll get<br>a value of 1600. There are other prefix codes that are worse; for example: a<br>gets 110, b gets 0, c gets 10, and d gets 111. Calculate the sum for this and<br>convince yourself that it is worse than 1600!<br>Huffman’s algorithm makes use of binary trees to represent codes. Each leaf is<br>labeled with a symbol from the alphabet. To determine the code for such a<br>symbol, trace a path from the root to the symbol’s leaf. Whenever you take a<br>left branch, append a 0 to the code; whenever you take a right branch, append<br>a 1 to the code. The Huffman tree corresponding to the best prefix code above<br>is as follows:<br>Huffman’s algorithm generates a tree corresponding to the best prefix code.<br>You’ll see proofs of this fact in future courses; for now, you’ll implement<br>the algorithm.</p>
+<h3 id="Preliminaries"><a href="#Preliminaries" class="headerlink" title="Preliminaries"></a>Preliminaries</h3><p>For this assignment, I’m asking you to do some background reading on several<br>topics that are not explicitly taught in the course. (I don’t think that we<br>give students sufficient opportunity to research on their own and build on the<br>available knowledge. This assignment is an attempt to remedy this.) Here’s<br>what you’ll want to learn:</p>
+<ul>
+<li>Huffman’s algorithm. You’ll want to understand how Huffman’s algorithm works on a conceptual level before working on the implementation. </li>
+<li>Python bytes objects. We’ll be reading and writing binary files, so we’ll be using sequences of bytes (not sequences of characters). bytes objects are like strings, except that each element of a bytes object holds an integer between 0 and 255 (the minimum and maximum value of a byte, respectively). We will consider each byte in an uncompressed file as a symbol. </li>
+<li>Binary numbers. Background on binary numbers will be useful, especially when debugging your code.<br>You’re strongly encouraged to find and use online resources to learn this<br>background material. Be sure to cite your sources in your assignment<br>submission; include Python comments giving the locations of resources that you<br>found useful.</li>
+</ul>
+<h2 id="Your-Task"><a href="#Your-Task" class="headerlink" title="Your Task"></a>Your Task</h2><p>Your task is to complete the functions in huffman.py. Ultimately, you will be<br>able to call the compress and uncompress functions to compress and uncompress<br>a file, respectively.<br>The code in huffman.py uses two types of nodes from nodes.py. The first,<br>HuffmanNode, is a node in a Huffman tree. Huffman trees are used to compress<br>and uncompress data. The second, ReadNode, is a node as read from a compressed<br>file. It will be necessary to reconstruct the root HuffmanNode of a Huffman<br>tree from the ReadNode s stored in the file.<br>We now give a suggested order for writing the functions in huffman.py.</p>
+<h3 id="Building-the-Tree"><a href="#Building-the-Tree" class="headerlink" title="Building the Tree"></a>Building the Tree</h3><ul>
+<li>Implement make_freq_dict. This function produces a frequency dictionary. </li>
+<li>Implement huffman_tree. This function takes a frequency dictionary and returns the root HuffmanNode of the Huffman tree corresponding to a best prefix code. (There’s a tricky case to watch for here: you have to think of what to do when the frequency dictionary has only one symbol!) </li>
+<li>Implement get_codes. This function takes a Huffman tree and returns a dictionary that maps each byte in the tree to its code. The dictionary returned by get_codes is very useful for compressing data, as it gives the mapping between a symbol and the encoding for that symbol. </li>
+<li>Implement number_nodes. This assigns a number to each internal node. These numbers will be written when compressing a file to help represent relationships between nodes. </li>
+<li>Now is a good time to implement avg_length. This function returns the average number of bits required to compress a symbol of text.</li>
+</ul>
+<h3 id="Compressing-Data"><a href="#Compressing-Data" class="headerlink" title="Compressing Data"></a>Compressing Data</h3><p>Now we know how to generate a Huffman tree, and how to generate codes from<br>that tree. Function generate_compressed uses the given frequency dictionary to<br>generate the compressed form of the provided text.<br>Every byte stores 8 bits. For example, 00001010 is a byte. Recall that each<br>symbol in the text is mapped to a sequence of bits, such as 00 or 111.<br>generate_compressed takes each symbol in turn from text, looks-up its code,<br>and puts the code’s bits into a byte. Bytes are filled-in from bit 7 (leftmost<br>bit) to bit 0 (rightmost bit). Helper function bits_to_byte will be useful<br>here. You might also find it helpful to use byte_to_bits for debugging; it<br>gives you the bit-representation of a byte.<br>Note that a code may end up spanning multiple bytes. For example, suppose that<br>you’ve generated six bits of the current byte, and that your next code is 001.<br>There’s room for only two more bits in the current byte, so only the 00 can go<br>there. Then, a new byte is required and its first bit will be 1.<br>Implement generate_compressed.</p>
+<h3 id="Writing-a-Compressed-File"><a href="#Writing-a-Compressed-File" class="headerlink" title="Writing a Compressed File"></a>Writing a Compressed File</h3><p>generate_compressed gives us the compressed version of the text. But, consider<br>how someone would later decompress that result to get back the original file.<br>They won’t have the Huffman tree or list of codes, so they won’t be able to<br>decompress the file.<br>This means that some representation of the tree must also be stored in the<br>file. There are many ways to do this: I have chosen one that is suboptimal but<br>hopefully instructive (I learned the technique from old PC games that used<br>Huffman coding to compress assets in order to fit the game on a single disc).<br>Follow along in function compress throughout this discussion.<br>Here is what we generate so that someone can later recover the original file<br>from the compressed version:</p>
+<ul>
+<li>(1) The number of internal nodes in the tree </li>
+<li>(2) A representation of the Huffman tree </li>
+<li>(3) The size of the uncompressed file </li>
+<li>(4) The compressed version of the file<br>Functions are already available (in starter code or written by you) for all<br>steps except (2). Here is what we do for step 2, in function tree_to_bytes :</li>
+<li>Each internal node of the tree takes up four bytes. Leaf nodes are not output, but instead piggyback on the internal nodes. </li>
+<li>Internal nodes are written out in postorder. </li>
+<li>For a given internal node n, the four bytes are as follows. The first byte is a 0 if the left subtree of<br>n is a leaf; otherwise, it is 1. The second byte is the symbol of the left<br>child if the left subtree of n is a leaf; otherwise, it is the node number of<br>the left child. The third and fourth bytes are analogous for the right subtree<br>of n. That is, the third byte is a 0 if the rightsubtree is a leaf and 1<br>otherwise; and the fourth byte is a leaf symbol or node number as appropriate.<br>Implement tree_to_bytes.</li>
+</ul>
+<h3 id="Decompressing-Text"><a href="#Decompressing-Text" class="headerlink" title="Decompressing Text"></a>Decompressing Text</h3><p>There are two functions that work together to decompress text: a<br>generate_tree_xxx function to generate a tree from its representation in a<br>file, and a generate_uncompressed function to generate the text itself. Note<br>that you are being asked to write two different generate_tree_xxx functions.<br>Once you get one of them working, you can successfully uncompress text. But<br>we’re asking for both, so don’t forget to do the other one!</p>
+<ul>
+<li>generate_tree_general takes a list of nodes representing a tree in the form that it is stored in a file. It reconstructs the Huffman tree and returns its root HuffmanNode. This function assumes nothing about the order in which the nodes are given in the list. As long as it is given the index of the root node, it will be able to reconstruct the tree. This means that the tree nodes could have been written in postorder (as your assignment does), preorder, inorder, level-order, whatever. </li>
+<li>generate_tree_postorder takes a list of nodes representing a tree in the form that it is stored in a file. It reconstructs the Huffman tree and returns its root HuffmanNode. This function assumes that the tree is given in the list in postorder (i.e. in the form generated by your compression code). Unlike generate_tree_general, it is not allowed to use the node-numbers stored in the ReadNode s to reconstruct the tree. </li>
+<li>generate_uncompressed takes a Huffman tree, compressed text, and number of bytes to produce, and returns the decompressed text. There are two possible approaches: one involves generating a dictionary that maps codes to symbols, and the other involves using the compressed text to traverse the tree and discovering a symbol whenever a leaf is reached.</li>
+</ul>
+<h3 id="Another-Function"><a href="#Another-Function" class="headerlink" title="Another Function"></a>Another Function</h3><p>For more practice, I am asking you to implement improve_tree. This has nothing<br>to do with the rest of the program; it is just an extra function.<br>Suppose that you are given a Huffman tree and a frequency dictionary. The<br>Huffman tree is suboptimal for the given shape of the tree, and the given<br>frequencies, if it is possible to swap a higher-frequency symbol lower in the<br>tree with a higher-frequency symbol higher in the tree.<br>improve_tree performs all such swaps, improving the tree as much as possible<br>without changing the tree’s shape. Note, of course, that Huffman’s algorithm<br>will never give you a suboptimal tree, so you can’t hope to improve those<br>trees. But you can imagine that someone gives you a suboptimal tree, and you<br>want to improve it as much as possible without changing it’s shape.</p>
+<h2 id="Testing-Your-Work"><a href="#Testing-Your-Work" class="headerlink" title="Testing Your Work"></a>Testing Your Work</h2><p>In addition to the doctests provided in huffman.py, you are encouraged to test<br>your functions on small sample inputs. Make sure that your functions are doing<br>the right thing in these small cases. Finding a bug on a huge example tells<br>you that you have a bug but doesn’t give you much information about what is<br>causing the bug.<br>Once you’ve suitably tested your functions, you can try the compressor and<br>decompressor on arbitrary files. You’ll be happy to know that you can compress<br>and decompress arbitrary files of any type | although the amount of<br>compression that you get will vary widely!<br>When you run huffman.py, you have a choice of compressing or uncompressing a<br>file. Choose an option and then type a filename to compress or decompress that<br>file. When you compress file a, a compressed version will be written as a.huf.<br>Similarly, when you decompress file a.huf, a decompressed version will be<br>written as a.huf.orig.<br>I’ve provided some sample files to get you started:</p>
+<ul>
+<li>book.txt is a public-domain book from Project Gutenberg. Text files like this compress extremely well using Huffman compression. </li>
+<li>dan.bmp is a picture of me in bitmap (bmp) format. This is an uncompressed image format and so compresses very well. </li>
+<li>music.wav is a few seconds of a song from a game called Mystic Ark. The song is in wav format; this file compresses terribly with Huffman compression.<br>Throw other files at your compressor and see what kind of compression you can<br>get!</li>
+</ul>
+<h3 id="Property-Tests"><a href="#Property-Tests" class="headerlink" title="Property Tests"></a>Property Tests</h3><p>In file test_huffman_properties.py, I have provided some property tests that<br>you can run on your code as you start completing functions. Please install the<br>hypothesis Python package to use these property tests at home ( hypothesis is<br>already installed for you in the labs).<br>What are property tests? Good question! Regular unittests work like this: you<br>provide parameter values and expected return value for each case, and unittest<br>determines whether your function works appropriately in those cases. Property<br>tests, by contrast, work like this: you tell hypothesis about relationships<br>between parameter values and return values, and hypothesis automatically<br>generates tons of examples that try to falsify the correctness of your<br>function. So, with hypothesis, you focus on general behaviour of your<br>functions rather than specific behaviour on prespecified examples.<br>For a little on the syntax that hypothesis uses, take a look at the first<br>class in test_huffman_properties.py. The @given line specifies that integers<br>between 0 and 255 should be passed to the test_byte_to_bits function as<br>parameter b. We then have two tests ( assertXxx statements) that must pass, no<br>matter the value of b : byte_to_bits must return an object where everything in<br>it is a 0 or 1, and it must return something of length 8. Of course, this<br>particular property test is for a starter code function, not one that you<br>write; but later in the file there are some property tests for the functions<br>that you’re writing.<br>The property tests that we’ve given you do not fully characterize what it<br>means for a function to be correct. It’s just a starting point for testing.<br>You’re encouraged to write further property tests to help increase your<br>confidence in your functions, though any tests that you write are not being<br>marked.</p>
+<h3 id="pyta"><a href="#pyta" class="headerlink" title="pyta"></a>pyta</h3><p>My colleague David Liu at the St George campus is developing a utility called<br>pyta to flag certain warnings and errors in students’ Python code. It’s under<br>heavy development these days, but David kindly offered to let us use a<br>prerelease version this semester at UTM. We’re making it available in the DH<br>labs.<br>For use on your own computer: you can also download it from the link under<br>Assignments on the course website. If you have a directory called e.g. a1, and<br>in there you have both your assignment files and a pyta subdirectory with the<br>files extracted from pyta.zip, then you’ll be able to use pyta.<br>To use it, just import pyta, and then do: pyta.check(‘huffman.py’)<br>It will give you warnings and errors in your code. You can ignore some of them<br>| especially indentation style errors | but the others may help you improve<br>the design and style of your code.<br>Another cool feature gives you documentation on particular warnings and<br>errors. For example, if you want to know more about the W0612 warning, try:<br>pyta.doc(‘W0612’)<br>If you give this a shot, please let me know what you think! We want to make<br>this as useful as we can for students. Thanks!</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/10/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC148DataCompressionWithHuffmanCodes/">http://saferman.github.io/2019/10/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC148DataCompressionWithHuffmanCodes/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/05/C++%E4%BB%A3%E5%86%99%EF%BC%9ASIT255AgentbasedGame/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="C++代写：SIT255 Agent based Game">
+                        
+                        <span class="card-title">C++代写：SIT255 Agent based Game</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-10-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/01/Network%E4%BB%A3%E5%86%99%EF%BC%9AEE450LibraryRegistrationSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Network代写：EE450 Library Registration System">
+                        
+                        <span class="card-title">Network代写：EE450 Library Registration System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-10-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Network%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Network代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,934 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：CSCA08 Word Search, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Python基础作业，实现一个Word Search Puzzle.  
+IntroductionThe goal of this assignment is to get you started reading and writing">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：CSCA08 Word Search | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：CSCA08 Word Search</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Python基础作业，实现一个Word Search Puzzle.  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The goal of this assignment is to get you started reading and writing Python<br>code. You’ll understand how to use existing code, call existing functions,<br>write your own functions, and call functions you’ve written. This work is not<br>harder than what you’ve been doing in your exercises, but it will take<br>substantially longer, so start early. Make sure you read this entire document<br>all the way through at least once before you start.</p>
+<h2 id="What-Not-to-Use"><a href="#What-Not-to-Use" class="headerlink" title="What Not to Use"></a>What Not to Use</h2><p>You can complete this assignment using only the material covered in the first<br>three weeks of the course. In particular, you are not allowed to use any if-<br>statements (there is no good reason to use them in this assignment!), and do<br>not use string methods.</p>
+<h2 id="Word-Search"><a href="#Word-Search" class="headerlink" title="Word Search"></a>Word Search</h2><p>A word search puzzle is a rectangular grid of letters that contains hidden<br>words. In the word searches we use here, words can be hidden in one of four<br>directions:</p>
+<ul>
+<li>left-to-right (horizontal forwards) </li>
+<li>right-to-left (horizontal backwards) </li>
+<li>top-to-bottom (vertical starting from the top) </li>
+<li>bottom-to-top (vertical starting from the bottom)<br>The first two of these directions are in the horizontal dimension, and the<br>second two are in the vertical dimension.<br>Download and open a1.py. It is a Python file in which you will solve 12 tasks<br>related to word searches. Not all tasks will be marked, but later tasks build<br>on earlier ones. You are strongly encouraged to complete all tasks - you’ll<br>thank me later!</li>
+</ul>
+<h2 id="Starter-Code"><a href="#Starter-Code" class="headerlink" title="Starter Code"></a>Starter Code</h2><p>At the top of the file are some comments. Please read those comments now, and<br>complete the header… go on… I’ll wait here.<br>Next, you see a variable assignment to PUZZLE1. PUZZLE1 is a word search with<br>nine rows and nine columns in which the following words are hidden:</p>
+<ul>
+<li>marzieh (2 instances) </li>
+<li>brian (2 instances) </li>
+<li>nick (2 instances) </li>
+<li>eric (1 instance1)<br>Before continuing, find all of the words in the puzzle by hand. Remember that<br>they can be in any of four directions. Here’s a hint for finding the brians:<br>one instance is right-to-left , the other is bottom-to-top. Below PUZZLE1 is<br>PUZZLE2. It’s a bigger puzzle with the same words hidden in it, but we’re not<br>telling you the number of instances of each word that are in there. We’ll come<br>back to this puzzle later. Below PUZZLE2, we have given you two starter<br>functions that you will use in completing some of the tasks. These functions<br>use Python concepts that we haven’t covered yet, so don’t concern yourselves<br>with the implementations. (If you are interested, the code is well-commented,<br>so that by reading the comments you should get an idea of what’s happening.)<br>Instead, to learn what the functions do, read the docstrings and experiment in<br>the shell. The two functions are as follows:<br>rotate puzzle<br>As indicated by the docstring, this function rotates a puzzle by 90 degrees to<br>the left. … What exactly does that mean? To get an idea of what the function<br>does, run a1.py and call rotate puzzle from the shell. For example, try rotate<br>puzzle(PUZZLE1). Observe the effect. Try it on smaller “puzzles” too, like<br>this: rotate puzzle(‘abc\ndef’). Do you understand what the function is doing?<br>(The \n there is just the code for a newline character.<br>lr occurrences<br>This function takes a puzzle and a word, and returns the number of times the<br>word occurs in the left-to- right direction in the puzzle. Play around with<br>this function before continuing. You know the number of occurrences of each<br>word in PUZZLE1; use this function to verify the number of left-to-right<br>occurrences of these words. Try it on PUZZLE2 as well!2<br>On line 103 of a1.py is a comment indicating that your code should be below.<br>You are not allowed to modify anything above this line, except for the header.<br>Below this point, there are 12 tasks to complete. Be careful: they are not<br>listed in the code in numerical order. Make sure you work on the tasks in<br>order of number, not the order that they occur in the code.</li>
+</ul>
+<h2 id="Your-Tasks"><a href="#Your-Tasks" class="headerlink" title="Your Tasks"></a>Your Tasks</h2><p>Here are your tasks for the word searches. Read the tasks below carefully, and<br>follow along with the code so that you know where to add code and what to add.<br>Part of the goal of this assignment is to give you practice following<br>instructions exactly. What might be considered small mistakes in other<br>disciplines can be surprisingly important in programming. For example, if you<br>print something when you were supposed to return it, it is wrong. If you build<br>a string in a different format than what is expected, it is wrong.</p>
+<ul>
+<li>Task 1: this task comprises four subtasks. All four are very similar, and are found in the do tasks function. <ul>
+<li>Task 1a: you are adding a print function call that prints the number of times name occurs in the left-to-right direction in puzzle. Mind the hint in the code! </li>
+<li>Task 1b, 1c, 1d: for each of these tasks, you want to print in the same format as task 1a. That is, each of these tasks will have two calls to print. Rotating puzzles is going to be extremely useful here. What happens to words and their directions when you rotate the puzzle? </li>
+<li>This is a good time to run a1.py and observe the output. Notice that there is a call to do tasks right below the indented body of the do tasks function. The function call passes PUZZLE1 and ‘brian’ as arguments to do tasks. Your code is working correctly if it runs with no errors and outputs the expected results for all four directions. If you get errors, or the output is wrong, go back over tasks 1a-d and debug your code.</li>
+</ul>
+</li>
+<li>Task 2: For this task, you are calling do tasks again. Heed the advice given in the comments! (Make sure you run your code frequently to make sure you haven’t accidentally broken anything.) </li>
+<li>Task 3: now you get to write your own function. Carefully read the docstring for total occurrences to figure out what to do. What are you supposed to calculate? Are you returning it or printing it? What do the parameters mean? What does the example and type contract tell you? Make sure you are clear on these before writing the code! Also, think back to earlier tasks you have done and how they might help you write this function. Once you have written the code, test the function by calling it from the shell. It’s best to know now if there are problems before you start to rely on this function. Test it on small puzzles that you create by-hand. They don’t have to be real puzzles; small examples are often most useful for isolating bugs. Test on words that do not exist in the puzzle, words that exist once, and words that exist more than once. Then, test on PUZZLE1 and PUZZLE2 - your function should work on any puzzle. </li>
+<li>Task 4: here you call the total occurrences function that you just wrote. Run the program after this step to make sure your function call is working. </li>
+<li>Task 5: another function to write! Except this time, you have to write everything: example, description, type contract, and body (code). The in puzzle horizontal function should return True iff the given word can be found in puzzle in one or both horizontal directions. So if you find the word going left-to- right, or find it going right-to-left (or both), return True, otherwise return False. As in task 3, test the function from the shell on small puzzles before moving on. </li>
+<li>Task 6: add a call of the in puzzle horizontal function you just wrote in task 5. As usual, run the program and compare the output to what is expected! </li>
+<li>Task 7: Now run your tasks on PUZZLE2 (the big puzzle). Observe the output. Make sure it is correct before continuing! </li>
+<li>Task 8: the in puzzle vertical function should return True iff the given word can be found in puzzle in one or both vertical directions. So if you find the word going top-to-bottom, or find it going bottom- to-top (or both), return True, otherwise return False. Keep using the function design recipe! You’re not being asked to add a call of this function to your code, but you should definitely call the function a few times with different parameters to make sure it is working correctly! </li>
+<li>Task 9: the in puzzle function should return True iff the given word can be found anywhere in puzzle. So if you find the word in at least one of the four directions, you return True, otherwise you return False. Think carefully of how you can use existing functions to make this function a lot simpler! </li>
+<li>Task 10: the in exactly one dimension function should return True iff the given word can be found in puzzle in exactly one of the two dimensions (horizontal or vertical), but not both. So if you find the word horizontally (left-to-right or right-to-left) or you find it vertically (top-to-bottom or bottom- to-top), and assuming you don’t find it both horizontally and vertically, then return True, otherwise return False. Again, think about what earlier functions can make this task easier? This is a question you should always be asking when you write a new function. (Be careful with your booleans on this one!) </li>
+<li>Task 11: the all horizontal function should return True iff all occurrences of the supplied word are horizontal in the puzzle. (If word is not in the puzzle at all, then True is to be returned.) </li>
+<li>Task 12: the at most one vertical function should return True iff word occurs at most once in the puzzle and that occurrence (if present) is vertical.</li>
+</ul>
+<h2 id="Type-Checker"><a href="#Type-Checker" class="headerlink" title="Type Checker"></a>Type Checker</h2><p>We have included a file called typechecker.py that runs each of your functions<br>and checks that the type of the return value is correct. Again, you don’t have<br>to understand this code (I wouldn’t expect you to at this stage), you just<br>have to put it in the same directory as your a1.py file and run it.<br>This file serves 2 purposes, first it calls your functions, so you can be sure<br>that they are named correctly (if they aren’t it will crash. Secondly it<br>checks the type (not the value, just the type) of each function’s return, so<br>you know if you’ve at least got that part right. If there is anything wrong,<br>you will see an error message. If the types are correct, nothing will happen,<br>except a single print statement.<br>This doesn’t mean that your function works (for example, replacing any of the<br>boolean functions with just the line return True will still pass the type<br>checker, but it’s a good first test. You will still want to test your code<br>further.</p>
+<h2 id="Marking"><a href="#Marking" class="headerlink" title="Marking"></a>Marking</h2><p>Your assignment will be marked for correctness. This means that your code must<br>do exactly what is described in this handout and starter code. In addition, we<br>strongly encourage you to consider the following criteria as you work on this<br>assignment - paying attention to these will help you as we progress through<br>the course!</p>
+<ul>
+<li>Formatting style: Make sure that you follow PEP-8 style guidelines that we have introduced. </li>
+<li>Programming style: Your variable names should be meaningful and your code as simple and clear as possible. </li>
+<li>Commenting: be sure to include accurate and complete docstrings in your functions. Follow the design recipe we have been using! In addition, include internal comments for pieces of code that aren’t trivial. </li>
+<li>Code re-use: you should have as little duplicated code as possible. If you find yourself repeating code, there’s a good chance you could find a simpler (lazier) method. </li>
+<li>One more time… this will be marked by an auto-marker. So if your file or one of your functions is named incorrectly, you won’t get any marks for that component of your work.</li>
+</ul>
+<h2 id="What-to-Submit"><a href="#What-to-Submit" class="headerlink" title="What to Submit"></a>What to Submit</h2><p>Submit a1.py and a1.test on MarkUs. Your file must be named exactly as given<br>here (check that MarkUs says you have submitted all required files after<br>you’re done submitting). You do not need to submit typechecker.py.<br>Before you submit:</p>
+<ul>
+<li>Ensure that you have read &amp; added your name and login to the header at the top of the file - Test your code for PEP-8 compliance </li>
+<li>Run the type checker and make sure it gives no errors </li>
+<li>Re-test all examples<br>Happy Searching!</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/10/21/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA08WordSearch/">http://saferman.github.io/2019/10/21/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA08WordSearch/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/29/C++%E4%BB%A3%E5%86%99%EF%BC%9AECE3574MusicSynthesizer/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="C++代写：ECE3574 Music Synthesizer">
+                        
+                        <span class="card-title">C++代写：ECE3574 Music Synthesizer</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-10-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/20/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP206Otodecks/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="C++代写：COMP206 Otodecks">
+                        
+                        <span class="card-title">C++代写：COMP206 Otodecks</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-10-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

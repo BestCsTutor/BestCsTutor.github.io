@@ -1,0 +1,938 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS228 Maze, 留学生CS|辅导|代写">
+    <meta name="description" content="代写Java程序，使用Dijkstra’s算法，走通Maze.  
+User ManualMaze is a small Java command line application which populates a graph datas">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS228 Maze | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS228 Maze</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-05-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写Java程序，使用Dijkstra’s算法，走通Maze.  </p>
+<h2 id="User-Manual"><a href="#User-Manual" class="headerlink" title="User Manual"></a>User Manual</h2><p>Maze is a small Java command line application which populates a graph data<br>structure from a textual description.<br>Maze is primarily of interest to developers and students and is often used as<br>an embedded library.<br>Maze is delivered as source code. See the Developer documentation for more<br>technical details.</p>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Since Maze is supplied only as source code, there is no installer. Maze is<br>distributed as a single zip archive file. The name of this file may differ<br>between providers and versions. If you cannot determine the appropriate file<br>to download, please contact your provider.<br>If you are a developer, you may prefer to follow the installation advice in<br>the Developer Documentation and add the source to a project in your IDE.<br>To install the application as a user:</p>
+<ol>
+<li>Download the zip file into a folder (directory) of your choice. </li>
+<li>Use your local system zip utility to unpack the file. Depending on your operating, this utility may be named unzip, gunzip, zip, 7-zip, or something similar. On many systems you can simply right click on the file in your file browser and select “unzip” or “extract here”. </li>
+<li>Once you have unpacked the archive, you should browse into the new file hierarchy. In the first two or three levels you should find a folder named “src”. </li>
+<li>When you have found this “src” directory, open a command line shell and cd into the src directory. (If this operation is unfamiliar, ask a developer friend for help. </li>
+<li>You now need to compile the code. From the command-line type: javac -classpath . </li>
+<li>If the compile operation completes without any messages indicating an error, then you should now have an executable version of MAZE. To test your new installation, type the command: java edu&#x2F;iastate&#x2F;hw5&#x2F;shared&#x2F;Maze.<br>You should see the following “demo” response:<br>Warning: no file parameter, proceeding with default file..&#x2F;mazes&#x2F;maze.10.10.50.txt findPath was called with start&#x3D;0, dest&#x3D;9<br>0: (0, 7: 2)<br>1: (1, 5: 5)<br>2:<br>3: (3, 2: 3) (3, 3: 3)<br>4:<br>5: (5, 3: 0)<br>6:<br>7: (7, 1: 9) (7, 9: 8)<br>8:<br>9:<br>Note: if you have received a Version 2 pre-release, the output may also<br>include these lines, generated by a temporary stub of the currently under<br>development shortest path feature.<br>Now you need to give it a real implementation.<br>Path length: No Path<br>Path cost:<br>No Path<br>Path No Path<br>Note: Maze can be easier to use from the command-line if you find the file<br>“Maze.java” at the location referenced in the earlier “javac” command and copy<br>it to the “src” directory and then recompile with:<br>javac -classpath . Maze.java<br>Once you have done this, you will be able to invoke maze from the src<br>directory using only<br>Maze <filename></li>
+</ol>
+<h2 id="Building-the-Demo-Graphs"><a href="#Building-the-Demo-Graphs" class="headerlink" title="Building the Demo Graphs"></a>Building the Demo Graphs</h2><p>Maze is shipped with a small number of demonstration graph description files.<br>You can find these graphs in “mazes” directory, which should be located in<br>src’s parent directory. Maze is shipped with these demonstration files:<br>To build one of these graphs (from a command shell positioned at “src”), type<br>a command of the form:<br>    java Maze <file name><br>For example to run the maze.10.10.50.txt file use the command:<br>    java Maze maze.10.10.50.txt<br>This command should generate a report similar to the “demonstration” report,<br>but without the warning about a missing file parameter.</p>
+<h2 id="Creating-New-Graph-Descriptions"><a href="#Creating-New-Graph-Descriptions" class="headerlink" title="Creating New Graph Descriptions"></a>Creating New Graph Descriptions</h2><p>Maze graph descriptions are simple text files, thus you can create your own<br>mazes in any simple text editor. (Maze graph descriptions must be .txt files.<br>Maze does not understand word processer or document files, such as .doc or<br>.pdf.)<br>A Maze graph description consists of the graph vertex count on the first line,<br>followed by individual vertex descriptions, one per line. For example, the<br>Maze description for the graph in maze.10.10.50.txt is:<br>Each vertex description has this structure:<br>    <vertex identifier> : <edge description> [ &lt;edge description … <edge description>]<br>each edge description is of the form<br>    <destination vertex identifier> <edge weight><br>Thus, the line “3: 2,3, 3,3” from above describes this part of the graph in<br>Figure 1:<br>Graph descriptions must have as many vertex descriptions as there are lines<br>and the vertices must appear in order by their identifying number.<br>NOTE: if you are upgrading Maze from an earlier version, you may need to<br>revise your existing graph description files. Earlier versions allowed vertex<br>positions to be skipped and did not require a vertex count at the beginning.</p>
+<h2 id="If-You-Need-Help"><a href="#If-You-Need-Help" class="headerlink" title="If You Need Help"></a>If You Need Help</h2><p>Check our discussion board. Other users have probably encountered similar<br>problems, so there is a good chance you will find the answer there. If you<br>don’t find an answer to your question, you can always pose a new question on<br>the discussion board.<br>If you need additional support, please contact the provider from whom you<br>acquired the zip.</p>
+<h2 id="Developer-Notes"><a href="#Developer-Notes" class="headerlink" title="Developer Notes"></a>Developer Notes</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Maze constructs adjacency list graph representations from simple textual<br>descriptions. The resulting graph is an instance of generic <code>class Graph&lt;E&gt;</code><br>, where the type E is a client programmer chosen object attached to a graph<br>edge after construction.<br>The primary reusable classes in Maze are:</p>
+<ul>
+<li>Maze: houses the application’s command-line user interface. </li>
+<li>MazeBuilder : a Graph factory. It processes textual input and produces a corresponding </li>
+<li>Graph instance. MazeBuilder includes a utility method to locate start and end nodes in a graph. </li>
+<li>Graph: an adjacency list representation of a directed, weighted graph. </li>
+<li>Heap: a generic heap implemented using Java ArrayList. </li>
+<li>LinkedStack: a generic Stack, implemented as a proprietary singly-linked list.<br>Maze also defines these interfaces:</li>
+<li>BareG, BareV, BareE: graph access interfaces that hide Graph’s <code>generic&lt;E&gt;</code> edge object. These interfaces simplify the code of graph algorithms that aren’t interested in the generic edge-related information. </li>
+<li><code>PureStack&lt;E&gt;</code> a classic stack interface. </li>
+<li><code>PurePriorityQueue&lt;E&gt;</code> a classic Min-Priority interface<br>See the source or the Javadoc for API details.<br>Architecture and Design Notes</li>
+<li>Maze stores vertices in an ArrayList, and uses a vertex’s index in that list as the vertex’s “natural key”. To retrieve a vertex, you must know its integer identifier. </li>
+<li>Since Maze is typically used as a library, we keep all of its code in a “shared” package. You should not create code in any other non-test package without specific clearance from the engineering manager or technical lead. </li>
+<li>The new PathFinder solution should access the graph only via the Bare interfaces.<br>Identified Technical Debt:</li>
+<li>We need a way to tell Maze where to look for the Mazes directory. we should move getEndVertex() from MazeBuilder to Graph. The method is tightly coupled to the graph definition and could be useful, even in applications that don’t build their graph using the Maze file format. getEndVertex() would be better as getFirst() and getLast(). </li>
+<li>The public lastCost member in PathFinder is a shameless hack. It could be avoided if findPath() returned a proper Path object. </li>
+<li>Since Graph is already dependent upon ArrayList (meaning the code already required JCF), it is unclear what benefit derives from having proprietary Heap and Stack implementations. </li>
+<li>We should plan to replace these with standard implementations. </li>
+<li>The use of EE to quiet the compiler seems an awkward hack. We should at least look for a way to hide it, perhaps by having Graph implement method overrides that only use the bare interfaces? </li>
+<li>We need to add a proper logging implementation to support dynamic control of debug trace and field error reporting. </li>
+<li>While using a linear index to identify a Graph vertex is simple and efficient, it requires many applications for which the integer is not a natural key to add a Map or other mechanism to map the client’s preferred vertex identifier to and from the Graph identifier. We should consider absorbing responsibility for this mapping. A subclass of Graph could expose an api that took Objects as the vertex key and internally mapped that to the appropriate integer when new vertices were created. </li>
+<li>We should develop a set of graph descriptions for use in the autoTests that are designed to assure conditional coverage in the graph construction.<br>Version and other Historical Information</li>
+<li>To satisfy needs of Explore, in version 2, we made Graph generic on an edge information <code>type&lt;E&gt;</code> . The E type parameter can be used to attach arbitrary extra information to a graph edge. Unfortunately this change caused compatibility issues with Maze and added significant syntactic ugliness for applications that don’t need the generic capability.<br>Rather than force all applications to be generic aware (and to reduce future<br>compatibility issues), we further modified Graph to export a set of non-<br>generic access interfaces. These “Bare” interfaces support most common graph<br>operations while hiding the details of the generic edge object capability.</li>
+<li>In Version 2, graph description files must begin with a vertex cound. </li>
+<li>To support applications that need to be able to reliably map from other coordinate systems to the implicit integer identifier of Maze components, we changed the Vertex construction policy. Whereas earlier versions allowed slots in the graph vertex to be ‘unused’ (by assigning null to the element), starting with Version 2, all slots in within the range of vertex identifiers used in the input file, will have a vertex object assigned. This may lead to the creation of “phantom” disconnected vertices in some client applications. </li>
+<li>Client programmers are free to subtype the Vertex class and add a mark to hide unwanted Vertices.</li>
+</ul>
+<h3 id="Code-Details"><a href="#Code-Details" class="headerlink" title="Code Details"></a>Code Details</h3><ul>
+<li>The new shortest path feature is currently stubbed. All of the wiring for PathFinder.findPath() is complete, but findPath() doesn’t do anything except print out it’s calling parameters. Unfortunately, this message goes to stdout and corrupts normal output in the beta release. (Yet another reason we need a proper logging framework.)<br>The existing drivers and auto tests may need to be updated before release to<br>support and cover the shortest path feature .</li>
+<li>The file handling code assumes it can find the mazes directory relative to the current working directory. Since different IDEs and different launch configurations may use different policies for setting the CWD, this assumption may not be valid in your IDE. The code at the beginning of main() looks in two different places for mazes. This is typically adequate for Eclipse and command-line environments, but may not be adequate for your particular IDE. If you find it necessary to look elsewhere for your graph files.</li>
+</ul>
+<h3 id="The-Bare-Interfaces"><a href="#The-Bare-Interfaces" class="headerlink" title="The Bare Interfaces"></a>The Bare Interfaces</h3><p>The “Bare” Graph Interfaces: Graph implements three minimal “Bare” interfaces.<br>These interfaces expose everything you need to know about Graph to be able to<br>find a solution. The Interfaces are:<br>BareG’s getVertex() is your primary access to the graph. Since the vertices<br>are stored in an ArrayList, if you need to step through all the vertices, you<br>can just loop through the integers until getVertex() returns null.<br>BareV, a vertex, exposes the unique integer identifier associated with this<br>vertex and an iterator you can use to explore its edges. (Note: you can wrap<br>the integer identifier in an Integer object and use it as a key to index the<br>vertex in a map.)<br>BareE is an edge. Each BareE represents a connection from the vertex where it<br>was discovered (via getBareEdges()), toward the vertex available via<br>getToVertex(). BareE’s getWeight() returns the cost associated with this edge.</p>
+<h3 id="The-New-Solver"><a href="#The-New-Solver" class="headerlink" title="The New Solver"></a>The New Solver</h3><p>PathFinder houses a single public method, for which you must supply the<br>implementation.<br>which should use Dijkstra’s method to find the least cost path in g from<br>source to dest. It returns a list of Integers corresponding to the vertex<br>indexes, in order from source to dest. There is additional documentation in<br>the template Javadoc. The new solver must not reference Graph. Instead it<br>should use only the Bare interfaces.</p>
+<h3 id="Developer-Infrastructure"><a href="#Developer-Infrastructure" class="headerlink" title="Developer Infrastructure"></a>Developer Infrastructure</h3><ul>
+<li>Drivers: See the drivers package in the test source folder. Presently there is one driver, which can be switched to read different files by editing the value assigned to “selected”. </li>
+<li>Automated Tests: See the autoTests package in the test source folder. Presently there is a parameterized test that runs the builder against all demo files. </li>
+<li>Installation: Easiest is to create a new project in your IDE, then copy the src and test hierarchies from the unpacked archive into the appropriate place in the new project. Because Maze can be invoked with zero arguments, you can test a new installation without a run configuration (at least in Eclipse). Just right-click on Maze (in project explorer) and select “run as application.” </li>
+<li>Build: The application does not require any extra libraries or configuration.</li>
+</ul>
+<h2 id="Background-Material"><a href="#Background-Material" class="headerlink" title="Background Material"></a>Background Material</h2><h3 id="Extracting-source-code-from-jar-files"><a href="#Extracting-source-code-from-jar-files" class="headerlink" title="Extracting source code from jar files."></a>Extracting source code from jar files.</h3><p>Jar files are zip files. They can be created and unpacked using any standard<br>zip utility. If your zip utility doesn’t like the .jar extension, you can just<br>rename it to .zip and then unpack it.<br>Jar files use a different file extension as a way of declaring that their<br>content conforms to Java standard conventions for file hierarchy. One of these<br>conventions is that source files are organized in directories corresponding to<br>the package name. However, jar files can also contain “special” files that<br>contain possibly extensive meta information about the program, about how it is<br>to be deployed, about who created it, etc.</p>
+<h3 id="Running-main-directly-from-Eclipse"><a href="#Running-main-directly-from-Eclipse" class="headerlink" title="Running main() directly from Eclipse"></a>Running main() directly from Eclipse</h3><p>Applications that do not require arguments at the command line can be invoked<br>without a run configuration by selecting the main() function, right-clicking,<br>and selecting “run as application.” Doing this actually creates a default run<br>configuration, so you can rerun the application by selecting one of these<br>icons in the main eclipse toolbar.</p>
+<h3 id="Technical-Debt"><a href="#Technical-Debt" class="headerlink" title="Technical Debt"></a>Technical Debt</h3><p>Technical debt refers to code features that imply an unnecessary, on-going<br>carrying cost – just like financial debts impose an ongoing interest-based<br>carrying cost. Generally if such code could be revised, future maintenance<br>would involve less effort.<br>Developers are usually aware of decisions they make that create technical<br>debt, just as one is aware when they have taken a loan or created new credit<br>card debt. In both cases, the decision to assume the debt is a tradeoff<br>between short term resources and outcomes (like time, staff, money, expertise,<br>and meeting a near deadline ) and longer-term costs and outcomes.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/05/28/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS228Maze/">http://saferman.github.io/2022/05/28/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS228Maze/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/05/28/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMS228Double-SortedList/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Java代写：COMS228 Double-Sorted List">
+                        
+                        <span class="card-title">Java代写：COMS228 Double-Sorted List</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/05/26/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2008DecodingandDisassembling/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="C代写：COMP2008 Decoding and Disassembling">
+                        
+                        <span class="card-title">C代写：COMP2008 Decoding and Disassembling</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

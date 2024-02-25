@@ -1,0 +1,1016 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMP3500 System Calls And Processes, 留学生CS|辅导|代写">
+    <meta name="description" content="代写操作系统中的  System Call  部分，以及Process相关System Call的用法。![SystemCall](https://upload.wikimedia.org/wikipedia/commons/thumb/6">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMP3500 System Calls And Processes | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMP3500 System Calls And Processes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-12-08
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写操作系统中的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/System_call" title="System
+Call"> System Call </a> 部分，以及Process相关System Call的用法。<br>![System<br>Call](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-</a><br>Linux_kernel_interfaces.svg.png)</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><ul>
+<li>To build a multi-tasking operating system </li>
+<li>To develop system calls to manage processes </li>
+<li>You should accomplish the written exercises and submit codereading.txt. </li>
+<li>To manage your project using git and gitlab </li>
+<li>Use gdb to debug OS&#x2F;161</li>
+</ul>
+<h2 id="Managing-Your-Project"><a href="#Managing-Your-Project" class="headerlink" title="Managing Your Project"></a>Managing Your Project</h2><p>This project requires you to manage the os&#x2F;161 source code tree using a git or<br>gitlab repository. It is desirable to pay attention to naming conventions and<br>programming. The following issues need to be considered while you are carrying<br>out this project.</p>
+<h3 id="Naming-Conventions"><a href="#Naming-Conventions" class="headerlink" title="Naming Conventions"></a>Naming Conventions</h3><p>You are suggested to come up with a protocol for naming global variables and<br>variables passed as arguments to functions. Please make sure that you have a<br>common naming convention and a consistent way of writing function names. You<br>may choose a model and stick to it. For example, given a function called “my<br>function”, you might write the name as my_function, myFunction, MyFunction,<br>and the like.</p>
+<h3 id="Git-Repository"><a href="#Git-Repository" class="headerlink" title="Git Repository"></a>Git Repository</h3><p>You have to decide when and how often to commit changes. Please commit changes<br>of your work as early and often as possible. You should decide how much detail<br>to log while committing files. In addition, you need to figure out a way of<br>maintaining the system integrity. For example, (1) what procedures to follow<br>to ensure that you are able to extract a working version of some sort from<br>your git repository; (2) what tests to run on a new version to make sure you<br>haven’t inadvertently broken something.<br>It is essential to make use of explicit git logs. If for some reason you make<br>a mistake in your implementation, you should be able to reconstruct your<br>design, implementation and debugging process from your git logs. It is worth<br>noting that leaving something uncommitted for a long period of time is<br>dangerous, which means that you are undertaking a large piece of work without<br>effectively breaking it down. In general, when some new code compiles and<br>doesn’t break the world, commit it. When you have got a small part working,<br>commit it. When you have implemented something and written a lot of comments,<br>commit it. Hours spent hand-merging hundreds of lines of code wastes time you<br>may never get back. The combination of frequent commits and good, detailed<br>comments will facilitate more efficient program development.<br>Important! Whenever you add a file into your git repository, do chmod 640 or<br>chmod 644 on the file before committing it.<br>Please leverage the git features to conduct your project. Specifically, you<br>may use tags to identify when major features are added and when they are<br>stable. You also may investigate git branches, which provide completely<br>separate threads of development.</p>
+<h3 id="Project-Configuration"><a href="#Project-Configuration" class="headerlink" title="Project Configuration"></a>Project Configuration</h3><p>You are provided with a framework to run your solutions for this project. This<br>framework consists of driver code (found in kern&#x2F;asst2) and menu items you can<br>use to execute your solutions from the OS&#x2F;161 kernel boot menu.<br>You have to reconfigure your kernel before you can use this framework. The<br>procedure for configuring a kernel is the same as in ASST0, except you will<br>use the ASST1 configuration file.<br>Please note that if you intend to work in a directory that’s not $HOME&#x2F;cs161<br>(which you will be doing when you test your later submissions), you will have<br>to use the -ostree option to specify a directory in which you are working.<br>Please note that the command .&#x2F;configure - help explains the other options.<br>    %cd ~&#x2F;cs161&#x2F;src<br>    %.&#x2F;configure<br>    %cd kern&#x2F;conf<br>    %.&#x2F;config ASST2<br>You should now see an ASST2 directory in the compile directory.</p>
+<h3 id="Building-for-ASST2"><a href="#Building-for-ASST2" class="headerlink" title="Building for ASST2"></a>Building for ASST2</h3><p>Recall that when you built OS&#x2F;161 for project 3, you ran make from this<br>directory kern&#x2F;compile&#x2F;ASST1. In this project, you need to run make from<br>another directory, namely, kern&#x2F;compile&#x2F;ASST2. You can follow the commands<br>below to build OS&#x2F;161 for this project.<br>    %cd <del>&#x2F;cs161&#x2F;src&#x2F;kern&#x2F;compile&#x2F;ASST2<br>    %make depend<br>    %make<br>    %make install<br>Important! In case that your compile&#x2F;ASST2 directory does not exist, please<br>ran the aforementioned config step for ASST2.<br>Please place sys161.conf in your OS&#x2F;161 root directory (</del>&#x2F;cs161&#x2F;root). If you<br>have placed this file in the root directory when you carried out project 3,<br>you don’t have to overwrite the old sys161.conf file.</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><h3 id="Towards-a-Real-Multi-tasking-Operating-System"><a href="#Towards-a-Real-Multi-tasking-Operating-System" class="headerlink" title="Towards a Real Multi-tasking Operating System"></a>Towards a Real Multi-tasking Operating System</h3><p>In the previous project (i.e., project 3), you may have considered your<br>solutions to the cats and mice problem as separate programs, but they are<br>functions that are linked into the kernel itself and thus ran inside the<br>kernel, in kernel mode. We took this approach because the kernel was unable to<br>run user-space code. In this project, however, you will be making OS&#x2F;161 deal<br>with user-space programs. At present, OS&#x2F;161’s only working system call<br>available to user-space code is reboot. The kernel itself doesn’t currently<br>understand what a process is or maintain any perprocess state.<br>Your current OS&#x2F;161 system has minimal support for running executables -<br>nothing that could be considered a true process. In this assignment you will<br>be making OS&#x2F;161 a real multi-tasking operating system. After the next<br>assignment, your OS&#x2F;161 will be able to run multiple processes simultaneously<br>from actual compiled programs stored in your account. Specifically, the<br>programs will be loaded into your OS&#x2F;161 and executed in user mode by the<br>System&#x2F;161. This will occur under the control of your kernel and the command<br>shell in bin&#x2F;sh.</p>
+<h3 id="System-Calls"><a href="#System-Calls" class="headerlink" title="System Calls"></a>System Calls</h3><p>First, you have to implement the interface between user-mode programs<br>(“userland”) and the kernel. You will be provided part of the code needed for<br>this assignment, and you are required to design and implement the missing<br>pieces. Your job also includes implementation of the subsystem that keeps<br>track of the multiple tasks you will have in the future. Importantly, you need<br>to design data structures for “process” (Hint: look at kernel include files of<br>your favorite operating system for suggestions, specifically the proc<br>structure.)<br>In the first phase of your project, you are advised to read and understand the<br>parts of the system available for you. Our code can run one user-level C<br>program at a time, provided that it does nothing but shut the system down. To<br>do this, we have implemented sample user programs like reboot, halt, poweroff,<br>as well as others that make use of features you will be adding in this and<br>future assignments.<br>Important! The code you have written so far for OS&#x2F;161 has only been run<br>within, and only been used by the operating system kernel. In a real-world<br>operating system, the kernel’s main function is to support user-level<br>programs. Such support is made possible through system calls. One system call,<br>reboot(), was implemented in the function sys_reboot()in main.c. With GDB in<br>hand, you are capable of putting a breakpoint on sys_reboot and running the<br>“reboot” program. In doing so, you can use “backtrace” to see how it got<br>there.</p>
+<h3 id="Run-User-Level-Programs"><a href="#Run-User-Level-Programs" class="headerlink" title="Run User Level Programs"></a>Run User Level Programs</h3><p>You can run normal programs compiled from C on the System&#x2F;161 simulator. The<br>programs are compiled with a cross-compiler, namely cs161-gcc. This compiler<br>runs on the host machine and produces MIPS executables; it is the same<br>compiler used to compile the OS&#x2F;161 kernel.<br>Important! In order to create new user programs, you need to edit the Makefile<br>in bin, sbin, or testbin (depending on where you put your programs) and then<br>create a directory similar to those that already exist. Use an existing<br>program and its Makefile as a template.</p>
+<h3 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h3><p>Your design documents become an important part of the work you submit. The<br>design documents must reflect the development of your solutions. Simply<br>explaining what you programmed in the design documents is not sufficient.<br>Please do NOT attempt to code first and design later, because you are likely<br>to end up in a software “tar pit”. You are suggested to plan everything you<br>will do with your partners. Do NOT rush into coding until you can clearly<br>describe to one another what problems you need to solve and how the pieces<br>relate to each other. To enforce you to follow this design process, we set a<br>separate due date for the design document.<br>In most cases, it is hard to write or talk about new software design. You will<br>be facing problems that you have not seen before (e.g., finding terminology to<br>describe your ideas can be difficult).<br>However, the problem becomes easier to be solved if you can gain hands-on<br>experience by going ahead and trying. Please make an attempt to describe your<br>ideas and designs to your group members. To reach an understanding, you may<br>have to invent terminology and notationthis is fine, and please explain it in<br>your design document. If you do this, once you have completed your design, you<br>will find that you have the ability to efficiently discuss problems that you<br>have never seen before.<br>We provide the following questions as a guide for reading through the code.<br>You are recommended to divide up the code and have each partner answer<br>questions for different modules. After reading the code and answering<br>questions, you can get together and exchange summations of the reviewed code.<br>By the time you have done this, you are in a position to discuss strategy for<br>designing your code for this assignment.</p>
+<h2 id="Code-Reading"><a href="#Code-Reading" class="headerlink" title="Code Reading"></a>Code Reading</h2><p>Please answer the following questions related to OS&#x2F;161 system calls. Please<br>place answers to the following questions in a file called codereading.txt. You<br>should store codereading.txt in directory “~&#x2F;cs161&#x2F;project5”. The questions<br>are designed to direct your attention to those parts of the OS&#x2F;161 that are<br>particularly pertinent to this project to improve your understanding of<br>process-related code in the OS&#x2F;161.</p>
+<h3 id="kern-userprog-the-user-program"><a href="#kern-userprog-the-user-program" class="headerlink" title="kern&#x2F;userprog: the user program"></a>kern&#x2F;userprog: the user program</h3><p>kern&#x2F;userprog: This directory contains the files that have responsibility to<br>load and run of user-level programs. At present, the only files in the<br>directory include loadelf.c, runprogram.c, anduio.c. However, you may add more<br>of your own during this assignment.<br>Understanding these files plays an important role in getting started with the<br>implementation of multiprogramming. Please note that you will have to look in<br>files outside this directory in order to answer some of the questions.<br>loadelf.c: This file contains the functions needed for loading an ELF<br>executable from the filesystem and into virtual memory space. ELF is the name<br>of the executable format produced by cs161-gcc. Currently, the virtual memory<br>space does not provide what is normally meant by virtual memory. Although<br>there exists translation between the addresses that executables believe they<br>are using and physical addresses, there is no mechanism for providing more<br>memory than exists physically.<br>runprogram.c: This file contains one function, runprogram(), which is designed<br>to run a program from the kernel menu. It is a good base for writing the<br>fork() system call, but only a base – when writing your design doc, you should<br>determine what more is required for fork() that runprogram() does not concern<br>itself with. Additionally, once you have designed your process<br>system,runprogram() should be altered to start processes properly within this<br>framework, e.g., a program started by runprogram() should have the standard<br>file descriptors available while it is running.<br>uio.c: This file contains functions used to move data between kernel and user<br>space. Knowing when and how to cross this boundary is critical to properly<br>implementing userlevel programs. As a result, this is a file that must be read<br>very carefully. You also need to study the code in lib&#x2F;copyinout.c.</p>
+<h4 id="Questions"><a href="#Questions" class="headerlink" title="Questions"></a>Questions</h4><ol>
+<li>What are the ELF magic numbers? </li>
+<li>What is the difference between UIO_USERISPACE and UIO_USERSPACE? When should one use UIO_SYSSPACE instead? </li>
+<li>Why can the struct uio that is used to read in a segment be allocated on the stack in load_segment() (i.e., where does the memory read actually go)? </li>
+<li>In runprogram(), why is it important to call vfs_close() before going to usermode? </li>
+<li>What function forces the processor to switch into usermode? Is this function machine dependent? </li>
+<li>In what file are copyin and copyout defined? memmove? Why can’t copyin and copyout be implemented as simply as memmove? </li>
+<li>What (briefly) is the purpose of userptr_t?</li>
+</ol>
+<h3 id="kern-arch-mips-mips-traps-and-syscalls"><a href="#kern-arch-mips-mips-traps-and-syscalls" class="headerlink" title="kern&#x2F;arch&#x2F;mips&#x2F;mips: traps and syscalls"></a>kern&#x2F;arch&#x2F;mips&#x2F;mips: traps and syscalls</h3><p>Exceptions, which are fundamental for an operating system, are the mechanism<br>that enables the OS to control execution and therefore do its job. Exceptions<br>can be envisioned as the interface between the processor and the operating<br>system. When the OS boots, it installs an “exception handler” (carefully<br>crafted assembly code) at a specific address in memory. Once the processor<br>raises an exception, the exception handler is invokes. The exception handler<br>sets up a “trap frame” and calls into the operating system. Since “exception”<br>is such an overloaded term in computer science, operating system lingo for an<br>exception is a “trap” - when the OS traps execution. Interrupts are<br>exceptions, and more significantly for this assignment, so are system calls.<br>Specifically, syscall.c handles traps that happen to be syscalls.<br>Understanding at least the C code in this directory paves a path towards being<br>a real operating systems junkie. Therefore, you are highly recommended to read<br>through it carefully.<br>trap.c: mips_trap() is the key function that is responsible for returning<br>control to the operating system. This is the C function called by the assembly<br>exception handler. md_usermode() is the function for returning control to user<br>programs.<br>kill_curthread() is the key function for handling broken user programs; when<br>the processor is in user mode and hits something it can’t handle (i.e., a bad<br>instruction), it raises an exception. There is no way to recover from this, so<br>the OS needs to kill the process. Part of this assignment will be to write a<br>useful version of this function.<br>syscall.c: mips_syscall() is the function that delegates the actual work of a<br>system call to the kernel function that implements it. Notice that reboot() is<br>the only case currently handled. You will also find a function,<br>md_forkentry(), which is a stub where you will place your code to implement<br>the fork()system call. It should get called from mips_syscall().</p>
+<h4 id="Questions-1"><a href="#Questions-1" class="headerlink" title="Questions"></a>Questions</h4><ol>
+<li>What is the numerical value of the exception code for a MIPS system call? </li>
+<li>Why does mips_trap() set curspl to SPL_HIGH “manually”, instead of using splhigh()? </li>
+<li>How many bytes is an instruction in MIPS? (Answer this by reading mips_syscall() carefully, not by looking somewhere else.) </li>
+<li>Why do you “probably want to change” the implementation of kill_curthread()? </li>
+<li>What would be required to implement a system call that took more than 4 arguments?</li>
+</ol>
+<h3 id="cs161-src-lib-crt0-user-program-startup"><a href="#cs161-src-lib-crt0-user-program-startup" class="headerlink" title="~&#x2F;cs161&#x2F;src&#x2F;lib&#x2F;crt0: user program startup"></a>~&#x2F;cs161&#x2F;src&#x2F;lib&#x2F;crt0: user program startup</h3><p>lib&#x2F;crt0: This is the user program startup code. There is only one file in<br>here, mipscrt0.S, which contains the MIPS assembly code that receives control<br>first when a user-level program is started. It invokes the user program’s<br>main(). This is the code that your execv() implementation will be interfacing<br>to, so be sure to check what values it expects to appear in what registers and<br>so forth.<br>lib&#x2F;libc: This is the user-level C library. You are not expected to read a lot<br>of code here, even though it may be instructive in the long run to do so. Job<br>interviewers have a habit of asking people to implement standard C library<br>functions on the whiteboard. For present purposes you need only look at the<br>code that implements the user-level side of system calls, which we detail<br>below.<br>errno.c: This is where the global variable errno is defined.<br>syscalls-mips.S: This file contains the machine-dependent code needed for<br>implementing the user-level side of MIPS system calls. syscalls.S: This file<br>is created from syscalls-mips.S at compile time and is the actual file<br>assembled into the C library. The actual names of the system calls are placed<br>in this file using a script calledcallno-parse.sh that reads them from the<br>kernel’s header files. This avoids having to make a second list of the system<br>calls. In a real system, typically each system call stub is placed in its own<br>source file, to allow selectively linking them in. OS&#x2F;161 puts them all<br>together to simplify the makefiles.</p>
+<h4 id="Questions-2"><a href="#Questions-2" class="headerlink" title="Questions"></a>Questions</h4><ol>
+<li>What is the purpose of the SYSCALL macro? </li>
+<li>What is the MIPS instruction that actually triggers a system call? (Answer this by reading the source in this directory, not looking somewhere else.)</li>
+</ol>
+<h2 id="Coding-Exercises"><a href="#Coding-Exercises" class="headerlink" title="Coding Exercises"></a>Coding Exercises</h2><p>Tag your git repository as asst2-begin before you begin this assignment.</p>
+<h3 id="System-Calls-and-Exceptions"><a href="#System-Calls-and-Exceptions" class="headerlink" title="System Calls and Exceptions"></a>System Calls and Exceptions</h3><p>Implement system calls and exception handling. A range of system calls that<br>you may want over the course of this semester is listed in<br>kern&#x2F;include&#x2F;kern&#x2F;callno.h. For this assignment you must implement:</p>
+<ul>
+<li>getpid (This is a sample) </li>
+<li>fork (Required) </li>
+<li>execv (Optional) </li>
+<li>waitpid (Optional) </li>
+<li>_exit (Optional)<br>Your syscalls should handle a variety of error conditions without crashing the<br>OS&#x2F;161. You must consult the OS&#x2F;161 man pages (see html files in<br>~&#x2F;cs161&#x2F;src&#x2F;man&#x2F;syscall) included in the distribution and understand fully the<br>system calls that you must implement. You should return the error codes as<br>described in the man pages. Your syscalls must return the correct value in<br>case of success or error code in case of failure as specified in the man<br>pages. Some of the grading scripts rely on the return of appropriate error<br>codes. Note that following the guidelines is as important as the correctness<br>of the implementation.<br>Important! The file include&#x2F;unistd.h contains the user-level interface<br>definition of the system calls that you will be writing for OS&#x2F;161. The<br>interface is different from that of the kernel functions that you will define<br>to implement these calls. You need to design this interface and put it in<br>kern&#x2F;include&#x2F;syscall.h. As you discovered in Assignment 0, the integer codes<br>for the calls are defined in kern&#x2F;include&#x2F;kern&#x2F;callno.h. You should consider a<br>number of issues regarding implementing system calls. Perhaps the most obvious<br>one is: can two different user-level processes (or user-level threads, if you<br>choose to implement them) find themselves running a system call at the same<br>time? Be sure to argue for or against this, and explain your final decision in<br>the design document.</li>
+</ul>
+<h3 id="Managing-Process-State"><a href="#Managing-Process-State" class="headerlink" title="Managing Process State"></a>Managing Process State</h3><ul>
+<li>getpid(): This will be the simplest function you write in this semester. A pid, or process ID, is a unique number identifying a process. The implementation of getpid() is not challenging, but pid allocation and reclamation are the important concepts that must be implemented. Your system should not crash because over the lifetime of its execution the system has used up all the pids. Design your pid system; implement all the tasks associated with pid maintenance, and only then implement getpid().</li>
+</ul>
+<h3 id="Managing-Processes-fork-execv-waitpid-exit"><a href="#Managing-Processes-fork-execv-waitpid-exit" class="headerlink" title="Managing Processes fork(), execv(), waitpid(), _exit()"></a>Managing Processes fork(), execv(), waitpid(), _exit()</h3><p>These system calls play a big role in this assignment, because they enable<br>multiprogramming and make the OS&#x2F;161 a useful entity. You are required to<br>implement fork(). The other three system calls are optional.</p>
+<h4 id="fork-You-must-implement-this-system-call"><a href="#fork-You-must-implement-this-system-call" class="headerlink" title="fork() - You must implement this system call"></a>fork() - You must implement this system call</h4><p>fork() is the mechanism necessary for creating new processes. It should make a<br>copy of the invoking process and make sure that the parent and child processes<br>each observe the correct return value (that is, 0 for the child and the newly<br>created pid for the parent). You need to carefully design fork() and consider<br>it together with what execv() does to make sure that each system call is<br>performing the correct functionality.</p>
+<ul>
+<li>This system call creates a copy of a calling process. </li>
+<li>How are you going to copy the file table? </li>
+<li>What happens to open descriptors? </li>
+<li>You will have to duplicate the address space. Let’s see the dumbvm code for a function that may be of help. </li>
+<li>Is there anything else needed to be replicated&#x2F;copied? e.g., Current directory </li>
+<li>A new process must get a PID. fork() must abide by the semantics of your PID management mechansism. </li>
+<li>Please make a child process return 0 and behave like its parent. It is useful to understand the machine dependent system call mechanism for return values and errors in kern&#x2F;arch&#x2F;mips&#x2F;mips&#x2F;syscall.c You may do something similar in md_forkentry(). This is subtle, and please address this issue in your design document. </li>
+<li>Trapframe handling: Please discuss this issue in your design. When a process makes a system call, where and how does it know where to return? It saves return address on the trapframe, and, therefore, the trapframe must be copied. Otherwise, child processes do not know where to return. </li>
+<li>Return 0 to the child process, the process id of the child to the parent. how to return a different value to the child process? Look at how other system calls return and deal with trapframe appropriately. Note that this is machine-dependent code. You have to place it into an appropriate directory. See also md_forkentry.</li>
+</ul>
+<h4 id="execv-const-char-path-const-char-argv-Optional-Requirement"><a href="#execv-const-char-path-const-char-argv-Optional-Requirement" class="headerlink" title="execv(const char path, const char argv[]) - Optional Requirement"></a>execv(const char <em>path, const</em> char argv[]) - Optional Requirement</h4><p>execv(), although “only” a system call, is really the heart of this<br>assignment. It is responsible for taking newly created processes and make<br>theme execute something useful (i.e., something different than what the parent<br>is executing). Essentially, it must replace the existing address space with a<br>brand new one for the new executable (created by calling as_create in the<br>current dumbvm system) and then run it. While this is similar to starting a<br>process straight out of the kernel (as runprogram() does), it’s not quite that<br>simple. Remember that this call is coming out of userspace, into the kernel,<br>and then returning back to userspace. You must manage the memory that travels<br>across these boundaries very carefully. (Also, notice that runprogram()<br>doesn’t take an argument vector – but this must of course be handled correctly<br>in execv()).</p>
+<h4 id="execc-Optional-Requirement"><a href="#execc-Optional-Requirement" class="headerlink" title="execc()- Optional Requirement"></a>execc()- Optional Requirement</h4><p>loads a new executable in the address space of a process</p>
+<ul>
+<li>execc() is similar to runprogram() in kern&#x2F;userprog&#x2F;runprogram.c </li>
+<li>Load the new executable <ul>
+<li>Opens the file </li>
+<li>Creates an address space into which the image would be loaded and activates it. Please don’t worry about what this does until assignment 3, but remember to do it now. </li>
+<li>Loads the executable into the address space </li>
+<li>load_elf returns entrypoint. </li>
+<li>Defines user stack </li>
+<li>Returns to user mode </li>
+<li>Please follow the above 6 steps, and you also need to copyout argument to the user stack. What about the old address space?</li>
+</ul>
+</li>
+<li>Coping with the argument vector is the hard part. This is hard and subtle. </li>
+<li>Where do we get the arguments from the old program? They are user-level pointer that are passed as arguments to the system call. How can you get hold of them? copyin for pointers,copyinstr for strings. You need to copyin both the pointers and the strings. Where in the process’s address space should we put the argument vector? On the stack. Where do we get the arguments from the old program? They are user-level pointer that are passed as arguments to the system call. </li>
+<li>What is a stack? It is just a region of memory in the address space. Stack is used for temporary data during function calls. Why do we need it? To make efficient use of memory. Now getting the arguments into place is basically the opposite of getting them from user space. You will again need copyin&#x2F;copyout. Place things wherever you want, but above the stackpointer. Stackpointer is where the process will start scratching on the stack. </li>
+<li>Note that the argument vector comes from user space. The functions in kern&#x2F;lib&#x2F;copyinout.c will be very useful in copying everything to&#x2F;from the kernel address space. Why is this always important? Consider this example. Tom has a secret file. He’s been using it, so its buffered in memory. Malicious dude Mal wants to get to it, and he has a pretty good guess where its buffered. Malicious Mal can pass a kernel address to open with O_CREAT. Viola, the filename appears with the contents of the file. This is bad, which is why we can’t trust any thing coming from userland. Thus, copyin&#x2F;copyout. </li>
+<li>Each of the elements of the argument vector (argv[i]) is a string residing in userland and needs to be copied with care. </li>
+<li>What happens to argv[i] in the new address space? </li>
+<li>Make sure you null-terminate argv (i.e. argv[argc] &#x3D; NULL). </li>
+<li>Make sure that all of your pointers are word-aligned. </li>
+<li>Don’t forget to set up stdin, stdout and stderr (see also in runprogram). </li>
+<li>Since handling arguments in execv is so hard, lets do an example. We need to place ls foo on teh user stack. This is what it should look like.</li>
+</ul>
+<h3 id="waitpid-pid-t-wpid-int-status-int-options-Optional"><a href="#waitpid-pid-t-wpid-int-status-int-options-Optional" class="headerlink" title="waitpid(pid_t wpid, int *status, int options) - Optional"></a>waitpid(pid_t wpid, int *status, int options) - Optional</h3><p>Requirement: Although it may seem simple at first, waitpid() requires a fair<br>bit of design.<br>Read the specification carefully to understand the semantics, and consider<br>these semantics from the ground up in your design. You may also wish to<br>consult the UNIX man page, though bear in mind that you are not required to<br>implement all the things UNIX waitpid() supports – nor is the UNIX<br>parent&#x2F;child model of waiting the only valid or viable possibility.</p>
+<ul>
+<li>These system calls are very closely tied to your PID management system. It’s a synchronization problem. </li>
+<li>How are you going to assign PIDs? You are not allowed to just run out. PID recycling? </li>
+<li>Be very specific when you define the semantics of your waitpid() and exit() interactions. The man pages give the minimum requirements. Note that when a process exits() its PID may not be given to a new process right away since the parent might be interested in finding the exit code. What if the parent has already exited itself? </li>
+<li>What does interested mean? Unix defines it strictly in terms of parent&#x2F;child. The parent can get the child’s exit status. </li>
+<li>You may wish to implement WNOHANG for waitpid(), which allows waitpid() to be non-blocking. This is not required but may simplify your shell. </li>
+<li>What PID related data structures are you going to keep in the parent and in the child? Do you need to synchronize the access to those structures and if yes then how? </li>
+<li>How can you make a parent wait for a child? What happens if a child tries to wait for its parent? </li>
+<li>How can you deadlock? (You shouldn’t, of course.) Two processes waiting for each other</li>
+</ul>
+<h4 id="exit-Optional"><a href="#exit-Optional" class="headerlink" title="_exit() - Optional"></a>_exit() - Optional</h4><p>Requirement: The implementation of _exit() is closely connected to the<br>implementation of waitpid(). They are essentially two components of the same<br>mechanism. The code for _exit() will be relatively simpler and the code for<br>waitpid() relatively more complicated. The basic rule is to understand what<br>waitpid() is doing, so your implementation of _exit() can work with it.</p>
+<ul>
+<li>_exit() releases all resources used by the process. What are these? Do we always free all resources? What about the exit code. What happens if a child exits before its parent or before any other process that has “expressed interest” in the exit status? </li>
+<li>Don’t forget kill curthread()<br>Remember to handle all the corner cases. Can you think of some good ones for<br>these system calls?</li>
+</ul>
+<h3 id="Dealing-with-fatal-exceptions-in-user-processes"><a href="#Dealing-with-fatal-exceptions-in-user-processes" class="headerlink" title="Dealing with fatal exceptions in user processes"></a>Dealing with fatal exceptions in user processes</h3><p>kill_curthread():Please implement kill_curthread() in a simple manner. It is<br>worth noting essentially nothing about the current thread’s user space state<br>can be trusted if it has suffered a fatal exception – it must be taken off the<br>processor in a judicious manner, but without returning execution to the user<br>level.</p>
+<h2 id="Error-Handling-of-System-Calls"><a href="#Error-Handling-of-System-Calls" class="headerlink" title="Error Handling of System Calls"></a>Error Handling of System Calls</h2><p>The man pages in the OS&#x2F;161 distribution contain a description of the error<br>return values that you must return. If there are conditions that can happen<br>that are not listed in the man page, return the most appropriate error code<br>from kern&#x2F;errno.h. If none seem particularly appropriate, consider adding a<br>new one. If you intend to add an error code for a condition for which Unix has<br>a standard error code symbol, please use the same symbol if possible. If not,<br>you can make up your own, but note that error codes should always begin with<br>E, should not be EOF, etc. Consult Unix man pages to learn about Unix error<br>codes; on Linux systems “man errno” will do the trick.<br>If you add an error code to src&#x2F;kern&#x2F;include&#x2F;kern&#x2F;errno.h, you need to add a<br>corresponding error message to the file src&#x2F;kern&#x2F;include&#x2F;kern&#x2F;errmsg.h.</p>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><h3 id="System-Calls-1"><a href="#System-Calls-1" class="headerlink" title="System Calls"></a>System Calls</h3><p>In bin&#x2F;sh&#x2F;sh.c you will find skeleton code that enables you to test your new<br>system call interfaces. When executed, the shell prints a prompt, and allows<br>you to type simple commands to run other programs. Each command and its<br>argument list are passed to the execv() system call, after calling fork() to<br>get a new thread for execution. The shell also make it possible to run a job<br>in the background using &amp;. You can exit the shell by typing “exit”.<br>Once you have implemented the system calls like fork(), you are expected to<br>use the shell to execute the following user programs from the bin directory:<br>cat, cp, false, pwd, and true. You may find some of the programs in the<br>testbin directory helpful. You need to “bulletproof” the OS&#x2F;161 kernel from<br>user program errors. There should be nothing a user program can do to crash<br>the operating system.</p>
+<h3 id="Scheduling-Optional-Requirement"><a href="#Scheduling-Optional-Requirement" class="headerlink" title="Scheduling - Optional Requirement"></a>Scheduling - Optional Requirement</h3><p>Currently, the OS&#x2F;161 scheduler implements a round-robin queue. As we<br>mentioned in class, this is not always the best method for achieving optimal<br>processor throughput. For this reason, you are required to implement a second<br>scheduling algorithm. Explain in your design document, why you selected the<br>algorithm you did, and under what conditions you expect it to perform well.<br>Figure out what information you will need to maintain in order to completely<br>implement the algorithm.<br>Ideally, your scheduler should be configurable, e.g., it should be possible to<br>specify the time slice for the round robin scheduler, and for a multi-level<br>feedback queuing system, you might want to specify the number of queues and&#x2F;or<br>the time slice for the highest priority queue. OS&#x2F;161 should display at bootup<br>time the scheduler currently in use. It is acceptable to recompile your code<br>in order to change these settings, as with the HZ parameter of the default<br>scheduler. It is also fine to require a recompile to switch schedulers.<br>However, this shouldn’t require editing more than a couple #defines or the<br>kernel config file to make these changes.<br>Test your scheduler by running several of the test programs from testbin<br>(e.g., add.c, hog.c, farm.c, sink.c, kitchen.c, ps.c) using the default time<br>slice and scheduling algorithm (i.e., round robin). Experiment with the<br>scheduling algorithm that you implemented. Write down what you expect to<br>happen with the algorithm. Then compare what actually happened to what you<br>predicted and explain the difference.</p>
+<h2 id="Design-Questions"><a href="#Design-Questions" class="headerlink" title="Design Questions"></a>Design Questions</h2><ul>
+<li>What new data structures will you need to manage multiple processes? </li>
+<li>What relationships do these data structures have with the rest of the system?</li>
+</ul>
+<h2 id="How-to-Proceed"><a href="#How-to-Proceed" class="headerlink" title="How to Proceed"></a>How to Proceed</h2><h3 id="Before-the-design-document-is-due"><a href="#Before-the-design-document-is-due" class="headerlink" title="Before the design document is due:"></a>Before the design document is due:</h3><ul>
+<li>Review the files described above. Separately answer the questions provided. </li>
+<li>Construct a high-level design of your implementations. </li>
+<li>Determine which functions you should change and which structures you may create to implement the system calls. Decide how you will pass arguments from user space to kernel space and vice versa. Think about how you will keep track of open files. For which system call is this useful? How you will keep track of running processes. For which system call is this useful?</li>
+</ul>
+<h3 id="Before-the-assignment-is-due"><a href="#Before-the-assignment-is-due" class="headerlink" title="Before the assignment is due:"></a>Before the assignment is due:</h3><p>Project 5 - Process and system calls</p>
+<ul>
+<li>It is suggested that you should focus on support for processes, and the scheduler. </li>
+<li>If something needs to be redesigned, do it now. </li>
+<li>Implement your design. </li>
+<li>Test, test, and test. </li>
+<li>Fix bugs.</li>
+</ul>
+<h3 id="On-the-assignment-due-date"><a href="#On-the-assignment-due-date" class="headerlink" title="On the assignment due date:"></a>On the assignment due date:</h3><ul>
+<li>Commit all your final changes to the system. Make sure you have the most up-to-date version of everything. Re-run make on both the kernel and userland to make sure all the last-minute changes get incorporated. </li>
+<li>Run the tests and generate scripts. If anything breaks, curse (politely of course) and repeat step 1. </li>
+<li>Tag your git repository</li>
+</ul>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><h3 id="Final-Submission"><a href="#Final-Submission" class="headerlink" title="Final Submission"></a>Final Submission</h3><p>Make sure the final versions of all your changes are added and committed to<br>the git repository before proceeding. We assume that you haven’t used<br>asst2-end to tag your repository. In case you have used asst2-end as a tag,<br>then you will need to use a unique tag in this part.<br>    %cd ~&#x2F;cs161&#x2F;src<br>    $git add .<br>    %git commit -m “ ASST2 final commit”<br>    $git tag asst2-end<br>    %git diff asst2-start..asst2-end &gt; ..&#x2F;project5&#x2F;asst2.diff<br>asst2.diff should be in the ~&#x2F;cs161&#x2F;project5 directory. It is prudent to<br>carefully inspect your asst2.diff file to make sure that all your changes are<br>present before compressing and submitting this file through Canvas. It is your<br>responsibility to know how to correctly use git as a version control system.<br>Important! Before creating a tarball for your project 5, please ensure that<br>you have the following two files in the ~&#x2F;cs161&#x2F;project5 directory.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/12/08/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3500SystemCallsAndProcesses/">http://saferman.github.io/2023/12/08/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3500SystemCallsAndProcesses/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/12/12/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS2360PrintaButterfly/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Java代写：CS2360 Print a Butterfly">
+                        
+                        <span class="card-title">Java代写：CS2360 Print a Butterfly</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/12/08/FileSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPSC311MdadmLinearDevice/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="File System代写：CMPSC311 Mdadm Linear Device">
+                        
+                        <span class="card-title">File System代写：CMPSC311 Mdadm Linear Device</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/File-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">File System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

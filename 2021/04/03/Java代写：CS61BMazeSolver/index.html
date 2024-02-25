@@ -1,0 +1,901 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS61B Maze Solver, 留学生CS|辅导|代写">
+    <meta name="description" content="代写BFS, DFS, Dijkstra’s, A*算法，实现迷宫寻路程序。  
+GraphsGraphs are a powerful and fundamental data abstraction in computer scienc">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS61B Maze Solver | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS61B Maze Solver</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-04-03
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写BFS, DFS, Dijkstra’s, A*算法，实现迷宫寻路程序。  </p>
+<h3 id="Graphs"><a href="#Graphs" class="headerlink" title="Graphs"></a>Graphs</h3><p>Graphs are a powerful and fundamental data abstraction in computer science.<br>They are defined to be a set of vertices and edges and can be used to<br>represent many things, such as network connections, dependencies, image<br>compositions, state machines, and artificial neural networks. It is critical<br>for you understand graphs if you want to pursue a future in computer science -<br>whether that’s in research or industry. We will explore some of the most<br>fundamental graph algorithms today, namely breadth first search (BFS), depth<br>first search (DFS), Dijkstra’s algorithm, and A star algorithm (A*).</p>
+<h2 id="Introduction-to-our-Maze-Solver"><a href="#Introduction-to-our-Maze-Solver" class="headerlink" title="Introduction to our Maze Solver"></a>Introduction to our Maze Solver</h2><p>In this lab, we’ll explore how a few graph algorithms behave in the context of<br>mazes, like the one shown below. Note that we will only be using this maze<br>visualization with a select few of the graph algorithms (BFS, DFS, and A*, not<br>Dijkstra’s; we will work with Dijkstra’s algorithm in a different way for this<br>lab).<br>One way to represent a maze is as an undirected graph. The vertices of such a<br>graph are shown below, with one dimensional (vertex number) coordinates on the<br>left version and (X, Y) coordinates on the right version. If there is no wall<br>between two adjacent vertices, then the corresponding graph has an undirected<br>edge between the vertices. For example, adj(11) would be an iterable<br>containing the integers 12 and 16.<br>Following the representation method dictated above, both of these mazes could<br>be represented as the graph shown below, where each red circle represents a<br>vertex (also called nodes) and each black line represents an undirected edge<br>between two vertices.<br>In this lab, you’ll implement a few key graph algorithms using the provided<br>Maze class, which has the following methods of interest:<br>    public int N(): Size of the maze [mazes are N x N]<br>    public int V(): Total number of vertices in the maze<br>    public Iterable adj(int v): Returns the neighbors of v<br>    public int toX(int v): Returns the x coordinate of vertex v<br>    public int toY(int v): Returns the y coordinate of vertex v<br>    public int xyTo1D(int x, int y): Returns the vertex number of x, y<br>—|—<br>We’ve provided MazeDepthFirstPaths.java, a version of depth first paths<br>adapted for use with mazes. Later in the lab, we will ask you to implement<br>breadth first paths and a cycle detection algorithm. For those of you who want<br>a deeper understanding of graph algorithms, we’ve also provided an optional<br>challenge to implement the A* shortest paths algorithm (which may prove to be<br>a useful exercise as practice for project 3). For this particular section of<br>the lab, you will be required to modify the following files:</p>
+<ul>
+<li>MazeBreadthFirstPaths.java: Uses BFS to find all paths from a given source, terminating as soon as the target vertex is observed. </li>
+<li>MazeCycles.java: Searches for cycles in the maze. If a cycle is detected, the algorithm terminates.<br>The following file is optional:</li>
+<li>MazeAStarPath.java: Searches for the shortest path from source to a target using A*, terminating when the target is observed.<br>These maze solvers should be subclasses of the abstract MazeExplorer class,<br>which has the following fields and methods:<br>public boolean[] marked: Locations to mark in blue<br>public int[] distTo: Distances to draw over the Maze<br>public int[] edgeTo: Edges to draw on Maze<br>public Maze maze: The maze being solved<br>public void announce(): Call whenever you want the drawing updated<br>public solve(): Solves the given Maze problem<br>—|—</li>
+</ul>
+<p>The Maze class has special functionality built in so that it can see your<br>MazeExplorer’s public variables. Specifically, whenever you call announce, it<br>will draw the contents of your MazeExplorer’s marked, distTo, and edgeTo<br>arrays. Make sure to call the announce method any time you want the drawing to<br>be updated.<br>As an example, try compiling and running TrivialMazeExplorerDemo.java in<br>IntelliJ. Open up the TrivialMazeExplorer.java and<br>TrivialMazeExplorerDemo.java files to understand what’s going on.<br>If you would like to compile these files without IntelliJ, simply run make or<br>javac *.java in the lab directory with all the Java files. To run a particular<br>demo, say TrivialMazeExplorerDemo, execute java TrivialMazeExplorerDemo in<br>command line.<br>As a more complex example, try compiling and running DepthFirstDemo. This code<br>was adapted from the DepthFirstPaths class.<br>Before moving to the next section, try tweaking the parameters of the maze, by<br>editing the maze.config file. There are three different types of mazes<br>(SINGLE_GAP, POPEN_SOLVABLE, and BLANK) to choose from. A % sign at the<br>beginning of a line in the config file comments it out. Feel free to play<br>around with all different types by changing which MazeTypes are commented out.</p>
+<h2 id="Breadth-First-Search"><a href="#Breadth-First-Search" class="headerlink" title="Breadth First Search"></a>Breadth First Search</h2><p>BFS and DFS are very similar. BFS uses a queue (FIFO) to store the fringe,<br>whereas DFS uses a stack (FILO). Naturally, programmers often use recursion<br>for DFS, since we can take advantage of and use the implicit recursive call<br>stack as our fringe. For BFS? There are no implicit structures that we can<br>use. We must use a loop to simulate the expansion of the fringe.<br>You will need to use a FIFO queue for this part. Luckily, Java’s powerful<br>library already has a Queue interface (a sub-interface of the almighty<br>Collection interface) built in. Read the interface documentation carefully.<br>Hint: see if you can find a familiar Collection-implementing class that also<br>implements this Queue interface. Feel free to use any of them.<br>You’ll now write a class MazeBreadthFirstPaths.java that extends MazeExplorer.<br>It is highly recommended you look at the code in MazeDepthFirstPaths and use<br>it as inspiration. When you compile and run BreadthFirstDemo.java, you should<br>see your algorithm crawl the graph, locating the shortest path from position<br>(1, 1) to (N, N), stopping as soon as the (N, N) position is found.<br>You can also use BreadthFirstPaths as inspiration, as well as this video<br>created by Professor Hug showcasing the expected behavior of each class<br>(though there’s a small bug in MazeBreadthFirstPaths that he pointed out<br>during the video).</p>
+<h2 id="Depth-First-Search-Cycle-Check"><a href="#Depth-First-Search-Cycle-Check" class="headerlink" title="Depth First Search &amp; Cycle Check"></a>Depth First Search &amp; Cycle Check</h2><p>In the world of graph theory, there exist many cycle detection algorithms. For<br>example, the union-find algorithm can detect cycle in O(E * logV) time. For<br>today’s exercise, we will use DFS to detect cycles in this maze (an undirected<br>graph) in O(V + E). For every visited vertex v, if there is an adjacent u such<br>that u is already visited and u is not parent of v, then there is a cycle in<br>graph.<br>For this part of the lab, you’ll write a cycle detection algorithm. When you<br>compile and run CyclesDemo, you should see your algorithm crawl the graph. If<br>it identifies any cycles, it should connect the vertices of the cycle using<br>purple lines (by setting values in the edgeTo array and calling announce())<br>and terminate immediately. The vertices of the part of the graph that has been<br>traversed to find the cycle should also be drawn, but there should be no edges<br>connecting the part of the graph that doesn’t contain a cycle. The only edges<br>that should be drawn are the ones connecting the cycle. Consider using another<br>data structure to keep track of edges until a cycle is detected and edgeTo is<br>updated, in order to avoid displaying edges that are not part of the cycle. As<br>a reminder, you can change the maze type by making edits to your maze.config<br>file, allowing you to test on a maze with cycles.<br>Recall from last section, you can use either recursion or a Stack class for<br>DFS. If you decide to go with latter, you need to look up the Java Stack<br>class, or use some linear structure in a FILO fashion.</p>
+<h2 id="Dijkstra’s-Algorithm"><a href="#Dijkstra’s-Algorithm" class="headerlink" title="Dijkstra’s Algorithm"></a>Dijkstra’s Algorithm</h2><p>Dijkstra’s algorithm is useful when we want to find the shortest paths from a<br>starting vertex to all vertices in the graph, effectively finding the<br>‘shortest paths tree’ (SPT).<br>You will be implementing Dijkstra’s algorithm in the file Graph.java. Take a<br>look at that class and familiarize yourself with how the graph is being<br>represented. For this method, assume that each edge in the graph has a weight<br>field that is a positive integer, which will be represented by the Edge<br>object’s edgeWeight field.<br>For this exercise, we will not ask you to reconstruct the paths in your<br>algorithm. However, implementing this functionality is good practice and may<br>be something you want to try out on your own!<br>Hint 1: At a certain point in Dijkstra’s algorithm, you have to change the<br>value of nodes in the fringe. Java’s priority queue does not support this<br>operation directly, but you can add a new entry into the priority queue that<br>contains the updated value (and will always be dequeued before any previous<br>entries). Then, by tracking which nodes have been visited already, you can<br>simply ignore any copies after the first copy dequeued.<br>Hint 2: Adding the vertices to our priority queue fringe directly won’t be<br>enough. Our vertices are Integers, so our priority queue will order them by<br>their natural ordering. Is this what we want? If not, is there a way we can<br>change how to order the items in the priority queue?</p>
+<h3 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h3><p>When implemented properly using a binary heap, Dijkstra’s algorithm should run<br>in O((|V| + |E|) * log |V|) time. This is because at all times our heap size<br>remains a polynomial factor of |V| (even with lazy removal, our heap size<br>never exceeds |V|^2), and we make at most |V| dequeues and |E| updates<br>requiring heap operations.<br>For connected graphs, the runtime can be simplified to O(|E| * log |V|), as<br>the number of edges must be at least |V|-1. Using alternative implementations<br>of the priority queue can lead to increased or decreased runtimes.</p>
+<h2 id="A-optional-but-worth-a-read"><a href="#A-optional-but-worth-a-read" class="headerlink" title="A* (optional, but worth a read)"></a>A* (optional, but worth a read)</h2><p>In graph theory, determining the shortest path between two nodes is one of the<br>most common and important questions asked. This problem has many real world<br>examples, with shortest route between two cities as one of the most overused<br>in computer science. Dijkstra’s algorithm is the most basic shortest path<br>algorithm and can find the shortest path between two points assuming no<br>negative edge weights. Dijkstra’s is very similar to BFS, for we can replace<br>the queue in BFS with a priority queue (with some more minor tweaks) and end<br>up with Dijkstra’s!<br>However, Dijkstra’s algorithm is a uniform-cost search. If we want to find the<br>shortest path from SF to NYC, Dijkstra’s will expand in all directions<br>centered at SF, meaning the traversal will reach Seattle before even getting<br>close to the East coast. It can explore in the wrong direction and end up<br>wasting time doing unnecessary work. However, we can make it “smarter” by<br>giving it a heuristic.<br>Introducing A* (“A star”) search! A* is the state-of-the-art shortest path<br>finding algorithm (given that the programmer provides a good heuristic, such<br>as the Manhattan distance to the destination). Let’s go back to the SF to NYC<br>path finding analogy: with this new heuristic, A* will prioritize moving to<br>the East first, since our heuristic will tell it that moving straight up<br>toward Seattle (going to Canada?) is bad compared to moving toward Denver<br>(closer to NYC).<br>Here is a nice visualization for BFS, DFS, Dijkstra’s algorithm, and A*<br>algorithm. We highly recommend playing around with it to improve your<br>understanding of these most basic graph algorithms.<br>For this part of the lab, you’ll implement the A* algorithm. When you compile<br>and run AStarDemo, you should see your algorithm crawl the graph, seeking the<br>shortest path from (1, 1) to (N, N). Unlike BFS, the algorithm should take<br>into account the target vertex.<br>For your heuristic h(v), we recommend that you use the Manhattan distance,<br>which can be simply expressed as:<br>    Math.abs(sourceX - targetX) + Math.abs(sourceY - targetY);<br>—|—<br>Experiment with different graph types and heuristics to see how they behave.</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><ul>
+<li>You need to submit MazeBreadthFirstPaths.java, MazeCycles.java, and Graph.java with Dijkstra’s algorithm implemented. </li>
+<li>MazeAStarPath.java is optional. </li>
+<li>Make sure to run BreadthFirstDemo and CyclesDemo and that your code functions correctly before you submit</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/04/03/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS61BMazeSolver/">http://saferman.github.io/2021/04/03/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS61BMazeSolver/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/04/05/C#%E4%BB%A3%E5%86%99%EF%BC%9ACSIS1175GroceryApplication/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="C#代写：CSIS1175 Grocery Application">
+                        
+                        <span class="card-title">C#代写：CSIS1175 Grocery Application</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C#代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/04/02/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS428BreakingtheunbreakableCode/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Python代写：CS428 Breaking the unbreakable Code">
+                        
+                        <span class="card-title">Python代写：CS428 Breaking the unbreakable Code</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

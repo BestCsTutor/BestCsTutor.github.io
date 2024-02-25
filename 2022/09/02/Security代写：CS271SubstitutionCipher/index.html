@@ -1,0 +1,987 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Security代写：CS271 Substitution Cipher, 留学生CS|辅导|代写">
+    <meta name="description" content="实现密码学中的置换加密算法(  Substitution Cipher
+ )。![SubstitutionCipher](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/R">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Security代写：CS271 Substitution Cipher | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Security代写：CS271 Substitution Cipher</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Security代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-09-02
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现密码学中的置换加密算法( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Substitution_cipher" title="Substitution Cipher"> Substitution Cipher
+</a> )。<br>![Substitution<br>Cipher](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/ROT13.png/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/ROT13.png/300px-</a><br>ROT13.png)</p>
+<h2 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h2><ol>
+<li>Working on a project that utilizes a broad spectrum of knowledge from this course </li>
+<li>Using various forms of indirect addressing </li>
+<li>Passing parameters on the stack </li>
+<li>Extensive interaction with arrays</li>
+</ol>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>Alex and Sila are espionage agents working for the Top Secret Agency (TSA).<br>Sometimes they discuss sensitive intelligence information that needs to be<br>kept secret from the Really Bad Guys (RBG). Alex and Sila have decided to use<br>a simple obfuscation algorithm that should be good enough to confuse the RBG.<br>As the TSA’s resident programmer you’ve been assigned to write a MASM<br>procedure that will implement the requested behavior. Your code must be<br>capable of encrypting and decrypting messages (and meet the other requirements<br>given in this document). This final project is written less like an academic<br>assignment and more like a real-life programming task. This might seem<br>daunting at first but don’t despair!</p>
+<h2 id="Algorithm-Details"><a href="#Algorithm-Details" class="headerlink" title="Algorithm Details"></a>Algorithm Details</h2><p>Ankur and Sila’s algorithm is a simple substitution cipher. If you are not<br>familiar with substitution ciphers, I suggest reading the Wikipedia page<br>(available here ( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Substitution_cipher"> https://en.wikipedia.org/wiki/Substitution_cipher
+</a> ) ). For this<br>implementation, the key consists of 26 lowercase English letters. The<br>following example demonstrates the obfuscation algorithm that Ankur and Sila<br>are requesting.<br>Suppose that you are provided the following 26 character secret key:<br>efbcdghijklmnopqrstuvwxyza. Each character listed in the key corresponds to a<br>character from the English alphabet. In other words, the key is a map that<br>tells you how to take the original text (also known as plaintext) and replace<br>each letter with the encrypted character.<br>In order to understand the key, consider the alphabetical arrangement of the<br>English alphabet beginning with a, b, c, d, e, f, (and so on). Now reconsider<br>the key, which starts with e, f, b, c, d, g, (and so on).<br>Using the key from above, we can map each letter as follows:<br>    Original Character –&gt; Encrypted Replacement<br>    a –&gt; e<br>    b –&gt; f<br>    c –&gt; b<br>    d –&gt; c<br>    e –&gt; d<br>    f –&gt; g<br>    g –&gt; h<br>    i –&gt; j<br>    (some entries skipped)<br>    x –&gt; y<br>    y –&gt; z<br>    z –&gt; a<br>For example, every “a” in the original message is to be enciphered as an “e”.<br>Every “b” in the original message should be replaced with the letter “f’. Each<br>character in the original message maps to a specific replacement character.<br>    Now suppose that you are trying to encrypt the following plaintext message:<br>    the contents of this message will be a mystery.<br>    Using the secret key from above, the corresponding ciphertext is:<br>    uid bpoudout pg uijt ndttehd xjmm fd e nztudsz.<br>Note that only the letters have been changed! Other aspects of the message<br>such as punctuation and spacing should be be left unchanged. In order to<br>decrypt the message, you can use the same key (in reverse) to process the<br>ciphertext and convert it to plaintext.<br>The key will always consist of exactly 26 characters (containing every letter<br>of the English alphabet arranged in a random order). A character can NEVER<br>appear twice within the same key.</p>
+<h2 id="General-Overview"><a href="#General-Overview" class="headerlink" title="General Overview"></a>General Overview</h2><p>You are going to be writing a MASM procedure named compute which will be<br>called from a MAIN procedure (that you do not control). Your MASM procedure<br>has several modes of operation, depending on how it is called.<br>Please read this overview and then look at the Example Usage section below.<br>The compute procedure will be capable of several operations, namely:</p>
+<ul>
+<li>A default “decoy” mode of operation where the procedure accepts two 16-bit operands by value and one operand by OFFSET. The store the result into memory at the OFFSET specified. <ul>
+<li>Accepts 3 parameters on the stack <ul>
+<li>16 bit signed WORD operand </li>
+<li>16 bit signed WORD operand </li>
+<li>32 bit OFFSET of a signed DWORD (the sum will be placed into the specified DWORD)</li>
+</ul>
+</li>
+<li>An encryption mode <ul>
+<li>Accepts 3 parameters on the stack <ul>
+<li>32 bit OFFSET of a BYTE array (this array contains a 26 character key) </li>
+<li>32 bit OFFSET of a BYTE array (this array contains the plaintext message to be encrypted) </li>
+<li>32 bit OFFSET of a signed DWORD (the dereferenced value initially contains the integer</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Note that the plaintext message will be in a BYTE array that ends with a NULL character (indicating the end of the message) </li>
+<li>This operational mode will encrypt the requested message. By the time your function returns, the original plaintext message array will be overwritten with the correctly encrypted message.</li>
+</ul>
+</li>
+<li>A decryption mode <ul>
+<li>Accepts 3 parameters on the stack <ul>
+<li>32 bit OFFSET of a BYTE array (this array contains a 26 character key) </li>
+<li>32 bit OFFSET of a BYTE array (this array contains the encrypted message that is to be decoded) </li>
+<li>32 bit OFFSET of a signed DWORD (the dereferenced value initially contains the integer -2)</li>
+</ul>
+</li>
+<li>Note that the encrypted message will be in a BYTE array that ends with a NULL character (indicating the end of the message) </li>
+<li>This operational mode will decrypt the requested message. By the time your function returns, the encrypted characters (inside the array) will be overwritten with the decrypted message.</li>
+</ul>
+</li>
+<li>A key generation mode (OPTIONAL) - THIS SPECIFIC MODE IS EXTRA CREDIT <ul>
+<li>Accepts 2 parameters on the stack <ul>
+<li>32 bit OFFSET of a BYTE array (this array contains space for exactly 26 characters) </li>
+<li>32 bit OFFSET of signed DWORD (the dereferenced value initially contains the integer -3)</li>
+</ul>
+</li>
+<li>In this mode, your code will utilize the Irvine random number library. You must generate a 26 character string containing all the lowercase letters of the English alphabet. <ul>
+<li>The letters must be arranged in a random order. </li>
+<li>If this function is called multiple times, the order of the characters must be different each time.</li>
+</ul>
+</li>
+<li>Your randomly generated character string will be placed into BYTE array specified by the stack parameter.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example-Usage-of-Your-Procedure"><a href="#Example-Usage-of-Your-Procedure" class="headerlink" title="Example Usage of Your Procedure"></a>Example Usage of Your Procedure</h2><p>From the description above, it may not be clear how the various modes of<br>operation are selected. This section provides some examples that should<br>provide clarification.<br>Recall that you will not be providing a .data segment in your submitted code.<br>However, it is fine to write a .data segment while you are testing your code.<br>The decoy mode (as called from the main procedure):<br>    .data<br>    operandi WORD  46<br>    operand2 WORD  -20<br>    dest     DWORD 0<br>    .code<br>    ;; inside the MAIN procedure<br>    push operandi<br>    push operand2<br>    push OFFSET dest<br>    call compute<br>    ;; currently dest holds a value of +26<br>    mov eax, dest<br>    call Writelnt ; should display +26<br>An example of encryption mode (as called from the main procedure):<br>    .data<br>    myKey   BYTE “efbcdghijklmnopqrstuvwxyza”<br>    message BYTE “the contents of this message will be a mystery.”,0<br>    dest    DWORD -1<br>    .code<br>    ;; inside the MAIN procedure<br>    push  OFFSET myKey<br>    push  OFFSET message<br>    push  OFFSET dest<br>    call compute<br>    ;; message now contains the encrypted string<br>    mov   edx, OFFSET message<br>    call  WriteString<br>    ;; should display “uid bpoudout pg uijt ndttehd xjmm fd e nztudsz.”<br>An example of decryption mode (as called from the main procedure):<br>    .data<br>    myKey BYTE “efbcdghijklmnopqrstuvwxyza”<br>    message BYTE “uid bpoudout pg uijt ndttehd xjmm fd e nztudsz.”,0<br>    dest DWORD -2<br>    .code<br>    ;; inside the MAIN procedure<br>    push OFFSET myKey<br>    push OFFSET message<br>    push OFFSET dest<br>    call compute<br>    ;; message now contains the decrypted string<br>    mov edx, OFFSET message<br>    call WriteString<br>    ;; should display “the contents of this message will be a mystery.”<br>An example of key generation mode (as called from the main procedure). As<br>noted above, you are not required to implement this mode unless you want the<br>extra credit.<br>    .data<br>    newKey BYTE 26 DUP(?)<br>    dest DWORD -3<br>    .code<br>    ;; inside the MAIN procedure<br>    push OFFSET newKey<br>    push OFFSET dest<br>    call compute<br>    ;; newKey now contains a randomly generated key.<br>    ;; The key will contain all 26 letters of the alphabet<br>    ;; (arranged in a random order).<br>    ;; Note that newKey is not NULL terminated.</p>
+<h2 id="Additional-Requirements"><a href="#Additional-Requirements" class="headerlink" title="Additional Requirements"></a>Additional Requirements</h2><ol>
+<li>Your code must operate in the manner shown in the examples (accepting the parameters on the stack). </li>
+<li>I will always interact with your code by calling the compute procedure. </li>
+<li>The main procedure from your code will not be used! Instead, I will verify the functionality of your procedure by writing my own main procedure and calling your compute procedure (in multiple ways) to test it. </li>
+<li>Your code cannot include a .data segment! Instead, any memory that you want to utilize must be allocated from the stack. </li>
+<li>Your procedures are not allowed to reference .data segment variables by name (this is implied by requirement #4). </li>
+<li>Procedures are allowed to use local variables if you choose (section 8.2.9 in the textbook). The alternative is for you to manually adjust ESP (allocating an area of memory on the stack that you can use within your procedure). If you would like clarification, please attend the review sessions so that I can. </li>
+<li>All procedure parameters must be passed on the system stack. </li>
+<li>Each procedure will implement a section of the program logic. Your code must be modularized into at least 4 procedures (not including main). In other words, your compute procedure must divide the work into various sub-procedures (that are called from inside compute). The specifics of how you divide the work and achieve this task are up to you. </li>
+<li>Parameters must be passed by value or by reference on the system stack as listed above. </li>
+<li>You are never allowed to corrupt memory by accessing arrays at invalid indices. In particular, the encrypted messages and decrypted messages are stored in arrays that terminate with a NULL character. The NULL character must be left intact. </li>
+<li>The program must use appropriate addressing modes for array elements (no hard-coded array names). </li>
+<li>The random number generator must be properly seeded using Randomize </li>
+<li>Each procedure must have a procedure header that follows the format discussed during lecture. </li>
+<li>The code and the output must be well-formatted. </li>
+<li>The usual requirements regarding documentation, readability, user-friendliness, etc., apply. </li>
+<li>Your code must not enter any infinite loops, cause a segmentation fault, or result in any other undefined behavior.</li>
+</ol>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ol>
+<li>DO NOT put this off - it is the final project for this course and serves as the final exam. </li>
+<li>Assume that the messages (to be encrypted or decrypted) could be up to 50,000 bytes long (including the NULL character). </li>
+<li>The key is exactly 26 characters long and is never NULL terminated. </li>
+<li>The parameters will ALWAYS be pushed to the stack in the exact order shown in the examples above. </li>
+<li>The Irvine library provides procedures for generating random numbers. Call Randomize once at the beginning of the program (to set up so you don’t get the same sequence every time), and call RandomRange to get a pseudo-random number. (See the documentation in Lecture 20) </li>
+<li>For this program you can assume that the plaintext message will not contain any capital letters. That makes the program easier to implement. </li>
+<li>If you choose to use the LOCAL directive while working on this program be sure to read section 8.2.9 in the Irvine textbook. LOCAL variables will affect the contents of the system stack!</li>
+</ol>
+<h2 id="Extra-Credit-Options"><a href="#Extra-Credit-Options" class="headerlink" title="Extra Credit Options"></a>Extra Credit Options</h2><ul>
+<li>Ensure that the “decoy” mode correctly returns the sum of ANY signed 16 bit numbers For example, if I sum these two 16-bit numbers: (-32768) + (-32768) I should receive the value (-65,536) (stored in the 32 bit variable). </li>
+<li>Implement the key generation mode as described in the documentation.</li>
+</ul>
+<h2 id="Project-Write-Up"><a href="#Project-Write-Up" class="headerlink" title="Project Write-Up"></a>Project Write-Up</h2><h3 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h3><p>Summarize your work in a well-written report. You should proof-read your<br>report and ensure that the writing meets professional standards. Use images,<br>charts, diagrams or other visual techniques to help convey your information to<br>the reader.<br>Be sure to address the following points and answer these questions:</p>
+<ul>
+<li>How did you break up your code into multiple procedures (i.e. what was your strategy to separate the code into pieces)? </li>
+<li>Did you run out of general purpose registers when implementing your design? If so, what steps did you take to work around the problem? </li>
+<li>Is there anything you would implement differently if you were to re-implement this project? </li>
+<li>What were the primary challenges that you encountered while working on the project? </li>
+<li>Besides the textbook, were there any particular resources that you would recommend to future students in this course?</li>
+</ul>
+<h3 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h3><p>If you chose to implement any extra credit tasks, be sure to include a<br>thorough description of this work in the report.</p>
+<h2 id="What-to-Submit"><a href="#What-to-Submit" class="headerlink" title="What to Submit"></a>What to Submit</h2><ul>
+<li>Your source code (contained in an .asm file) </li>
+<li>a PDF file containing your typed write-up</li>
+</ul>
+<h2 id="Errata"><a href="#Errata" class="headerlink" title="Errata"></a>Errata</h2><p>This section of the assignment will be updated as changes and clarifications<br>are made. Each entry here should have a date and brief description of the<br>change so that you can look over the errata and easily see if any updates have<br>been made since your last review.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/09/02/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS271SubstitutionCipher/">http://saferman.github.io/2022/09/02/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS271SubstitutionCipher/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Security代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/09/04/Python%E4%BB%A3%E5%86%99%EF%BC%9AMCD4710Minesweeper/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Python代写：MCD4710 Minesweeper">
+                        
+                        <span class="card-title">Python代写：MCD4710 Minesweeper</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/09/01/CUDA%E4%BB%A3%E5%86%99%EF%BC%9ACME213Vigen%C3%A8reCipherPart1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="CUDA代写：CME213 Vigenère Cipher Part1">
+                        
+                        <span class="card-title">CUDA代写：CME213 Vigenère Cipher Part1</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CUDA%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">CUDA代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

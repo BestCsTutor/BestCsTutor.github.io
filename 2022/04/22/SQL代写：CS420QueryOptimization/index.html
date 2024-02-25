@@ -1,0 +1,943 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="SQL代写：CS420 Query Optimization, 留学生CS|辅导|代写">
+    <meta name="description" content="使用MySQL的EXPLAIN命令，完成  Query Optimization
+ 分析。![MySQL](https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Mysql-sc">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>SQL代写：CS420 Query Optimization | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">SQL代写：CS420 Query Optimization</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/SQL%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">SQL代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-04-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用MySQL的EXPLAIN命令，完成 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Query_optimization" title="Query Optimization"> Query Optimization
+</a> 分析。<br>![MySQL](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Mysql-">https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Mysql-</a><br>screenshot.PNG&#x2F;300px-Mysql-screenshot.PNG)  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will carry out a number of exercises involving the<br>optimization of relational queries using the MySQL query optimizer and the<br>visualization command EXPLAIN. You need to read some of the MySQL<br>documentation in Section 2 to be able to complete this assignment. To be more<br>specific, you need to be familiar with EXPLAIN, SHOW PROFILE, ANALYZE, and the<br>INFORMATION_SCHEMA Tables commands of MySQL (specific links are provided in<br>the subsections).<br>This is a small hands-on project and should be done INDIVIDUALLY. Please read<br>the entire assignment carefully before your beginning.</p>
+<h2 id="Useful-Documentation"><a href="#Useful-Documentation" class="headerlink" title="Useful Documentation"></a>Useful Documentation</h2><ul>
+<li>The MySQL documentation tree: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/"> http://dev.mysql.com/doc/ </a></li>
+<li>The EXPLAIN Command: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/explain.html"> http://dev.mysql.com/doc/refman/8.0/en/explain.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/explain-output.html"> http://dev.mysql.com/doc/refman/8.0/en/explain-output.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/cost-model.html"> http://dev.mysql.com/doc/refman/8.0/en/cost-model.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/using-explain.html"> http://dev.mysql.com/doc/refman/8.0/en/using-explain.html </a></li>
+<li>The visual EXPLAIN in MySQL Workbench: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/workbench/en/wb-tutorial-visual-explain-dbt3.html"> http://dev.mysql.com/doc/workbench/en/wb-tutorial-visual-explain-dbt3.html </a></li>
+<li>The InnoDB storage system: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html"> http://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_stats_persistent_sample_p"> http://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_stats_persistent_sample_p </a> ages </li>
+<li>The SHOW and SHOW PROFILE Commands: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/show-tables.html"> http://dev.mysql.com/doc/refman/8.0/en/show-tables.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/show-columns.html"> http://dev.mysql.com/doc/refman/8.0/en/show-columns.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/show-status.html"> http://dev.mysql.com/doc/refman/8.0/en/show-status.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/show-profile.html"> http://dev.mysql.com/doc/refman/8.0/en/show-profile.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/show-profiles.html"> http://dev.mysql.com/doc/refman/8.0/en/show-profiles.html </a></li>
+<li>The CREATE INDEX Command: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/create-index.html"> http://dev.mysql.com/doc/refman/8.0/en/create-index.html </a></li>
+<li>Statistics and other information collected by MySQL, including ANALYZE and INFORMATION_SCHEMA Tables: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/analyze-table.html"> http://dev.mysql.com/doc/refman/8.0/en/analyze-table.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/innodb-persistent-stats.html"> http://dev.mysql.com/doc/refman/8.0/en/innodb-persistent-stats.html </a> , <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/information-schema.html"> http://dev.mysql.com/doc/refman/8.0/en/information-schema.html </a> , <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/information-schema-columns-table.html"> https://dev.mysql.com/doc/refman/8.0/en/information-schema-columns-table.html </a> , <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/mysql-infoschema-excerpt/8.0/en/information-schema-tables-table.html"> https://dev.mysql.com/doc/mysql-infoschema-excerpt/8.0/en/information-schema-tables-table.html </a></li>
+</ul>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>You need to create a new database and create four tables in this database. We<br>provide the definitions of the tables and the data. You can download the zip<br>file with the table schemas and the data from Piazza.</p>
+<h3 id="Relation-Schema"><a href="#Relation-Schema" class="headerlink" title="Relation Schema"></a>Relation Schema</h3><p>We will use four tables in this experiment: part, supplier, partsupp, and<br>lineitem.</p>
+<ol>
+<li>part ( p_partkey integer, p_name varchar(55), p_mfgr character(25), p_brand character(10), p_type varchar(25), p_size integer, p_container character(10), p_retailprice numeric(20,2), p_comment varchar(23), primary key (p_partkey)); </li>
+<li>supplier ( s_suppkey integer, s_name char(25), s_address varchar(40), s_nationkey integer, s_phone character(15), s_acctbal numeric(20,2), s_comment varchar(101), primary key (s_suppkey)); </li>
+<li>partsupp (ps_partkey integer, ps_suppkey integer, ps_availqty integer, ps_supplycost numeric(20,2), ps_comment varchar(199), primary key(ps_partkey, ps_suppkey)); </li>
+<li>lineitem( l_orderkey integer, l_partkey integer, l_suppkey integer, l_linenumber integer, l_quantity numeric(20,2), l_extendedprice numeric(20,2), l_discount numeric(3,2), l_tax numeric(3,2), l_returnflag character(1), l_linestatus character(1), l_shipdate date, l_commitdate date, l_receiptdate date, l_shipinstruct character(25), l_shipmode character(10), l_comment varchar(44), primary key (l_orderkey, l_linenumber);</li>
+</ol>
+<h3 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h3><ol>
+<li>Create a database (e.g. tpch) and create the tables. You can use the create table statements in the schema.sql file. </li>
+<li>Exit mysql and login again to mysql using the following command:<br><code>&gt; mysql --local-infile -uroot -p</code><br>Modify the local-infile variable so that you can run “load data” command<br>later:<br><code>&gt; SET GLOBAL local_infile = true;</code><br>Check the variable “local_infile” is properly set:<br><code>&gt; SHOW VARIABLES LIKE &#39;local_infile&#39;;</code><br>You should see the value of “local_infile” is “ON”</li>
+<li>You can load the data using the load command. To load the part table, you do (replace<br>“path_in_your_laptop” with the actual path that you store the data files):<br><code>&gt; use tpch; (your database name)</code><br><code>&gt; load data local infile &#39;path_in_your_laptop /part.tbl&#39; into table part fields terminated by &#39;|&#39;;</code></li>
+<li>You can see also here for more: <a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/8.0/en/load-data.html"> http://dev.mysql.com/doc/refman/8.0/en/load-data.html </a></li>
+</ol>
+<h2 id="Exercises"><a href="#Exercises" class="headerlink" title="Exercises"></a>Exercises</h2><p>In general, use EXPLAIN FORMAT&#x3D;JSON to get the evaluation plan because it<br>gives much more information about the plan. Use the actual execution of the<br>query on terminal or profile information for query execution times.<br>To use the Profiles, you need to set the profile on first using: SET profiling<br>&#x3D; 1;</p>
+<h3 id="Statistics-of-the-Tables"><a href="#Statistics-of-the-Tables" class="headerlink" title="Statistics of the Tables"></a>Statistics of the Tables</h3><p>We will first examine the statistics for table lineitem. Answer the following<br>questions.</p>
+<ol>
+<li>How many records are there actually in “lineitem”? What is the estimated value by the InnoDB optimizer? How do you find these values (command or SQL)? </li>
+<li>Is the value used by the query optimizer accurate? If not, why?</li>
+</ol>
+<h3 id="Index-on-Perfect-Match-Query"><a href="#Index-on-Perfect-Match-Query" class="headerlink" title="Index on Perfect Match Query"></a>Index on Perfect Match Query</h3><p>We will check how index affects query optimization and performance.<br>Examine the following query:<br><code>SELECT * FROM lineitem WHERE L_TAX = 0.07;</code></p>
+<ol>
+<li>What is the estimated total cost of executing the best plan? What does the cost of a plan mean in MySQL? </li>
+<li>What is the estimated result cardinality for this plan? How does the query optimizer obtain this value? Is it a reasonable one? </li>
+<li>Which access method (access type) does the optimizer choose?<br>Create a B-Tree index “ltax_idx” on the attribute “L_TAX”.</li>
+<li>Which access method does the optimizer consider to be the best now? Is the estimated result cardinality better now? Why? </li>
+<li>Compare the two plans (with and without index). Explain briefly why the access method in 4. is cheaper than the previous one without index.</li>
+</ol>
+<h3 id="Index-on-Range-Select"><a href="#Index-on-Range-Select" class="headerlink" title="Index on Range Select"></a>Index on Range Select</h3><p>Consider the following query:<br><code>SELECT * FROM lineitem WHERE L_QUANTITY &lt; 45;</code></p>
+<ol>
+<li>How many tuples does the query optimizer think will be returned? What is the estimated total cost? </li>
+<li>What is the access method used?<br>Consider now the following query:<br><code>SELECT * FROM lineitem WHERE L_QUANTITY &lt; 3;</code><br>Now create a B-Tree index “l_qty_idx” on the attribute “L_QUANTITY”. Run<br>“Explain” command for this query.</li>
+<li>What is the estimated total cost now? Does the estimated total cost make sense? Why? In what order would the tuples be returned by this plan? </li>
+<li>Explain why one of the access methods is more expensive than the other. [From now on, you may use “Explain current statement” functionality in workbench to check the visualized query plan]</li>
+</ol>
+<h3 id="Join-Algorithm"><a href="#Join-Algorithm" class="headerlink" title="Join Algorithm"></a>Join Algorithm</h3><p>Consider the following query:<br>    SELECT DISTINCT (s_name)<br>    FROM supplier, partsupp<br>    WHERE s_suppkey &#x3D; ps_suppkey AND ps_availqty &lt; 40;<br>—|—  </p>
+<ol>
+<li>Write down the best plan estimated by the optimizer (in plan tree form). What is the estimated total cost? </li>
+<li>What is the join algorithm used in the plan? Explain how the system reads the two relations (what access method is used). </li>
+<li>According to the optimizer, how many tuples will be retrieved from partsupp per scan? How many from supplier per scan? Do you consider these numbers a good estimation? Why or why not? </li>
+<li>Can you add an index to improve the performance of the query? Which index you will create and on which attribute? What is the new plan that is executed and what is its cost? </li>
+<li>After you created the index, check the estimation of the number of tuples retrieved from partsupp. Is it a good estimation? If yes, why?</li>
+</ol>
+<h3 id="Three-Way-Join"><a href="#Three-Way-Join" class="headerlink" title="Three-Way Join"></a>Three-Way Join</h3><p>Consider the following query:<br>    SELECT p_name, s_name<br>    FROM part, supplier, partsupp<br>    WHERE s_suppkey &#x3D; ps_suppkey AND p_partkey &#x3D; ps_partkey;<br>—|—  </p>
+<ol>
+<li>Write down the best plan chosen by the optimizer. List the joins and access methods it uses, and the order in which the relations are joined. What is the estimated cost of this plan? What is the actual query execution time of this query? </li>
+<li>Can you add an index to improve the query performance? You are free to add any index that you like on any table. What is the new plan now? What is the new estimated cost? Is the new plan really better in practice than the previous one (does the query run faster now)? </li>
+<li>Modify the query by adding a condition AND ps_availqty &lt; 10 in the WHERE clause. What are the differences between the current query plan and the one in 4.5.1? Why is the current query plan more efficient than the one in 4.5.1?</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/04/22/SQL%E4%BB%A3%E5%86%99%EF%BC%9ACS420QueryOptimization/">http://saferman.github.io/2022/04/22/SQL%E4%BB%A3%E5%86%99%EF%BC%9ACS420QueryOptimization/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/SQL%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">SQL代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/04/22/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS220CTree/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="C++代写：CS220 CTree">
+                        
+                        <span class="card-title">C++代写：CS220 CTree</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/04/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP605JavaPractice/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Java代写：COMP605 Java Practice">
+                        
+                        <span class="card-title">Java代写：COMP605 Java Practice</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

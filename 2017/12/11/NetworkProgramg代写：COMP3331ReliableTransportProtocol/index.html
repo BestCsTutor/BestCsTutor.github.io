@@ -1,0 +1,930 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Network Programg代写：COMP3331 Reliable Transport Protocol, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction基于TCP和UDP写一套可靠的网络通信协议，比较考察Linux网络编程的基本功底。Linux网络编程，虽然网上例子很多，但是基本上没有对各类异常和各种信号的处理，对于编写应用程序来说并不靠谱。  
+Goal and ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Network Programg代写：COMP3331 Reliable Transport Protocol | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Network Programg代写：COMP3331 Reliable Transport Protocol</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Network-Programg%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Network Programg代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-12-11
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>基于TCP和UDP写一套可靠的网络通信协议，比较考察Linux网络编程的基本功底。<br>Linux网络编程，虽然网上例子很多，但是基本上没有对各类异常和各种信号的处理，对于编写应用程序来说并不靠谱。  </p>
+<h2 id="Goal-and-learning-objectives"><a href="#Goal-and-learning-objectives" class="headerlink" title="Goal and learning objectives"></a>Goal and learning objectives</h2><p>For this assignment, you will be asked to implement a reliable transport<br>protocol over the UDP protocol. We will refer to the reliable transport<br>protocol that you will be programming in this assignment as Simple Transport<br>Protocol (STP). STP will include most (but not all) of the features that are<br>described in Sections 3.5.4 and 3.5.6 of the text Computer Networking (6th<br>ed.). Examples of these features include timeout, ACK, sequence number etc.<br>Note that these features are commonly found in many transport protocols.<br>Therefore, this assignment will give you an opportunity to implement some of<br>these basic features of a transport protocol. In addition, you may have<br>wondered why the designer of the TCP&#x2F;IP protocol stack includes such feature-<br>less transport protocol as UDP. You will find in this assignment that you can<br>design your own transport protocol and run it over UDP. This is the case for<br>some existing multimedia delivery services in the Internet, where they have<br>implemented their own proprietary transport protocol over UDP.<br>Note that it is mandatory that you implement STP over UDP. Do not use TCP<br>sockets. You will not receive any mark for this assignment if you use TCP<br>socket.</p>
+<h3 id="Learning-Objectives"><a href="#Learning-Objectives" class="headerlink" title="Learning Objectives"></a>Learning Objectives</h3><p>On completing this assignment you will gain sufficient expertise in the<br>following skills:</p>
+<ol>
+<li>Detailed understanding of how reliable transport protocols such as TCP function. </li>
+<li>Socket programming for UDP transport protocol. </li>
+<li>Protocol and message design.</li>
+</ol>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>As part of this assignment, you will have to implement Simple Transport<br>Protocol (STP), a piece of software that consists of a sender and receiver<br>component that allows reliable unidirectional data transfer. STP includes some<br>of the features of the TCP protocols that are described in sections 3.5.4 and<br>3.5.6 of the textbook (6th edition). You will use your STP protocol to<br>transfer simple text (ASCII) files (examples provided on the assignment<br>webpage) from the sender to the receiver. You should implement STP as two<br>separate programs: Sender and Receiver. You only have to implement<br>unidirectional transfer of data from the Sender to the Receiver. As<br>illustrated in Figure 1, data segments will flow from Sender to Receiver while<br>ACK segments will flow from Receiver to Sender. Let us reiterate this, STP<br>must be implemented on top of UDP. Do not use TCP sockets. If you use TCP you<br>will not receive any marks for your assignment.<br>You will find it useful to review sections 3.5.4 and 3.5.6 of the text. It may<br>also be useful to review the basic concepts of reliable data transfer from<br>section 3.4.</p>
+<h2 id="Assignment-Specifications"><a href="#Assignment-Specifications" class="headerlink" title="Assignment Specifications"></a>Assignment Specifications</h2><p>This section gives detailed specifications of the assignment. There are two<br>versions of this assignment, a standard version (with a total of 15 marks) and<br>an extended version (with a total of 17 marks of which 2 marks are bonus<br>marks). The specifications for the extended version can be found in Section 5<br>of the specification. Note that the bonus marks may not be proportional to the<br>amount of extra work that you will have to do. They are there to encourage you<br>to go beyond the standard assignment. The bonus marks can be used to make up<br>for lost marks in the lab exercises and the second assignment but NOT for any<br>of the exams (mid-session and final).</p>
+<h3 id="File-Names"><a href="#File-Names" class="headerlink" title="File Names"></a>File Names</h3><p>The main code for the sender and receiver should be contained in the following<br>files: sender.c, or Sender.java or sender.py, and receiver.c or Receiver.java<br>or receiver.py. You are free to create additional files such as header files<br>or other class files and name them as you wish.</p>
+<h3 id="List-of-features-provided-by-the-Sender-and-Receiver"><a href="#List-of-features-provided-by-the-Sender-and-Receiver" class="headerlink" title="List of features provided by the Sender and Receiver"></a>List of features provided by the Sender and Receiver</h3><p>You are required to implement the following features in the Sender and<br>Receiver:</p>
+<ol>
+<li>A three-way handshake (SYN, SYN+ACK, ACK) for the connection establishment. The ACK sent by the sender to conclude the three-way handshake should not contain any payload (i.e. data). See Section 3.5.6 for further details. </li>
+<li>The four-segment connection termination (FIN, ACK, FIN, ACK). The Sender will initiate the connection close once the entire file has been successfully transmitted. See Section 3.5.6 for further details. </li>
+<li>Sender must maintain a single-timer for timeout operation (Section 3.5.4 of the text). </li>
+<li>Sender should implement all the features mentioned in Section 3.5.4 of the text, with the exception of doubling the timeout. The STP protocol must include the simplified TCP sender (Figure 3.33 of the text) and fast retransmit (pages 247-248). You will need to use a number of concepts that we have discussed in class, e.g., sequence numbers, cumulative acknowledgements, timers, buffers, etc. for implementing your protocol. </li>
+<li>Receiver should implement the features mentioned in Section 3.5.4 of the text. However, you do not need to follow Table 3.2 for ACK generation. All packets should be immediately acknowledged, i.e. you do not have to implement delayed ACKs. </li>
+<li>STP is a byte-stream oriented protocol. You will need to include sequence number and acknowledgement number fields in the STP header for each segment. The meaning of sequence number and acknowledgment number are the same as TCP. </li>
+<li>MSS (Maximum segment size) is the maximum number of bytes of data that your STP segment can contain. In other words, MSS counts data ONLY and does NOT include header. Sender must be able to deal with different values of MSS. The value of MSS will be supplied to Sender as an input argument. </li>
+<li>Another input argument for Sender is Maximum Window Size (MWS). MWS is the maximum number of un-acknowledged bytes that the Sender can have at any time. MWS counts ONLY data. Header length should NOT be counted as part of MWS.<br>Remarks: Note that TCP does not explicitly define a maximum window size. In<br>TCP, the maximum number of un-acknowledged bytes is limited by the smaller of<br>receive window and the congestion control window. Since you will not be<br>implementing flow or congestion control, you will be limiting the number of<br>un-acknowledged bytes by using the MWS parameter. In other words, you will<br>need to ensure that during the lifetime of the connection, the following<br>condition is satisfied.</li>
+<li>Even though you will use UDP since the sender and receiver will mostly be running on machines that are within close proximity of each other (e.g.: on the same Ethernet LAN or even on the same physical machine), there will be no real possibility of datagrams being dropped. In order to test the reliability of your protocol, it is imperative to introduce artificially induced packet loss and delays. For this purpose you must also implement a Packet Loss and Delay (PLD) Module as part of the Sender program. The details for this module are explained later in the specification.<br>Remarks: For the standard version of the assignment, the PLD module will only<br>need to drop packets while for extended version, the PLD module will need to<br>drop and delay packets. For simplicity, I have chosen to call both of them the<br>PLD module, even though the PLD module for the standard version does not delay<br>packets.</li>
+<li>You must use a constant timeout in your program. The value of the timeout will be supplied to Sender as an input argument. Note that, this requirement applies to the standard version of the assignment. The extended version has a different requirement.</li>
+</ol>
+<h3 id="Features-excluded"><a href="#Features-excluded" class="headerlink" title="Features excluded"></a>Features excluded</h3><p>There are a number of transport layer features adopted by TCP that are<br>excluded from this assignment:</p>
+<ol>
+<li>You do not need to implement timeout estimation unless you want to attempt the extended version of the assignment. </li>
+<li>You do not need to double timeout interval unless you want to attempt the extended version of the assignment. </li>
+<li>You do not need to implement any flow nor congestion control. </li>
+<li>STP does not have to deal with corrupted packets. Packets will very rarely be corrupted in our test topology, if at all. In short, it is safe for you to assume that packets are only lost.</li>
+</ol>
+<h3 id="Packet-header-and-MSS"><a href="#Packet-header-and-MSS" class="headerlink" title="Packet header and MSS"></a>Packet header and MSS</h3><p>In designing the segment header, you only need to include the fields that you<br>think are necessary for STP. You can draw inspiration from TCP but the exact<br>format of the STP packet header is for you to decide. The header portion can<br>include as many fields as you think are necessary. Two important fields that<br>will be needed are the sequence number and acknowledgement number. You will<br>also need a number of flags for connection establishment and teardown.<br>The data portion must not contain more than MSS bytes of data. You must use<br>the same STP segment format for data transfer as well as for the<br>acknowledgements flowing back from the receiver to the sender. The only<br>difference will be that the acknowledgement segments will not contain any<br>data. All information that is necessary for the proper functioning of your<br>protocol must be provided in the STP headers. You should not use any<br>information from the header of the UDP datagram that will encapsulate the STP<br>packets.</p>
+<h3 id="Sender"><a href="#Sender" class="headerlink" title="Sender"></a>Sender</h3><p>This section provides details on the Sender.<br>For the standard version of the assignment, the Sender should accept the<br>following eight (8) arguments (note that the last two arguments are used<br>exclusively by the PLD module):</p>
+<ol>
+<li>receiver_host_ip: the IP address of the host machine on which the Receiver is running. </li>
+<li>receiver_port: the port number on which Receiver is expecting to receive packets from the sender. </li>
+<li>file.txt: the name of the text file that has to be transferred from sender to receiver using your reliable transport protocol. </li>
+<li>MWS: the maximum window size used by your STP protocol in bytes. </li>
+<li>MSS: Maximum Segment Size which is the maximum amount of data (in bytes) carried in each STP segment. </li>
+<li>timeout: the value of timeout in milliseconds. The following two arguments are used exclusively by the PLD module: </li>
+<li>pdrop: the probability that a STP data segment which is ready to be transmitted will be dropped. This value must be between 0 and 1. For example if pdrop &#x3D; 0.5, it means that 50% of the transmitted packets are dropped by the PLD. </li>
+<li>seed: The seed for your random number generator. The use of seed will be explained in Section 4.5.2 of the specification.</li>
+</ol>
+<h3 id="Receiver"><a href="#Receiver" class="headerlink" title="Receiver"></a>Receiver</h3><p>The Receiver should accept the following two arguments:</p>
+<ol>
+<li>receiver_port: the port number on which the Receiver will open a UDP socket for receiving datagrams from the Sender. </li>
+<li>file.txt: the name of the text file into which the text sent by the sender should be stored (this is the file that is being transferred from sender to receiver).<br>The Receiver should generate an ACK immediately after receiving a data<br>segment. This is the only ACK generation rule you need. You do not need to<br>follow Table 3.2 of the text. In other words, you do no have to implement<br>delayed ACKs. The format of the acknowledgement segment must be exactly<br>similar to the STP data segment. It should however not contain any payload.<br>The receiver is expected to buffer out-of-order arrival packets.<br>The receiver should first open a UDP listening socket on receiver_port and<br>then wait for segments to arrive from the Sender. The first segment to be sent<br>by the Sender is a SYN segment and the receiver is expected to reply a SYNACK<br>segment.<br>After the completion of the three-way handshake, the receiver should create a<br>new text file called file.txt. All incoming data should be stored in this<br>file. The Receiver should first extract the STP packet from the arriving UDP<br>datagrams and then extract the data (i.e. payload) from the STP packet. Note<br>that, the Receiver is allowed to examine the header of the UDP datagram that<br>encapsulates the STP Packet to determine the UDP port that the Sender is<br>using.<br>The data should be written into file.txt. At the end of the transfer, the<br>Receiver should have a duplicate of the text file sent by the Sender. You can<br>verify this by using the diff command on a Linux machine (diff file1.txt<br>file2.txt).<br>The Receiver should also maintain a log file titled Receiver_log.txt where it<br>records the information about each segment that it sends and receives. The<br>format should be exactly similar to the sender log file as outlined in the<br>Sender specification.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2017/12/11/NetworkProgramg%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3331ReliableTransportProtocol/">http://saferman.github.io/2017/12/11/NetworkProgramg%E4%BB%A3%E5%86%99%EF%BC%9ACOMP3331ReliableTransportProtocol/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Network-Programg%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Network Programg代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/12/12/Java%E4%BB%A3%E5%86%99%EF%BC%9AISOM3320StudentRecord/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java代写：ISOM3320 Student Record">
+                        
+                        <span class="card-title">Java代写：ISOM3320 Student Record</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2017-12-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/12/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2401NumberRepresentation/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="C代写：COMP2401 Number Representation">
+                        
+                        <span class="card-title">C代写：COMP2401 Number Representation</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-12-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

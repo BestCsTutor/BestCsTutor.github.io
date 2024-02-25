@@ -1,0 +1,952 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C++代写：COMP2012 Polynomial, 留学生CS|辅导|代写">
+    <meta name="description" content="用C++的Linked List实现一个  Polynomial  类，能进行基本的多项式计算。
+IntroductionIn this assignment, you will implement the Polynomial class">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C++代写：COMP2012 Polynomial | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C++代写：COMP2012 Polynomial</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C++代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-23
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用C++的Linked List实现一个 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Polynomial" title="Polynomial"> Polynomial </a> 类，能进行基本的多项式计算。<br><img src="https://www.mathsisfun.com/algebra/images/polynomial.svg" alt="Polynomial"></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will implement the Polynomial class which can store a<br>single-variable polynomial with a linked list. Simple operations such as<br>addition and multiplication will be supported. Through the implementation of<br>it, you will have practices on various C++&#x2F;OOP fundamentals, e.g., classes,<br>objects, constructors, copy constructors, pointers, linked lists, etc.</p>
+<h2 id="Polynomial"><a href="#Polynomial" class="headerlink" title="Polynomial"></a>Polynomial</h2><p>A polynomial is an expression consisting of variables (also called<br>interderminates) and coefficients. If you want to read about its full formal<br>definition, you may read thewikipediabut it is not required at all for this<br>assignment.<br>For this assignment, we are only concerned with single-variable polynomials<br>such as this:<br>Throughout the assignment, we will use a very specific string to represent a<br>polynomial. For example, the polynomial above will be represented precisely by<br>“2<em>x^3 + 6</em>x - 7” which have 3 terms separated by exactly 1 space (and there<br>is no extra space at the beginning, the end, or anywhere else)<br>For your information, while the “^” symbol is used to denote “to the power of”<br>in our string representation, it actually has a different meaning in C++ code<br>(bitwise XOR operator). There is no “to the power of” operator in C++.<br>To learn about the terminology we use, let’s look at this example:”2<em>x^3 + 6</em>x</p>
+<ul>
+<li>7”.<ul>
+<li>There are 3 terms in total </li>
+<li>The coefficient for the first term is 2, and its exponent is 3. </li>
+<li>The coefficient for the second term is 6, and its exponent is 1. Note that we always write “x” instead of “x^1” for exponent 1. </li>
+<li>The coefficient for the third term is -7, and its exponent is 0. Note that we always omit the variable instead of writing”x^0”for exponent 0.<br>We will be using a linked list to store the polynomial. The struct we use is<br>defined within the Polynomial class in polynomial.h as follows:<br>struct Term {<br>  int coefficient;<br>  int exponent;<br>  Term* next;<br>} * head; &#x2F;&#x2F;linked list of terms, nodes are always sorted by exponents from the largest exponent to the smallest<br>—|—<br>It has the following properties:</li>
+<li>A node represents a term in the polynomial. We also always keep the linked list sorted so that terms with larger exponents will appear earlier in the list than the other terms with smaller exponents. </li>
+<li>Nodes&#x2F;terms with 0 coefficient will NOT be stored. </li>
+<li>No two nodes&#x2F;terms should have the same exponent. </li>
+<li>Theheadshould point to nullptr when the polynomial is simply zero “0” (instead of having 1 term of exponent 0 and coefficient 0).<br>We also assume the following for this assignment:</li>
+<li>We deal with single-variable polynomials only, and that variable is always named “x”. </li>
+<li>Exponents are integers in the range [0, 2047], but coefficients can be any positive and negative integer. </li>
+<li>When the coefficient is&#x2F;becomes 0, we consider the term non-existent, and we won’t store&#x2F;print that term. <ul>
+<li>For example, if we add “3<em>x^2 + 1”to”-3</em>x^2 + 7”, the result would be simply”8”(i.e. 1 node&#x2F;term in the resulting linked list) instead of “0*x^2 + 8”(2 nodes&#x2F;terms). </li>
+<li>For simply zero which is represented by an empty linked list (headpoints to nullptr), we print”0”even though the linked list has nothing in it.<br>To illustrate, the linked list for the example polynomial “2<em>x^3 + 6</em>x -<br>7”looks like this:<br>Furthermore, for printing, coefficient 1 or -1 shouldn’t be printed unless the<br>exponent of the term is 0. (e.g.”-x” instead of “-1*x”) Also, if the first<br>term has a negative coefficient, there should be no space between the negative<br>sign and the coefficient (e.g.”-x” instead of “- x”)[clarified on March 5th,<br>see FAQ and sample test cases for more examples]<br>With all the specifications above, there will only be one unique linked list<br>and string representation for any polynomial.<br>Read the FAQ page for some common clarifications. You should check that a day<br>before the deadline to make sure you don’t miss any clarification, even if you<br>have already submitted your work then.<br>If you need further clarifications of the requirements, please feel free to<br>post on the Piazza (via Canvas) with thepa1tag. However, to avoid cluttering<br>the forum with repeated&#x2F;trivial questions, please doread all the given code,<br>webpage description, sample output, andlatest FAQ(refresh this page regularly)<br>carefully before posting your questions. Also, please be reminded that we<br>won’t debug for any student’s assignment for the sake of fairness.<br>Submission details are in the Submission and Deadline section.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><ul>
+<li>Skeleton code:skeleton.zip<br>Please note thatyou should only submit the polynomial.cppfile. While you may<br>modify other files to add your own test cases, you should make sure your<br>submitted polynomial.cpp can compile with the original main.cpp and<br>polynomial.h on ZINC.<br>If you use VS Code, you may follow thecreating a project and using the<br>terminal for custom compilation command section on our VS Code usage tutorial.<br>That is, create a folder to hold all the extracted files in your file<br>explorer, then open this folder in VS Code. You can then use the terminal<br>command <code>g++ -std=c++11 -o programName *.cpp</code> to compile all sources in the<br>folder to the program. You are also welcome to create a Makefile for it<br>yourself. After the compilation, you can then use the command <code>./programName</code> OR <code>.\programName</code> (depends on the OS&#x2F;shell you use) to run the program.</li>
+</ul>
+<h2 id="The-Polynomial-Class"><a href="#The-Polynomial-Class" class="headerlink" title="The Polynomial Class"></a>The Polynomial Class</h2><p>A Polynomial object represents a single-variable polynomial as specified in<br>the introduction section. It supports various simple operations such as<br>addition and multiplication which are usable via member functions that will be<br>implemented by you. You should also read the main.cpp and sample output for<br>test cases of the member functions to help yourself understand what exactly<br>each of them does.<br>For simplicity, you can assume all input parameters are valid.<br>You may refer to the polynomial.h while you read this section.</p>
+<h3 id="Data-member"><a href="#Data-member" class="headerlink" title="Data member"></a>Data member</h3><pre><code>Term* head  
+</code></pre>
+<p>—|—<br>It points to the head node of the linked list that stores the polynomial.<br>Please read the introduction section for a detailed description of the linked<br>list.</p>
+<h3 id="Member-functions"><a href="#Member-functions" class="headerlink" title="Member functions"></a>Member functions</h3><pre><code>Polynomial()  
+</code></pre>
+<p>—|—<br>This is the default constructor. Simply setheadto nullptr which represents the<br>zero polynomial “0” as described earlier.<br>    Polynomial(const Polynomial&amp; another)<br>—|—<br>This is the deep copy constructor. Since a deep copy should be performed, it<br>should dynamically allocate space for the new nodes in the new linked list<br>(i.e., do not reuse any existing node fromanother.)<br>    Polynomial(int array[], int arraySize);<br>—|—<br>This is the constructor that constructs the polynomial using the given array<br>of the given size. The array lists all coefficients (including zeros which you<br>should ignore) from the exponent(arraySize-1) to exponent 0.<br>You can assume the array Size will not be smaller than 1.<br>Examples:</p>
+<ul>
+<li>The givenarrayis {5, -6, 7} with array Size 3. A polynomial “5<em>x^2 - 6</em>x + 7” will be constructed. </li>
+<li>The givenarrayis {11, 0, 7, 2} with array Size 4. A polynomial “11<em>x^3 + 7</em>x + 2” will be constructed. </li>
+<li>The givenarrayis {2} witharraySize1. A polynomial “2” will be constructed.<br>More examples can be found in the given test cases.<br>Polynomial(int n)<br>—|—</li>
+</ul>
+<p>This is a constructor that constructs a pre-made polynomial for some of the<br>test cases. It is provided mainly to test the student’s code without relying<br>on the correctness of their constructors. Its code is given in the header file<br>and already complete. Read the code to understand what it does.<br>Examples:</p>
+<ul>
+<li>If n is 1, a polynomial “4*x^3 + x^2 + 5” will be constructed. </li>
+<li>If n is 2, a polynomial “4<em>x^3 + 2</em>x^2 + 5” will be constructed.<br>~Polynomial()<br>—|—</li>
+</ul>
+<p>This is the destructor. Remember to deallocate the linked list.<br>    void print() const<br>—|—<br>It prints the unique string representation of the polynomial according to our<br>description with cout. Please refer to the many examples in the given test<br>cases (read the main.cpp for the test case code, read the polynomial.h for the<br>pre-defined polynomials used, and refer to the sample output that is<br>givenhere).<br>Tip: please spend more time to make sure it works well for all scenarios as we<br>rely on this to grade your other functions.<br>    Polynomial add(const Polynomial&amp; another) const<br>—|—<br>Add this polynomial with another and return the result. Refer to the given<br>test cases for examples. You may also refer tothis pagefor steps needed to add<br>polynomials in case you have forgotten your basic algebra class. The page has<br>several examples for single-variable polynomials if you scroll down a little<br>bit.<br>    Polynomial subtract(const Polynomial&amp; another) const<br>—|—<br>Subtract another polynomial from this polynomial and return the result. Refer<br>to the given test cases for examples. You may also refer to this pagefor steps<br>needed to subtract polynomials.<br>    Polynomial multiply(const Polynomial&amp; another) const<br>—|—<br>Multiply this polynomial with another and return the result. Refer to the<br>given test cases for examples. You may also refer tothis page for steps needed<br>to multiply polynomials.<br>    int evaluate(int valueOfX) const<br>—|—<br>Calculate the value of the polynomial when the variable “x” has the specified<br>value of x. Refer to the given test cases for examples.<br>    int compare(const Polynomial&amp; another) const<br>—|—<br>Return 1 if this polynomial is larger thananother, or return -1 if this<br>polynomial is smaller, or return 0 if both are the same. The polynomial<br>comparison for two polynomials p1 and p2 is defined as follows:</p>
+<ul>
+<li>The two polynomials are compared term by term. We always start with the first terms of both, and move to the later terms for both polynomials at the same time. </li>
+<li>Then first we should see if the “current terms” exist for both polynomials because they can have differnet numbers of terms. <ul>
+<li>If “current terms” exist for both polynomial, we can compare them as follows. <ul>
+<li>If the exponent of the current term of p1 is larger than that of p2, p1 is considered as larger. The reverse is also true. </li>
+<li>If the exponents are the same, we compare their coefficients instead. That is, if the coefficient of the current term of p1 is larger than that of p2, p1 is considered as larger. The reverse is also true. </li>
+<li>If both their exponents and coefficients are the same, we cannot decide yet, so we proceed to the next terms for both polynomials (i.e. p1’s 2nd term vs p2’s 2nd term, then p1’s 3rd term vs p2’s 3rd term, and so on) until there is no more later term for one of the polynomials.</li>
+</ul>
+</li>
+<li>If there is no more term for one of the polynomials only, then the longer polynomial is considered as larger. </li>
+<li>If there is no more term for both polynomials at the same time, that implies the two polynomials have the same number of terms (and they have the very same terms really), then we consider they are the same.<br>Refer to the given test cases for examples.<br>Optional task to think about<br>The following constructor is optional and will NOT be graded. It is not even<br>given in the header file. If you want to have extra practices, you can add<br>this constructor yourself after you have finished and submitted your<br>assignment.<br>Polynomial(const char s[])<br>—|—</li>
+</ul>
+</li>
+</ul>
+<p>This constructs the polynomial according to the given C-string that stores the<br>string representation of the polynomial. Since this task is optional and will<br>NOT be graded, you are free to use anything you want. Please do NOT include<br>this in your solution submitted for assignment 1.</p>
+<h2 id="Sample-Output-and-Grading-Scheme"><a href="#Sample-Output-and-Grading-Scheme" class="headerlink" title="Sample Output and Grading Scheme"></a>Sample Output and Grading Scheme</h2><p>Your finished program should produce the same output as oursample output for<br>all given test cases. User input, if any, is omitted in the files. Please note<br>that sample output, naturally, does not show all possible cases. It is part of<br>the assessment for you to design your own test cases to test your program.Be<br>reminded to remove any debugging message that you might have added before<br>submitting your code.<br>There are 22 given test cases of which the code can be found in the given main<br>function. These 22 test cases are first run without any memory leak checking<br>(they are numbered #1 - #22 on ZINC). Then, the same 22 test cases will be run<br>again, in the same order, with memory leak checking (those will be numbered<br>#23 - #44 on ZINC). For example, test case #30 on ZINC is actually the given<br>test case 8 (in the given main function) run with memory leak checking.<br>Each of the test cases run without memory leak checking (i.e., #1 - #22 on<br>ZINC) is worth 1 mark. The second run of each test case with memory leak<br>checking (i.e., #23 - #44 on ZINC) is worth 0.25 mark. The maximum score you<br>can get on ZINC, before the deadline, will therefore be 22*(1+0.25) &#x3D; 27.5.</p>
+<h2 id="About-memory-leak-and-other-potential-errors"><a href="#About-memory-leak-and-other-potential-errors" class="headerlink" title="About memory leak and other potential errors"></a>About memory leak and other potential errors</h2><p>Memory leak checking is done via the <code>-fsanitize=address,leak,undefined</code><br>option (related documentation here) of a recent g++ compiler on Linux (it<br>won’t work on Windows for the versions we have tested). Check the “Errors” tab<br>(next to “Your Output” tab in the test case details popup) for errors such as<br>memory leak. Other errors&#x2F;bugs such as out-of-bounds, use-after-free bugs, and<br>some undefined-behavior-related bugs may also be detected. You will get 0 mark<br>for the test case if there is any error there. Note that if your program has<br>no errors detected by the sanitizers, then the “Errors” tab may not appear. If<br>you wish to check for memory leak yourself using the same options, you may<br>follow ourChecking for memory leak yourselfguide.</p>
+<h2 id="After-the-deadline"><a href="#After-the-deadline" class="headerlink" title="After the deadline"></a>After the deadline</h2><p>We will have 26 additional test cases which won’t be revealed to you before<br>the deadline. Together with the 22 given test cases, there will then be 48<br>test cases used to give you the final assignment grade. All 48 test cases will<br>be run two times as well: once without memory leak checking and once with<br>memory leak checking. The assignment total will therefore be 48*(1+0.25) &#x3D; 60.<br>Details will be provided in the marking scheme which will be released after<br>the deadline.<br>Here is a summary of the test cases for your information.<br>Main thing to test  |  Number of test cases in main before deadline (given<br>test cases)  |  Number of test cases in main after deadline (given+hidden test<br>cases)<br>—|—|—<br>print  |  3  |  4<br>default constructor  |  1  |  1<br>deep copy  |  1  |  3<br>array constructor  |  3  |  7<br>add  |  3  |  7<br>subtract  |  3  |  7<br>multiply  |  3  |  9<br>evaluate  |  2  |  4<br>compare  |  3  |  6  </p>
+<h2 id="Submission-and-Deadline"><a href="#Submission-and-Deadline" class="headerlink" title="Submission and Deadline"></a>Submission and Deadline</h2><p>Please submit one cpp file only:polynomial.cpp. Submit the file toZINC. ZINC<br>usage instructions can be foundhere.<br>Notes:</p>
+<ul>
+<li>You may submit your file multiple times, but only the last submission will be graded.You do NOT get to choose which version we grade. If you submit after the deadline, late penalty will be applied according to the submission time of your last submission. </li>
+<li>Submit early to avoid any last-minute problem. Only ZINC submissions will be accepted. </li>
+<li>The ZINC server will be very busy on the last day especially in the last few hours, so you should expect you would get the grading result report not-very-quickly. However, as long as your submission is successful, we would grade your latest submission with all test cases after the deadline. </li>
+<li>In the grading report, pay attention to various errors reported. For example,under the “make” section, if you see a red cross, click on the STDERR tab to see the compilation errors.You must fix those before you can see any program output for the test cases below. </li>
+<li>Make sure you submit the correct file yourself. You can download your own file back from ZINC to verify. Again,we only grade what you uploaded last to ZINC.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/23/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2012Polynomial/">http://saferman.github.io/2023/01/23/C++%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2012Polynomial/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C++代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/24/Vim%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97(%E4%B8%89)%EF%BC%9A%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Vim实战指南(三)：高级技巧">
+                        
+                        <span class="card-title">Vim实战指南(三)：高级技巧</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Vim%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97-%E4%B8%89/">
+                        <span class="chip bg-color">Vim实战指南(三)</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/23/MIPS%E4%BB%A3%E5%86%99%EF%BC%9ACMPE13DecimalConverter/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="MIPS代写：CMPE13 Decimal Converter">
+                        
+                        <span class="card-title">MIPS代写：CMPE13 Decimal Converter</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MIPS%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">MIPS代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

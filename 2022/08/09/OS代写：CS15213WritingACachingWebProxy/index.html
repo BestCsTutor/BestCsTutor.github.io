@@ -1,0 +1,944 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="OS代写：CS15213 Writing A Caching Web Proxy, 留学生CS|辅导|代写">
+    <meta name="description" content="使用  LRU
+ 算法，实现一个具有Cache能力的Web Proxy.
+IntroductionA proxy server is a computer program that acts as an intermediary betwe">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>OS代写：CS15213 Writing A Caching Web Proxy | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">OS代写：CS15213 Writing A Caching Web Proxy</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">OS代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-08-09
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)" title="LRU"> LRU
+</a> 算法，实现一个具有Cache能力的Web Proxy.<br><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Lruexample.png" alt="LRU"></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>A proxy server is a computer program that acts as an intermediary between<br>clients making requests to access resources and the servers that satisfy those<br>requests by serving content. A web proxy is a special type of proxy server<br>whose clients are typically web browsers and whose servers are web servers<br>providing web content. When a web browser uses a proxy, it contacts the proxy<br>instead of communicating directly with the web server; the proxy forwards the<br>client’s request to the web server, reads the server’s response, then forwards<br>the response to the client.<br>Proxies are useful for many purposes. Sometimes, proxies are used in<br>firewalls, so that browsers behind a firewall can only contact a server beyond<br>the firewall via the proxy. A proxy may also perform translations on pages,<br>for example, to make them viewable on web-enabled phones. Importantly, proxies<br>are used as anonymizers: by stripping requests of all identifying information,<br>a proxy can make the browser anonymous to web servers. Proxies can even be<br>used to cache web objects by storing local copies of objects from servers and<br>then responding to future requests by reading them out of its cache rather<br>than by communicating again with a remote server.<br>This lab has three parts. An implementation of the first part will be<br>submitted as your checkpoint. Your final submission will then incorporate the<br>extensions forming the second and third parts. For the first part, you will<br>create a proxy that accepts incoming connections, reads and parses requests,<br>forwards requests to web servers, reads the servers’ responses, and forwards<br>the responses to the corresponding clients. The first part will involve<br>learning about basic HTTP operation and how to use sockets to write programs<br>that communicate over network connections. In the second part, you will<br>upgrade your proxy to deal with multiple concurrent connections. This will<br>introduce you to dealing with concurrency, a crucial systems concept. In the<br>third and last part, you will add caching to your proxy using a simple main<br>memory cache of recently accessed web content.<br>You will debug and test your program with PXYDRIVE, a testing framework we<br>provide, as well as by accessing your proxy via standard tools, including a<br>web browser. The grading of your code will involve automated testing. Your<br>code will also be reviewed for correctness and for style.</p>
+<h2 id="Logistics"><a href="#Logistics" class="headerlink" title="Logistics"></a>Logistics</h2><p>This is an individual project. You are allowed only one grace day for the<br>checkpoint and one grace day for the final.</p>
+<h2 id="Handout-instructions"><a href="#Handout-instructions" class="headerlink" title="Handout instructions"></a>Handout instructions</h2><p>Create your GitHub Classroom repository. or by clicking the “Download handout”<br>button on the proxylab Autolab page. Then do the following on a Shark machine:</p>
+<ul>
+<li>Clone the repository that you just created using the git clone command. Do not download and extract the zip file from GitHub. </li>
+<li>Type your name and Andrew ID in the header comment at the top of proxy.c.</li>
+</ul>
+<h3 id="Robust-I-O-package"><a href="#Robust-I-O-package" class="headerlink" title="Robust I&#x2F;O package"></a>Robust I&#x2F;O package</h3><p>The handout directory contains the files csapp.c and csapp.h, which comprise<br>the CS:APP package discussed in the CS:APP3e textbook. The CS:APP package<br>includes the robust I&#x2F;O (RIO) package. When reading and writing socket data,<br>you should use the RIO package instead of low-level I&#x2F;O functions, such as<br>read, write, or standard I&#x2F;O functions, such as fread, and fwrite.<br>The CS:APP package also contains a collection of wrapper functions for system<br>calls that check the return code and exit when there’s an error. You will find<br>that the set of wrapper functions provided is a subset of those from the<br>textbook and the lecture notes. We have disabled ones for which exiting upon<br>error is not the correct behavior for a server program. For these, you must<br>check the return code and devise ways to handle these errors that minimize<br>their impact.</p>
+<h3 id="HTTP-parsing-library"><a href="#HTTP-parsing-library" class="headerlink" title="HTTP parsing library"></a>HTTP parsing library</h3><p>The handout directory contains the file http parser.h, which defines the API<br>for a small HTTP string parsing library. The library includes functions for<br>extracting important data fields from HTTP response headers and storing them<br>in a parser t struct. A brief overview of the library is given below. Please<br>refer to the source files in your handout for the full documentation of the<br>types, structs, and functions available for use in the library.<br>To create a new instance of a parser struct, call parser new(). The returned<br>pointer can then be used as the first argument to the other functions. parser<br>parse line() will parse a line of an HTTP request and store the result in the<br>provided parser t struct. Parsed fields of specified types may be retrieved<br>from the struct by calling parser retrieve() and by providing a string pointer<br>for the function to write to. Particular headers may also be retrieved by name<br>via parser lookup header(). Headers may instead be accessed in an iterative<br>fashion by successive calls to parser retrieve next header().</p>
+<h3 id="Modularity"><a href="#Modularity" class="headerlink" title="Modularity"></a>Modularity</h3><p>The skeleton file proxy.c, provided in the handout, contains a main function<br>that does practically nothing. You should fill in that file with your proxy<br>implementation. Modularity, though, should be an important consideration, and<br>it is important for you to separate the individual modules of your<br>implementation into different files. For example, your cache should be largely<br>(or completely) decoupled from the rest of your proxy, so one good idea is to<br>move the implementation of the cache into separate code and header files<br>cache.c and cache.h.</p>
+<h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h3><p>You are free to add your own source and header files for this lab. The<br>Makefile will automatically link all .c files into the final binary. While you<br>are free to update the provided Makefile (for example to define the DEBUG<br>macro), the autograder will use the original Makefile to grade your solution.<br>As such, the entire project should compile without warnings.</p>
+<h3 id="Other-provided-resources"><a href="#Other-provided-resources" class="headerlink" title="Other provided resources"></a>Other provided resources</h3><p>Included with your starter code, in the pxy directory, is a pair of programs<br>PXYDRIVE and PXYREGRESS (given as files pxydrive.py and pxyregress.py,<br>respectively.) PXYDRIVE is a testing framework for your proxy. PXYREGRESS<br>provides a way to run a series of standard tests on your proxy using PXYDRIVE.<br>Both programs are documented in the PXYDRIVE user manual.<br>Also included, in the tests directory, is a series of 51 test files to test<br>various aspects of your proxy. Each of these is a command file for PXYDRIVE.<br>You will want to learn about the operation of PXYDRIVE and how each of these<br>tests operate.<br>Finally, you are provided with a reference implementation of a proxy, named<br>proxy-ref. It is compiled to execute on a Linux machine.</p>
+<h2 id="Part-I-Implementing-a-sequential-web-proxy"><a href="#Part-I-Implementing-a-sequential-web-proxy" class="headerlink" title="Part I: Implementing a sequential web proxy"></a>Part I: Implementing a sequential web proxy</h2><p>The first step is implementing a basic sequential proxy that handles HTTP&#x2F;1.0<br>GET requests. Your proxy need not handle other request types, such as POST<br>requests, but it should respond appropriately, as described below. Your proxy<br>also need not handle HTTPS requests (only HTTP).<br>When started, your proxy should listen for incoming connections on a port<br>whose number is specified on the command line. Once a connection is<br>established, your proxy should read the entirety of the request from the<br>client and parse the request. It should determine whether the client has sent<br>a valid HTTP request; if so, it should 1) establish its own connection to the<br>appropriate web server, 2) request the object the client specified, and 3)<br>read the server’s response and forward it to the client.</p>
+<h3 id="HTTP-1-0-GET-requests"><a href="#HTTP-1-0-GET-requests" class="headerlink" title="HTTP&#x2F;1.0 GET requests"></a>HTTP&#x2F;1.0 GET requests</h3><p>When an user enters a URL such as <a target="_blank" rel="noopener" href="http://www.cmu.edu/hub/index.html"> http://www.cmu.edu/hub/index.html
+</a> into the address bar of a web browser,<br>the browser will send an HTTP request to the proxy that begins with a request<br>line such as the following:<br>    GET <a target="_blank" rel="noopener" href="http://www.cmu.edu:8080/hub/index.html">http://www.cmu.edu:8080/hub/index.html</a> HTTP&#x2F;1.1\r\n<br>The proxy should parse the request URL into the host1 , in this case<br><a target="_blank" rel="noopener" href="http://www.cmu.edu:8080/">www.cmu.edu:8080</a>, and the path2 , consisting of the &#x2F; character and everything<br>following it. That way, the proxy can determine that it should open a<br>connection to hostname <a target="_blank" rel="noopener" href="http://www.cmu.edu/">www.cmu.edu</a> on port 8080 and send an HTTP request of<br>its own, starting with its own request line of the following form:<br>    GET &#x2F;hub&#x2F;index.html HTTP&#x2F;1.0\r\n<br>As these examples show, all lines in an HTTP request end with a carriage<br>return (‘\r’) followed by a newline (‘\n’). Also important is that every HTTP<br>request must be terminated by an empty line, consisting of just the string<br>“\r\n”.<br>Notice in the above example that the web browser’s request line ends with<br>HTTP&#x2F;1.1, while the proxy’s request line ends with HTTP&#x2F;1.0. Modern web<br>browsers will generate HTTP&#x2F;1.1 requests, but your proxy should handle them<br>and forward them as HTTP&#x2F;1.0 requests.<br>Additionally, in the above example, a port number of 8080 was specified as<br>part of the host. If no port is specified, the default HTTP port of 80 should<br>be used.</p>
+<h3 id="Request-headers"><a href="#Request-headers" class="headerlink" title="Request headers"></a>Request headers</h3><p>Request headers are very important elements of an HTTP request. Headers are<br>key-value pairs provided line-by-line following the first request line of an<br>HTTP request, with they key and value separated by the colon (‘:’) character.<br>Of particular importance for this lab are the Host, User-Agent, Connection,<br>and Proxy-Connection headers. Your proxy must perform the following operations<br>with regard to the listed HTTP request headers:</p>
+<ul>
+<li>Always send a Host header. This header is necessary to coax sensible responses out of many web servers, especially those that use virtual hosting.<br>The Host header describes the host of the web server your proxy is trying to<br>access. For example, to access <a target="_blank" rel="noopener" href="http://www.cmu.edu:8080/hub/index.html"> http://www.cmu.edu:8080/hub/index.html
+</a> , your proxy would send the<br>following header.<br>It is possible that the client will attach its own Host header to its HTTP<br>requests. If that is the case, your proxy should use the same Host header as<br>the client.</li>
+<li>You should always send the following User-Agent header: <code>User-Agent: Mozilla/5.0 (X11; Linux x86 64; rv:3.10.0) Gecko/20210731 Firefox/63.01\r\n</code> The header shown above on two separate lines because it does not fit as a single line, but your proxy should send the header as a single line. It is provided as a string constant in proxy.c.<br>The User-Agent header identifies the client (in terms of parameters such as<br>the operating system and browser), and web servers often use the identifying<br>information to manipulate the content they serve. Sending this particular<br>User-Agent string may improve, in content and diversity, the material returned<br>by some web servers.</li>
+<li>Always send the following Connection header: <code>Connection: close\r\n</code></li>
+<li>Always send the following Proxy-Connection header: <code>Proxy-Connection: close\r\n</code><br>The Connection and Proxy-Connection headers are used to specify whether a<br>connection will be kept alive after the first request&#x2F;response exchange is<br>completed. Specifying close as the value of these headers alerts web servers<br>that your proxy intends to close connections after the first request&#x2F;response<br>exchange.<br>With the exception of the Host header, your proxy should ignore the values of<br>the request headers described above provided by the client. Instead, it should<br>always send the headers this document specifies.<br>Finally, if a client sends any additional request headers as part of an HTTP<br>request, your proxy should forward them unchanged. Forwarding other request<br>headers is especially important when using PXYDRIVE to test your proxy,<br>because it uses headers to coordinate the actions of its client and servers.</li>
+</ul>
+<h3 id="Port-numbers"><a href="#Port-numbers" class="headerlink" title="Port numbers"></a>Port numbers</h3><p>There are two significant classes of port numbers for this lab: HTTP request<br>ports and your proxy’s listening port. The HTTP request port is an optional<br>field in the URL of an HTTP request. That is, the URL may be of the form, <a target="_blank" rel="noopener" href="http://www.cmu.edu:8080/hub/index.html"><br>http://www.cmu.edu:8080/hub/index.html
+</a> , in which case your proxy should<br>connect to the host <a target="_blank" rel="noopener" href="http://www.cmu.edu/">www.cmu.edu</a> on port 8080, and it should include the port<br>number in the Host header (e.g., Host: <a target="_blank" rel="noopener" href="http://www.cmu.edu:8080/">www.cmu.edu:8080</a>.)<br>Your proxy must properly function whether or not the port number is included<br>in the URL. If no port is specified, the default HTTP port number of 80 should<br>be used, which should not be included in the Host header.<br>The listening port is the port on which your proxy should listen for incoming<br>connections. Your proxy should accept a command line argument specifying the<br>listening port number for your proxy. For example, with the following command,<br>your proxy should listen for connections on port 12345:<br>    linux&gt; .&#x2F;proxy 12345<br>The proxy must be given a port number every time it runs. When using PXYDRIVE,<br>this will be done automatically, but when you run your proxy on its own, you<br>must provide a port number. You may select any non-privileged port (greater<br>than 1,024 and less than 32,768) as long as it is not used by other processes.<br>Since each proxy must use a unique listening port, and many students may be<br>working simultaneously on each machine, the script port-for-user.pl is<br>provided to help you pick your own personal port number.<br>Use it to generate a port number based on your Andrew ID:<br>    linux&gt; .&#x2F;port-for-user.pl<br>    bovik bovik: 5232<br>The port, p, returned by port-for-user.pl is always an even number. So if you<br>need an additional port number, say for the Tiny server, you can safely use<br>ports p and p + 1.</p>
+<h3 id="Error-handling"><a href="#Error-handling" class="headerlink" title="Error handling"></a>Error handling</h3><p>In the case of invalid requests, or valid requests that your proxy is unable<br>to handle, it should try to send the appropriate HTTP status code back to the<br>client (see clienterror() in tiny.c). Read more about HTTP status codes at: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"><br>https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+</a><br>In particular, your proxy must be able to respond to a POST request with the<br>501 Not Implemented status code. The request line for a POST request will<br>resemble the following.<br>In other cases, it is acceptable for your proxy to simply close the connection<br>to the client when an error occurs, using close(). Note that in all error<br>cases, you should always clean up all resources being used to handle a given<br>request, including file descriptors and allocated memory.<br>Note: Upon normal execution, your proxy should not print anything. However,<br>you should consider having a verbose mode (set with -v on the command line)<br>that prints useful information for debugging. Completing Part I satisfies the<br>requirements for the project checkpoint. See Section 7 regarding how your<br>proxy will be evaluated for the checkpoint.</p>
+<h2 id="Part-II-Dealing-with-multiple-concurrent-requests"><a href="#Part-II-Dealing-with-multiple-concurrent-requests" class="headerlink" title="Part II: Dealing with multiple concurrent requests"></a>Part II: Dealing with multiple concurrent requests</h2><p>Production web proxies usually do not process requests sequentially; they<br>process multiple requests in parallel. This is particularly important when<br>handling a single request can involve a lengthy delay (as it might when<br>contacting a remote web server). While your proxy waits for a response from<br>the remote web server, it can work on a pending request from another client.<br>Indeed, most web browsers reduce latency by issuing concurrent requests for<br>the multiple URLs embedded in a single web page requested by a single client.<br>Once you have a working sequential proxy, you should alter it to<br>simultaneously handle multiple requests.</p>
+<h3 id="POSIX-Threads"><a href="#POSIX-Threads" class="headerlink" title="POSIX Threads"></a>POSIX Threads</h3><p>You will use the POSIX Threads (Pthreads) library to spawn threads that will<br>execute in parallel to serve multiple simultaneous requests. A simple way to<br>serve concurrent requests is to spawn a new thread to process each request. In<br>this architecture, the main server thread simply accepts connections and<br>spawns off independent worker threads that deal with each request to<br>completion and terminate when they are done. Other designs are also viable:<br>you might alternatively decide to have your proxy create a pool of worker<br>threads from the start. You may use any architecture you wish as long as your<br>proxy exhibits true concurrency, but spawning a new worker thread for each<br>request is the most straightforward approach.<br>A new thread is spawned in Pthreads by calling pthread create with a start<br>routine as its argument. New threads are by default joinable, which means that<br>another thread must clean up spare resources after the thread exits, similar<br>to how an exited process must be reaped by a call to wait. For a server, a<br>better approach is to detach each new thread, so that spare resources are<br>automatically reaped upon thread exit. To properly detach threads, the first<br>line of the start routine should be as follows:<br>    pthread_detach(pthread_self());<br>—|—  </p>
+<h3 id="Race-conditions"><a href="#Race-conditions" class="headerlink" title="Race conditions"></a>Race conditions</h3><p>While multithreading will almost certainly improve the performance of your web<br>proxy, concurrency comes at a price: the threat of race conditions. Race<br>conditions most often arise when there is a shared resource between multiple<br>threads. You must find ways to avoid race conditions in your concurrent proxy.<br>That will likely involve both minimizing shared resources and synchronizing<br>access to shared resources. Synchronization involves the use of locks, which<br>come in many varieties. The Pthreads library implements the locking primitives<br>you will need, as is discussed in Section 6.2.</p>
+<h3 id="Thread-safety"><a href="#Thread-safety" class="headerlink" title="Thread safety"></a>Thread safety</h3><p>The open clientfd and open listenfd functions described in the CS:APP3e<br>textbook (and included in csapp.c) are based on the modern and protocol-<br>independent getaddrinfo function, and thus are thread safe.</p>
+<h2 id="Part-III-Caching-web-objects"><a href="#Part-III-Caching-web-objects" class="headerlink" title="Part III: Caching web objects"></a>Part III: Caching web objects</h2><p>For the final part of the lab, you will add a cache to your proxy that keeps<br>recently used Web objects in memory. Note that a software cache bears little<br>relation to a hardware cache, such as the one you simulated in the Cache Lab<br>assignment. Instead, it functions as a key-value storage, saving some block of<br>data with an associated key, such that future requests of the key will return<br>the stored data. Typically, a software cache is implemented using standard<br>data structures, such as linked lists, arrays, and dynamically allocated<br>memory blocks.<br>The HTTP standard defines a complex model by which web servers can give<br>instructions as to how the objects they serve should be cached and clients can<br>specify how caches should be used on their behalf. However, your proxy will<br>follow a much simpler approach. When your proxy receives a GET request from a<br>client, it should treat the URL as a key. When it then receives the requested<br>web object from the server, it should store the object in its cache with this<br>key. Whenever another GET request arrives with the same URL, it can retrieve<br>the contents from its cache and respond to the client directly, rather than<br>making a new request to the server.<br>Since your cache serves only to boost the performance of the proxy, it need<br>not store every object that has ever been requested. Instead, it should limit<br>the amount of memory used by bounding the size of the maximum cached object,<br>as well as the total memory used for the cache.<br>The following two parameters (given as constants in proxy.c) define the two<br>constraints on your cache size:<br>    #define MAX_OBJECT_SIZE (100 * 1024)<br>    #define MAX_CACHE_SIZE (1024 * 1024)<br>—|—<br>The maximum object size of 100 KiB limits the maximum size of a web object<br>that can be stored in the cache, where a “web object” consists of the complete<br>response made by a server to a client, including any response headers. The<br>maximum cache size of 1 MiB limits the sum of the sizes of all web objects<br>stored in the cache. Neither the URL keys nor the data structures you use to<br>implement the cache are included in either of these limits.<br>It is mandatory for you to dynamically allocate just enough space for your web<br>objects and your keys, and that you do not assume any fixed upper bound on the<br>number of web objects that will be stored in the cache. Allocate only the<br>space your cache requires, and make sure you do not have any memory leaksa<br>server program will fail if it cannot maintain a tight bound on the total<br>storage it requires.<br>One way to implement a correct cache is to declare a local array of size MAX<br>OBJECT SIZE in the function that handles a new connection. The function can<br>then accumulate data as it is received from the server. If the entirety of the<br>web server’s response is read before the maximum object size is exceeded, then<br>space for a block can be allocated (via malloc), the contents copied into the<br>block via memcpy, and a pointer to the block can be stored as cache data.</p>
+<h3 id="Eviction-policy"><a href="#Eviction-policy" class="headerlink" title="Eviction policy"></a>Eviction policy</h3><p>Your proxy’s cache should employ a least-recently-used (LRU) eviction policy.<br>(It need not be strictly LRU, since requests are processed concurrently, but<br>it should be something reasonably close.) The initial creation of an object,<br>as well as any reuse of the object count as uses. Since web objects vary in<br>size, it may be necessary to evict multiple smaller objects to make room for a<br>larger one.</p>
+<h3 id="Synchronization"><a href="#Synchronization" class="headerlink" title="Synchronization"></a>Synchronization</h3><p>Accesses to the cache must be thread safe; ensuring that cache access is free<br>of race conditions. This requirement will likely be a challenging aspect of<br>the lab. In general, you will get maximum performance by having the threads<br>hold a lock for the cache for as short a time as possible.<br>It is acceptable to have a single, mutual exclusion lock to control access to<br>the cache, both for scanning the cache for a matching key and for inserting an<br>element into the cache. However, we require that a thread must release this<br>lock before it writes a cached web object to the client socket. Otherwise, a<br>slow, faulty, or malicious client could cause the proxy to hang up for an<br>indefinite amount of time while the cached object is being transmitted to it.<br>The requirement that a thread must release its lock on the cache before<br>transmitting an object to the client creates a potential race conditionif<br>other requests cause the object to be evicted, another thread may attempt to<br>free the storage while the object is still being transmitted. The best<br>approach is to use reference counting, where there is an integer count<br>associated with each object. The reference count for an object should be<br>incremented when it is stored in the cache and decremented when it is removed.<br>When a thread retrieves an object from the cache it increments the reference<br>count and decrements it when it is done transmitting the object to a client.<br>When the reference count drops to 0, the object can safely be freed. Be sure<br>to protect all operations on a reference count with a mutual exclusion lock,<br>or else these operations can cause synchronization errors. (Reference counting<br>is described in the context of file descriptors in Section 10.6 of the<br>textbook.)<br>Although the book describes the use of semaphores for mutual exclusion, we do<br>not allow you to use them. Instead, you should use a mutual exclusion lock,<br>defined in Pthreads as data type pthread_mutex_t, and supporting operations<br>pthread_mutex_lock and pthread_mutex_unlock.</p>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>The grading standards for the assignment are shown in Figures 1 and 2. Grading<br>will be via a combination of automatic testing and a manual review of your<br>code. The automatic grading will be done by running PXYREGRESS with the same<br>command files you are provided. There are a total of 51 files, divided into<br>four series, labeled A-D, as described in Section 7 of the user manual.<br>As shown in Figure 1, your checkpoint grade will be determined solely by the<br>results of the tests in series A and B. These can be passed by a serial proxy.<br>There will be no style grading or manual inspection of the checkpoint code.<br>As shown in Figure 2, your final submission will be evaluated using all four<br>series. Series C tests can only be passed by a proxy that supports concurrent<br>requests. Series D can only be passed by a proxy that supports caching. The<br>first five of these can be passed by a serial proxy (with caching). The<br>remaining ones require a concurrent proxy.<br>You must pass all of the A&#x2F;B tests in order to obtain any points in the C&#x2F;D<br>tests.<br>Finally, there are a total of 4 style points, also described below.</p>
+<h3 id="Autograding-with-PXYREGRESS"><a href="#Autograding-with-PXYREGRESS" class="headerlink" title="Autograding with PXYREGRESS"></a>Autograding with PXYREGRESS</h3><p>The PXYDRIVE testing framework is included in the handout in the<br>subdirectories pxy (code) and tests (command files).<br>A typical invocation of PXYDRIVE from your code directory would be:<br>    linux&gt; pxy&#x2F;pxydrive.py -p .&#x2F;proxy -f tests&#x2F;A01-single-fetch.cmd<br>With this invocation, the proxy will operate internally, under the control of<br>PXYDRIVE. Alternatively, the proxy can be set up and run externally:<br>    linux&gt; .&#x2F;proxy 15213 &amp;<br>    linux&gt; pxy&#x2F;pxydrive.py -P localhost:15213 -f tests&#x2F;A01-single-fetch.cmd<br>(Normally, these two lines would be executed in separate terminal windows.)<br>Running the proxy externally makes it possible to use programs such as GDB and<br>VALGRIND to help with debugging. See Section 7 of the user manual for more<br>detailed instructions.<br>The checkpoint runs the tests in the A and B series. You can perform this test<br>with the command:<br>    linux&gt; pxy&#x2F;pxyregress.py -p .&#x2F;proxy -s AB<br>The final testing will be done with a more comprehensive set of concurrency<br>checks, inserting random delays to exercise possible races, checking for<br>thread-unsafe functions, checking that no write to a socket occurs while a<br>thread is holding a lock, and checking for semaphores. You can perform this<br>test with the command<br>    linux&gt; pxy&#x2F;pxyregress.py -p .&#x2F;proxy -c 4<br>For your convenience, the driver Autolab will use to test your submission is<br>included as the file driver.sh. For testing the checkpoint submission, it can<br>be invoked as:<br>    linux&gt; .&#x2F;driver.sh check<br>For testing the final submission, it can be invoked as:<br>    linux&gt; .&#x2F;driver.sh</p>
+<h3 id="Style-Grading"><a href="#Style-Grading" class="headerlink" title="Style Grading"></a>Style Grading</h3><p>The style points include a combination of points for code correctness and for<br>coding style. Your TAs will examine your code for any correctness issues that<br>weren’t detected by the earlier tests. In particular, we will be looking for<br>errors such as race conditions, thread safety issues, non-LRU cache<br>implementations, improper error handling, and memory and file descriptor<br>leaks.<br>Style points will be awarded based on the usual criteria. Proper error<br>handling is as important as ever, and modularity is of particular importance<br>for this lab, as there will be a significant amount of code. You should also<br>strive for portability.</p>
+<h2 id="Real-World-Testing"><a href="#Real-World-Testing" class="headerlink" title="Real-World Testing"></a>Real-World Testing</h2><p>Along with PXYDRIVE, you can also test your proxy’s operation using real web<br>browsers and servers. You must set up and run these tests using standard<br>tools, including those described here.</p>
+<h3 id="Tiny-web-server"><a href="#Tiny-web-server" class="headerlink" title="Tiny web server"></a>Tiny web server</h3><p>Your handout directory includes the source code for the CS:APP Tiny web<br>server. While not a fullfunctioning server, the server supports the operations<br>required for this assignment. You can modify the code as you see fit.<br>The tiny server is a good reference for your proxy implementation because it<br>deals with HTTP requests. Keep in mind, however, that it is not a proxy, and<br>so its features do not exactly match those you will need in your program.<br>Remember especially that your proxy doesn’t serve its own content; it simply<br>relays content from the server to the client.</p>
+<h3 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h3><p>You can use curl to generate HTTP requests to any server, including your own<br>proxy. It is an extremely useful debugging tool. For example, if your proxy<br>and Tiny are both running on the local machine, Tiny is listening on port<br>15213, and proxy is listening on port 15214, then you can request a page from<br>Tiny via your proxy using the following curl command:<br>    linux&gt; curl -v –proxy <a target="_blank" rel="noopener" href="http://localhost:15214/">http://localhost:15214</a> <a target="_blank" rel="noopener" href="http://localhost:15213/home.html">http://localhost:15213/home.html</a></p>
+<h3 id="Web-browsers"><a href="#Web-browsers" class="headerlink" title="Web browsers"></a>Web browsers</h3><p>Eventually you should test your proxy using the most recent version of Mozilla<br>Firefox. Visiting selection About Firefox in the Firefox menu will<br>automatically update your browser to the most recent version.<br>To configure Firefox to work with a proxy, visit Preferences]Network<br>Proxy]Settings in the Firefox menu and set the manual proxy configuration with<br>your host name of the specific Shark machine you are using and with the port<br>number for your proxy.<br>It will be very exciting to see your proxy working through a real Web browser.<br>Although the functionality of your proxy will be limited, you will notice that<br>you are able to browse many websites through your proxy.<br>An important caveat is that you must be very careful when testing caching<br>using a Web browser. All modern Web browsers have caches of their own, which<br>you should disable before attempting to test your proxy’s cache.</p>
+<h2 id="Handin-instructions"><a href="#Handin-instructions" class="headerlink" title="Handin instructions"></a>Handin instructions</h2><p>The provided Makefile includes functionality to build your final handin file.<br>Issue the following command from your working directory:<br>    linux&gt; make handin<br>The output is the file ..&#x2F;proxylab-handin.tar. Simply upload it to Autolab.<br>Autolab will use your Makefile to rebuild your proxy from scratch, and it will<br>then run tests using PXYREGRESS.</p>
+<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><ul>
+<li>Chapters 10-12 of the textbook contains useful information on system-level I&#x2F;O, network programming, HTTP protocols, and concurrent programming. </li>
+<li>RFC 1945 ( <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc1945"> https://tools.ietf.org/html/rfc1945 </a> ) is the complete specification for the HTTP&#x2F;1.0 protocol. The specification is large and complex. You only need to implement the portions of the protocol we describe in this document. </li>
+<li>HTTP&#x2F;1.0 has been obsolete since the early 2000s. For modern-day HTTP specifications, see <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Resources_and_specifications"> https://developer.mozilla.org/en-US/docs/Web/HTTP/Resources_and_specifications </a> . However, implementing HTTP&#x2F;1.1 would require our proxy to implement Connection: keep-alive, which would add additional complexity.</li>
+</ul>
+<h2 id="Advice"><a href="#Advice" class="headerlink" title="Advice"></a>Advice</h2><ul>
+<li>It is important to adopt the proper mindset when writing a server program. Think carefully about how long-running processes should react to different types of errors, including network failures and malformed data. Your server should do its best to continue in the face of errors. For example, it’s OK to fail to respond to a malformed request from a client, but this should not cause your program to terminate. Robustness implies a higher level of code quality, as well, avoiding defects such as segmentation faults, memory leaks, and file descriptor leaks. </li>
+<li>Your proxy will have to do something about SIGPIPE signals. The kernel will sometimes deliver a SIGPIPE to a process when a socket gets disconnected. Although the default action for a process that receives SIGPIPE is to terminate, your proxy should not terminate due to that signal. (To generate the SIGPIPE signal in Firefox, press F5 twice in quick succession to reload the page.) </li>
+<li>Sometimes, calling read to receive bytes from a socket that has been prematurely closed will cause read to return -1 with errno set to ECONNRESET. The same result can occur when calling write to send bytes on a socket that has been prematurely closed. Your proxy should not terminate due to these errors. </li>
+<li>Remember that not all content on the web is ASCII text. Much of the content on the web is binary data, such as images and video. Ensure that you account for binary data when selecting and using functions for network I&#x2F;O. In particular, you should never use string functions (e.g., strlen and strcpy) on web data, since these will terminate prematurely when then encounter a byte with value 0, which can occur at any position in a binary file. (The preferred way to copy data is to use memcpy.) </li>
+<li>You can assume that the request and header lines will be ASCII text, and you can assume that there is some reasonable upper bound on their line lengths. </li>
+<li>Similarly, it is inefficient to use line-oriented I&#x2F;O routines, such as rio readlineb, on binary data. These routines will break the data into chunks according to the placement of newline characters (hex value 0x0A). With binary data, these can appear in arbitrary positions in a file. Instead, use functions, such rio readn and rio readnb, that operate independently of the data values. </li>
+<li>Forward all requests as HTTP&#x2F;1.0 even if the original request was HTTP&#x2F;1.1. </li>
+<li>Firefox (like all modern web browsers) has useful debugging tools you may take advantage of. The network tab allows you to view the status of network requests, which is useful for determining if your threads terminate and if all requests are fulfilled. </li>
+<li>There are several ways you can track the LRU state of the cached objects. One way is to keep a counter that is incremented for each request, storing the value of the counter each time a cached object is accessed. Another way is to store the cache as a list and move an object to the head of the list each time it is referenced. It’s up to you to select an implementation. Just make sure to use synchronization primitives to avoid race conditions on the counters, the lists, and other shared data structures. </li>
+<li>Avoid an overly complex design. If your synchronization code is too complex for you to easily comprehend, it almost certainly has bugs! Your first version should be the simplest one that satisfies the functional requirements. Then you can refine it to improve efficiency. A correct, but slow program is far preferable to a fast, buggy one.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/08/09/OS%E4%BB%A3%E5%86%99%EF%BC%9ACS15213WritingACachingWebProxy/">http://saferman.github.io/2022/08/09/OS%E4%BB%A3%E5%86%99%EF%BC%9ACS15213WritingACachingWebProxy/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/OS%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">OS代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/08/09/C++%E4%BB%A3%E5%86%99%EF%BC%9AICS214IcemanPart3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="C++代写：ICS214 Iceman Part3">
+                        
+                        <span class="card-title">C++代写：ICS214 Iceman Part3</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/08/06/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2041Seddit/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="JavaScript代写：COMP2041 Seddit">
+                        
+                        <span class="card-title">JavaScript代写：COMP2041 Seddit</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

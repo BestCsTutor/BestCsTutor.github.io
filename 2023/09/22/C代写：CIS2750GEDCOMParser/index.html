@@ -1,0 +1,966 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CIS2750 GEDCOM Parser, 留学生CS|辅导|代写">
+    <meta name="description" content="代写实现一个GEDCOM文件格式的解析器。  
+DescriptionIn this assignment, you need to implement a library to parse the GEDCOM files.The lin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CIS2750 GEDCOM Parser | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CIS2750 GEDCOM Parser</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-09-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写实现一个GEDCOM文件格式的解析器。  </p>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>In this assignment, you need to implement a library to parse the GEDCOM files.<br>The link to the format description is posted in the Assignment 1 description<br>and in course notes. Make sure you understand the format before doing the<br>assignment.<br>Your assignment will be graded using an automated test harness, so you must<br>follow all requirements exactly, or you will lose marks.<br>According to the GEDCOM specification, a GEDCOM structure (which we will refer<br>to as a GEDCOM object) contains:</p>
+<ul>
+<li>Exactly one header. The header must contain exactly one reference to a submitter record. </li>
+<li>1 or more records of different types. Exactly one trailer record (file terminator)<br>The GEDCOM structure structure is represented by the GEDCOMobject type in<br>GEDCOMparser.h.<br>There are seven different record types. Some may appear multiple times in a<br>GEDCOM file, while others may appear only once per file. For the purposes of<br>this assignment, we will focus on four records:</li>
+<li>Header </li>
+<li>Submitter </li>
+<li>Familyrecord </li>
+<li>Individualrecord<br>These records are represented by Header, Submitter, Family, and Individual<br>types. All of them are also defined in GEDCOMparser.h.<br>If your parser encounters any other record types, it should simply ignore<br>those records.<br>You’ll notice that each record has its own restrictions. Some are completely<br>flexible, while others must include several parameters. Our types have the<br>most relevant fields as struct members. Other fields will be saved as generic<br>Field records in a list.<br>Multi-line content<br>The GEDCOM file consists of individual lines (gedcom_lines in the<br>specification), which can indicate the start of a record, a field in a record,<br>etc.. You’ll notice that long individual line (field) values can be broken<br>into multiple lines using CONT&#x2F;CONC tags.<br>For example, the GEDCOM 5.5.1 format file contains the following address for<br>the submitter record:<br>0 @5@ SUBM<br>1 NAME Reldon &#x2F;Poulson&#x2F;<br>1 ADDR 1900 43rd Street West 2 CONT Billings, MT 68051<br>1 PHON (406) 555-1232<br>You must store the complete value in the address field of the Submitter<br>record. So for the above example, the Submitter record would be:<ul>
+<li>name &#x3D; “Reldon Poulson”</li>
+<li>address &#x3D; “1900 43rd Street West\nBillings, MT 68051”<br>You will also notice that the format is flexible when it comes to line<br>terminators. Your parser must be able to handle them as specified in the<br>GEDCOM documentation.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Required-Functions"><a href="#Required-Functions" class="headerlink" title="Required Functions"></a>Required Functions</h2><h3 id="GEDCOM-functions"><a href="#GEDCOM-functions" class="headerlink" title="GEDCOM functions"></a>GEDCOM functions</h3><pre><code>GEDCOMerror createGEDCOM(char* fileName, GEDCOMobject** obj);  
+</code></pre>
+<p>—|—<br>This function does the parsing and allocates a GEDCOM object. It accepts a<br>filename and an address of a GEDCOMobject pointer (i.e. a double pointer). If<br>the file has been parsed successfully, the calendar object is allocated and<br>the information is stored in it.<br>The return type is an GEDCOMerror struct. The type field indicates the error<br>type using the ErrorCode enum, while the line filed indicates the line in the<br>file containing the error (if applicable).<br>If createGEDCOM successfully creates a GEDCOM object, it returns GEDCOMerror<br>with type OK and line -1. However, the parsing can fail for various reasons.<br>In that case, the obj argument is set to NULL and the function returns a<br>struct with the appropriate error code (type) and line number:</p>
+<ul>
+<li>INV_FILE is returned if there’s a problem with file argument - its null, it’s an empty string, file doesn’t exist or cannot be opened, file doesn’t have the .ged extension, etc. The line field must be -1. If the error is in the file contents, you must use an appropriate error code - see below. </li>
+<li>INV_GEDCOM is returned if the GEDCOM object itself is invalid. The line field must be -1. For example, you would return this code if: <ul>
+<li>the file is missing the header </li>
+<li>the file is missing the closing tag </li>
+<li>the file contains no records </li>
+<li>etc.<br>If the error is in one of the records contained within the GEDCOM object,<br>return a component- specific error code instead (see below).</li>
+</ul>
+</li>
+<li>INV_HEADER is returned if the header is present, but is somehow invalid, e.g. <ul>
+<li>Grammar error in header (line &#x3D; first error that contains invalid grammar). This includes misspelled tags, invalid tags, tags with missing values, missing&#x2F;incorrect numbers at the start of the line,etc. </li>
+<li>Header missing a reference to submitter record or any other required filed (line &#x3D; last line of header) </li>
+<li>etc.</li>
+</ul>
+</li>
+<li>INV_RECORD is returned if some record (other than header) is present, but is somehow invalid. In future assignments, we may expand this to include different error codes for different records - this is normal in iterative development. However, for now we will keep things simple. For example, you would return this code if the file has: <ul>
+<li>Grammar error in record (line &#x3D; first error that contains invalid grammar). This includes misspelled tags, invalid tags, tags with missing values, missing&#x2F;incorrect numbers at the start of the line,etc. </li>
+<li>Record missing a required filed (line &#x3D; last line of record) </li>
+<li>etc.</li>
+</ul>
+</li>
+<li>OTHER_ERROR is returned if some other, non-GEDCOM error happens (e.g. malloc returns NULL).<br>Note: it is possible that a record in a file is valid, but does not contain<br>one or more fields that we have in our record structs. This is NOT an error.<br>For example, an individual record may be missing the given name. If you<br>encounter this, simply use the empty string as the value for that field. The<br>returned error code should be OK. If a family is missing the husband, set the<br>husband reference to NULL. The returned error code should be OK.<br>If the missing field is actually a collection of things - e.g. children filed<br>in the family record - initialize the list, but keep it empty. The returned<br>error code should be OK.<br>char* printGEDCOM(const GEDCOMobject* obj);<br>—|—</li>
+</ul>
+<p>This function returns a humanly readable string representation of the entire<br>GEDCOM object. Sample output will be added to the assignment description. It<br>must not modify the calendar object in any way. The function must allocate the<br>string dynamically.<br>    void deleteGEDCOM(GEDCOMobject* obj);<br>—|—<br>This function deallocates the object, including all of its records, lists,<br>etc..<br>    char* printError(GEDCOMerror err);<br>—|—<br>This function returns a string based on the GEDCOMerror value to make the<br>output of your program easier to understand - i.e. “OK” if err.type is OK,<br>“INV_FILE” or “invalid file” is INV_FILE was passed, “invalid record (line<br>20)” if err.type&#x3D;INV_RECORD and err.line &#x3D; 20, etc.. The function must<br>allocate the string dynamically.<br>    Individual* findPerson(<br>        const GEDCOMobject* failyRecord,<br>        bool (<em>compare)(const void</em> first, const void* second),<br>        const void* person);<br>—|—<br>This function is designed to find an individual in a GEDCOM object. We might<br>wish to search by surname (list name), given name+surname, given<br>name+surname+spouse’s name, etc.. The function should modify the GEDCOM object<br>in any way. To allow for this customization, the function takes a custom<br>comparator function and a custom search records. See the function description<br>in GEDCOM parser.h for more details. Return a pointer to the record if found,<br>NULL otherwise.<br>    List getDescendants(const GEDCOMobject* failyRecord, const Individual* person);<br>—|—<br>This function returns a newly created List of Individual records of all<br>descendants of a given individual. Make sure the list contains copies of the<br>Individual records, rather than the references to actual records. This way, if<br>the user clears the list, he or she does not blow away a portion of our GEDCOM<br>object! Return an empty list of no descendants found.</p>
+<h3 id="List-helper-functions"><a href="#List-helper-functions" class="headerlink" title="List helper functions"></a>List helper functions</h3><p>In addition, you must provide implementations for delete&#x2F;compare&#x2F;print<br>functions for every type that we store in a list, i.e.</p>
+<ul>
+<li>Event </li>
+<li>Individual </li>
+<li>Family </li>
+<li>Field<br>The headers for these functions are provided in GEDCOMobject.h. These<br>functions are necessary for the test harness to work correctly.<br>The the print… functions return a newly allocated string with a humanly<br>readable representation of each record.<br>The delete… functions free the records passed to them - freeField() frees a<br>Field argument, freeFamily() - Family argument, etc..<br>The compare… functions must return an int that indicates the relative ordering<br>of the arguments, similar to strcmp():</li>
+<li>compareEvents() compared by event date. It returns -1 if first argument has an earlier date than second, 0 if dates are the same, 1 if first argument has a later date then second,. If one of the arguments is missing a date, perform lexicographical comparison using the type field. </li>
+<li>compareIndividuals() performs lexicographical comparison on concatenated givenName and surname fields. Use “,” to separate the fields when concatenating them. For example, if the first argument is the Individual record for Bugs Bunny and the second one is the Individual record for Elmer Fudd, we’re comparing “Bunny, Bugs” to “Fudd, Elmer”. </li>
+<li>compareFields() performs lexicographical comparison on concatenated tag and value fields, using “” (a single whitespace) as a separator. compareFamilies() compares by the number of family members. It returns -1 if first argument has fewer family members than second, 0 the number is the same, and 1 if first family has more members than second.</li>
+</ul>
+<h2 id="Additional-guidelines-and-requirements"><a href="#Additional-guidelines-and-requirements" class="headerlink" title="Additional guidelines and requirements"></a>Additional guidelines and requirements</h2><p>While the above functions are required, you will need to write a number of<br>helper functions. For example, it is strongly recommended that you write<br>additional helpers functions for parsing the file - e.g. parsing each record<br>type.<br>All functions (required and not) must be in a file called GEDCOMparser.c. For<br>your own test purposes, you will also want to code a main program in another<br>.c file that calls your functions with a variety of test cases, but you won’t<br>submit that program. Do not put your main() function in GEDCOMparser.c, or<br>else the test program will fail due to multiple definitions of main(); you<br>will lose marks for that.<br>Applications will #include GEDCOMparser.h in their main program. A basic<br>GEDCOMparser.h has been provided for you. You must customize the file header<br>with your student name and number. However, do not change anything else, or<br>else your utilities will not compile with the test program. Also, do not add<br>any other functions, types, or headers. GEDCOMparser.h is the public “face” of<br>our calendar API. All the helper functions are internal implementation<br>details, and should not be visible to the end user.<br>You are free to create your additional “helper functions” in GEDCOMparser.c,<br>each with its proper function header, if you find some recurring processing<br>steps that you would like to factor out into a single place. They must be in a<br>separate header file, since they are internal to your implementation and not<br>for public users of the utility package. You may put these functions in a<br>separate file called GEDCOMutilities.c<br>Your functions are supposed to be robust. They will be tested with various<br>kinds of invalid data and must detect problems without crashing. However, be<br>sure to follow the specification regarding return values. If your helper<br>functions encounter a problem, they must free all memory and return the<br>appropriate error value.<br>Libraries are written with very specific requirements. They must have a clear<br>public API, and they must communicate errors to the higher-level modules,<br>which will then handle these errors. They should definitely not print their<br>own error messages!</p>
+<h2 id="Important-points"><a href="#Important-points" class="headerlink" title="Important points"></a>Important points</h2><ul>
+<li>Do not put any internal helper function headers into GEDCOMparser.h </li>
+<li>Do not change the given typedefs or function prototypes GEDCOMparser.h </li>
+<li>Do not submit any main() functions </li>
+<li>Do not exit the program from one of the parser functions if a problem is encountered, return an error value. </li>
+<li>Do not print anything to the command line. </li>
+<li>Do not assume that your pointers are valid. Always check for NULL pointers before dereferencing them.</li>
+</ul>
+<h2 id="Submission-structure"><a href="#Submission-structure" class="headerlink" title="Submission structure."></a>Submission structure.</h2><p>The submission must have the following directory structure:</p>
+<ul>
+<li>assign1&#x2F; contains the README file and the Makefile </li>
+<li>assign1&#x2F;bin should be empty, but this is where the Makefile will place the static lib files </li>
+<li>assign1&#x2F;src contains GEDCOMparser.c, LinkedListAPI.c, and GEDCOMutilities.c (if you need it) </li>
+<li>assign1&#x2F;include - contains GEDCOMparser.h, LinkedListAPI.h, and any additional header files that you might have.<br>Makefile<br>You will need to provide a Makefile with the following functionality:</li>
+<li>make list creates a static library liblist.a in assign1&#x2F;bin </li>
+<li>make tree creates a static library libtree.a in assign1&#x2F;bin </li>
+<li>make parser creates a static library libparse.a in assign1&#x2F;bin </li>
+<li>make or make all creates liblist.a, libtree.a, and libparse.a in assign1&#x2F;bin - make clean removes all .o and .a files</li>
+</ul>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Your code must compile, run, and have all of the specified functionality<br>implemented. Any compiler errors will result in the automatic grade of zero<br>(0) for the assignment. Make sure you compile and run the assignment on the<br>SoCS Linux server before submitting it - this is where it will be graded.<br>Marks will be deducted for:</p>
+<ul>
+<li>Incorrect and missing functionality </li>
+<li>Deviations from the requirements </li>
+<li>Run-time errors </li>
+<li>Compiler warnings </li>
+<li>Memory leaks </li>
+<li>Bad &#x2F; inconsistent indentation </li>
+<li>Bad variable names </li>
+<li>Insufficient comments </li>
+<li>Failure to follow submission instructions<br>I will post a rough marking scheme with grade breakdowns later.</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Submit your files as a Zip archive using CourseLink. File name must be be<br>A1FirstnameLastname.zip.<br>Late submissions: see course outline for late submission policies.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/09/22/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2750GEDCOMParser/">http://saferman.github.io/2023/09/22/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2750GEDCOMParser/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/09/23/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS62Blackjack/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java代写：CS62 Blackjack">
+                        
+                        <span class="card-title">Java代写：CS62 Blackjack</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-09-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/09/21/JavaScript%E4%BB%A3%E5%86%99%EF%BC%9ACSE6242TableauD3GraphsandVisualization/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="JavaScript代写：CSE6242 Tableau D3 Graphs and Visualization">
+                        
+                        <span class="card-title">JavaScript代写：CSE6242 Tableau D3 Graphs and Visualization</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">JavaScript代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：COMP5249 Client-Server, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个能够处理来自多个客户端的命令的服务器，使用提供的 [ RPC ](https://www.geeksforgeeks.org/remote-procedure-call-rpc-in-operating-system&amp;#x2F; “">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：COMP5249 Client-Server | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：COMP5249 Client-Server</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-04
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个能够处理来自多个客户端的命令的服务器，使用提供的 [ RPC ](<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/remote-">https://www.geeksforgeeks.org/remote-</a><br>procedure-call-rpc-in-operating-system&#x2F; “RPC”) 库来实现命令的收发。<br><img src="https://docs.microsoft.com/en-us/windows/win32/rpc/images/prog-a11.png" alt="RPC"></p>
+<h2 id="Lab-1-Client-Server"><a href="#Lab-1-Client-Server" class="headerlink" title="Lab 1: Client-Server"></a>Lab 1: Client-Server</h2><p>In this lab you will implement an unreplicated server capable of processing<br>commands from multiple clients. By the end of the lab, you will have<br>implemented an “exactly-once” RPC abstraction for sending commands from<br>clients to the server on top of a message-passing layer.<br>Before you begin, be sure to check out Lab 0 and carefully read the top-level<br>README. Make sure you understand the framework and the way the <code>Node</code><br>interface works before beginning. You may ignore the sub-Node feature for now,<br>though; you will not need it until later labs. It may also be helpful to read<br>the instructions for all three parts before starting on part 1.<br>The provided tests will exercise various aspects of your implementations, but<br>they are not complete! Your primary goal should be to <em>understand</em> the<br>distributed systems the labs describe and then correctly implement them. When<br>you encounter bugs, while you have a variety of debugging tools at your<br>disposal, the most important part of the debugging process is thinking about<br>why your implementation is doing what it’s doing and how that differs from<br>what should be happening. Making changes to your code without understanding<br>what is happening is unlikely to be useful - neither to your implementation<br>nor your understanding of distributed systems.</p>
+<h2 id="Part-1-A-Key-Value-Store"><a href="#Part-1-A-Key-Value-Store" class="headerlink" title="Part 1: A Key-Value Store"></a>Part 1: A Key-Value Store</h2><p>First, you should implement the application interface in <code>KVStore.java</code> .<br>This is the application that we’ll use throughout the labs. By isolating it<br>into a class with a standard command-driven interface, the majority of the<br>code you write will be application-agnostic, and so can be used for any<br>underlying application (for example, a network file system).<br>Your key-value store should support three commands: <code>Get</code> , <code>Put</code> , and <code>Append</code> . Get returns the value of the key in a <code>GetResult</code> , if the key<br>exists; otherwise it returns a <code>KeyNotFound</code> . <code>Put</code> associates a key with<br>a value and returns <code>PutOk</code> . <code>Append</code> appends a value to the current<br>value of a key (or simply associates the key with a value if it does not yet<br>exist). <code>Append</code> returns the <em>new</em> value of the key in an <code>AppendResult</code> .<br>Our solution to part 1 took 11 lines of code.<br>You should pass the part 1 tests before moving on to part 2; execute them with<br><code>run-tests.py --lab 1 --part 1</code> .<br><strong>Hint:</strong> your <code>KVStore</code> should essentially be a wrapper around a common<br>data structure from the <code>java.util</code> package.</p>
+<h2 id="Part-2-At-Least-Once"><a href="#Part-2-At-Least-Once" class="headerlink" title="Part 2: At Least Once"></a>Part 2: At Least Once</h2><p>Next, you’ll implement a very basic client and server that handles network<br>failures ( <code>SimpleClient.java</code> and <code>SimpleServer.java</code> ) by retrying<br>messages that may have been lost. For this part of the lab, you need only<br>implement at-least-once semantics; at-most-once execution comes in part 3.<br>In particular, you should think about what happens in the various cases: What<br>if the request message is dropped on the way to the server? What if the reply<br>is dropped? What if the reply is delayed? What if the request is delayed so<br>that the retry arrives at the server and then the original request arrives;<br>and so forth.<br>You can (and should) make the simplifying assumption that a client will have<br>only one outstanding request at a time. (In practice, many distributed systems<br>allow the client to issue multiple simultaneous requests; the bookkeeping for<br>that is a bit more involved.) Also, recall that the timer interrupt handler<br>will fire iff you explicitly set a timer.<br>The client interface includes both a polling and a blocking interface. <code>hasResult</code> should return whether the client has a result for the most recent<br>command. It always returns immediately. <code>getResult</code> should return the actual<br>result for the most recent command. If the client does not have a result for<br>the most recent command, <code>getResult</code> should block until there is a result.<br>For the solution to this part, your implementation is likely to need to keep<br>metadata in the client about the state of pending requests and you will need<br>to define message fields to help keep track of which messages need to be<br>retried.<br><strong>Hint:</strong> for part 2, <code>Request</code> and <code>Reply</code> should probably be defined as<br>follows.<br>    @Data<br>    class Request implements Message {<br>        private final Command command;<br>        private final int sequenceNum;<br>    }<br>    @Data<br>    class Reply implements Message {<br>        private final Result result;<br>        private final int sequenceNum;<br>    }<br>—|—<br>Make sure you read the documentation for the <code>Client</code> class! It contains<br>important information that you’ll need when implementing its interface. You<br>should use standard Java synchronization mechanisms to block and wait for<br>results in <code>getResult</code> . Our solution used one call to <code>this.wait()</code> and <code>this.notify()</code> each in <code>SimpleClient</code> .<br>Your client and server code should use <code>this.send</code> and <code>this.set</code> to send<br>messages and set timers, respectively. The server’s address is available via <code>serverAddress</code> in the client.<br>Our solution to part 2 took approximately 40 lines of code.<br>You should pass the part 2 tests; execute them with <code>run-tests.py --lab 1 --part2</code> . If your implementation finishes all tests but sometimes returns<br>incorrect results (because appends are executed more than once), you should<br>continue on to part 3. Part 2 of this lab is just intended as a stepping stone<br>to part 3; the bug should become apparent later.</p>
+<h3 id="A-Note-About-Integers"><a href="#A-Note-About-Integers" class="headerlink" title="A Note About Integers"></a>A Note About Integers</h3><p>The code above uses <code>int</code> s as sequence numbers. You might be wondering<br>about integer overflow. This is an important concern! However, for simplicity<br>in these labs, you can assume that the number of commands sent in each test is<br>much smaller than <code>2^31 - 1</code> . In practice, you could use a larger fixed<br>size value (128 bits should be sufficient) or an arbitrary-precision value<br>(e.g., <code>BigInteger</code> in Java).</p>
+<h2 id="Part-3-Once-and-Only-Once"><a href="#Part-3-Once-and-Only-Once" class="headerlink" title="Part 3: Once and Only Once"></a>Part 3: Once and Only Once</h2><p>Finally, you need to modify your solution to Part 2 to guarantee exactly-once<br>delivery. The simplest way to do this is to modify the client and server code<br>directly. The test code for Lab 1 only exercises the system through the client<br>interface, and so this will allow you to pass the tests.<br>However, we recommend doing so via adding a shim layer to an Application that<br>ensures that each unique command is executed at most once. (Along with your at<br>least once code from Part 2, that provides exactly once.) The reason is that<br>we will want at most once semantics in later labs, and this will keep you from<br>having to reimplement the functionality for Labs 2, 3, and 4.<br>We’ve started you in the right direction by providing the <code>atmostonce</code><br>package. You will need to implement the classes in this package and possibly<br>modify the other parts of your solution – the messages, timers, client, and<br>server – to work with these changes.<br>The <code>AMOApplication</code> is an <code>Application</code> that takes any <code>Application</code><br>and turns it into an <code>Application</code> capable of guaranteeing at-most-once<br>execution of <code>AMOCommand</code> s. As the provided code indicates, it should<br>reject any <code>Command</code> s that are not <code>AMOCommand</code> s (though, <code>executeReadOnly</code> allows callers to optionally execute non-AMO reads, which<br>you will find useful in later labs).<br>Some steps that may be needed: wrap the provided <code>Application</code> in the<br>constructor in an <code>AMOApplication</code> (and perhaps changing the corresponding<br>field’s declared type). You will also need to deal with what happens when the<br>server receives “old” <code>Request</code> s. The modifications to the client should be<br>similarly simple. Your modifications to <code>Request</code> , <code>Reply</code> , and <code>ClientTimer</code> should only take a couple lines each; the metadata you added in<br>part 2 can probably be removed (it should have been subsumed by metadata kept<br>in <code>AMOCommand</code> and <code>AMOResult</code> ).</p>
+<h3 id="Garbage-Collection"><a href="#Garbage-Collection" class="headerlink" title="Garbage Collection"></a>Garbage Collection</h3><p>The test suite ensures that old commands are garbage collected properly from<br>all of your nodes’ data structures. In particular, you will need to ensure<br>that your <code>AMOApplication</code> does not store unnecessary information. Remember,<br>clients in this framework only have one outstanding <code>Request</code> at a time. The<br>test infrastructure will never call <code>sendCommand</code> twice in a row without<br>getting the result for the first command.<br>One potential pitfall is that non-static inner classes implicitly contain a<br>reference to the enclosing object. If they are serialized, this reference will<br>be serialized as well. This can cause your implementation to fail the garbage<br>collection tests. You should prefer to make all inner classes you create<br>static unless you have a good reason not to and you understand the<br>implications.</p>
+<h3 id="Designing-with-Timers"><a href="#Designing-with-Timers" class="headerlink" title="Designing with Timers"></a>Designing with Timers</h3><p>The test suite also makes sure that your clients and server continue to<br>perform well when the system has been running for a while. One important thing<br>to note is that the event loop delivering messages and timers to your nodes<br>prioritizes timers that are due. If a node sets too many timers and every time<br>a timer fires, it resets that timer, it might eventually get into a state<br>where its timer queue is so long that the node only processes those timers and<br>never does anything else!<br>The workloads your clients are running in this long test continuously send new<br>commands as soon as they receive the result for the previous one, so your <code>SimpleClient</code> might be susceptible to this problem with <code>ClientTimer</code> s.<br>There are two important protocol design patterns you should know:</p>
+<ol>
+<li><strong>The Resend&#x2F;Discard Pattern:</strong> Nodes set timers when they need responses to the messages they send. If that timer fires before the required response is received, the node resends the message and resets the timer. Importantly, if the timer fires after the required response is received, the node should drop the timer (i.e., not reset it). Otherwise, your system could run into the problem described above. This pattern usually requires the timer itself having enough state to describe the response needed. </li>
+<li><strong>The Tick Pattern:</strong> Nodes set a single timer on <code>init</code> . Then, every time that timer fires, the node takes some action (e.g., resends messages awaiting responses) and also resets the timer. Thus, there is always exactly one timer of that type in the node’s queue, which fires every <code>timerLengthMillis</code> (every “tick”).<br>There are trade-offs to make with both of these patterns, and you should think<br>about their performance implications. The tick pattern is often simpler and<br>more conducive to exploratory model-checking, but it sometimes results in<br>sending of unnecessary messages.<br>One last note on timers, which is important for both of the above patterns:<br>when a node resets a timer inside a timer handler, it is often best practice<br>to wait until the very end of the timer handler to reset it, so that the node<br>doesn’t get into an infinite loop by taking too long in the rest of the<br>method.</li>
+</ol>
+<h3 id="Lab-1-Search-Tests"><a href="#Lab-1-Search-Tests" class="headerlink" title="Lab 1 Search Tests"></a>Lab 1 Search Tests</h3><p>Some of the state space search tests in this lab assert something stronger<br>than in later labs. These tests assert that they can exhaust the state space<br>entirely, rather than simply not finding an invariant-violating state in a<br>certain amount of time. This means that for a given configuration (i.e., how<br>many clients there are and which commands those clients will send), your state<br>space should be finite. In particular, you should not increment sequence<br>numbers unnecessarily. This comes with two benefits: (1) it’s good practice to<br>number the commands sequentially rather than simply monotonically, and (2) the<br>search test will guarantee that for a given configuration <em>all possible<br>executions</em> preserve linearizability! Because the tests are configured with<br>fairly representative workloads, this is strong evidence that your system will<br>preserve linearizability for all possible executions of all possible<br>configurations.<br><strong>Hint:</strong> for part 3, <code>Request</code> and <code>Reply</code> should probably be defined as<br>follows.<br>    @Data<br>    class Request implements Message {<br>        private final AMOCommand command;<br>    }<br>    @Data class Reply implements Message {<br>        private final AMOResult result;<br>    }<br>—|—<br>Our solution to part 3 took approximately 15 lines of code.<br>You should now pass the part 3 tests; execute them with <code>run-tests.py --lab 1 --part 3</code></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/06/04/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP5249Client-Server/">http://saferman.github.io/2021/06/04/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP5249Client-Server/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/08/Java%E4%BB%A3%E5%86%99%EF%BC%9ACOMP282ShortestPath/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Java代写：COMP282 Shortest Path">
+                        
+                        <span class="card-title">Java代写：COMP282 Shortest Path</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-08
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/03/Database%E4%BB%A3%E5%86%99%EF%BC%9ACS6083SQLProblemSet/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Database代写：CS6083 SQL Problem Set">
+                        
+                        <span class="card-title">Database代写：CS6083 SQL Problem Set</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Database代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

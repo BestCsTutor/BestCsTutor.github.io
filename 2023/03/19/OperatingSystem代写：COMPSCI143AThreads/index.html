@@ -1,0 +1,937 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：COMPSCI143A Threads, 留学生CS|辅导|代写">
+    <meta name="description" content="扩充提供的  Thread system，优化线程同步问题。![Thread](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_process.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：COMPSCI143A Threads | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：COMPSCI143A Threads</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-03-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>扩充提供的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Thread_(computing)" title="Thread"> Thread </a><br>system，优化线程同步问题。<br>![Thread](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_process.svg/220px-">https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Multithreaded_process.svg/220px-</a><br>Multithreaded_process.svg.png)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this assignment, we give you a minimally functional thread system. Your job<br>is to extend the functionality of this system to gain a better understanding<br>of synchronization problems.<br>You will be working primarily in the threads directory for this assignment,<br>with some work in the devices directory on the side. Compilation should be<br>done in the threads directory.<br>Before you read the description of this project, you should read all of the<br>following sections: 1. Introduction, C. Coding Standards, E. Debugging Tools,<br>and F. Development Tools. You should at least skim the material from A.1<br>Loading through A.5 Memory Allocation, especially A.3 Synchronization. To<br>complete this project you will also need to read B. 4.4BSD Scheduler.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Understanding-Threads"><a href="#Understanding-Threads" class="headerlink" title="Understanding Threads"></a>Understanding Threads</h3><p>The first step is to read and understand the code for the initial thread<br>system. Pintos already implements thread creation and thread completion, a<br>simple scheduler to switch between threads, and synchronization primitives<br>(semaphores, locks, condition variables, and optimization barriers).<br>Some of this code might seem slightly mysterious. If you haven’t already<br>compiled and run the base system, as described in the introduction (see<br>section 1. Introduction), you should do so now. You can read through parts of<br>the source code to see what’s going on. If you like, you can add calls to<br>printf() almost anywhere, then recompile and run to see what happens and in<br>what order. You can also run the kernel in a debugger and set breakpoints at<br>interesting spots, single-step through code and examine data, and so on.<br>When a thread is created, you are creating a new context to be scheduled. You<br>provide a function to be run in this context as an argument to<br>thread_create(). The first time the thread is scheduled and runs, it starts<br>from the beginning of that function and executes in that context. When the<br>function returns, the thread terminates. Each thread, therefore, acts like a<br>mini-program running inside Pintos, with the function passed to<br>thread_create() acting like main().<br>At any given time, exactly one thread runs and the rest, if any, become<br>inactive. The scheduler decides which thread to run next. (If no thread is<br>ready to run at any given time, then the special “idle” thread, implemented in<br>idle(), runs.) Synchronization primitives can force context switches when one<br>thread needs to wait for another thread to do something.<br>The mechanics of a context switch are in threads&#x2F;switch.S, which is 80x86<br>assembly code. (You don’t have to understand it.) It saves the state of the<br>currently running thread and restores the state of the thread we’re switching<br>to.<br>Using the GDB debugger, slowly trace through a context switch to see what<br>happens (see section E.5 GDB). You can set a breakpoint on schedule() to start<br>out, and then single-step from there.(1) Be sure to keep track of each<br>thread’s address and state, and what procedures are on the call stack for each<br>thread. You will notice that when one thread calls switch_threads(), another<br>thread starts running, and the first thing the new thread does is to return<br>from switch_threads(). You will understand the thread system once you<br>understand why and how the switch_threads() that gets called is different from<br>the switch_threads() that returns. See section A.2.3 Thread Switching, for<br>more information.</p>
+<h3 id="Warning"><a href="#Warning" class="headerlink" title="Warning!"></a>Warning!</h3><p>In Pintos, each thread is assigned a small, fixed-size execution stack just<br>under 4 kB in size. The kernel tries to detect stack overflow, but it cannot<br>do so perfectly. You may cause bizarre problems, such as mysterious kernel<br>panics, if you declare large data structures as non-static local variables,<br>e.g. int buf[1000];. Alternatives to stack allocation include the page<br>allocator and the block allocator (see section A.5 Memory Allocation).</p>
+<h3 id="Source-Files"><a href="#Source-Files" class="headerlink" title="Source Files"></a>Source Files</h3><p>Refer to link for a brief overview of the files in the threads directory. You<br>will not need to modify most of this code, but the hope is that presenting<br>this overview will give you a start on what code to look at.</p>
+<h2 id="Synchronization"><a href="#Synchronization" class="headerlink" title="Synchronization"></a>Synchronization</h2><p>Proper synchronization is an important part of the solutions to these<br>problems. Any synchronization problem can be easily solved by turning<br>interrupts off: while interrupts are off, there is no concurrency, so there’s<br>no possibility for race conditions. Therefore, it’s tempting to solve all<br>synchronization problems this way, but don’t. Instead, use semaphores, locks,<br>and condition variables to solve the bulk of your synchronization problems.<br>Read the tour section on synchronization (see section A.3 Synchronization) or<br>the comments in threads&#x2F;synch.c if you’re unsure what synchronization<br>primitives may be used in what situations.<br>In the Pintos projects, the only class of problem best solved by disabling<br>interrupts is coordinating data shared between a kernel thread and an<br>interrupt handler. Because interrupt handlers can’t sleep, they can’t acquire<br>locks. This means that data shared between kernel threads and an interrupt<br>handler must be protected within a kernel thread by turning off interrupts.<br>This project only requires accessing a little bit of thread state from<br>interrupt handlers. For the alarm clock, the timer interrupt needs to wake up<br>sleeping threads. In the advanced scheduler, the timer interrupt needs to<br>access a few global and per-thread variables. When you access these variables<br>from kernel threads, you will need to disable interrupts to prevent the timer<br>interrupt from interfering.<br>When you do turn off interrupts, take care to do so for the least amount of<br>code possible, or you can end up losing important things such as timer ticks<br>or input events. Turning off interrupts also increases the interrupt handling<br>latency, which can make a machine feel sluggish if taken too far.<br>The synchronization primitives themselves in synch.c are implemented by<br>disabling interrupts. You may need to increase the amount of code that runs<br>with interrupts disabled here, but you should still try to keep it to a<br>minimum.<br>Disabling interrupts can be useful for debugging, if you want to make sure<br>that a section of code is not interrupted. You should remove debugging code<br>before turning in your project. (Don’t just comment it out, because that can<br>make the code difficult to read.)<br>There should be no busy waiting in your submission. A tight loop that calls<br>thread_yield() is one form of busy waiting.</p>
+<h3 id="Development-Suggestions"><a href="#Development-Suggestions" class="headerlink" title="Development Suggestions"></a>Development Suggestions</h3><p>In the past, many groups divided the assignment into pieces, then each group<br>member worked on his or her piece until just before the deadline, at which<br>time the group reconvened to combine their code and submit. This is a bad<br>idea. We do not recommend this approach. Groups that do this often find that<br>two changes conflict with each other, requiring lots of last-minute debugging.<br>Some groups who have done this have turned in code that did not even compile<br>or boot, much less pass any tests.<br>Instead, we recommend integrating your team’s changes early and often, using a<br>source code control system such as Git (see section F.3 Git). This is less<br>likely to produce surprises, because everyone can see everyone else’s code as<br>it is written, instead of just when it is finished. These systems also make it<br>possible to review changes and, when a change introduces a bug, drop back to<br>working versions of code.<br>You should expect to run into bugs that you simply don’t understand while<br>working on this project. When you do, reread the appendix on debugging tools,<br>which is filled with useful debugging tips that should help you to get back up<br>to speed (see section E. Debugging Tools). Be sure to read the section on<br>backtraces (see section E.4 Backtraces), which will help you to get the most<br>out of every kernel panic or assertion failure.</p>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><h3 id="Design-Document"><a href="#Design-Document" class="headerlink" title="Design Document"></a>Design Document</h3><p>Before you turn in your project, you must copy the project 1 design document<br>template into your source tree under the name pintos&#x2F;src&#x2F;threads&#x2F;DESIGNDOC and<br>fill it in. We recommend that you read the design document template before you<br>start working on the project. See section D. Project Documentation, for a<br>sample design document that goes along with a fictitious project.</p>
+<h3 id="Alarm-Clock"><a href="#Alarm-Clock" class="headerlink" title="Alarm Clock"></a>Alarm Clock</h3><h4 id="Exercise-1-1"><a href="#Exercise-1-1" class="headerlink" title="Exercise 1.1"></a>Exercise 1.1</h4><p>Reimplement timer_sleep(), defined in devices&#x2F;timer.c. Although a working<br>implementation is provided, it “busy waits,” that is, it spins in a loop<br>checking the current time and calling thread_yield() until enough time has<br>gone by. Reimplement it to avoid busy waiting.</p>
+<ul>
+<li>Function: void timer_sleep (int64_t ticks)<br>Suspends execution of the calling thread until time has advanced by at least x<br>timer ticks. Unless the system is otherwise idle, the thread need not wake up<br>after exactly x ticks. Just put it on the ready queue after they have waited<br>for the right amount of time. timer_sleep() is useful for threads that operate<br>in real-time, e.g. for blinking the cursor once per second.<br>The argument to timer_sleep() is expressed in timer ticks, not in milliseconds<br>or any another unit. There are TIMER_FREQ timer ticks per second, where<br>TIMER_FREQ is a macro defined in devices&#x2F;timer.h. The default value is 100. We<br>don’t recommend changing this value, because any change is likely to cause<br>many of the tests to fail.<br>Separate functions timer_msleep(), timer_usleep(), and timer_nsleep() do exist<br>for sleeping a specific number of milliseconds, microseconds, or nanoseconds,<br>respectively, but these will call timer_sleep() automatically when necessary.<br>You do not need to modify them.<br>If your delays seem too short or too long, reread the explanation of the -r<br>option to pintos (see section 1.1.4 Debugging versus Testing).<br>The alarm clock implementation is not needed for later projects, although it<br>could be useful for project 4.</li>
+</ul>
+<h3 id="Priority-Scheduling"><a href="#Priority-Scheduling" class="headerlink" title="Priority Scheduling"></a>Priority Scheduling</h3><h4 id="Exercise-1-2-1"><a href="#Exercise-1-2-1" class="headerlink" title="Exercise 1.2.1"></a>Exercise 1.2.1</h4><p>Implement priority scheduling in Pintos. When a thread is added to the ready<br>list that has a higher priority than the currently running thread, the current<br>thread should immediately yield the processor to the new thread. Similarly,<br>when threads are waiting for a lock, semaphore, or condition variable, the<br>highest priority waiting thread should be awakened first. A thread may raise<br>or lower its own priority at any time, but lowering its priority such that it<br>no longer has the highest priority must cause it to immediately yield the CPU.<br>Thread priorities range from PRI_MIN (0) to PRI_MAX (63). Lower numbers<br>correspond to lower priorities, so that priority 0 is the lowest priority and<br>priority 63 is the highest. The initial thread priority is passed as an<br>argument to thread_create(). If there’s no reason to choose another priority,<br>use PRI_DEFAULT (31). The PRI_ macros are defined in threads&#x2F;thread.h, and you<br>should not change their values.<br>One issue with priority scheduling is “priority inversion”. Consider high,<br>medium, and low priority threads H, M, and L, respectively. If H needs to wait<br>for L (for instance, for a lock held by L), and M is on the ready list, then H<br>will never get the CPU because the low priority thread will not get any CPU<br>time. A partial fix for this problem is for H to “donate” its priority to L<br>while L is holding the lock, then recall the donation once L releases (and<br>thus H acquires) the lock.</p>
+<h4 id="Exercise-1-2-2"><a href="#Exercise-1-2-2" class="headerlink" title="Exercise 1.2.2"></a>Exercise 1.2.2</h4><p>Implement priority donation. You will need to account for all different<br>situations in which priority donation is required.<br>Be sure to handle multiple donations, in which multiple priorities are donated<br>to a single thread. You must also handle nested donation: if H is waiting on a<br>lock that M holds and M is waiting on a lock that L holds, then both M and L<br>should be boosted to H’s priority. If necessary, you may impose a reasonable<br>limit on depth of nested priority donation, such as 8 levels.<br>You must implement priority donation for locks. You need not implement<br>priority donation for the other Pintos synchronization constructs. You do need<br>to implement priority scheduling in all cases.</p>
+<h4 id="Exercise-1-2-3"><a href="#Exercise-1-2-3" class="headerlink" title="Exercise 1.2.3"></a>Exercise 1.2.3</h4><p>Finally, implement the following functions that allow a thread to examine and<br>modify its own priority. Skeletons for these functions are provided in<br>threads&#x2F;thread.c.</p>
+<ul>
+<li>Function: void thread_set_priority (int new_priority)<br>Sets the current thread’s priority to new_priority. If the current thread no<br>longer has the highest priority, yields.</li>
+<li>Function: int thread_get_priority (void)<br>Returns the current thread’s priority. In the presence of priority donation,<br>returns the higher (donated) priority.<br>You need not provide any interface to allow a thread to directly modify other<br>threads’ priorities.<br>The priority scheduler is not used in any later project.</li>
+</ul>
+<h3 id="Advanced-Scheduler"><a href="#Advanced-Scheduler" class="headerlink" title="Advanced Scheduler"></a>Advanced Scheduler</h3><h4 id="Exercise-1-3"><a href="#Exercise-1-3" class="headerlink" title="Exercise 1.3"></a>Exercise 1.3</h4><p>Implement a multilevel feedback queue scheduler similar to the 4.4BSD<br>scheduler to reduce the average response time for running jobs on your system.<br>See section B. 4.4BSD Scheduler, for detailed requirements.<br>Like the priority scheduler, the advanced scheduler chooses the thread to run<br>based on priorities. However, the advanced scheduler does not do priority<br>donation. Thus, we recommend that you have the priority scheduler working,<br>except possibly for priority donation, before you start work on the advanced<br>scheduler.<br>You must write your code to allow us to choose a scheduling algorithm policy<br>at Pintos startup time. By default, the priority scheduler must be active, but<br>we must be able to choose the 4.4BSD scheduler with the -mlfqs kernel option.<br>Passing this option sets thread_mlfqs, declared in threads&#x2F;thread.h, to true<br>when the options are parsed by parse_options(), which happens early in main().<br>When the 4.4BSD scheduler is enabled, threads no longer directly control their<br>own priorities. The priority argument to thread_create() should be ignored, as<br>well as any calls to thread_set_priority(), and thread_get_priority() should<br>return the thread’s current priority as set by the scheduler.<br>The advanced scheduler is not used in any later project.</p>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><h3 id="How-much-code-will-I-need-to-write"><a href="#How-much-code-will-I-need-to-write" class="headerlink" title="How much code will I need to write?"></a>How much code will I need to write?</h3><p>Here’s a summary of our reference solution, produced by the diffstat program.<br>The final row gives total lines inserted and deleted; a changed line counts as<br>both an insertion and a deletion.<br>The reference solution represents just one possible solution. Many other<br>solutions are also possible and many of those differ greatly from the<br>reference solution. Some excellent solutions may not modify all the files<br>modified by the reference solution, and some may modify files not modified by<br>the reference solution.<br>    devices&#x2F;timer.c.      | 42 +++++-<br>    threads&#x2F;fixed-point.h | 120 ++++++++++++++++++<br>    threads&#x2F;synch.c       | 88 ++++++++++++-<br>    threads&#x2F;thread.c.     | 196 ++++++++++++++++++++++++++—-<br>    threads&#x2F;thread.h.     | 23 +++<br>    5 files changed, 440 insertions(+), 29 deletions(-)<br>    fixed-point.h is a new file added by the reference solution.</p>
+<h3 id="How-do-I-update-the-Makefiles-when-I-add-a-new-source-file"><a href="#How-do-I-update-the-Makefiles-when-I-add-a-new-source-file" class="headerlink" title="How do I update the Makefiles when I add a new source file?"></a>How do I update the Makefiles when I add a new source file?</h3><p>To add a .c file, edit the top-level Makefile.build. Add the new file to<br>variable dir_SRC, where dir is the directory where you added the file. For<br>this project, that means you should add it to threads_SRC or devices_SRC. Then<br>run make. If your new file doesn’t get compiled, run make clean and then try<br>again.<br>When you modify the top-level Makefile.build and re-run make, the modified<br>version should be automatically copied to threads&#x2F;build&#x2F;Makefile. The converse<br>is not true, so any changes will be lost the next time you run make clean from<br>the threads directory. Unless your changes are truly temporary, you should<br>prefer to edit Makefile.build.<br>A new .h file does not require editing the Makefiles.</p>
+<h3 id="What-does-warning-no-previous-prototype-for-func’-mean"><a href="#What-does-warning-no-previous-prototype-for-func’-mean" class="headerlink" title="What does warning: no previous prototype for &#96;func’ mean?"></a>What does warning: no previous prototype for &#96;func’ mean?</h3><p>It means that you defined a non-static function without preceding it by a<br>prototype. Because non-static functions are intended for use by other .c<br>files, for safety they should be prototyped in a header file included before<br>their definition. To fix the problem, add a prototype in a header file that<br>you include, or, if the function isn’t actually used by other .c files, make<br>it static.</p>
+<h3 id="What-is-the-interval-between-timer-interrupts"><a href="#What-is-the-interval-between-timer-interrupts" class="headerlink" title="What is the interval between timer interrupts?"></a>What is the interval between timer interrupts?</h3><p>Timer interrupts occur TIMER_FREQ times per second. You can adjust this value<br>by editing devices&#x2F;timer.h. The default is 100 Hz.<br>We don’t recommend changing this value, because any changes are likely to<br>cause many of the tests to fail.</p>
+<h3 id="How-long-is-a-time-slice"><a href="#How-long-is-a-time-slice" class="headerlink" title="How long is a time slice?"></a>How long is a time slice?</h3><p>There are TIME_SLICE ticks per time slice. This macro is declared in<br>threads&#x2F;thread.c. The default is 4 ticks.<br>We don’t recommend changing this value, because any changes are likely to<br>cause many of the tests to fail.</p>
+<h3 id="How-do-I-run-the-tests"><a href="#How-do-I-run-the-tests" class="headerlink" title="How do I run the tests?"></a>How do I run the tests?</h3><p>See section 1.2.1 Testing.</p>
+<h3 id="Why-do-I-get-a-test-failure-in-pass"><a href="#Why-do-I-get-a-test-failure-in-pass" class="headerlink" title="Why do I get a test failure in pass()?"></a>Why do I get a test failure in pass()?</h3><p>You are probably looking at a backtrace that looks something like this:<br>    0xc0108810: debug_panic (lib&#x2F;kernel&#x2F;debug.c:32)<br>    0xc010a99f: pass (tests&#x2F;threads&#x2F;tests.c:93)<br>    0xc010bdd3: test_mlfqs_load_1 (…threads&#x2F;mlfqs-load-1.c:33)<br>    0xc010a8cf: run_test (tests&#x2F;threads&#x2F;tests.c:51)<br>    0xc0100452: run_task (threads&#x2F;init.c:283)<br>    0xc0100536: run_actions (threads&#x2F;init.c:333)<br>    0xc01000bb: main (threads&#x2F;init.c:137)<br>This is just confusing output from the backtrace program. It does not actually<br>mean that pass() called debug_panic(). In fact, fail() called debug_panic()<br>(via the PANIC() macro). GCC knows that debug_panic() does not return, because<br>it is declared NO_RETURN (see section E.3 Function and Parameter Attributes),<br>so it doesn’t include any code in fail() to take control when debug_panic()<br>returns. This means that the return address on the stack looks like it is at<br>the beginning of the function that happens to follow fail() in memory, which<br>in this case happens to be pass().<br>See section E.4 Backtraces, for more information.</p>
+<h3 id="How-do-interrupts-get-re-enabled-in-the-new-thread-following-schedule"><a href="#How-do-interrupts-get-re-enabled-in-the-new-thread-following-schedule" class="headerlink" title="How do interrupts get re-enabled in the new thread following schedule()?"></a>How do interrupts get re-enabled in the new thread following schedule()?</h3><p>Every path into schedule() disables interrupts. They eventually get re-enabled<br>by the next thread to be scheduled. Consider the possibilities: the new thread<br>is running in switch_thread() (but see below), which is called by schedule(),<br>which is called by one of a few possible functions:</p>
+<ul>
+<li>thread_exit(), but we’ll never switch back into such a thread, so it’s uninteresting. </li>
+<li>thread_yield(), which immediately restores the interrupt level upon return from schedule(). </li>
+<li>thread_block(), which is called from multiple places: <ul>
+<li>sema_down(), which restores the interrupt level before returning. </li>
+<li>idle(), which enables interrupts with an explicit assembly STI instruction. </li>
+<li>wait() in devices&#x2F;intq.c, whose callers are responsible for re-enabling interrupts.<br>There is a special case when a newly created thread runs for the first time.<br>Such a thread calls intr_enable() as the first action in kernel_thread(),<br>which is at the bottom of the call stack for every kernel thread but the<br>first.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Alarm-Clock-FAQ"><a href="#Alarm-Clock-FAQ" class="headerlink" title="Alarm Clock FAQ"></a>Alarm Clock FAQ</h2><h3 id="Do-I-need-to-account-for-timer-values-overflowing"><a href="#Do-I-need-to-account-for-timer-values-overflowing" class="headerlink" title="Do I need to account for timer values overflowing?"></a>Do I need to account for timer values overflowing?</h3><p>Don’t worry about the possibility of timer values overflowing. Timer values<br>are expressed as signed 64-bit numbers, which at 100 ticks per second should<br>be good for almost 2,924,712,087 years. By then, we expect Pintos to have been<br>phased out of the Computer Science curriculum.</p>
+<h2 id="Priority-Scheduling-FAQ"><a href="#Priority-Scheduling-FAQ" class="headerlink" title="Priority Scheduling FAQ"></a>Priority Scheduling FAQ</h2><h3 id="Doesn’t-priority-scheduling-lead-to-starvation"><a href="#Doesn’t-priority-scheduling-lead-to-starvation" class="headerlink" title="Doesn’t priority scheduling lead to starvation?"></a>Doesn’t priority scheduling lead to starvation?</h3><p>Yes, strict priority scheduling can lead to starvation because a thread will<br>not run if any higher-priority thread is runnable. The advanced scheduler<br>introduces a mechanism for dynamically changing thread priorities.<br>Strict priority scheduling is valuable in real-time systems because it offers<br>the programmer more control over which jobs get processing time. High<br>priorities are generally reserved for time-critical tasks. It’s not “fair,”<br>but it addresses other concerns not applicable to a general-purpose operating<br>system.</p>
+<h3 id="What-thread-should-run-after-a-lock-has-been-released"><a href="#What-thread-should-run-after-a-lock-has-been-released" class="headerlink" title="What thread should run after a lock has been released?"></a>What thread should run after a lock has been released?</h3><p>When a lock is released, the highest priority thread waiting for that lock<br>should be unblocked and put on the list of ready threads. The scheduler should<br>then run the highest priority thread on the ready list.</p>
+<h3 id="If-the-highest-priority-thread-yields-does-it-continue-running"><a href="#If-the-highest-priority-thread-yields-does-it-continue-running" class="headerlink" title="If the highest-priority thread yields, does it continue running?"></a>If the highest-priority thread yields, does it continue running?</h3><p>Yes. If there is a single highest-priority thread, it continues running until<br>it blocks or finishes, even if it calls thread_yield(). If multiple threads<br>have the same highest priority, thread_yield() should switch among them in<br>“round robin” order.</p>
+<h3 id="What-happens-to-the-priority-of-a-donating-thread"><a href="#What-happens-to-the-priority-of-a-donating-thread" class="headerlink" title="What happens to the priority of a donating thread?"></a>What happens to the priority of a donating thread?</h3><p>Priority donation only changes the priority of the donee thread. The donor<br>thread’s priority is unchanged. Priority donation is not additive: if thread A<br>(with priority 5) donates to thread B (with priority 3), then B’s new priority<br>is 5, not 8.</p>
+<h3 id="Can-a-thread’s-priority-change-while-it-is-on-the-ready-queue"><a href="#Can-a-thread’s-priority-change-while-it-is-on-the-ready-queue" class="headerlink" title="Can a thread’s priority change while it is on the ready queue?"></a>Can a thread’s priority change while it is on the ready queue?</h3><p>Yes. Consider a ready, low-priority thread L that holds a lock. High-priority<br>thread H attempts to acquire the lock and blocks, thereby donating its<br>priority to ready thread L.</p>
+<h3 id="Can-a-thread’s-priority-change-while-it-is-blocked"><a href="#Can-a-thread’s-priority-change-while-it-is-blocked" class="headerlink" title="Can a thread’s priority change while it is blocked?"></a>Can a thread’s priority change while it is blocked?</h3><p>Yes. While a thread that has acquired lock L is blocked for any reason, its<br>priority can increase by priority donation if a higher-priority thread<br>attempts to acquire L. This case is checked by the priority-donate-sema test.</p>
+<h3 id="Can-a-thread-added-to-the-ready-list-preempt-the-processor"><a href="#Can-a-thread-added-to-the-ready-list-preempt-the-processor" class="headerlink" title="Can a thread added to the ready list preempt the processor?"></a>Can a thread added to the ready list preempt the processor?</h3><p>Yes. If a thread added to the ready list has higher priority than the running<br>thread, the correct behavior is to immediately yield the processor. It is not<br>acceptable to wait for the next timer interrupt. The highest priority thread<br>should run as soon as it is runnable, preempting whatever thread is currently<br>running.</p>
+<h3 id="How-does-thread-set-priority-affect-a-thread-receiving-donations"><a href="#How-does-thread-set-priority-affect-a-thread-receiving-donations" class="headerlink" title="How does thread_set_priority() affect a thread receiving donations?"></a>How does thread_set_priority() affect a thread receiving donations?</h3><p>It sets the thread’s base priority. The thread’s effective priority becomes<br>the higher of the newly set priority or the highest donated priority. When the<br>donations are released, the thread’s priority becomes the one set through the<br>function call. This behavior is checked by the priority-donate-lower test.</p>
+<h3 id="Doubled-test-names-in-output-make-them-fail"><a href="#Doubled-test-names-in-output-make-them-fail" class="headerlink" title="Doubled test names in output make them fail."></a>Doubled test names in output make them fail.</h3><p>Suppose you are seeing output in which some test names are doubled, like this:<br>    (alarm-priority) begin<br>    (alarm-priority) (alarm-priority) Thread priority 30 woke up.<br>    Thread priority 29 woke up.<br>    (alarm-priority) Thread priority 28 woke up.<br>What is happening is that output from two threads is being interleaved. That<br>is, one thread is printing “(alarm-priority) Thread priority 29 woke up.\n”<br>and another thread is printing “(alarm-priority) Thread priority 30 woke<br>up.\n”, but the first thread is being preempted by the second in the middle of<br>its output.<br>This problem indicates a bug in your priority scheduler. After all, a thread<br>with priority 29 should not be able to run while a thread with priority 30 has<br>work to do.<br>Normally, the implementation of the printf() function in the Pintos kernel<br>attempts to prevent such interleaved output by acquiring a console lock during<br>the duration of the printf call and releasing it afterwards. However, the<br>output of the test name, e.g., (alarm-priority), and the message following it<br>is output using two calls to printf, resulting in the console lock being<br>acquired and released twice.</p>
+<h2 id="Advanced-Scheduler-FAQ"><a href="#Advanced-Scheduler-FAQ" class="headerlink" title="Advanced Scheduler FAQ"></a>Advanced Scheduler FAQ</h2><h3 id="How-does-priority-donation-interact-with-the-advanced-scheduler"><a href="#How-does-priority-donation-interact-with-the-advanced-scheduler" class="headerlink" title="How does priority donation interact with the advanced scheduler?"></a>How does priority donation interact with the advanced scheduler?</h3><p>It doesn’t have to. We won’t test priority donation and the advanced scheduler<br>at the same time.</p>
+<h3 id="Can-I-use-one-queue-instead-of-64-queues"><a href="#Can-I-use-one-queue-instead-of-64-queues" class="headerlink" title="Can I use one queue instead of 64 queues?"></a>Can I use one queue instead of 64 queues?</h3><p>Yes. In general, your implementation may differ from the description, as long<br>as its behavior is the same.</p>
+<h3 id="Some-scheduler-tests-fail-and-I-don’t-understand-why-Help"><a href="#Some-scheduler-tests-fail-and-I-don’t-understand-why-Help" class="headerlink" title="Some scheduler tests fail and I don’t understand why. Help!"></a>Some scheduler tests fail and I don’t understand why. Help!</h3><p>If your implementation mysteriously fails some of the advanced scheduler<br>tests, try the following:</p>
+<ul>
+<li>Read the source files for the tests that you’re failing, to make sure that you understand what’s going on. Each one has a comment at the top that explains its purpose and expected results. </li>
+<li>Double-check your fixed-point arithmetic routines and your use of them in the scheduler routines. </li>
+<li>Consider how much work your implementation does in the timer interrupt. If the timer interrupt handler takes too long, then it will take away most of a timer tick from the thread that the timer interrupt preempted. When it returns control to that thread, it therefore won’t get to do much work before the next timer interrupt arrives. That thread will therefore get blamed for a lot more CPU time than it actually got a chance to use. This raises the interrupted thread’s recent CPU count, thereby lowering its priority. It can cause scheduling decisions to change. It also raises the load average</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/03/19/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI143AThreads/">http://saferman.github.io/2023/03/19/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMPSCI143AThreads/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/03/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS12BEditDistance/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Java代写：CS12B Edit Distance">
+                        
+                        <span class="card-title">Java代写：CS12B Edit Distance</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/03/18/PHP%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F(%E5%8D%81)%EF%BC%9A%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="PHP设计模式(十)：适配器模式">
+                        
+                        <span class="card-title">PHP设计模式(十)：适配器模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PHP%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%81/">
+                        <span class="chip bg-color">PHP设计模式(十)</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

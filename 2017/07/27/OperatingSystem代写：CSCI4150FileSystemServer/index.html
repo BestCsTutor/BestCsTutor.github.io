@@ -1,0 +1,939 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CSCI4150 File System Server, 留学生CS|辅导|代写">
+    <meta name="description" content="代写大型的OS作业，实现一个文件系统服务。全方面考察调度、同步、内存管理以及文件系统方面的知识。  
+RequirementThis project is intended to integrate many aspects of OS d">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CSCI4150 File System Server | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CSCI4150 File System Server</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-07-27
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写大型的OS作业，实现一个文件系统服务。全方面考察调度、同步、内存管理以及文件系统方面的知识。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>This project is intended to integrate many aspects of OS design and<br>implementation, from scheduling, to synchronization, to memory management, and<br>file systems. You are to implement this in the xv6 OS (I’ll provide a repo<br>link via Piazza). You will implement microkernel services on top of xv6 which<br>is a monolithic OS! This is a large and hard project and is scoped around<br>three team members. If you choose a smaller team, you’re still responsible for<br>the entire project, so I suggest you form your team soon. The most important<br>thing you can do to ensure you finish on time is to ​start early. Like now. To<br>the keyboard!</p>
+<h2 id="Final-goal-OS-Service-to-do-File-system-Checkpoint-Restore"><a href="#Final-goal-OS-Service-to-do-File-system-Checkpoint-Restore" class="headerlink" title="Final goal: OS Service to do File-system Checkpoint-Restore"></a>Final goal: OS Service to do File-system Checkpoint-Restore</h2><p>The final goal of the project is to implement a File-System Server (FSS) –<br>implemented as a normal process – that communicates with the other processes<br>in the system (called “clients), receiving requests for file system services<br>(e.g. similar to open, read, write, close, mkdir, unlink), and it will make<br>those calls on behalf of the requesting process. However, it will also be<br>smart enough to enable the “undo” of any changes made to the file system by<br>those processes. It will do this by saving the contents of files and<br>directories to a “​checkpoint&#x2F;“ subdirectory when modifications are made. To<br>restore this checkpoint, a simple program can simply copy everything<br>incheckpoint&#x2F;into the normal file system. The communication with the FSS is<br>through shared memory regions coordinated with mutexes and condition variables<br>(which xv6 does not already provide).</p>
+<h2 id="Specification-and-Implementation-Plan"><a href="#Specification-and-Implementation-Plan" class="headerlink" title="Specification and Implementation Plan"></a>Specification and Implementation Plan</h2><p>There are three main modules to this project.</p>
+<ol>
+<li>The FSS which uses the normal kernel API to provide access to the file-system, and also to perform the operations to save files&#x2F;directories when they are modified for checkpointing. This requires zero kernel programming. </li>
+<li>The shared memory support between the FSS, and the processes that are using the FSS’s checkpointing support. This shared memory region is used to pass both the request being made (i.e. which type of call is it, read, open, etc…), and the corresponding data that is required for that call (the path and flags for open, the buffer and its length for read, etc…). This will require kernel hacking to make a shared memory region between the client and the FSS. </li>
+<li>The synchronization code necessary to provide synchronization on that shared buffer. This will include both mutexes, and the ability to block waiting for an event (i.e. a new client request) – a function normally provided by condition variables. This will require kernel hacking to implement mutexes for user-level, and to add logic for condition variables. The FSS process should always execute with high priority as it is providing a service to other processes in the system.<br>There are varying levels of support for each of these three components, and<br>you should be able to develop each relatively independently, so if one person<br>does not meet their commitment, the others should be able to still make<br>progress. Level 1 is intended to be very basic functionality. Leveling up from<br>there strengthens your project. Only a project at project level 5 will receive<br>full credit. Each level assumes the functionality from the previous levels<br>(i.e. you can’t get level 2 without achieving level 1).<br>A note on group work and collaboration: I designed these modules to be<br>independent, but that does not mean that they are of equal difficulty. Do not<br>plan on simply assigning one to each team member, and when one of the modules<br>is complete assume that team member is “done”. After a module is done, you<br>must help the other members on the other modules. Each team member must stay<br>up-to-date with each other teammate. You should use github to coordinate your<br>code modifications. In fact, I highly​ suggest that once each of the<br>implementations get to Level 1, that you start integrating them together. Once<br>integrated, you can keep leveling up in each module.</li>
+</ol>
+<h2 id="Module-1-File-System-Server"><a href="#Module-1-File-System-Server" class="headerlink" title="Module #1: File-System Server"></a>Module #1: File-System Server</h2><p>The FSS uses the normal kernel API and is a normal process. It uses IPC to<br>talk to clients. Those clients make requests to it to access the file system<br>on their behalf. This is not very useful on its own, but the FSS is smart<br>because it provides a checkpoint and restore functionality. This means that<br>when the FSS starts, it begins recording all files and directories that are<br>modified by clients. It will record these files&#x2F;directories in the<br>&#x2F;checkpoint&#x2F; directory. So for example, if &#x2F;hw.txt exists, and you wrote a<br>program to write to that file (via IPC with the FSS), then the FSS would copy<br>the &#x2F;hw.txt file to &#x2F;checkpoint&#x2F;hw.txt, and then perform the write on the<br>client’s behalf. If you write a program to remove a directory, &#x2F;foo&#x2F;, then the<br>FSS would add &#x2F;checkpoint&#x2F;foo&#x2F; before removing the directory for the client. A<br>separate program called restore can be executed to restore all files and<br>directories in the &#x2F;checkpoint&#x2F; directory into their original location. This<br>will undo all edits made in the mean-time. You do not have to track files and<br>directories that are created and remove them upon restore. This module<br>requires no kernel programming.<br>You’ll first need to understand how the client and the FSS communicate via<br>IPC. Each of the file-system system calls need a corresponding FSS operation,<br>prepended with <code>fss_</code> . The client will call these operations instead of the<br>normal system calls. Thus, you will need to provide your implementations for <code>fss_read</code> , <code>fss_write</code> , <code>fss_open</code> , <code>fss_close</code> , <code>fss_mkdir</code> , <code>fss_unlink</code> . Note that open and mkdir are used to create files and<br>directories, respectively, and unlink isused to remove files and directories.<br>These functions will be used to pass through IPC to the FSS, which function is<br>being performed (e.g. you could pass it as a string), and the arguments being<br>passed to the function. For example, you could define a structure:<br>    struct fss_request {<br>      char operation[7];<br>      int arg;<br>      char data[1024];<br>    };<br>—|—<br>Where the operation field contains the operation (“mkdir”, “close”, etc…), arg<br>contains any numerical argument passed to the function, and data contains any<br>actual data that is meant to be passed. Once you fill out this structure, you<br>can pass it over IPC to the FSS, and it can read the structure and convert the<br>request into its own logic for making real file-system system calls to the<br>kernel. It is cleaner to use an enumerated type for the operation.<br>A difficult part of this arrangement is that the FSS must return the return<br>value from the kernel back to the client, and in the case of read, we must<br>return the data that was read. So you’ll likely want a <code>fss_response</code><br>structure that holds that response as well (e.g. an couple of ints, and a<br>array for the data). It can send this structure via IPC back to the client<br>that made the request.<br>The different levels of completion for this module are:</p>
+<ul>
+<li>Level 0: Use a protocol to send FS commands to the FSS. This includes which system call is being made, what arguments are being passed to it, and what the return value is. </li>
+<li>Level 1: Only provide checkpoint support, but not restore </li>
+<li>Level 2: Check-point and restore a single file that is modified by a client with reads and writes. </li>
+<li>Level 3: Check-point and restore a single directory of files that are modified with read and write, and files that are created and removed with open and unlink. </li>
+<li>Level 4: Provide check-point and restore for a directory hierarchy.<br>Independent testing: To avoid needing to wait for the other modules to be<br>completed before you can implement your FS server to communicate through pipes<br>with a client process. Later, you can integrate with the shared memory, and<br>synchronization and use that form of IPC instead. Note that when you do that,<br>you’ll likely want to have a mutex&#x2F;condition variable protecting each<br>direction of communication (request and response).</li>
+</ul>
+<h2 id="Module-2-Shared-Memory"><a href="#Module-2-Shared-Memory" class="headerlink" title="Module #2: Shared Memory"></a>Module #2: Shared Memory</h2><p>Shared memory is often used for IPC between processes. It is more efficient<br>than message passing (e.g. pipes) as you can often have fewer memcpy<br>operations (e.g. zero or one vs. two). This module will add shared memory to<br>your project. Xv6 does not support shared memory, so this will require<br>understanding the xv6 mechanisms for mapping memory into processes, and how<br>that interacts with calls to sbrk (extending the amount of memory accessible<br>by a process), and fork&#x2F;exec&#x2F;exit. The API of system calls that you’ll add to<br>xv6 includes:</p>
+<ul>
+<li>char <em>shm_get(char</em> name, int name_len) - Map a 4096 page into the calling process’s virtual address space. For the simplest implementation, it should likely map at the address that a sbrk would normally use next. A subsequent call to <code>shm_get</code> or sbrk should still work (i.e. it can’t overlap with the region a previous call returned). Return NULL if name is NULL or if the memory cannot be mapped. The name (and the int describing how long the name string is) identifies which shared memory region we want to map in. If there are no shared memory regions, and a process calls <code>s = shm_get(&quot;ggez&quot;, 5)</code> ; then the system will allocate a page (e.g. with <code>kalloc()</code> ), and map it into the process. If another process then makes the call with the same name, then it will map in the same page, thus creating shared memory. </li>
+<li>int shm_rem(char *name, size_t name_len) - This removes a mapping of the shared page from the calling process’s virtual address space. If there are no more references to the shared page, then it is deallocated, and any subsequent mappings will return a new page. This returns -1 if the mapping with the given name doesn’t exist, or if name is NULL.<br>Tracking the shared memory regions should be performed in two structures in<br>the code.</li>
+</ul>
+<ol>
+<li>You can create a global kernel structure that tracks the page that is used as the shared memory, the name associated with it (which can be looked up on <code>shm_get</code> ), and a “reference count” which tracks how many processes have the shared page mapped into them. Once the reference count is zero, you can deallocate the page. You will support a maximum of <code>SHM_MAXNUM</code> ​ shared memory pages in the system, thus your global structure will likely be an array of this tracking information. Feel free to place this in vm.c. </li>
+<li>Each process must track which shared memory regions (by name) it has mapped inside of itself, and at which virtual address they are mapped. This is required so that you can support <code>shm_rem</code> , and so that when the process forks, exits, or execs, you can know which shared memory regions are getting more, or fewer references.<br>You will have to read through a fair amount of the code in vm.c and proc.c to<br>understand how to implement all of this, and a good place to start is with<br>sbrk.<br>The different levels of completion for this module are:</li>
+</ol>
+<ul>
+<li>Level 0: System calls and kernel data-structure to track <code>SHM_MAXNUM</code> shared memory regions (tracking processes, and virtual memory addresses the regions are mapped into). </li>
+<li>Level 1: Implement the system calls to share memory between two processes, including mapping in the actual shared memory. </li>
+<li>Level 2: Maintain the shared memory region across forks of the process. </li>
+<li>Level 3: Thoroughly test that your shared memory region is properly maintained, or deallocated, depending on which processes fork and exit. This will require referencecounting on the shared memory region, and you only deallocate the memory for it when all threads accessing it exit or unmap it.<br>Independent testing: You should be able to test this implementation<br>independently from the other modules by simply using multiple processes to<br>create the shared memory region, and test that it is functional.</li>
+</ul>
+<h2 id="Module-3-Synchronization-and-Scheduling"><a href="#Module-3-Synchronization-and-Scheduling" class="headerlink" title="Module #3: Synchronization and Scheduling"></a>Module #3: Synchronization and Scheduling</h2><p>Module 2 provides shared memory between processes. Now that we have shared<br>memory, we must synchronize access to it! We want to provide a means for<br>passing requests to the FSS, and for synchronizing the return value being<br>passed to the client. Xv6 does not provide any memory sharing between user-<br>level processes, so you’re job is to implement a set of mutex system calls,<br>and to enable processes to block waiting for requests&#x2F;responses, you’ll also<br>provide condition variable system calls. The prototype of these follows:</p>
+<ul>
+<li>int mutex_create(char *name, int name_len); - return a muxid which is an integer identifier for a mutex (analogous to a file descriptor which is an integer that identifies a file), or return -1 if it cannot allocate the mutex. </li>
+<li>void mutex_delete(int muxid); - deallocate the mutex if we are the last process referencing (i.e. all other processes that previously mutex_created it have mutex_deleted it, or have exited&#x2F;​ execed). </li>
+<li>void mutex_lock(int muxid); - Lock a mutex identified by the mutex id. If the mutex is not owned by another thread, then the calling thread now owns it, and has mutual exclusion until the mutex is unlocked. If the mutex is already owned, then we must block, awaiting the other process to release the mutex. </li>
+<li>void mutex_unlock(int muxid); - Unlock a mutex that was previously locked by us. If other threads have since tried to take the mutex, and is blocked awaiting entry, we should wake one of them up to go into the critical section. </li>
+<li>void cv_wait(int muxid); - The condition variable API is vastly simplified compared to the pthread version. We assume that each mutex can have a single condition associated with it. This works well if we just want the FSS waiting on the condition that a client sends a request, and that clients will block waiting on the condition that the FSS replies to them. Because of this, we need only specify the mutex id that the condition variable is associated with. As with condition variables, the calling thread will release the mutex, and block waiting on the condition variable (unless it has already been signaled). Note that you must implement blocking for the mutex separate from blocking for the condition variable or you are likely to break mutual exclusion. </li>
+<li>void cv_signal(int muxid); - wake up any threads that are blocked on the condition variable associated with the mutex identified by its mutex id. This doesn’t alter the mutex at all, and only wakes up any blocked threads.<br>This will, again require some data-structures in the kernel:</li>
+<li>A global structure which is the array of mutexes that can be created in the system. These are similar to those for shared memory, but there can be <code>MUX_MAXNUM</code> number of them, maximum. I would suggest that each of these tracks the mutex name, and whatever you need to track for the blocked threads on the mutexes and the condition variable associated with the mutex. </li>
+<li>An array per process that is indexed by the mutex id, with each entry simply containing a reference to the global mutex. This enables different processes to have different mutex ids for the same mutex as they are looked up in per-process data-structures. It also allows you to “clean up” the mutexes if the process exits.<br>You can not​ use spinning techniques to provide synchronization, and must<br>focus instead on blocking threads that are waiting for an occupied critical<br>section, or blocking waiting for some condition to be true. Note that the in-<br>kernel implementation of locks (see the acquire and release functions) uses<br>spinlocks for cross-CPU synchronization, and simply disable interrupts during<br>the critical section. You cannot simply call these for your mutexes. This<br>would result in user-level executing with interrupts disabled which is not<br>safe or secure. You must implement your blocking for your mutex and condition<br>variables. Make sure to understand the sleep&#x2F;wakeup functions to help you out.<br>Once you have everything else working, you can level up your implementation to<br>the max level. The highest you can level up to, is to implement a simple<br>version of Linux futexes (google it). The idea is that when a mutex is<br>uncontended (no thread is in the critical section), you should be able to use<br>simple compare and swap instructions at user-level to set a bit in a word in<br>the shared memory denoting that the lock is now taken. Another thread<br>attempting the same will see the bit set, will set another bit showing that<br>the mutex is “contended”, and will instead make a system call to the kernel to<br>block on the mutex. When the mutex owner releases the mutex (unlocks it), it<br>will use compare and swap to unset the taken bit, and when it notices that the<br>contended bit is set, it will make a system call to wake the threads waiting<br>to enter the critical section. In this way, when a thread simply locks and<br>unlocks a lock, it will do so using only a couple of compare and swap, atomic<br>instructions and will completely avoid making system calls. Only when a thread<br>contends a taken lock will system calls be made.<br>A naive implementation of this (as spelled out here) is quite good. But there<br>are some race conditions that you’ll need to solve to get a 100% solution. If<br>you implement an xv6 equivalent of futexes, you can augment the mutex API<br>(likely the create function) to include the address of the lock in the shared<br>memory.<br>The different levels of completion for this module are:</li>
+<li>Level 0: Implement the system calls to allocate and free mutexes, along with the kernel data-structures to track the mutexes. Scheduling the FSS as highest priority. </li>
+<li>Level 1: Logic in the kernel to block processes locking a mutex that is already locked, and to wake up a thread blocked on a mutex for the same reason. Mutual exclusion is required. </li>
+<li>Level 2: Implement condition variables that interoperate properly with the mutexes from the previous level. </li>
+<li>Level 3: Handle the case where a process terminates accidently (faults). Release any mutexes it holds, and ensure that it is no longer blocked on conditions. </li>
+<li>Level 4: Implement your mutexes in a manner where if a critical section is not owned by another thread a thread is attempting to lock it, it will avoid making a system call similar to futexes as spelling out above.<br>Independent testing: The mutex API is specially formulated to not require<br>shared memory. Mutexes are simply associated with a name, so any process can<br>get one, and lock&#x2F;unlock it. This means that two processes that don’t even<br>share memory can be used to test the mutual exclusion of the mutex. The same<br>applies to the condition variables.</li>
+</ul>
+<h2 id="Overall-Project"><a href="#Overall-Project" class="headerlink" title="Overall Project"></a>Overall Project</h2><p>The levels for the overall project are:</p>
+<ul>
+<li>Level 0: Level 1 in one module. </li>
+<li>Level 1: Level 1 at least two modules. </li>
+<li>Level 2: Level 1 in three modules, and level 2 in at least two. Two of the modules must be integrated together. </li>
+<li>Level 3: All three modules must be integrated together. </li>
+<li>Level 4: Highest level - 1 in each module. </li>
+<li>Level 5: Highest level in all modules.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2017/07/27/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4150FileSystemServer/">http://saferman.github.io/2017/07/27/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4150FileSystemServer/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/08/04/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS201InteractiveMultimediaApplication/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java代写：CS201 Interactive Multimedia Application">
+                        
+                        <span class="card-title">Java代写：CS201 Interactive Multimedia Application</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2017-08-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/07/26/Security%E4%BB%A3%E5%86%99%EF%BC%9ACS4117ExploreDNS/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Security代写：CS4117 Explore DNS">
+                        
+                        <span class="card-title">Security代写：CS4117 Explore DNS</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-07-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Security%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Security代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

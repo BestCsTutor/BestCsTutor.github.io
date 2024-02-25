@@ -1,0 +1,913 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CSCE315 5 by 5 Tic-Tac-Toe, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction代写一个包含AI的5x5的  Tic-Tac-Toe  游戏，相比基础的3x3的Tic-Tac-Toe，这次这个作业不仅增加了棋盘尺寸，还需要用A*算法来实现AI，UI需要在Android模拟器上显示。总体来说属于偏">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CSCE315 5 by 5 Tic-Tac-Toe | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CSCE315 5 by 5 Tic-Tac-Toe</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-12
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>代写一个包含AI的5x5的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Tic-tac-toe" title="Tic-
+tac-toe"> Tic-Tac-Toe </a> 游戏，相比基础的3x3的Tic-Tac-<br>Toe，这次这个作业不仅增加了棋盘尺寸，还需要用A*算法来实现AI，UI需要在Android模拟器上显示。总体来说属于偏难的作业类型。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>Your team has been assigned to write an Android video game for “5-Toe,” a 5 by<br>5 tic-tac-toe game. (Note: You do not have to have an Android phone, since<br>this will be done on an emulator.) The human user plays against the computer,<br>which uses an AI search to choose its moves, either minimax with alpha-beta<br>pruning or A*.<br>The usual rules of tic-tac-toe apply: X (which is the computer) goes first,<br>players take turns, and the game ends when one player wins by filling 5<br>squares in a row, column, or diagonal, or when all squares are filled (a tie,<br>commonly referred to as “the cat got the game”).<br>When the game starts, the user selects the level of difficulty: easy, medium,<br>or hard, and which AI to play against, minimax or A*. Then the computer places<br>an X in the center (hard), in a corner (medium), or on an edge but not a<br>corner (easy level). The square selected should be different each time the<br>same level is selected; either cycle through the choices or pick a square at<br>random. Each time the user clicks a square, place an O there and check for end<br>of game. If the game is not over, run the chosen AI algorithm, display an X,<br>and check for end of game.<br>Use XML to specify the GUI in the Android subset of Java. Follow the style<br>guide for Java at <a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/codeconvtoc-136057.html"><br>http://www.oracle.com/technetwork/java/codeconvtoc-136057.html
+</a> , and also<br>follow these three rules:</p>
+<ol>
+<li>No more than one statement per line. </li>
+<li>No function longer than 24 lines (one terminal window). </li>
+<li>No line longer than 80 characters.<br>For the minimax search with alpha-beta pruning you may need some way of<br>limiting the depth to avoid running out of memory or time. (The computer<br>should move in 5 seconds or less.) The utility function X wants to maximize<br>could be something like<br>f &#x3D; (# of lines with 5 X’s - # of lines with 5 O’s) * 16 ^ 4 +<br>   (# of lines with 4 X’s and a blank - # of lines with 4 O’s and a blank) * 16 ^ 3 +<br>   (# of lines with 3 X’s and 2 blanks - # of lines with 3 O’s and 2 blanks) * 16 ^ 2 +<br>   (# of lines with 2 X’s and 3 blanks - # of lines with 2 O’s and 3 blanks) * 16 +<br>   (# of lines with 1 X and 4 blanks - # of lines with 1 O and 4 blanks)<br>since there are 12 winning lines (rows, columns, and diagonals) and 16 &gt; 12.<br>O’s utility function would then be -f, so f + (-f) &#x3D; 0, a zero-sum game.</li>
+</ol>
+<h2 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h2><p>For A* you need to devise a heuristic function h(n) which comes as close as<br>possible to the number of additional moves required to win without exceeding<br>the actual number required. If a win cannot be guaranteed no matter how O<br>moves, then h(n) is the estimated number of additional moves to tie, without<br>exceeding the actual number of moves required. If neither a win nor a tie can<br>be guaranteed for X, then h(n) is the estimated number of additional moves<br>till the game ends with O winning.<br>Here are some ideas to get you started on A*:</p>
+<ol>
+<li>For each move, start A* over by using the current board state as the initial A* state. Generate the successor states (legal X moves) as possible values of n and calculate f(n) &#x3D; g(n) + h(n). This makes g(n) always 1, since it takes 1 move to get from the initial state to n. </li>
+<li>If there are 4 X’s and a blank in 2 rows, columns, or diagonals, and there are no lines with 4 O’s and a blank, then you can win in 2 more moves guaranteed, namely, O moves and then X wins, so h is 2. </li>
+<li>If there are 3 X’s and 2 blanks in a row, column, or diagonal, then it will take at least 4 more moves. However, you must also consider how close O is to winning and whether blocking O is more urgent. For example,<br>X | X |   |   | X<br>——————-<br>  | X |   |   |<br>——————-<br>  |   |   |   |<br>——————-<br>  |   |   |   |<br>——————-<br>O | O |   | O | O<br>will end in a tie (assuming both players make the best move), so h would be 17<br>(the number of blanks). Thus you need to consider not only the squares which<br>need X’s to make 5 in a row, but also the squares which need X’s to block O’s<br>moves; some squares may do both.<br>If a node (board state) n would allow O to win in 1 move, then assign a “too<br>big” value to h(n), e.g., 25, to insure that A* will not move to state n<br>unless X cannot win or tie.<br>There are numerous 3 by 3 tic-tac-toe Android apps on the Internet, which you<br>can use for ideas if you cite them. However, if you are going to make your<br>million with this game :-), you should not use any code or code ideas from<br>others or you could be liable for copyright infringement and spend all your<br>profits on lawyers and fines :-(. Note that some of these claim to use AI but<br>really don’t!<br>This is a team project, with three or four students per team. (Teams of four<br>will have an additional task.) Your assigned team should immediately meet and<br>exchange all contact information and schedule at least one meeting per day.<br>Choose a clever team name (but keep it clean :-)), discuss your strengths in<br>Android, Java, C++, threads, GUI’s, XML, learning new IDE’s quickly,<br>debugging, report writing, etc., and elect a team leader to coordinate the<br>project.<blockquote>
+<p>Note: If you were a team leader on Project 2, you cannot also be a team<br>leader for Project 3.<br>Choose one person to have the primary responsibility for each of these tasks<br>(although you will need to help the other two on their tasks as well):</p>
+</blockquote>
+</li>
+<li>Choose a free Android emulator (Android Studio recommended, but you might want to look at MIT’s “invention machine”) and install it where all team members can use it. Write an XML GUI and the main part of the game in the Android subset of Java and find out how to call a C++ function from it. </li>
+<li>Write a minimax search with alpha-beta pruning in C++ and interface it to the main Java program. </li>
+<li>Write an A* search in C++ and interface it to the main Java program. </li>
+<li>(Team of four only) A clever way to get more time for the AI search is to use the human’s “think time” (which doesn’t count against the 5-second limit for the computer to move) in a separate thread. In other words, as soon as the computer places an X, the second thread immediately starts searching ahead. Then when the human “finally” enters a move, the 5-second clock starts, the main thread tells the second thread to take O’s move and only continue searching that subtree. If the search has not completed in 4.5 seconds, tell the second thread to stop when the current ply is finished, then make the best move and start the second thread over searching ahead.<br>Follow the Agile methodolgy as described in the slides, including:</li>
+</ol>
+<ul>
+<li>a master burn-down list of remaining tasks and estimated time for each task </li>
+<li>at least 2 “weekly” meetings to assign tasks from the burn-down list </li>
+<li>at least 10 “daily” scrums (15-minute meetings) to report progress and problems and update the burn-down list items and time still needed </li>
+<li>a graph of projected and actual burn-down rate<br>If the game is complete then consider adding sound (like a meow for a tie),<br>color, motion, blinking screen for “You beat the computer!!!”, etc.</li>
+</ul>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>Create a team project 3 repository on github and grant access to the<br>instructor and the TA in addition to your team members. Identify all the tasks<br>in the project that you can and post that to your repository as the initial<br>project task burn-down list, with the estimated number of days for each task.<br>Add new items you discover are needed and delete items when they are finished.<br>Each team must maintain a development log (wiki page in github titled<br>“Development Log”) updated by the team members. This log will be graded. There<br>is no designated format, except that you need to time stamp, write down the<br>name, and write a brief description of the activity, as in Project 2. We will<br>check your daily progress.<br>Major routines should include unit testing. Demo in the lab may be required.</p>
+<h3 id="Design-documents"><a href="#Design-documents" class="headerlink" title="Design documents"></a>Design documents</h3><p>Follow the guidelines in Scott Hackett’s “How to Write an Effective Design<br>Document (Writing for a Peer Developer)” at [<br><a target="_blank" rel="noopener" href="http://blog.slickedit.com/2007/05/how-to-write-an-effective-design-document/">http://blog.slickedit.com/2007/05/how-to-write-an-effective-design-document/</a><br>](<a target="_blank" rel="noopener" href="http://blog.slickedit.com/2007/05/how-to-write-an-effective-design-">http://blog.slickedit.com/2007/05/how-to-write-an-effective-design-</a><br>document&#x2F;) . Include all four sections described in the guide. Set up your<br>design document (named “Design Document”) as a wiki page in github. The design<br>document should cover all 3 tasks (4 for a team of 4).</p>
+<h3 id="Test-session-log"><a href="#Test-session-log" class="headerlink" title="Test session log"></a>Test session log</h3><p>This is a human-readable transcript of at least two complete games, one using<br>minimax and one using A*, showing the board in graphical form, the number of<br>nodes expanded, and the time required (user plus system) to calculate the AI<br>move. For example,<br>     Game begins<br>     Difficulty: Easy<br>     AI algorithm: A*<br>       |   |   |   |<br>    ——————-<br>     X |   |   |   |<br>    ——————-<br>       |   |   |   |<br>    ——————-<br>       |   |   |   |<br>    ——————-<br>       |   |   |   |<br>       |   |   |   |<br>    ——————-<br>     X |   |   |   |<br>    ——————-<br>       |   | O |   |<br>    ——————-<br>       |   |   |   |<br>    ——————-<br>       |   |   |   |<br>    345678 nodes expanded in 4.321 seconds<br>     X |   |   |   |<br>    ——————-<br>     X |   |   |   |<br>    ——————-<br>       |   | O |   |<br>    ——————-<br>       |   |   |   |<br>    ——————-<br>       |   |   |   |<br>and so on.</p>
+<h3 id="Post-production-notes"><a href="#Post-production-notes" class="headerlink" title="Post production notes"></a>Post production notes</h3><p>This is a wiki page with changes you had to make to your design and why,<br>difficulties, solutions, lessons learned, etc.<br>Final printed report should include the three preceding items and a printout<br>of all source code. Use the “Download ZIP” feature in github and upload the<br>resulting zip file of all source code (team leader only). For the wiki<br>documents we will check the github repository.<br>The report must include the consensus individual work load distribution<br>(percentage, must add up to 100%). Include this in the “Post production<br>notes”. Formula for individual score calculation is as follows: individual<br>score &#x3D; min(sqrt(your percentage * number of team members &#x2F; 100) *<br>team_score,110). For example, if you are on a team of 4 and your team agrees<br>your contribution was 20% and your team score was 85, your individual score is<br>min(sqrt(20 &#x2F; 25) * 85, 110) &#x3D; 76. Note that 25% is the baseline (equal<br>contribution by all four members). If your contribution was 30% and your team<br>score was 85, your individual score is min(sqrt(30 &#x2F; 25) * 85 ,110) &#x3D; 93.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/09/12/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSCE3155by5Tic-Tac-Toe/">http://saferman.github.io/2019/09/12/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSCE3155by5Tic-Tac-Toe/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/09/13/C++%E4%BB%A3%E5%86%99%EF%BC%9AECE0301Circuit/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="C++代写：ECE0301 Circuit">
+                        
+                        <span class="card-title">C++代写：ECE0301 Circuit</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-09-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/12/Hadoop%E4%BB%A3%E5%86%99%EF%BC%9ACSC555MiningBigData/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Hadoop代写：CSC555 Mining Big Data">
+                        
+                        <span class="card-title">Hadoop代写：CSC555 Mining Big Data</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-09-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Hadoop%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Hadoop代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

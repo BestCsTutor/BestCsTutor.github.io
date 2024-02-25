@@ -1,0 +1,925 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS162 Short, 留学生CS|辅导|代写">
+    <meta name="description" content="代写最短路径算法，包括BFS，DFS，Dijkstra，同时需要实现Priority Queue.  
+IntroductionIn this assignment, you will explore a number of Shortes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS162 Short | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS162 Short</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-04-10
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写最短路径算法，包括BFS，DFS，Dijkstra，同时需要实现Priority Queue.  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will explore a number of Shortest Path algorithms, for<br>both unweighted and weighted graphs. Work individually. Follow the guidelines<br>in the syllabus for any discussions with others. You may work in pairs on<br>extra credit contests, but then the extra credit will be divided among the two<br>of you. Extra credit entries must be bug-free to be eligible and turned in on<br>time (no late days).</p>
+<h2 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h2><p>After downloading the assignment tarball from the course website, extract the<br>files by running:<br>    tar -xvf lab5-handout.tgz<br>from a terminal window. Some of the files worth looking at are listed below.<br>Files you won’t necessarily modify:<br>    Makefile<br>    lib&#x2F;<em>.h<br>    lib&#x2F;</em>.c<br>Files you should modify (and the files denoted by * will be submitted for<br>grading):<br>    * heaps.c<br>    pq_test.c<br>    * unweighted_SP.c<br>    bfs_test.c<br>    dijkstra_test.c<br>Additionally, you should create and submit the following files:<br>    * lib&#x2F;weighted_graph.h<br>    * weighted_graph.c<br>    * lib&#x2F;weighted_SP.h<br>    * weighted_SP.c<br>    * written.pdf<br>where written.pdf contains the answers to the written parts of the assignment.<br>For your convenience, we’ve provided a LATEX template (written.tex).<br>If you attempt the extra credit questions, you should create and submit:<br>    * lib&#x2F;stacks.h<br>    * stacks.c<br>    * dfs.c<br>    dfs_test.c</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>To submit your programming assignment, first generate a handin archive<br>lab5-handin.tgz with the command<br>    make clean &amp;&amp; make package<br>then submit your lab5-handin.tgz file to your Subversion repository (svn) for<br>the class. Once you’ve completed all problems, you should also submit your<br>written.pdf to Gradescope.<br>Note that your code will not be graded until after the due date. It is your<br>responsibility to test your code on the CSIL machines and proofread your<br>writeup thoroughly before submitting. Code that does not compile will not<br>receive any points.</p>
+<h2 id="Priority-Queues"><a href="#Priority-Queues" class="headerlink" title="Priority Queues"></a>Priority Queues</h2><p>In this assignment, we will learn to solve Shortest Paths Problems using BFS<br>and Dijkstra’s algorithm, both of which require the Priority Queues abstract<br>data type. During lecture, we looked at priority queues as the generalization<br>of stacks and queues, where we insert and delete elements in the order of<br>their assigned priority, represented by an integer. The element with the<br>highest priority, which translate to minimal integer priority value, will<br>always be removed first. For the purpose of this lab, we will be dealing with<br>priority queues with bounded capacity.<br>Bounding the size of priority queues is not uncommon in real life. For<br>example, in an operating system, the runnable processes might be stored in a<br>priority queue, so as to be executed in the order of their assigned<br>priorities. Similarly, in a network router packets may be routed according to<br>some assigned priorities. In both cases, bounding the size of the queues helps<br>to prevent so-called denialof-service attacks where a system is essentially<br>disabled by flooding its task store. This can happen accidentally or on<br>purpose by a malicious attacker.<br>As discussed in lecture, we choose to implement priority queues using heaps.<br>Recall the two crucial invariants of heaps:</p>
+<ul>
+<li>Ordering invariant: The key of each node in the tree is less than or equal to all of its children’s keys. So the minimal element is always at the root. </li>
+<li>Shape invariant: We fill the tree level by level, from left to right, which means that the shape of the tree is completely determined by the number of elements in it.</li>
+</ul>
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p>In heaps.c, implement the following functions, as required by the priority<br>queue data type:<br>    heap pq_new(unsigned int capacity, priority_fun elem_priority);<br>    bool pq_empty(heap H);<br>    bool pq_full(heap H);<br>    void pq_insert(heap H, elem e);<br>    elem pq_min(heap H);<br>    elem pq_delmin(heap H);<br>    void pq_free(heap H, void (*elem_free)());<br>each of which evaluates to the following:<br>    pq_new: Allocates the memory needed for an empty priority queue with given capacity and priority function that takes an element and returns its assigned priority<br>    pq_empty: Determines if heap H is empty<br>    pq_full: Determines if heap H is full<br>    pq_insert: Inserts the element e into the heap, and restores heap invariant<br>    pq_min: Returns the element with minimum priority in H<br>    pq_delmin: Removes the element with minimum priority from H and returns it<br>    pq_free: Frees memory used by the heap, as well as that of each element if there’s any<br>Although not mandatory, we recommend you represent heaps as arrays. A first<br>thought on how to represent a heap would be using structs with pointers for<br>each node. However, there is a more elegant representation using arrays. We<br>use binary numbers as addresses of tree nodes. Assume a node has index i. Then<br>we append a 0 to the binary representation of i to obtain the index for the<br>left child and a 1 to obtain the index of the right child. We start at the<br>root with the number 1. Mapping this back to numeric operations, for a node at<br>index i we obtain its left child as 2 i, its right child as 2 i + 1, and its<br>parent as i&#x2F;2. Care must be taken, since any of these may be out of bounds of<br>the array.<br>We have provided a few simple tests in pq_test.c. Please add more of your own<br>tests to it, and test your implementation of priority queues by running on<br>command line:<br>    $ make priorityqueue<br>    $ .&#x2F;priorityqueue</p>
+<h2 id="Unweighted-Shortest-Paths"><a href="#Unweighted-Shortest-Paths" class="headerlink" title="Unweighted Shortest Paths"></a>Unweighted Shortest Paths</h2><h3 id="Unweighted-graphs"><a href="#Unweighted-graphs" class="headerlink" title="Unweighted graphs"></a>Unweighted graphs</h3><p>Suppose you are interested in finding how close two vertices are in a given<br>unweighted graph. In particular, given two vertices u and v, you want to find<br>out the length of the shortest path from u to v. The graphs in this section<br>are directed, simple, and unweighted.<br>If you dig around the handout library, you will find a complete C<br>implementation of unweighted graph data structure in lib&#x2F;unweighted_graph.h<br>and lib&#x2F;unweighted_graph.c. You may use, or modify them as you want.<br>Specifically, we use the adjacency list representation, where we keep a linked<br>list of neighbors for each vertex. So the entire graph is represented by a<br>length-n array of linked lists, where n is the number of vertices in the<br>graph. You might want to check out the following operations:</p>
+<ul>
+<li>ugraph ugraph_new(unsigned int numvert) creates a new unweighted graph with numvert vertices. </li>
+<li>void ugraph_free(ugraph G) frees the memory used by graph. </li>
+<li>unsigned int ugraph_size(ugraph G) returns the number of vertices in the graph. </li>
+<li>bool ugraph_hasedge(ugraph G, vertex v, vertex w) determines if (v,w) is an edge in graph G </li>
+<li>void ugraph_addedge(ugraph G, vertex v, vertex w) connects the edge (v,w), with the precondition that the edge did not exist in G before. </li>
+<li>adjlist *ugraph_neighbors(ugraph G, vertex v) returns a linked list of the neighbors of vertex v. This adjacency list is owned by the graph and should not be modified by the user.</li>
+</ul>
+<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><p>Now we are ready to find the shortest path between any two vertices in the<br>graph. For unweighted graph, the first algorithm we consider is breadth-first<br>search where we explore the graph layer by layer.</p>
+<h4 id="Task-1"><a href="#Task-1" class="headerlink" title="Task"></a>Task</h4><p>In unweighted_SP.c, implement the function:<br>    int bfs_iter(graph G, vertex start, vertex target, vertex *sp);<br>—|—<br>which searches for the shortest path from start to target in the graph G using<br>BFS, and return the path length and store the path in sp if found, otherwise<br>return -1. Note that sp is inclusive, meaning that it should also include both<br>start and target. So the length of array sp is 1 plus the path length. Some<br>special cases:</p>
+<ul>
+<li>When start &#x3D;&#x3D; target, bfs_iter should evaluate to 0, and sp &#x3D; {start} </li>
+<li>If (start, target) is an edge, bfs_iter should evaluate to 1, and sp &#x3D; {start, target}<br>One additional requirement for this task is that, during the graph search, you<br>should print out the vertex you are visiting at every step. More precisely,<br>the command line should look like:<br>$ make bfs<br>$ .&#x2F;bfs<br>Visiting 3<br>Visiting 5<br>…<br>Visiting 10<br>Don’t forget to add your own tests to bfs_test.c for more comprehensive<br>testing.</li>
+</ul>
+<h2 id="Weighted-Shortest-Paths"><a href="#Weighted-Shortest-Paths" class="headerlink" title="Weighted Shortest Paths"></a>Weighted Shortest Paths</h2><p>While you are testing your shortest path algorithm from last section on<br>different graphs, you realize that the BFS does not always give you the<br>correct result on weighted graphs. So you decided to implement Dijkstra’s<br>algorithm to handle graphs with weighted edges.<br>This section is identical to the previous except that the input graph is now<br>directed, simple, and weighted. You may assume that all weights are strictly<br>positive (no edge will have an edge weight of 0).</p>
+<h3 id="Weighted-graphs-and-Dijkstra’s-Algorithm"><a href="#Weighted-graphs-and-Dijkstra’s-Algorithm" class="headerlink" title="Weighted graphs and Dijkstra’s Algorithm"></a>Weighted graphs and Dijkstra’s Algorithm</h3><h4 id="Task-2"><a href="#Task-2" class="headerlink" title="Task"></a>Task</h4><p>You may have discovered already, but the files for the weighted graph data<br>structure do not exist yet. So for this part of the assignment, you will need<br>to create the following files:</p>
+<ul>
+<li>lib&#x2F;weighted_graph.h: Interface for weight graph data structure </li>
+<li>weighted_graph.c: Implementation of the weight graph data structure </li>
+<li>lib&#x2F;weighted_SP.h: Interface for Dijkstra’s algorithm </li>
+<li>weighted_SP.c: Implementation of Dijkstra’s algorithm<br>Their structure should assemble that of the corresponding unweighted version.<br>So feel free to copypaste, but make sure you do not have any correctness<br>mistakes! (Otherwise, you’ll be penalized in both sections for the same<br>error…)<br>Note that all requirements from previous section still apply here, including<br>the command line print statements that should display the graph search order.<br>So after you add your own tests to dijkstra_test.c, you may run you program:<br>$ make dijkstra<br>$ .&#x2F;dijkstra<br>Visiting 3<br>Visiting 5<br>…<br>Visiting 10</li>
+</ul>
+<h2 id="Cycle-Detection-Extra-Credits"><a href="#Cycle-Detection-Extra-Credits" class="headerlink" title="Cycle Detection (Extra Credits)"></a>Cycle Detection (Extra Credits)</h2><p>Note: This part of the lab is for extra credit. Make sure you complete the<br>other tasks before attempting this section.<br>The graphs in this section are directed, simple, and unweighted. And we will<br>implement DFS algorithm to determine if a graph contains a directed cycle.</p>
+<h3 id="Iterative-DFS"><a href="#Iterative-DFS" class="headerlink" title="Iterative DFS"></a>Iterative DFS</h3><p>Recall from lecture, we implement the iterative DFS algorithm using stacks,<br>which are a LIFO (last in, first out) data structure. This is just like<br>ordinary references to stack, e.g. a stack of books. Here is the interface for<br>stacks, as discussed in lecture:<br>    stack stack_new();<br>    bool stack_empty(stack S);<br>    void push(stack S, elem x);<br>    elem pop(stack S)<br>—|—<br>In fact, we can use priority queues to implement stacks. We do this by<br>choosing appropriate priority values for the elements we insert into the<br>priority queue such that they’ll be removed in the order we want them to be to<br>satisfy the LIFO property of a stack.<br>Specifically, to get a priority queue to behave like a LIFO stack, we insert<br>elements in decreasing priority order, so that the thing most recently<br>inserted into the priority queue has lowest priority and will be removed in a<br>delmin operation.</p>
+<h4 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h4><p>Create the files lib&#x2F;stacks.h and stacks.c that implement the LIFO stack<br>interface using priority queues.</p>
+<h4 id="Task-2"><a href="#Task-2" class="headerlink" title="Task 2"></a>Task 2</h4><p>Create a file dfs.c that contains the function:<br>    bool has_cycle(graph G);<br>—|—<br>that determines if there are any cycles in the graph by iterative DFS. Since<br>we are dealing with simple graphs, there is no self-loops (cycle of length 1).<br>However, there could be cycles of length 2. Hint: A directed graph has a cycle<br>if and only if a DFS over the vertices has a back edge. (We call an edge (u,<br>v) a tree edge if during DFS we traversed down to v from u. And a non-tree<br>edge (u, v) is a back edge if v is an ancestor of u in the DFS tree.)<br>To test your implementation, create a file dfs_test.c similar to bfs_test.c,<br>and run:<br>    $ make dfs_cycle<br>    $ .&#x2F;dfs_cycle</p>
+<h2 id="True-False"><a href="#True-False" class="headerlink" title="True&#x2F;False"></a>True&#x2F;False</h2><p>For the following True&#x2F;False questions, clearly state your choice and explain<br>in a few sentences about your reasons.</p>
+<h3 id="Task-1-1"><a href="#Task-1-1" class="headerlink" title="Task 1"></a>Task 1</h3><p>TRUE or FALSE: Kruskal’s algorithm for minimum spanning tree works with<br>negative edge weights.</p>
+<h3 id="Task-2-1"><a href="#Task-2-1" class="headerlink" title="Task 2"></a>Task 2</h3><p>TRUE or FALSE: One can find a maximum weight spanning tree of a connected<br>graph by negating all of the edge weights and using a minimum spanning tree<br>algorithm.</p>
+<h3 id="Task-3"><a href="#Task-3" class="headerlink" title="Task 3"></a>Task 3</h3><p>TRUE or FALSE: The heaviest edge in a undirected weighted connected graph<br>cannot belong to minimum spanning tree.</p>
+<h2 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h2><p>A DFS order is a sequence of vertices of a graph in the order in which they<br>are first visited by depth-first search (DFS).<br>One DFS order of this graph is {A, B, C, X, H, M}.</p>
+<h3 id="Task-3"><a href="#Task-3" class="headerlink" title="Task"></a>Task</h3><p>List ALL other possible DFS orders for this graph, given source vertex A.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/04/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACS162Short/">http://saferman.github.io/2021/04/10/C%E4%BB%A3%E5%86%99%EF%BC%9ACS162Short/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/04/10/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI561AlphaBetaGame/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="AI代写：CSCI561 Alpha Beta Game">
+                        
+                        <span class="card-title">AI代写：CSCI561 Alpha Beta Game</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-10
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/04/09/GeorgiaTech%E4%BB%A3%E5%86%99%EF%BC%9ACSE6232Hadoop,Spark,PigandPandas/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Georgia Tech代写：CSE6232 Hadoop, Spark, Pig and Pandas">
+                        
+                        <span class="card-title">Georgia Tech代写：CSE6232 Hadoop, Spark, Pig and Pandas</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Georgia-Tech%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Georgia Tech代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

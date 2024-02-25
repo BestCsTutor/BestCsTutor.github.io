@@ -1,0 +1,948 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C#代写：CAB201 Yahtzee Part C, 留学生CS|辅导|代写">
+    <meta name="description" content="Introduction这次需要代写的是Yahtzaa的第三部分，实现后端的业务逻辑，主要是Game游戏类，Die骰子类，Player玩家类，Score计分类。  
+The Objective of Part CThis objective">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C#代写：CAB201 Yahtzee Part C | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C#代写：CAB201 Yahtzee Part C</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C#代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-08-03
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>这次需要代写的是Yahtzaa的第三部分，实现后端的业务逻辑，主要是Game游戏类，Die骰子类，Player玩家类，Score计分类。  </p>
+<h2 id="The-Objective-of-Part-C"><a href="#The-Objective-of-Part-C" class="headerlink" title="The Objective of Part C"></a>The Objective of Part C</h2><p>This objective of part C of the assignment is to add some additional classes<br>that will provide sufficient functionality to begin to play Yahtzee albeit<br>without scoring.</p>
+<h2 id="UML-Partial-System-Diagram"><a href="#UML-Partial-System-Diagram" class="headerlink" title="UML Partial System Diagram"></a>UML Partial System Diagram</h2><p>The UML System diagram on the next page shows the classes which provide the<br>high level logic of the game. There are four (4) classes shown in the UML<br>diagram. The details shown in the class diagram give the public methods and<br>the essential private instance variables for each class.<br>The diagram shows the relationship between the classes using lines ending in<br>diamond shaped arrowheads.<br>The diamond shaped arrowhead indicates that a class contains at least one<br>object of another class, this is called a “has-a” relationship. For example,<br>the Game class contains at least one Die object (we know that it is actually<br>five.) as well the Game class contains at least one Player object and the<br>Player class contains at least one Score object (actually 19 scores).<br>You will need to declare constants in some of these classes as well as private<br>helper methods. But you MUST use this design including all specified instance<br>variables and methods when implementing your project.<br>In these class diagrams, only the type of a parameter is named. You will need<br>to supply the parameter’s name which should be meaningful.<br>In any class, except for Player class, any method labelled with {property} can<br>be implemented as a C# Property or as separate mutator and accessor methods.<br>However for Player class, Name and GrandTotal must be implemented as C#<br>Properties. If you are unsure how to implement and&#x2F;or use a C# Property ask a<br>tutor or a PLF at STIMulate. This is the only time where you can have someone<br>else write code for you.<br>A brief explanation of each of the four classes, their instance variables and<br>methods follows after the diagram.<br>As advised in Part B, start by adding instance variables and method headings<br>only for each and every class starting with Score, then Player, then Die and<br>finally Game. Note an almost empty Game class already exists in your project,<br>Games.cs.<br>Any class which has a Label object as an instance variable or as a parameter<br>will need to add the following using directive:<br>    using System.Windows.Forms;<br>—|—<br>Do not attempt to write the bodies of any methods until a skeleton of each<br>class exists and the project compiles without error.</p>
+<h2 id="Score-class"><a href="#Score-class" class="headerlink" title="Score class"></a>Score class</h2><p>An abstract class which represents a single scoring combination in a Yahtzee<br>game. This class will have a number of subclasses defined in the next<br>specification release.</p>
+<h3 id="Instance-Variables"><a href="#Instance-Variables" class="headerlink" title="Instance Variables"></a>Instance Variables</h3><p>Each Score object has a number of points that have been scored for that<br>scoring combination.<br>label is the Label object that represents this Score on the GUI.<br>done denotes whether or not this Score has been selected. This variable is<br>protected, it is not private nor public. This allows access to the variable<br>from any subclasses of Score but no other classes may access it.</p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li>core(Label) is the class constructor. </li>
+<li>Points is an accessor and mutator property for points. This method may be implemented either as standard accessor method, like SetPoints(int)and a standard mutator method, like int GetPoints() or as a C# Property. </li>
+<li>Done is an accessor only property for done. It may be implemented either a standard accessor method or as a read only C# Property. </li>
+<li>ShowScore will display the number of points on the associated label on the GUI, but only if this Score has been attempted, otherwise no points are displayed (note: display nothing, do not display zero). </li>
+<li>Load(Labels) will be explained later. For the moment leave the body of this method empty.</li>
+</ul>
+<h2 id="Player-class"><a href="#Player-class" class="headerlink" title="Player class"></a>Player class</h2><p>This class represents a player in the game.</p>
+<h3 id="Instance-variables"><a href="#Instance-variables" class="headerlink" title="Instance variables"></a>Instance variables</h3><ul>
+<li>name a player’s name. The name will be shown on the GUI when it is this player’s turn as the Player label. In the initial version of the game, the name of the players will be “Player 1”, “Player 2” etc. </li>
+<li>combinationsToDo keeps a count of how many scoring combinations a player has left to attempt before they are finished. </li>
+<li>scores is an array of Score objects, where each element represents a scoring combination for this player. </li>
+<li>grandTotal will be the Player’s total score at the end of the game. During the game this will be the total score of the scoring combinations selected up to that point of the game.</li>
+</ul>
+<h3 id="Methods-1"><a href="#Methods-1" class="headerlink" title="Methods"></a>Methods</h3><p>The Player constructor has two parameters. The first is the name of this<br>player; the second is the array of Label representing the score totals on the<br>GUI. For the moment the constructor will just assign the name to the player.<br>How to initialise the array scores with the appropriate scoreTotal of Form1<br>will be discussed in the next specification release.</p>
+<ul>
+<li>Name must be implemented as a C# Property for name. </li>
+<li>ScoreCombination() will calculate the score for a specified scoring combination (the ScoreType parameter), given the five face values of the dice (the array of int parameter). This method will be empty until the subclasses of Score are implemented in the next specification.<br>GrandTotal is C# Property for grandTotal.</li>
+<li>IsAvailable(ScoreType) checks whether or not this player has attempted the specified ScoreType. For them moment the body of this method can be return true; </li>
+<li>ShowScores() will display all the scores for this player on their associated ScoreTotals labels. Leave the body of this method empty for the moment. </li>
+<li>IsFinished() checks if this player has attempted all of the combinations. </li>
+<li>Load(Array of Labels) will be explained later. For the moment leave the body of this method empty.</li>
+</ul>
+<h2 id="Die-class"><a href="#Die-class" class="headerlink" title="Die class"></a>Die class</h2><p>This class represents a die. You will need to add the following using<br>directives:<br>    using System.Windows.Forms;<br>    using System.IO;<br>—|—<br>Note this class differs slightly from the Die Class used in lectures and<br>workshop examples.</p>
+<h3 id="Instance-variables-1"><a href="#Instance-variables-1" class="headerlink" title="Instance variables"></a>Instance variables</h3><ul>
+<li>faceValue is the current number showing on the die (an integer between 1 and 6 inclusively). </li>
+<li>active denotes whether the die is available to be rolled. </li>
+<li>label is the Label object that represents the die in Form1. </li>
+<li>random is a Random object used to generate the random numbers to simulate the rolling of a die. This object is instantiated in its declaration, NOT in the constructor as it is static. </li>
+<li>rollFile is included for testing and marking purposes. Later specifications will explain the use of this variable as well as code snippets involving the variable which you will then insert into your code. </li>
+<li>DEBUG is included for testing and will be used by the tutors to mark your project. You will be supplied with some code which uses this variable.</li>
+</ul>
+<h3 id="Methods-2"><a href="#Methods-2" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li>Die(Label) is a constructor. The parameter is the label that represents this die in Form1. </li>
+<li>FaceValue is an accessor for faceValue. It may be implemented either a standard accessor method GetFaceValue() or as a read only C# Property. </li>
+<li>Active is the accessor and mutator for the instance variable, active. A die can only be rolled if it is active. This method may be implemented either as standard accessor method, like SetActive(bool) and a standard mutator method, like bool GetActive() or as a C# Property. </li>
+<li>Roll() simulates the rolling of this die. </li>
+<li>Load(Label) use will be explained later. For the moment leave the body of this method empty.</li>
+</ul>
+<h2 id="Game-class"><a href="#Game-class" class="headerlink" title="Game class"></a>Game class</h2><p>This class represents a Yahtzee game (the model in terms of MVC terminology).</p>
+<h3 id="Instance-variables-2"><a href="#Instance-variables-2" class="headerlink" title="Instance variables"></a>Instance variables</h3><ul>
+<li>players is an array of Players of this Yahtzee game. Initially make the size of the array 2 in order to check that the game can be played correctly with this number of players. </li>
+<li>currentPlayerIndex the index of the player whose turn it currently is. </li>
+<li>currentPlayer is the Player object of the player whose turn it currently is. </li>
+<li>dice is an array of Die representing the five dice in the game. </li>
+<li>playersFinished keeps a track of how many of the players have finished attempting all of the combinations. It is used to determine that the current game is finished or not. </li>
+<li>numRolls is the number of rolls that the current player has had in their current turn. </li>
+<li>form is a link to Form1 object. It is initialised by the constructor of Game. form is used to enable&#x2F;disable various GUI controls as well as updating various labels of the GUI (updating the view in MVC terminology.) </li>
+<li>dieLabels is an array of Label objects that represent the dice on the GUI. It is used in the initialisation of dice at the start of a game.</li>
+</ul>
+<h3 id="Methods-3"><a href="#Methods-3" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li>Game(Form1) is the constructor which will initialize all instance variables of Game in preparation for a game to begin in the correct state. Recall from Part B that this constructor is called from StartNewGame() of Form1. </li>
+<li>NextTurn() updates currentPlayer and currentPlayerIndex to be the next player to play their turn, and then updates the GUI so that this player can start their turn. The method involves setting the GUI to display the player’s name and their scores (from previous turns) as well as enabling or disabling relevant buttons and labels. </li>
+<li>RollDice() will roll all of the active dice and numRolls will need to be updated and if this is the first roll, then the score combinations that the player has not attempted yet should become available on the GUI. The message shown to the player via the message label will tell them what they need to do next. (see page 4 of Part A for five possible messages). </li>
+<li>HoldDie(int) makes the die with the specified index (the parameter) inactive. </li>
+<li>ReleaseDie(int) makes the die with the specified index active. </li>
+<li>ScoreCombination(ScoreType) calculates the score for the specified scoring combination (the parameter) for the current player by calling ScoreCombination() of Player. So for the moment the body of this method will be left empty except for one statement until the subclasses of Score are implemented. The last action of this method will make an OK button appear on the GUI just below the message label and above the Section label. Add the single statement form.ShowOkButton(); to this method. </li>
+<li>Load(Form1) is a static method. For the moment leave the body empty except you will need to place the statement return null; in the method so that you code compiles. You will be given the code for this method in a future specification. </li>
+<li>Save() will save the current game to a file. For the moment leave the body of this method empty. You will be given the code for this method in a future specification.</li>
+</ul>
+<h2 id="What-to-do-now"><a href="#What-to-do-now" class="headerlink" title="What to do now?"></a>What to do now?</h2><p>Having partially implemented the classes, Form1, Game, Die, Player and Score<br>it is time to add the mechanism to begin playing a game, albeit without actual<br>scoring. We will add a menu to our form with 3 options, New, Load and Save.<br>Then we will progressively add event handlers in order for the game to<br>proceed.<br>Open Form1.cs in Design view. Open the Toolbox and open the Menus &amp; Toolbars<br>section and place a MenuStrip onto the top left hand corner of Form1. Enter<br>“Game” where the words “Type Here” are displayed. A submenu option will then<br>appear, enter “New”, followed by “Load” and finally “Save”, so that there are<br>three menu options under “Game”.<br>You may notice that the actual MenuStrip object appears in the Component Tray<br>at the bottom of the design window. Click on this object to access the<br>Properties Window for the MenuStrip. You may wish to change the BackColor<br>though it is not a requirement to do so.<br>Open the Menu and double click on New which will create an event handler for<br>that menu item. Add a call to StartNewGame method as the body of the event<br>handler. Compile your code and then run your code to see something similar to<br>this screenshot.<br>You may need to edit your code at various times to ensure that your program<br>matches the description which follows.<br>At this point, only the MenuStrip should be active, all buttons and checkboxes<br>must be disabled.<br>After selecting New, the “Click to roll dice” button should be enabled and the<br>message label should show Roll 1 and the Player label should show Player 1.<br>Now to give the “roll dice” button an event handler. This event handler will<br>simply call RollDice method of the Game class. Add the event handler, run you<br>code, select New and click the roll dice button. If you have initialised<br>everything correctly you should see something similar to the following<br>screenshot albeit with different dice values.<br>You might need to change the Properties of the dice labels as well as other<br>controls as you proceed to add additional functionality.<br>At this point, the checkboxes should be enabled. Now add event handler(s) for<br>the checkboxes. This event handler will need to either call HoldDie(int) or<br>ReleaseDie(int) of Game depending upon if the checkbox has just been checked<br>or unchecked.<br>Also the thirteen scoreButtons should be enabled at this time. Each button<br>requires an event handler which will call the ScoreCombination() of Game. Note<br>that in a player’s future turn not all of these buttons will be enabled as the<br>player will have already played various scoring combination.<br>After a player has selected s scoring combination, the OK button appears along<br>with an appropriate message telling the current player that their turn has<br>finished and to click the OK button.<br>Your program should be at the stage where you can roll the dice, the message<br>label is updated, check and uncheck various dice on any roll, select a scoring<br>combination button and then repeat the process for a second player and then<br>again for first player endlessly (or 13 times if you are counting how many<br>scoring buttons a player has selected.)</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2019/08/03/C#%E4%BB%A3%E5%86%99%EF%BC%9ACAB201YahtzeePartC/">http://saferman.github.io/2019/08/03/C#%E4%BB%A3%E5%86%99%EF%BC%9ACAB201YahtzeePartC/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C#代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/08/06/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9AECS165AFakeU/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="PostgreSQL代写：ECS165A FakeU">
+                        
+                        <span class="card-title">PostgreSQL代写：ECS165A FakeU</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-08-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">PostgreSQL代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/01/C#%E4%BB%A3%E5%86%99%EF%BC%9ACAB201YahtzeePartA/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="C#代写：CAB201 Yahtzee Part A">
+                        
+                        <span class="card-title">C#代写：CAB201 Yahtzee Part A</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-08-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C#代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

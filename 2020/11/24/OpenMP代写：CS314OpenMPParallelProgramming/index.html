@@ -1,0 +1,905 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="OpenMP代写：CS314 OpenMP Parallel Programming, 留学生CS|辅导|代写">
+    <meta name="description" content="使用OpenMP，编写程序并行进行矩阵计算。  
+OpenMP Parallel Programming ProjectIn this project, you will implement a parallelized version o">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>OpenMP代写：CS314 OpenMP Parallel Programming | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">OpenMP代写：CS314 OpenMP Parallel Programming</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OpenMP%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">OpenMP代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-11-24
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用OpenMP，编写程序并行进行矩阵计算。  </p>
+<h2 id="OpenMP-Parallel-Programming-Project"><a href="#OpenMP-Parallel-Programming-Project" class="headerlink" title="OpenMP Parallel Programming Project"></a>OpenMP Parallel Programming Project</h2><p>In this project, you will implement a parallelized version of sparse matrix<br>vector multiplication (spmv). You are given a sequential C implementation of<br>the spmv code and your job is to parallelize it using OpenMP. The following<br>four sections will explain the Sequential C implementation and clarify what<br>kind of parallelism you should be restricted to during this project.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Matrix-vector-Multiplication"><a href="#Matrix-vector-Multiplication" class="headerlink" title="Matrix-vector Multiplication"></a>Matrix-vector Multiplication</h3><p>Matrix-vector multiplication is an important and fundamental operation in many<br>computation problems.<br>The complexity of calculating res is O(MN). However, if a matrix has a large<br>number of zeros, we can reduce the number of multiplication operation because<br>any number multiplied by zero is zero. This type of matrices are called sparse<br>matrices. For example, regardless whether b is sparse, only five<br>multiplications are needed to calculate res.<br>Apparently the calculation is independent. In this project you will exploit<br>the parallelism in sparse matrix vector multiplication and parallelize it<br>using OpenMP.</p>
+<h3 id="Handling-Sparse-Matrix-Input"><a href="#Handling-Sparse-Matrix-Input" class="headerlink" title="Handling Sparse Matrix Input"></a>Handling Sparse Matrix Input</h3><p>In this project you work with sparse matrices stored in Coordinate Form (COO).<br>Specifically, we use the sparse matrices from matrix market 1 with mtx file<br>extension name. COO stores a list of (row, column, value) tuples.<br>In the source code, you are provided with matrix I&#x2F;O functions and the code to<br>load the sparse matrix in COO format. The sparse matrix A is loaded and stored<br>into a one-dimension array val[ ], which only contains non-zero element of the<br>matrix A. The row and column index of every entry in val[ ] are represented<br>using two arrays: rIndex[ ] and cIndex[ ], for instance, the non-zero value<br>val[i] is located at row rIndex[i] and column cIndex[i] in the matrix A.<br>Ideally, the tuples (row, column, value) in the COO format are sorted by row<br>index, then column index. However, in mtx files, it is not always the case. In<br>the source code, we pre-process the loaded matrix entries and sort the val[ ]<br>values such that after pre-processing, the elements in the array val[ ] are<br>reordered by row index, and then by column index, both in ascending order.<br>Two 1-dimension arrays, rsIndex and reIndex represent the beginning and ending<br>positions of each row of matrix A in the array val[ ]. For instance, the<br>nonzero values of the i-th row in matrix A are stored in the val[ ] array in<br>locations.<br>An input vector is stored in a file in the format such that the first element<br>in the file is the vector size, and the rest of the file contains the values<br>of the vector sorted by row index in ascending order, illustrated below:<br>In the source code, we also provide vector I&#x2F;O functions to load and store the<br>vector b values from a file. The 1-dimension array vec[ ] stores the vector<br>for sparse matrix vector multiplication. Please do not modify the matrix and<br>vector I&#x2F;O code!</p>
+<h2 id="Sequential-SPMV-Code"><a href="#Sequential-SPMV-Code" class="headerlink" title="Sequential SPMV Code"></a>Sequential SPMV Code</h2><p>With the above variable definitions, the following sequential algorithm is<br>used to calculate A b where A is the sparse matrix and b is the input vector.<br>The result is stored in res[ ].<br>    int i, j;<br>    for (i &#x3D; 0 ; i &lt; M; i++) {<br>      res[i] &#x3D; 0;<br>      for (j &#x3D; rsIndex[i]; j &lt;&#x3D; reIndex[i]; j++) {<br>        int tmp &#x3D; cIndex[j];<br>        res[i] +&#x3D; val[j] * vec[tmp];<br>      }<br>    }<br>—|—<br>The sequential code has a two-level nested loop. The outermost i loop<br>corresponds to the multiplication of a row vector in the matrix A with the<br>column vector b. The innermost j loop corresponds to the accumulation of the<br>multiplication results in a row and column vector multiplication. The non-zero<br>entries in A are stored in val[ ]. The rsIndex[i] and reIndex[i] represents<br>the starting and ending position of row i’s non-zero elements in the array<br>val[ ]. The code is in “spmv seq.c”.<br>To compile this program, you can type:<br>    make sequential<br>To run this program, you type:<br>    .&#x2F;spmv seq [martix-market-filename] [input-vector-filename]</p>
+<h2 id="Parallelization"><a href="#Parallelization" class="headerlink" title="Parallelization"></a>Parallelization</h2><p>In this project, you are asked to only exploit loop-level parallelism in the<br>given sequential spmv program. You will express loop-level parallelism through<br>OpenMP pagmas, i.e., <code>#pragma omp parallel</code> variations. Detailed OpenMP<br>pragma description can be found in <a target="_blank" rel="noopener" href="https://computing.llnl.gov/tutorials/openMP/"><br>https://computing.llnl.gov/tutorials/openMP/
+</a> .<br>You will need to choose the right loop level(s) to parallelize, and use the<br>best loop scheduling parameters for each parallelized loop and learn how to<br>improve the parallelization by feedback.<br>You will need to submit three OpenMP versions of the sparse matrix vector<br>program, named spmv N thread static.c, spmv N thread dynamic.c.<br>The requirement for each is as follows:</p>
+<ol>
+<li>spmv_N_thread_static.c: A version that uses static schedule for parallelization. You can exploit parallelism in only a single loop level. And you need to choose the right loop level based on dependence analysis. The “reduction” pragma is not allowed in this version. </li>
+<li>spmv_N_thread_dynamic.c: A version that uses dynamic schedule for parallelization. Similarly, you can exploit parallelism in only a single loop level. You need to choose the right loop level based on dependence analysis. The “reduction” pragma is not allowed in this version. </li>
+<li>spmv_N_thread_newalg.c: A version that uses your own strategy for parallelization. You can exploit parallelism in a single loop level or two loop level as long as the parallelized program produce correct output.<br>Feel free to add preprocessing steps before this loop for optimization<br>purpose, for instance, you can add code to determine the best chunk size for<br>any given sparse matrix, or you can modify the loop for better load balancing<br>and locality strategy. You can use other parallelization strategy such as<br>“reduction” type parallelism. The goal is to make the parallel version of spmv<br>as fast as possible.<br>In all three cases, the number of threads is set as a runtime parameter. That<br>is, the parallel program will not only take an input matrix and vector as<br>input, but also the number of threads. For instance, the dynamic schedule<br>version takes three input parameters.<br>.&#x2F;spmv_parallel_dynamic [martix-filename] [vector-filename] [thread-num]<br>The thread number is stored in the “thread num” variable in the program. If<br>you need to use or apply the number of the threads in any other place of the<br>program, please make sure it is consistent with the “thread num” variable.<br>In OpenMP, in a static schedule, loop iterations are divided into pieces of<br>size chunk and then statically assigned to threads, that is, the workload<br>schedule is determined at compile time. If chunk is not specified, the<br>iterations are evenly (if possible) divided contiguously among the threads.<br>In dynamic schedule, loop iterations are divided into pieces of size chunk,<br>and dynamically scheduled among the threads; when a thread finishes one chunk,<br>it is dynamically assigned another from the work queue shared by all threads.<br>If you do not specify the chunk size, it is 1 by default.<br>The static schedule reduces runtime overhead for accessing shared work-queue,<br>however, it may not provide the best load balancing, since the number of<br>iterations in the inner loop (j loop) is unknown at compile time, and may be<br>different across different i iterations - the number of non-zero entries for<br>each rows may be different.<br>The dynamic schedule provides better load balancing, since it determines at<br>runtime, how many task (iterations) every thread needs to be assigned. A task<br>is always assigned to the least idle thread during the execution. However, the<br>dynamic schedule requires extra code generated at compile to communicate and<br>update the shared work-queue.<br>In the third file you need to submit, the parallelization strategy you<br>designed, you are encouraged to transform the loop and&#x2F;or add additional code<br>for better load balancing results. You are also encouraged to try other<br>optimization strategies as mentioned above. The current source code includes<br>timing functionality. You can check the running time for each version of the<br>code.<br>Hints: to make your parallel program work efficiently, shared and<br>threadprivate variable have to be explicitly specified by using data-sharing<br>attribute clauses in OpenMP.<br>We will grade your projects mainly based on correct parallelization parameters<br>and correct program output (after parallelization). However, for better<br>performance testing, we encourage you to run the program on a machine that has<br>less interference from other users, for instance, your own computer. The ilab<br>machines usually have multiple users active at the same time, and the parallel<br>performance measured on a busy machine may be noisy. To design better<br>parallelization strategy in the third version of your code, you might want to<br>obtain accurate performance numbers. However, you still have to make sure your<br>code runs on an ilab machines. In the end, we will use an idle ilab machine to<br>test your program.</li>
+</ol>
+<h2 id="File-Description"><a href="#File-Description" class="headerlink" title="File Description"></a>File Description</h2><p>In this part we provide detailed description of the provided files, as well as<br>the test cases. You only need to modify the following files when you do this<br>project.</p>
+<ul>
+<li>spmv_N_thread_static.c is provided for you to implement the static schedule parallel strategy. Its usage is<br>.&#x2F;pstatic [martix-market-filename] [input-vector-filename] [thread-num]</li>
+<li>spmv_N_thread_dynamic.c is provided for you to implement the dynamic schedule parallel strategy. Its usage is<br>.&#x2F;pdynamic [martix-market-filename] [input-vector-filename] [thread-num]</li>
+<li>spmv_N_thread_newalg.c is provided for you to implement your own parallel strategy. Its usage is<br>.&#x2F;pnewalg [martix-market-filename] [input-vector-filename] [thread-num]<br>The computation result, the output vector, will be saved in “output.txt” for<br>grading purpose. We will grade based on both correctness and efficiency of<br>your parallelized code.<br>Several other provided files include</li>
+<li>mmio.h, mmio.c those two files are Matrix Market I&#x2F;O library, which can be downloaded from <a target="_blank" rel="noopener" href="http://math.nist.gov/MatrixMarket"> http://math.nist.gov/MatrixMarket </a> . We call the functions defined in this library to load the .mtx matrix file. </li>
+<li>utils.h, utils.c those two files provide two utility functions.”getmul” calculates the matrix-vector multiplication after loading the data. We compare its result with the one we get by parallel computing to check the result by “checkerror” function. The program will print “Calculation Error!” if the two results are not the same. </li>
+<li>spmv_seq.c is the sequential implementation of matrix-vector multiplication. Its usage is<br>.&#x2F;spmv_seq [martix-market-filename] [input-vector-filename]</li>
+<li>vector_generator.sh is used for generating the vector file. Its usage is<br>.&#x2F;vector_generator.sh [vector-size]<br>The generated file follows the format described in Section 1.</li>
+<li>testcases folder stores the matrix and vector examples for testing. You are only given one test case: cop20k A.mtx as the input matrix, cop20k A vector.txt as the input vector.<br>However, the input vector is not provided in the link above. Use the vector<br>generator.sh script above to generate an input vector of any size. The vector<br>size has to match the number of columns in the input matrix. To find the<br>dimension of the input matrix, in the mtx file, the first line specifies the<br>number of rows, columns, and non-zero entries for the given matrix.<br>Do not change the Makefile otherwise your code can not be compiled!</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/11/24/OpenMP%E4%BB%A3%E5%86%99%EF%BC%9ACS314OpenMPParallelProgramming/">http://saferman.github.io/2020/11/24/OpenMP%E4%BB%A3%E5%86%99%EF%BC%9ACS314OpenMPParallelProgramming/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/OpenMP%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">OpenMP代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/11/25/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSC108HExploringtheTwitterverse/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Python代写：CSC108H Exploring the Twitterverse">
+                        
+                        <span class="card-title">Python代写：CSC108H Exploring the Twitterverse</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/11/23/Java%E4%BB%A3%E5%86%99%EF%BC%9AIAPP001PayDayGUI/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java代写：IAPP001 PayDay GUI">
+                        
+                        <span class="card-title">Java代写：IAPP001 PayDay GUI</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

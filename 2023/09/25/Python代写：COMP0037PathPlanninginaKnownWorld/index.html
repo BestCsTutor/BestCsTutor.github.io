@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Python代写：COMP0037 Path Planning in a Known World, 留学生CS|辅导|代写">
+    <meta name="description" content="代写寻路算法，包括  Greedy Algorithm  ,  Dijkstra’s Algorithm
+,  A* Algorithm  .![GreedyAlgorithm](https://upload.wikimedia.org/w">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Python代写：COMP0037 Path Planning in a Known World | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Python代写：COMP0037 Path Planning in a Known World</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Python代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-09-25
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>代写寻路算法，包括 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Greedy_algorithm" title="Greedy Algorithm"> Greedy Algorithm </a> , <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm" title="Dijkstra&#39;s Algorithm"> Dijkstra’s Algorithm
+</a><br>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A*_search_algorithm" title="A*
+Algorithm"> A* Algorithm </a> .<br>![Greedy<br>Algorithm](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Greedy_algorithm_36_cents.svg/280px-">https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Greedy_algorithm_36_cents.svg/280px-</a><br>Greedy_algorithm_36_cents.svg.png)</p>
+<h2 id="Assignment-Description"><a href="#Assignment-Description" class="headerlink" title="Assignment Description"></a>Assignment Description</h2><p>In this assignment, you will implement, investigate and optimize a number of<br>discrete different planning algorithms which can be used by a robot (the stdr<br>simulation robot from lab exercise 2) in a warehouse-like environment. The<br>robot will be given a known occupancy grid map of the environment. A ROS node<br>(the_boss) sends the robot a sequence of goal cells that the robot needs to<br>visit in turn. The robot has to plan a path from its current pose to get to<br>the current goal. Both the structure of the environment and the position of<br>the robot are known perfectly all the time. Both the planner and the robot<br>will collect information on statistics such as travel distance and travel<br>time. As explained below in the materials section, you will be provided with<br>reference code which implements some of the basic (and inefficient) path<br>planning algorithms described in the lectures, as well as a reference (and<br>deliberately inefficient) controller to drive the robot about.<br>The assignment has two main parts:</p>
+<ol>
+<li>Implement, investigate the properties of the path planning algorithms. This can be carried out independently of STDR. </li>
+<li>Embed your path planning algorithms within a full ROS node and use these to drive the robot around. Explore additional ways to improve the quality of both the path planning and the control of the robot.<br>The results of both parts of your investigation will be presented in a single<br>report. This will be divided into two parts according to the assignment above.<br>The rubric gives the allocation of marks within each part separately. The<br>overall mark for this piece of coursework will be given by taking the weighted<br>contributions of each part separately.<br>Note the percentages after each heading are the percentage of the overall<br>coursework mark assigned to each section.</li>
+</ol>
+<h2 id="Part-1-Investigate-Path-Planning-Algorithms"><a href="#Part-1-Investigate-Path-Planning-Algorithms" class="headerlink" title="Part 1: Investigate Path Planning Algorithms"></a>Part 1: Investigate Path Planning Algorithms</h2><h3 id="Planning-Algorithm-Investigation"><a href="#Planning-Algorithm-Investigation" class="headerlink" title="Planning Algorithm Investigation"></a>Planning Algorithm Investigation</h3><p>The goal of this part of the coursework is for you to implement and evaluate a<br>number of path planning algorithms described in the first four weeks of the<br>lectures. For reference, we provide implementations of the breadth first and<br>depth first planners are implemented. You should implement your algorithms in<br>a similar way.<br>Instrument the path planning algorithms to store information on: the number of<br>cells visited by the planner as it computes the path, the total travel length<br>of the planned path, and the total angle the robot has turned through when<br>driving along that path.<br>Implement the Greedy Algorithm described in Week 02. The solutions should be<br>sorted in order of Euclidean distance to the goal. Cells which are closer to<br>the goal should be searched first.<br>Implement Dijkstra’s Algorithm described in Week 03.<br>Implement the A* Algorithm described in Week 04. As noted in the lectures, the<br>heuristic can make a significant difference in the performance of the<br>algorithm. You should first implement the following heuristics for the cost-<br>to-come function “():</p>
+<ol>
+<li>Always 0. </li>
+<li>A non-negative constant value c. </li>
+<li>The Euclidean Distance to the goal. </li>
+<li>The Octile Distance to the goal. </li>
+<li>The Manhattan Distance to the goal.<br>Explore the relationship between the choice of heuristic, its admissibility<br>(including changing the weights) and how it changes the performance of the<br>algorithm. You should use your metrics defined above (cells visited, path<br>length, angle turned) to support your arguments. You may also derive further<br>illustrative heuristics to further support your arguments. You may use - or<br>create - any maps of your own, including the ones in comp0037_resources. Any<br>maps developed or used should be described in your report and included with<br>your provided code.</li>
+</ol>
+<h3 id="Challenge-Problem"><a href="#Challenge-Problem" class="headerlink" title="Challenge Problem"></a>Challenge Problem</h3><p>What do you think is the optimal heuristic out of all possible heuristics (not<br>just the ones listed above) that A <em>could use? How do you think A</em> will behave<br>if you use it? Support your conclusions by implementing and demonstrating the<br>algorithn. Discuss the feasibility of using this heuristic in practice.</p>
+<h2 id="Part-2-Implementation-in-ROS"><a href="#Part-2-Implementation-in-ROS" class="headerlink" title="Part 2: Implementation in ROS"></a>Part 2: Implementation in ROS</h2><h3 id="Assess-Performance-of-Path-Planners-with-Simulated-Vehicle"><a href="#Assess-Performance-of-Path-Planners-with-Simulated-Vehicle" class="headerlink" title="Assess Performance of Path Planners with Simulated Vehicle"></a>Assess Performance of Path Planners with Simulated Vehicle</h3><p>In this part of the coursework, you will explore the relationship between a<br>path, expressed as a set of cells to be visited, and a robot which needs to<br>drive it. We provide a map and a set of waypoints which represent an idealized<br>set of tasking in an idealized scenario (this map is loaded by roslaunch<br>comp0037_cw1 factory_scenario.launch and is shown below in Figure 1). You must<br>use this scenario and set of waypoints in your analysis and discussion. If you<br>wish, you may create additional scenarios to analyse results and discuss<br>properties. If you do so, please describe these additional maps and provide<br>them with the code.<br>Instrument the planner and controller to record the distance travelled, the<br>total angle turned, and time required for the robot to drive a path. Make sure<br>that you do not include the time of drawing the graphics in your planning<br>time, because the graphics update can be rather slow.<br>Compute the performance of the planner, implemented in move2goal_controller,<br>when completing the task. What do you notice about this algorithm?<br>Implement a low-level controller which moves the robot from its current<br>location to a specified position and orientation of the graph. You may adapt,<br>if you wish, your controller you developed as part of Lab Exercise 02. Note<br>that the interface is a bit different from that encountered in Lab Exerise 02.<br>The helper class controller_base.py provides interfacing code which should be<br>of help.<br>For the different algorithms evaluated in Part 1, assess their performance on<br>robot motion.</p>
+<h3 id="Challenge-Problem-1"><a href="#Challenge-Problem-1" class="headerlink" title="Challenge Problem"></a>Challenge Problem</h3><p>How can you improve the controller to increase the speed of the robot as it<br>drives to new waypoints? Implement your proposed improvements and compare the<br>performance of the robot when driving over different paths. Note that we do<br>not look for any fixed percentage in improvement. Rather, we would like a<br>description of why and where you have identified the inefficiencies, and<br>report on how your improvements have improved performance.</p>
+<h3 id="Materials-Description"><a href="#Materials-Description" class="headerlink" title="Materials Description"></a>Materials Description</h3><p>All the software provided to support this module is on github. This consist of<br>a catkin workspace which you will initialize and run on your machine.</p>
+<h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><p>The code is in the branch cw1 available in the original repository URL but in<br>a new branch.<br>The safest approach is to create a new catkin_ws and run:<br>    cd <your_cw1_catkin_ws>&#x2F;src<br>    git clone <a target="_blank" rel="noopener" href="https://github.com/UCL/comp0037.git">https://github.com/UCL/comp0037.git</a><br>    git checkout cw1<br>You should then be able to do:<br>    cd ..&#x2F;..<br>    catkin_make<br>The code can be run in two modes: standalone and full ROS.</p>
+<h3 id="Running-Standalone-Needed-for-Part-1"><a href="#Running-Standalone-Needed-for-Part-1" class="headerlink" title="Running Standalone (Needed for Part 1)"></a>Running Standalone (Needed for Part 1)</h3><p>The standalone mode can be used to address the first part of this coursework<br>and does not require STDR to run. Several standard programs are provided.<br>These can be run from:<br>    rosrun comp0037_planner_controller run_fifo_standalone.py<br>    rosrun comp0037_planner_controller run_lifo_standalone.py<br>    rosrun comp0037_planner_controller minkowski_sum_tester.py<br>The first two run provided implementations of the fifo (breadth first search)<br>and lifo (depth first search algorithms). The last test, which uses depth<br>first search, shows how the map obstacles can be expanded to take account of<br>the size of the robot. These calls load the scripts called<br>run_fifo_standalone.py, run_lifo_standalone.py and minkowski_sum_tester.py<br>which can be found in the comp0037_planner_controller&#x2F;scripts directory. The<br>code should be “self-documenting”. However, please ask us any questions.</p>
+<h3 id="Running-Full-ROS-Needed-for-Part-2"><a href="#Running-Full-ROS-Needed-for-Part-2" class="headerlink" title="Running Full ROS (Needed for Part 2)"></a>Running Full ROS (Needed for Part 2)</h3><p>To run, use:<br>    roslaunch comp0037_cw1 factory_scenario.launch<br>This will launch all the necessary nodes required, including STDR, an<br>appropriate robot, a suitable map, the boss and the test files. Once started<br>up, the boss will play through a sequence of waypoints.<br>In addition, you can run:<br>    roslaunch comp0037_cw1 test_scenario.launch<br>This creates an empty map with a few predefined waypoints.</p>
+<h3 id="Detailed-Description"><a href="#Detailed-Description" class="headerlink" title="Detailed Description"></a>Detailed Description</h3><p>The software consists of the following packages. Those shown in italics are<br>identical to the ones in Lab Exercise 2.</p>
+<ul>
+<li>comp0037_cw1: This package contains launch files, which are used to automate starting up ROS nodes, together with the scenarios (maps + lists of goals). </li>
+<li>comp0037_example: This is the move the robot example you encountered in Lab Exercise 02. </li>
+<li>comp0037_launcher: Example launch scripts for starting up stdr. </li>
+<li>comp0037_planner_controller: This node will be the main focus of your coding efforts. It contains both the path planner which computes a path, and the controller to drive the robot. </li>
+<li>comp0037_resources: These are resources such as simple rooms. </li>
+<li>stdr: This is a modified version of the stdr simulator. It fixes a number of bugs in the global release. Unfortunately stdr is not supported anymore, and so we could not get these bug fixes pushed into the main code. </li>
+<li>comp0037_the_boss: This node produces the set of waypoints the robot drives to. It waits to receive a message to confirm that the robot has reached its goal. Rather than use the strings produced in Lab Exercise 02, it uses formatted<br>ROS messages.</li>
+<li>comp0037_time_server: This can be used to “speed up” and “slow down” the simulation time. By default it runs at real time (1s simulation &#x3D; 1s real world time). Note that speeding up by more than a factor of 2 can render the simulation unstable.<br>You will mostly work with comp0037_planner_controller.<br>The launch for the ROS node is scripts&#x2F;planner_controller_node.py. The way it<br>works is as follows. It waits until it receives a request to go to a goal. The<br>planner is called to plan a path, and the controller is then invoked to drive<br>the robot to that goal.<br>Planning:</li>
+<li>cell.py: Contains the description of the cells and their states. </li>
+<li>occupancy_grid.py: This is the raw input map. It basically consists of a big array of integers which either have the value 0 (for clear) or 1 (for occupied). </li>
+<li>search_grid.py: This contains an encoding of the graph for search. It consists of a 2D array the same size as the occupancy_grid. Each element is a cell and can be dead, alive, etc. </li>
+<li>planned_path.py: This contains the class which represents the planned path. This consists of the chain of cells, together with costs. </li>
+<li>planner_base.py: This is the base class for the planner. It actually mostly contains stuff for drawing the 2D grid cell map, and you shouldn’t have to look at it. </li>
+<li>general_forward_search_algorithm.py: This includes the implementation of the general forward based search presented in the lectures. You should not have to change this. </li>
+<li>cell_based_forward_search.py: This provides the logic for how the robot state is predicted forwards. </li>
+<li>lifo_planner.py: This contains the methods just to implement depth first search. </li>
+<li>fifo_planner.py: This contains just the code needed to implement breadth first search.<br>When you implement your own algorithms, you should only have to create your<br>own classes similar to lifo_planner and fifo_planner. You should not have to<br>change any other code.<br>Control:</li>
+<li>controller_base.py: This handles the code for taking in odometry from STDR, turning it into a pose that’s available, and driving the robot from waypoint to waypoint in a path </li>
+<li>move2goal_controller.py: This is a simple reference path planner I implemented which is the reference solution to Lab Exercise 02.<br>To implement your own controller you should be able to replace the<br>move2goal_controller. You should not have to change any other code.</li>
+</ul>
+<h3 id="Getting-Help"><a href="#Getting-Help" class="headerlink" title="Getting Help"></a>Getting Help</h3><p>You are encouraged to use the assignment discussion forum to help when you get<br>stuck. Please check the forum regularly and try and answer each other’s<br>questions. Notifications should now be set up, and we will be checking the<br>forum as often as we can and will be answering any questions that have<br>remained unanswered. Please note that if you have questions about coursework,<br>please post them to the forum directly rather than emailing me. The reason is<br>that all students will be able to see the reply.</p>
+<h3 id="Submission-Format-and-Structure"><a href="#Submission-Format-and-Structure" class="headerlink" title="Submission Format and Structure"></a>Submission Format and Structure</h3><p>Each group will submit a single zip file. The name of the zip file will be of<br>the form “COMP0037_CW1_GROUP_n.zip”, where n is the group name. The zip file,<br>when uncompressed, will contain your catkin_ws&#x2F;src (including all the nodes<br>described above), together with a report in pdf format. The code will not be<br>marked independently, however, the code may be tested to ensure that it works<br>correctly and supports the results presented in the report.<br>A reference zip file will be provided to show the desired format structure.<br>Please note that, if you do not conform to the submission guideline, a 10%<br>penalty on your overall mark for the coursework will be imposed.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/09/25/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP0037PathPlanninginaKnownWorld/">http://saferman.github.io/2023/09/25/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP0037PathPlanninginaKnownWorld/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Python代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/09/25/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS144Warriors/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Java代写：CS144 Warriors">
+                        
+                        <span class="card-title">Java代写：CS144 Warriors</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-09-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/09/23/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS62Blackjack/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java代写：CS62 Blackjack">
+                        
+                        <span class="card-title">Java代写：CS62 Blackjack</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,998 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System代写：CMPT300 Syscalls, 留学生CS|辅导|代写">
+    <meta name="description" content="通过修改Linux内核，实现OS里面自定义的  System call
+ .![Systemcall](https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kern">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Operating System代写：CMPT300 Syscalls | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Operating System代写：CMPT300 Syscalls</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Operating System代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-16
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>通过修改Linux内核，实现OS里面自定义的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/System_call" title="System call"> System call
+</a> .<br>![System<br>call](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-">https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Linux_kernel_interfaces.svg/300px-</a><br>Linux_kernel_interfaces.svg.png)</p>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<li>This assignment is to be done individually or in pairs. Do not share your code or solution, do not copy code found online, ask all questions on Piazza discussion forum (see webpage). <ul>
+<li>You may use code provide by the instructor, or in the guides&#x2F;videos provided by the instructor (such as instructor’s YouTube videos). </li>
+<li>You may follow any guides you like online as long as it is providing you information on how to solve the problem, as opposed to a solution to the assignment. </li>
+<li>If receiving help from someone, they must be helping you debug your code, not sharing their code or writing it for you. </li>
+<li>We will be carefully analyzing the code submitted to look for signs of plagiarism so please don’t do it! If you are unsure about what is allowed please talk to an instructor.</li>
+</ul>
+</li>
+<li>You may not resubmit code you have previously submitted for any course or offering. </li>
+<li>Instructors and TAs may conduct followup interviews with students to discuss their implementation and design in order to verify the originality of the assignment.</li>
+</ul>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>In order to complete this assignment, it is vital that you have carefully<br>completed and understood the content in the following guides which are posted<br>on the course website:</p>
+<ul>
+<li>Custom Kernel Guide: how to download, build, and run a custom Linux kernel. </li>
+<li>Guide to Linux Syscalls: how to create and test a simple Linux system call (syscall).<br>In this assignment you’ll be coding in both user space and kernel space. Since<br>it takes a couple of minutes to recompile and re-run a new kernel, you should<br>code carefully!</li>
+</ul>
+<h2 id="Array-Statistics-Syscall"><a href="#Array-Statistics-Syscall" class="headerlink" title="Array Statistics Syscall"></a>Array Statistics Syscall</h2><p>First, you’ll add a new system call that computes some basic statistics on an<br>array of data. In practice it makes little sense to have this as a syscall;<br>however, it allows us to become familiar with accessing memory between user<br>and kernel space before accessing other kernel data structures.</p>
+<h3 id="Syscall-Requirements"><a href="#Syscall-Requirements" class="headerlink" title="Syscall Requirements"></a>Syscall Requirements</h3><p>Create a new syscall named array_stats :<br>Make its syscall number 549 (in syscall_64.tbl):<br>    549 common array_stats sys_array_stats<br>The syscall will compute some simple statistics about an array of data. It<br>will write these statistics to a struct. Your syscall will need to be passed:</p>
+<ul>
+<li>a pointer to the struct for the syscall to write the statistics to </li>
+<li>a pointer to the array of data for the syscall to analyze </li>
+<li>the size of the array of data (i.e., how much data is there)<br>In your .c file which implements the syscall, you’ll need:<br>struct array_stats_s {<br>  long min;<br>  long max;<br>  long sum;<br>};<br>SYSCALL_DEFINE3(<br>  array_stats,                  &#x2F;* syscall name <em>&#x2F;<br>  struct array_stats_s</em>, stats, &#x2F;* where to write stats <em>&#x2F;<br>  long</em>, data,                  &#x2F;* data to process <em>&#x2F;<br>  long, size)                   &#x2F;</em> # values in data *&#x2F;<br>{<br>  &#x2F;&#x2F; your code here…<br>}<br>—|—  </li>
+<li>array_stats : The first argument to the macro defines the name of the syscall function.<br>The macro will make this into the function sys_array_stats(…) .</li>
+<li>stats : A pointer to one array_stats_s structure which was allocated by the user-space application. Structure will be written to by the syscall to store the minimum, maximum, and sum of all values in the array pointed to by data . </li>
+<li>data : An array of long values passed in by the user-space application. </li>
+<li>size : The number of elements in data . Must be <code>&gt; 0</code> .<br>The array_stats syscall must:</li>
+<li>Set the three fields of the stats structure based on the data array. The values in data are signed (positive or negative). Nothing special need be done if the sum of all the data will overflow&#x2F;underflow a long . </li>
+<li>Return 0 when successful. </li>
+<li>Returns -EINVAL if size <code>&lt;= 0</code> (in which case, nothing is written to stats ). </li>
+<li>Returns -EFAULT if unable to access stats or data (such as invalid pointers) (in which case, nothing is written to stats). </li>
+<li>You must not allocate or use a large amount of kernel memory to copy the entire input data array into.<br>The Guide to Linux Syscalls (on course website) has some hints on how to write<br>your own syscall.</li>
+</ul>
+<h3 id="Test-Application-Requirements"><a href="#Test-Application-Requirements" class="headerlink" title="Test Application Requirements"></a>Test Application Requirements</h3><p>You must create a user-space test application to test your syscall.</p>
+<ul>
+<li>Code your application in a folder outside of the kernel’s build folders. For example, put it where ever you normally put your code for assignments. </li>
+<li>Your application should execute a few calls to your syscall to prove it works. Try some of the edge cases. </li>
+<li>Check with different size arrays, and different values. </li>
+<li>Check with invalid pointers and array sizes to ensure your syscall handles bad values correctly. We will test your code with our extensive testing program.</li>
+</ul>
+<h2 id="Process-Ancestor-Syscall"><a href="#Process-Ancestor-Syscall" class="headerlink" title="Process Ancestor Syscall"></a>Process Ancestor Syscall</h2><p>In this section you’ll implement a syscall which returns information about the<br>current process, plus its ancestors (its parent process, it’s grandparent<br>process, and so on).</p>
+<h3 id="Syscall-Requirements-1"><a href="#Syscall-Requirements-1" class="headerlink" title="Syscall Requirements"></a>Syscall Requirements</h3><p>Create a new syscall named process_ancestors :<br>Make its syscall number 550 (in syscall_64.tbl):<br>    550 common process_ancestors sys_process_ancestors<br>The syscall will look at the current process, and each of its ancestors, all<br>the way back to the init process (usually PID 1). For each process it will<br>record some information about the process. This infromation will be written<br>into an array of structs (one per process). Our syscall will need:</p>
+<ul>
+<li>a pointer to an array of structs for recording the process information, allocated by the user-space application. </li>
+<li>the number of structs in the array </li>
+<li>a pointer to a long , which the syscall will write to, to record how many processes the syscall analyzed (i.e., how many elements in the array of stucts did the syscall fill).<br>In your syscall’s .c file you’ll need:<br>#define ANCESTOR_NAME_LEN 16<br>struct process_info {<br>  long pid;                     &#x2F;* Process ID <em>&#x2F;<br>  char name[ANCESTOR_NAME_LEN]; &#x2F;</em> Program name of process <em>&#x2F;<br>  long state;                   &#x2F;</em> Current process state <em>&#x2F;<br>  long uid;                     &#x2F;</em> User ID of process owner <em>&#x2F;<br>  long nvcsw;                   &#x2F;</em> # voluntary context switches <em>&#x2F;<br>  long nivcsw;                  &#x2F;</em> # involuntary context switches <em>&#x2F;<br>  long num_children;            &#x2F;</em> # children process has <em>&#x2F;<br>  long num_siblings;            &#x2F;</em> # sibling process has <em>&#x2F;<br>};<br>SYSCALL_DEFINE3(<br>  process_ancestors,                &#x2F;</em> syscall name for macro <em>&#x2F;<br>  struct process_info</em>, info_array, &#x2F;* array of process info strct <em>&#x2F;<br>  long, size,                       &#x2F;</em> size of the array <em>&#x2F;<br>  long</em>, num_filled)                &#x2F;* # elements written to array *&#x2F;<br>{<br>  &#x2F;&#x2F; your code here…<br>}<br>—|—  </li>
+<li>process_ancestors : the first argument to the macro defines the name of the syscall function.<br>The macro will make this into the function sys_process_ancestors(…) .</li>
+<li>info_array : array of process_info structs, alloctaed by the user-space application, into which the syscall will write information about each process. </li>
+<li>size : the size of info_array (number of process_info structs), passed in by the user-space application. This is the maximum number of structs that the syscall will write into the array (starting with the current process as the first entry and working up from there). The size may be larger or smaller than the actual number of ancestors of the current process: larger means some entries are left unused; smaller means information about some processes will not be written into the array. </li>
+<li>num_filled : a pointer to a long , which will be written to by the syscall to record how many structs in the info_array array were filled in by the syscall. num_filled will be at most equal to size ; but could be less than size when there are fewer ancestors processes than the size of the passed in array.<br>The process_ancestors syscall must:</li>
+<li>Starting at the current process, fill the elements in info_array[] with the correct values. <ul>
+<li>Ordering: the current process’s information goes into info_array[0] ; the parent of the current process into info_array[1] ; grandparent into info_array[2] ; and so on. </li>
+<li>If there are extra structs in info_array[] , they are left unmodified.</li>
+</ul>
+</li>
+<li>Return 0 when successful. </li>
+<li>Return -EINVAL if the syscall’s size argument is <code>&lt;= 0</code> . </li>
+<li>Return -EFAULT if there are any problems access info_array or num_filled (such as bad pointers, …) </li>
+<li>You must not allocate or use a large amount of kernel memory to copy&#x2F;store large arrays into.<br>However, you may allocated on the stack, inside the syscall, up to one<br>process_info struct if needed.</li>
+</ul>
+<h3 id="Test-Application-Requirements-1"><a href="#Test-Application-Requirements-1" class="headerlink" title="Test Application Requirements"></a>Test Application Requirements</h3><p>You must create a user-space test application to test your syscall.</p>
+<ul>
+<li>Place the test apps for both of your assignment’s system calls in one folder, built with the same makefile. </li>
+<li>You must do at least some testing to show the syscall works correctly, and that it generates correct error values in at least a few of the failure conditions (suc has bad pointers, …). <ul>
+<li>Hint: Use asserts or the CHECK() macro in your test code.</li>
+</ul>
+</li>
+<li>We will run your test apps to ensure they work.<br>We will test your syscall with our extensive testing program.</li>
+</ul>
+<h3 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h3><p>You will make extensive use of the kernel’s task_struct structures: each<br>process has a task_struct . You can access the task_struct for the current<br>process using the macro current<br>For example, the PID for the currently running process on this CPU can be<br>found with: <code>long pid = current-&gt;pid;</code><br>Basic algorithm sketch:  </p>
+<ol>
+<li>Fill in fields for info_array[0] for the current process.  </li>
+<li>Move to the parent of this process ( current-&gt;parent ), and copy its info<br>into info_array[1] .  </li>
+<li>Repeat until the parent of the process you are working on is itself (i.e: <code>cur_task-&gt;parent == cur_task</code> ).<br>The first task spawned by Linux (often called init ) is its own parent, so<br>hence its parent pointer points to itself. This process usually has PID 1 and<br>is the idle task (named swapper or init ).<br>I recommend that you:</li>
+</ol>
+<ul>
+<li>first write test values (like 42) into the process_info struct to show you can correctly write to it in the syscall, and read from it in your user-space test application. </li>
+<li>next get the info on the current process and print it to the screen ( printk ) to ensure you have the correct values. </li>
+<li>then write the process’s values into the process_info struct and handling ancestors.<br>Hints on filling the fields of process_info :</li>
+<li>Quite a few of the values can be pulled directly out of the task_struct structure. Look for fields with a matching name. is defined in include&#x2F;linux&#x2F;sched.h (in your kernel folder). To include this in your syscall implementation use: <code>#include &lt;linux/sched.h&gt;</code> task_struct </li>
+<li>Here is a good online site to navigate the kernel source; browse into include linux sched.h ; search for tast_struct </li>
+<li>The name of the program for a process is stored in the task_struct.comm field. </li>
+<li>The user ID for the owner of a process can be found inside the process’s credentials (cred field). Inside cred , you want to look at the uid field. </li>
+<li>For counting the number of children and siblings, you’ll want to start with the following linked list nodes: task_struct.children , and task_struct.sibling . <ul>
+<li>These are nodes in circular linked lists. Linux uses the struct list_head for a node because in a circular linked list, each node can be thought of as the head of the list. </li>
+<li>You can follow the next field of a node in the list (a list_head ) to get the node ( list_head ) of the next element in the list. </li>
+<li>It is a circular linked list, so you’ll have to determine how to count the number of elements (think of how you know when to stop following next pointers). </li>
+<li>Note that Linux has some clever (complicated) ways of taking a node in the list (which just has a next and prev field pointing to other list_head structures) and accessing the full structure that contains the node. For example, given a list_head struct that is in a task_struct , the kernel includes macros to give you the full task_struct . However, you have (mercifully) been spared having to do this. If you are interested, for fun try printing out the PID of each of the sibling processes.</li>
+</ul>
+</li>
+<li>Safe memory access is critical. Apply all the suggestions from the syscall guide for safe memory access. </li>
+<li>You can use the ps command in your QEMU virtual machine to display information on running processes and verify the syscall output. Run ‘ man ps ‘ to see how to select the information it displays.</li>
+</ul>
+<h2 id="Deliverables"><a href="#Deliverables" class="headerlink" title="Deliverables"></a>Deliverables</h2><p>In CourSys, create a group for your submission. Even if you worked on your<br>own, you need to be in a group (of 1 in this case) in order to submit. Submit<br>the following to CourSys:</p>
+<ol>
+<li>syscalls.tar.gz : An archive file of your kernel code folder.<br>Required files:<br>* makefile (executed by kernel’s build system to build your syscalls’ .c files)<br>* array stat syscall’s .c<br>* process ancestor syscall’s .c<br>* OK to include cs300_test.c<br>* OK to include any extra .h files (if any)<br>To create this archive, from inside your linux-5.7&#x2F;cs300&#x2F; folder, execute: <code>$ tar -czvf syscalls.tar.gz *</code></li>
+<li>user-tests.tar.gz : An archive file of your user mode folder containing your test code for the syscalls. Must include a makefile with targets “ all “ (to build) and “ transfer “ (to copy the statically linked executable to QEMU via SCP on port 10022).<br>May include the provided array_statistics test code.<br>From inside your user-space folder, execute: <code>$ tar -czvf user-tests.tar.gz *</code></li>
+<li>Screenshot of QEMU running your custom kernel.<br>* Launch your custom kernel in QEMU which you customized from the guide to include your<br>SFU user ID.<br>* Compile and transfer in the provided cs300_test test.<br>* Run the comamnd: <code># uname -a</code><br>* Run the command <code># ./cs300_test</code><br>* Take a screenshot of the QEMU terminal showing at least the output of these two commands (OK if there are extra lines on the screen, and OK if your syscall’s printk() messages appear too.<br>Please remember that all submissions will automatically be compared for<br>unexplainable similarities.<br>Marking will be done on a 64-bit system. If you did your development on a<br>32-bit system, your code must still compile and run on a 64 bit system. In<br>this case, you may find the following user-level code useful to define the<br>syscall numbers based on the system’s 32bit vs 64bit status (the constant<br>_LP64):<br>&#x2F;&#x2F; Test application to call the CS300_TEST syscall<br>&#x2F;&#x2F; Syscall is expected to take one argument and<br>&#x2F;&#x2F; return that value + 1.<br>#include &lt;stdio.h&gt;<br>#include &lt;unistd.h&gt;<br>#include &lt;sys&#x2F;syscall.h&gt;<br>&#x2F;&#x2F; Syscall numbers<br>#if _LP64 &#x3D;&#x3D; 1<br> &#x2F;&#x2F; 64 bit<br> #define SYSCALL_CS300_TEST       548<br> #define SYSCALL_ARRAY_STATS      549<br> #define SYSCALL_PROCESS_ANCESTOR 550</li>
+</ol>
+<pre><code>#else  
+  // 32 bit  
+  #define SYSCALL_CS300_TEST       439  
+  #define SYSCALL_ARRAY_STATS      440  
+  #define SYSCALL_PROCESS_ANCESTOR 441  
+#endif  
+int main(int argc, char *argv[])  
+&#123;  
+  printf(&quot;\nDiving to kernel level\n\n&quot;);  
+  int result = syscall(SYSCALL_CS300_TEST , 12345);  
+  printf(&quot;\nRising to user level w/ result = %d\n\n&quot;,  
+    result);  
+  return 0;  
+&#125;  
+</code></pre>
+<p>—|—</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/06/16/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPT300Syscalls/">http://saferman.github.io/2021/06/16/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPT300Syscalls/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Operating System代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/18/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS3134RawDataofCameraSensor/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：CS3134 Raw Data of Camera Sensor">
+                        
+                        <span class="card-title">Python代写：CS3134 Raw Data of Camera Sensor</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/16/Spark%E4%BB%A3%E5%86%99%EF%BC%9ACS15619CloudComputing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Spark代写：CS15619 Cloud Computing">
+                        
+                        <span class="card-title">Spark代写：CS15619 Cloud Computing</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Spark代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

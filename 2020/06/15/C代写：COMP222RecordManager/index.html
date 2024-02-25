@@ -1,0 +1,970 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMP222 Record Manager, 留学生CS|辅导|代写">
+    <meta name="description" content="实现数据结构中的B+树。  
+RequirementIn this assignment you are implementing a B+-tree index. The index should bebacked up by a pag">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMP222 Record Manager | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMP222 Record Manager</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-06-15
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现数据结构中的B+树。  </p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this assignment you are implementing a B+-tree index. The index should be<br>backed up by a page file and pages of the index should be accessed through<br>your buffer manager. As discussed in the lecture each node should occupy one<br>page. However, for debugging purposes you should support trees with a smaller<br>fan-out and still let each node occupy a full page. A B+-tree stores pointer<br>to records (the RID introduced in the last assignment) index by a keys of a<br>given datatype. The assignment only requires you to support DT_INT (integer)<br>keys (see optional extensions). Pointers to intermediate nodes should be<br>represented by the page number of the page the node is stored in. To make<br>testing easier your implementation should follow the conventions stated below.</p>
+<ul>
+<li>Leaf Split: In case a leaf node need to be split during insertion and n is even, the left node should get the extra key. E.g, if n &#x3D; 2 and we insert a key 4 into a node [1,5], then the resulting nodes should be [1,4] and [5]. For odd values of n we can always evenly split the keys between the two nodes. In both cases the value inserted into the parent is the smallest value of the right node. </li>
+<li>Non-Leaf Split: In case a non-leaf node needs to be split and n is odd, we cannot split the node evenly (one of the new nodes will have one more key). In this case the “middle” value inserted into the parent should be taken from the right node. E.g., if n &#x3D; 3 and we have to split a non-leaf node [1,3,4,5], the resulting nodes would be [1,3] and [5]. The value inserted into the parent would be 4. </li>
+<li>Leaf Underflow: In case of a leaf underflow your implementation should first try to redistribute values from a sibling and only if this fails merge the node with one of its siblings. Both approaches should prefer the left sibling. E.g., if we can borrow values from both the left and right sibling, you should borrow from the left one.<br>You can use the B+-tree shown below to sanity check your implementation of<br>inserts. It has been generated by the following sequence of key insertions<br>1,11,13,17,23,52 for RIDs 1.1,2.3,1.2,3.5,4.4,3.2.</li>
+</ul>
+<h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><pre><code>#ifndef BTREE_MGR_H  
+#define BTREE_MGR_H  
+#include &quot;dberror.h&quot;  
+#include &quot;tables.h&quot;  
+// structure for accessing btrees  
+typedef struct BTreeHandle &#123;  
+  DataType keyType;  
+  char *idxId;  
+  void *mgmtData;  
+&#125; BTreeHandle;  
+typedef struct BT_ScanHandle &#123;  
+  BTreeHandle *tree;  
+  void *mgmtData;  
+&#125; BT_ScanHandle;  
+// init and shutdown index manager  
+extern RC initIndexManager (void *mgmtData);  
+extern RC shutdownIndexManager ();  
+// create, destroy, open, and close an btree index  
+extern RC createBtree (char *idxId, DataType keyType, int n);  
+extern RC openBtree (BTreeHandle **tree, char *idxId);  
+extern RC closeBtree (BTreeHandle *tree);  
+extern RC deleteBtree (char *idxId);  
+// access information about a b-tree  
+extern RC getNumNodes (BTreeHandle *tree, int *result);  
+extern RC getNumEntries (BTreeHandle *tree, int *result);  
+extern RC getKeyType (BTreeHandle *tree, DataType *result);  
+// index access  
+extern RC findKey (BTreeHandle *tree, Value *key, RID *result);  
+extern RC insertKey (BTreeHandle *tree, Value *key, RID rid);  
+extern RC deleteKey (BTreeHandle *tree, Value *key);  
+extern RC openTreeScan (BTreeHandle *tree, BT_ScanHandle **handle);  
+extern RC nextEntry (BT_ScanHandle *handle, RID *result);  
+extern RC closeTreeScan (BT_ScanHandle *handle);  
+// debug and test functions  
+extern char *printTree (BTreeHandle *tree);  
+#endif // BTREE_MGR_H  
+</code></pre>
+<p>—|—  </p>
+<h2 id="Index-Manager-Functions"><a href="#Index-Manager-Functions" class="headerlink" title="Index Manager Functions"></a>Index Manager Functions</h2><p>These functions are used to initialize the index manager and shut it down,<br>freeing up all acquired resources.</p>
+<h2 id="B-tree-Functions"><a href="#B-tree-Functions" class="headerlink" title="B+-tree Functions"></a>B+-tree Functions</h2><p>These functions are used to create or delete a b-tree index. The later should<br>also remove the corresponding page file. Furthermore, before a client can<br>access an b-tree index it has to be opened (openBtree). When closing a b-tree<br>(closeBtree), the index manager should ensure that all new or modified pages<br>of the index are flushed back to disk (use the buffer manager function for<br>that).</p>
+<h2 id="Key-Functions"><a href="#Key-Functions" class="headerlink" title="Key Functions"></a>Key Functions</h2><p>These functions are used to find, insert, and delete keys in&#x2F;from a given<br>B+-tree. findKey return the RID for the entry with the search key in the<br>b-tree. If the key does not exist this function should return<br>RC_IM_KEY_NOT_FOUND (see dberror.h). insertKey inserts a new key and record<br>pointer pair into the index. It should return error code<br>RC_IM_KEY_ALREADY_EXISTS if this key is already stored in the b-tree.<br>deleteKey removes a key (and corresponding record pointer) from the index. It<br>should return RC_IM_KEY_NOT_FOUND if the key is not in the index. For deletion<br>it is up to the client whether this is handled as an error.<br>Furthermore, clients can scan through all entries of a BTree in sort order<br>using the openTreeScan, nextEntry, and closeTreeScan methods. The nextEntry<br>method should return RC_IM_NO_MORE_ENTRIES if there are no more entries to be<br>returned (the scan has gone beyond the last entry of the B+-tree. Below is an<br>example of how the scan can be used.<br>    BT_ScanHandle *sc;<br>    RID rid;<br>    int rc;<br>    startTreeScan(btree, sc, NULL);<br>    while((rc &#x3D; nextEntry(sc, &amp;rid)) &#x3D;&#x3D; RC_OK)<br>    {<br>      &#x2F;&#x2F; do something with rid<br>    }<br>    if (rc !&#x3D; RC_IM_NO_MORE_ENTRIES)<br>    &#x2F;&#x2F; handle the error<br>      closeTreeScan(sc);<br>—|—  </p>
+<h2 id="Debug-functions"><a href="#Debug-functions" class="headerlink" title="Debug functions"></a>Debug functions</h2><p>printTree is used to create a string representation of a b-tree. It is used in<br>the test cases and can be helpful for debugging. You code has to generate the<br>format described in the following. Each node of a b-tree is represented as one<br>line in the string representation. The order of nodes should be in depth-first<br>pre-order. The following representation should be used for each node<br>(pos)[pointer,key,pointer, …]. Key should be represented using the<br>serializeValue method from the last assignment. Pointers to nodes should be<br>shown as the node position according to depth first pre-order traversal. Thus,<br>the string representations generated by printTree is independent of the actual<br>positions of the index nodes on disk. RIDs should be represented as<br>PageNumber.Slot. As an example consider the b-tree shown below and its string<br>representation.<br>    (0)[1,13,2,23,3]<br>    (1)[1.1,1,2.3,11,2]<br>    (2)[1.2,13,3.5,17,3]<br>    (3)[4.4,23,3.2,52]</p>
+<h2 id="Optional-Extensions"><a href="#Optional-Extensions" class="headerlink" title="Optional Extensions"></a>Optional Extensions</h2><p>Integrate the B+-tree with the record manager: Modify your record manager to<br>use the B+-tree for search. That is when creating a new relation with the<br>record manager you should let the user specify which attribute is the key of<br>the table. The record manager should then create and maintain the B+-tree for<br>storing the keys from this attribute. When a new record is inserted, the<br>corresponding key should be inserted in the B+-tree. A scan that searches for<br>a record with a given key should use the B+-tree instead of scanning through<br>all the records. If you want to support keys with more than one attribute, you<br>are allowed to change the b-tree interface to support that.<br>Allow different data types as keys: Allow the other data types introduced in<br>assignment 3 to be used as keys for the B+-tree.<br>Implement pointer swizzling: Once a B-tree node is memory, conceptual pointers<br>to that node (pagenum) should be actual memory pointers. Note that B-trees<br>pages are only pointed to by their intermediate parent node. Thus, a simple<br>way to realize swizzling at page load time, is to immediately replace the<br>pointer to a child node with the memory pointer once some code tries to access<br>it. The complicated part is to make sure that memory pointers are replaced<br>with pagenumif the buffer manager evicts a page from the buffer that was<br>pointed to by a memory pointer. A reasonable way to implement this is to<br>create a bookkeeping data structure that stores all places of pointers to a<br>node that have been replaced by memory pointers. The buffer manager has to be<br>extended with a callback function parameter. This callback is called whenever<br>a page is evicted. For this extension the callback would be a clean-up<br>function that accesses the bookkeeping data structure to figure out where it<br>has to replace memory pointers with page numbers. This data structure is also<br>needed when a node gets evicted that has memory pointer to one or more of its<br>child nodes.<br>Support multiple entries for one key: Instead of enabling only a single RID to<br>be stored for each key, allow insertions of multiple entries with the same<br>key. You are allowed to change the btree_mgr.h to support accessing all the<br>entries for a key. Please do not change the signature of the findKey method,<br>but rather add a new findAllEntries method that returns an array&#x2F;list of<br>entries. The findKey should return the first entry only. Instead of RIDs the<br>pointers in leave nodes should reference a page storing all entries for a key.<br>If there are more entries for a key then you can fit onto one page, additional<br>pages should be organized as a linked list. That is each page stores a pointer<br>to the next page.</p>
+<h2 id="Source-Code-Structure"><a href="#Source-Code-Structure" class="headerlink" title="Source Code Structure"></a>Source Code Structure</h2><p>Your source code directories should be structured as follows. You should reuse<br>your existing storage manager and buffer manager implementations (also record<br>manager if you plan to implement the record manager integration extension). So<br>before you start to develop, please copy these implementations into the<br>assign4 folder.</p>
+<ul>
+<li>Put all source files in a folder assign4 in your git repository </li>
+<li>This folder should contain at least … <ul>
+<li>the provided header and C files </li>
+<li>a make file for building your code Makefile </li>
+<li>a bunch of *.c and *.h files implementing the B+-tree </li>
+<li>README.txt: A text file that shortly describes your solution</li>
+</ul>
+</li>
+</ul>
+<h2 id="Test-Cases"><a href="#Test-Cases" class="headerlink" title="Test Cases"></a>Test Cases</h2><h3 id="test-helper-h"><a href="#test-helper-h" class="headerlink" title="test_helper.h"></a>test_helper.h</h3><p>Defines several helper methods for implementing test cases such as<br>ASSERT_TRUE.</p>
+<h3 id="test-expr-c"><a href="#test-expr-c" class="headerlink" title="test_expr.c"></a>test_expr.c</h3><p>This file implements several test cases using the expr.h interface. Please let<br>your make file generate a test_expr binary for this code. You are encouraged<br>to extend it with new test cases or use it as a template to develop your own<br>test files.</p>
+<h3 id="test-assign4-1-c"><a href="#test-assign4-1-c" class="headerlink" title="test_assign4_1.c"></a>test_assign4_1.c</h3><p>This file implements several test cases using the btree_mgr.h interface.<br>Please let your make file generate a test_assign4 binary for this code. You<br>are encouraged to extend it with new test cases or use it as a template to<br>develop your own test files.</p>
+<h2 id="Optional-Assignment-Ideas"><a href="#Optional-Assignment-Ideas" class="headerlink" title="Optional Assignment Ideas"></a>Optional Assignment Ideas</h2><p>This is not a comprehensive list. Suggest your own topic or contact the<br>instructor for additional topics in a specific area.</p>
+<ul>
+<li>Implement a standard operator algorithm on top of your record manager <ul>
+<li>nested loop join </li>
+<li>merge join </li>
+<li>sorting aggregate </li>
+<li>hash aggregate </li>
+<li>union </li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<h2 id="Optional-Assignment-Ideas-1"><a href="#Optional-Assignment-Ideas-1" class="headerlink" title="Optional Assignment Ideas"></a>Optional Assignment Ideas</h2><p>This is not a comprehensive list. Suggest your own topic or contact the<br>instructor for additional topics in a specific area.</p>
+<ul>
+<li>Implement a standard operator algorithm on top of your record manager <ul>
+<li>nested loop join </li>
+<li>merge join </li>
+<li>sorting aggregate </li>
+<li>hash aggregate </li>
+<li>union </li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2020/06/15/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP222RecordManager/">http://saferman.github.io/2020/06/15/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP222RecordManager/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/06/17/C%E4%BB%A3%E5%86%99%EF%BC%9ACS313Ext2FileSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="C代写：CS313 Ext2 File System">
+                        
+                        <span class="card-title">C代写：CS313 Ext2 File System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/06/12/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS362BayerPattern/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Python代写：CS362 Bayer Pattern">
+                        
+                        <span class="card-title">Python代写：CS362 Bayer Pattern</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-06-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

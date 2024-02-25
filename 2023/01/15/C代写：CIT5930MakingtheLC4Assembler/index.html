@@ -1,0 +1,1037 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CIT5930 Making the LC4 Assembler, 留学生CS|辅导|代写">
+    <meta name="description" content="使用 [ PennSim ](https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-guide.html “PennSim”) 工具，实现一个.obj文件解析器，并将程序">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CIT5930 Making the LC4 Assembler | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CIT5930 Making the LC4 Assembler</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-15
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>使用 [ PennSim ](<a target="_blank" rel="noopener" href="https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-">https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-</a><br>guide.html “PennSim”) 工具，实现一个.obj文件解析器，并将程序和数据存储到对应的Linked List结构中。<br>![PennSim](<a target="_blank" rel="noopener" href="https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-">https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-</a><br>simulator.png)</p>
+<h2 id="Setting-up-Codio-for-this-HW"><a href="#Setting-up-Codio-for-this-HW" class="headerlink" title="Setting up Codio for this HW"></a>Setting up Codio for this HW</h2><ol>
+<li>Open the Codio assignment via Canvas </li>
+<li>From the Codio File-Tree click on: lc4_memory.h and lc4_memory.c </li>
+<li>Remember to use the Codio “Pre-submission tests” function before submitting the assignment.</li>
+</ol>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The goal of this HW is for you to write a program that can open and read in a<br>.obj file created by PennSim, parse it, and load it into a linked list that<br>will represent the LC4’s program and data memories (similar to what PennSim’s<br>“loader” does). In the last HW, you created a .obj file. In this HW, you will<br>be able to read in a .obj file and convert it back to the assembly it came<br>from! This is known as reverse assembling (sometimes a disassembler).</p>
+<h2 id="RECALL-OBJECT-FILE-FORMAT"><a href="#RECALL-OBJECT-FILE-FORMAT" class="headerlink" title="RECALL: OBJECT FILE FORMAT"></a>RECALL: OBJECT FILE FORMAT</h2><p>The following is the format for the binary .obj files created by PennSim from<br>your .asm files. It represents the contents of memory (both program and data)<br>for your assembled LC-4 Assembly programs. In a .obj file, there are 3 basic<br>sections indicated by 3 header “types” &#x3D; CODE, DATA, SYMBOL.</p>
+<ul>
+<li>Code: 3-word header (xCADE, [address], [n]), n-word body comprising the instructions. This corresponds to the .CODE directive in assembly. </li>
+<li>Data: 3-word header (xDADA, [address], [n]), n-word body comprising the initial data values. This corresponds to the .DATA directive in assembly. </li>
+<li>Symbol: 3-word header (xC3B7, [address], [n]), n-character body comprising the symbol string. Note, each character in the file is 1 byte, not 2. There is no null terminator. Each symbol is its own section. These are generated when you create labels (such as “END”) in assembly.</li>
+</ul>
+<h2 id="LINKED-LIST-NODE-STRUCTURE"><a href="#LINKED-LIST-NODE-STRUCTURE" class="headerlink" title="LINKED LIST NODE STRUCTURE"></a>LINKED LIST NODE STRUCTURE</h2><p>In the file: lc4_memory.h, you’ll see the following structure defined.<br>The structure is meant to model a row of the LC4’s memory: a 16-bit address, &amp;<br>its 16-bit contents. As you know, an address may also have a label associated<br>with it. You will also recall that PennSim always shows the contents of memory<br>in its “assembly” form. So PennSim reverseassembles the contents and displays<br>the assembly instruction itself (instead of the binary contents).<br>As part of this assignment, you will read in a .obj file and store each<br>instruction and piece of data in a NODE of the type above. Since they’ll be an<br>unknown # of instructions in the file, you’ll create a linked list of the<br>nodes above to hold all the instructions that are in the .obj file.<br>The details of how to implement all of this will be discussed in the following<br>sections in this document.</p>
+<h2 id="IMPLEMENTATION-DETAILS"><a href="#IMPLEMENTATION-DETAILS" class="headerlink" title="IMPLEMENTATION DETAILS"></a>IMPLEMENTATION DETAILS</h2><p>The first files to view in the helper file are lc4_memory.h and lc4_memory.c.<br>In these files you will notice the structure that represents a row_of_memory<br>as referenced above (see the section: LINKED_LIST_NODE_STRUCTURE above for the<br>node’s layout). You will also see several helper functions that will serve to<br>manage a linked list of “rows_of_memory” nodes. Your job will be to implement<br>these simple linked list helper functions using your knowledge from the last<br>HW assignment. You must implement everything listed by the comments in the<br>starter code. If you wish to implement additional helper functions, feel free<br>to add them to any .c file but remember to add the function prototypes to<br>lc4_memory.h.<br>Next, you will modify the file called: lc4.c It serves as the “main” for the<br>entire program. The head of the linked list must be stored in main(), you will<br>see in the provided lc4.c file a pointer named: memory will do just that.<br>main() will then extract the name of the .obj file the user has passed in when<br>they ran your program from the argv[] parameter passed in from the user. Upon<br>parsing that, it will call lc4_loader.c’s open_file() and hold a pointer to<br>the open file. It will then call lc4_loader.c’s parse_file() to interpret the<br>.obj file the user wishes to have your program process. Lastly it will reverse<br>assemble the file, print the linked list, and finally delete it when the<br>program ends. These functions are described in greater detail below. The order<br>of the function calls and their purpose is shown in comments in the lc4.c file<br>that you will implement as part of this assignment.<br>Once you have properly implemented lc4.c and have it accept input from the<br>command line, a user should be able to run your program as follows:<br>    .&#x2F;lc4 my_file.obj<br>Where “my_file.obj” can be replaced with any file name the user desires as<br>long as it is a valid .obj file that was created by PennSim. If no file is<br>passed in, your program should generate an error telling the user what went<br>wrong, like this:<br>    error1: usage: .&#x2F;lc4 &lt;object_file.obj&gt;<br>There is no need to check that the filename ends in .obj nor should you append<br>.obj to filename passed in without an extension. The filename will be the only<br>argument passed in.</p>
+<h2 id="Problem-1-Implementing-the-LC4-Loader"><a href="#Problem-1-Implementing-the-LC4-Loader" class="headerlink" title="Problem 1) Implementing the LC4 Loader"></a>Problem 1) Implementing the LC4 Loader</h2><p>Most of the work of your program will take place in the file: called:<br>lc4_loader.c. In this file, you will start by implementing the function:<br>open_file() to take in the name of the file the user of your program has<br>specified on the command line (see lc4_loader.h for the definition of<br>open_file()). If the file exists, the function should return a handle to that<br>open file, otherwise a NULL should be returned.<br>Also in lc4_loader.c, you will implement a second function: parse_file() that<br>will read in and parse the contents of the open .obj file as well as populate<br>the linked_list as it reads the .obj file. The format of the .obj input file<br>has been in lecture, but its layout has been reprinted above (see section:<br>OBJECT_FILE_FORMAT). As shown in the flowchart above, have the function read<br>in the 3-word header from the file. You’ll notice that all of the LC4 .obj<br>file headers consist of 3 fields: header type, [address], [n]. As you read in<br>the first header in the file, store the address field and the [n] field into<br>local variables. Then determine the type of header you have read in:<br>CODE&#x2F;DATA&#x2F;SYMBOL.<br>If you have read in a CODE header in the .obj file, from the file format for a<br>.obj file, you’ll recall the body of the CODE section is [n]-words long. As an<br>example, see the hex listed below, this is a sample CODE section, notice the<br>field we should correlate with n &#x3D; 0x000C, or decimal: 12. This indicates that<br>the next 12-words in the .OBJ file are in fact 12 LC-4 instructions. Recall<br>each instruction in LC4 is 1 word long.<br>    CA DE 00 00 00 0C 90 00 D1 40 92 00 94 0A 25 00 0C 0C 66 00 48<br>    01 72 00 10 21 14 BF 0F F8<br>From the example above, we see that the first LC-4 instruction in the 12-word<br>body is: 90 00. (that happens to be a CONST assembly instruction if you<br>convert to binary). Allocate memory for a new node in your linked list to<br>correspond to the first instruction (the section above: LINKED LIST NODE<br>STRUCTURE, declares a structure called “row_of_memory”, that will serve as a<br>blue-print for all your linked list nodes). As it is the first instruction in<br>the body, and the address has been listed as 0000, you would populate the<br>row_of_memory structure as follows.<br>In a loop, read in the remaining instructions from the .obj file; allocate<br>memory for a corresponding row_of_memory node for each instruction. As you<br>create each row_of_memory add these nodes to your linked list, ordering the<br>list by address (you should use the functions you’ve created in lc4_memory.c<br>to help you with this). For the first 3 instructions listed in the sample<br>above, your linked list would look like this.<br>The procedure for reading in the DATA sections would be identical to reading<br>in the CODE sections. These would become part of the same linked list, as we<br>remember PROGRAM and DATA are all in one “memory” on the LC-4, they just have<br>different addresses.<br>For the following SYMBOL header&#x2F;body:<br>    C3 B7 00 00 00 04 49 4E 49 54<br>The address field is: 0x0000. The symbol field itself is: 0x0004 bytes long.<br>The next 4 bytes: 49 4E 49 54 are ASCII for: INIT. This means that the label<br>for address: 0000 is INIT. Your program must search the linked list memory,<br>find the appropriate address that this label is referring to and populate the<br>“label” field for the node. Note: the field: [n] tells us exactly how much<br>memory to malloc() to hold the string, however you must add a byte to hold the<br>NULL. 5 bytes in the case of: INIT.<br>For the example above, the node: 0000 in your linked list, would be updated as<br>follows.<br>It might be that you come across a label for an address that has not yet been<br>created in your linked list. In this case create a new node and add the label.<br>The other node fields can be left blank. They will be eventually updated. It<br>is possible that an address has two labels in the .obj file. In this case make<br>sure to use the last one that occurs.<br>Once you have read the entire file; created and added the corresponding nodes<br>to your linked list by address order, close the file and return to main(). If<br>you encounter an error in closing the file, before exiting, print an error,<br>but also free() all the memory associated with the linked list prior to<br>exiting the program.<br>The feof() function may not work the way you think it should. The eof<br>indicator only returns true AFTER you have attempted to read past the end of<br>the file. If the file position is right at the end of the file but you haven’t<br>tried to read past the end of the file yet, feof() will be false. This means<br>that you need to check all of your calls to fread() or fgetc() to make sure<br>they didn’t hit the end of the file.</p>
+<h2 id="Problem-2-Implementing-the-Reverse-Assembler"><a href="#Problem-2-Implementing-the-Reverse-Assembler" class="headerlink" title="Problem 2) Implementing the Reverse Assembler"></a>Problem 2) Implementing the Reverse Assembler</h2><p>In a new file lc4_disassembler.c, write a third function<br>reverse_assemble()that will take as input the populated “memory” linked list<br>(which is populated by the parse_file() ) - this linked list now contains the<br>.obj’s contents. reverse_assemble() must translate the hex representation of<br>some of the instructions in the LC4 memory’s linked list into their assembly<br>equivalent. You will need to refer to the LC4’s ISA Instruction document to<br>author this function.<br>To simplify this problem a little, you DO NOT need to translate every single<br>HEX instruction into its assembly equivalent:</p>
+<ul>
+<li>Only translate instructions with the OPCODE &#x3D; 0001 : ADD REG, MUL, SUB, DIV, ADD IMM. <ul>
+<li>The immediate value can be formatted with #, x, X, and&#x2F;or nothing </li>
+<li>e.g. ADD R1, R1, #10 &#x3D;&#x3D; ADD R1, R1, xF &#x3D;&#x3D; ADD R1, R1, 10<br>Data stored at an address in the DATA section should not be translated to an<br>assembly instruction.<br>As shown in the flowchart, this function will call your linked list’s<br>“search_opcode()” helper function. Your search_opcode() function should take<br>as input a 4-bit opcode and return the first node in the linked list that<br>matches the opcode passed in, but also has a NULL assembly field. The opcode<br>that is passed into search_opcode() is a number between 0 and 15 (0x0 and<br>0xf). The opcode in the instruction is in the leftmost bits of the<br>instruction. For example, here’s the definition of an ADD instruction from the<br>ISA:<br>0001 ddds ss00 0ttt<br>but the opcode in the opcode parameter passed to search_opcode() will be:<br>0000 0000 0000 0001<br>when looking for an instruction with opcode &#x3D; 0001. So you will need to use<br>the C-bitwise operators to line these two values up before comparing them.<br>search_opcode() is meant to find the first instruction in the linked list<br>where these two 4-bit fields match. There is an additional constraint that<br>memory rows that already have the assembly instruction (reverse assembled)<br>filled in don’t count as a match.<br>Said another way, find the first instruction in memory with a matching opcode<br>that hasn’t already been reverse assembled.<br>When&#x2F;if a node in your linked list is returned, you’ll need to examine the<br>“contents” field of the node and translate the instruction into its assembly<br>equivalent. Once you have translated the contents filed into its ASCII<br>Assembly equivalent, allocate memory for and store this as string in the<br>“assembly’ field of the node. Repeat this process until all the nodes in the<br>linked list with an OPCODE&#x3D;0001 have their assembly fields properly<br>translated.<br>As an example, the figure below shows a node on your list that has been<br>“found” and returned when the search_opcode() function was called. From the<br>contents field, we can see that the HEX code: 128B is 0001 001 010 001 011 in<br>binary. From the ISA, we realize the sub-opcode reveals that this is actually<br>a MULTIPLY instruction. We can then generate the string MUL R1, R2, R3 and<br>store it back in the node in the assembly field. For this work, I strongly<br>encourage you to investigate the switch() statement in C (any good book on C<br>will help you understand how this works and why it is more practical than<br>multiple if&#x2F;else&#x2F;else&#x2F;else statements). I also remind you that you must<br>allocate memory strings before calling strcpy()!</li>
+</ul>
+</li>
+</ul>
+<h2 id="Problem-3-Putting-it-all-together"><a href="#Problem-3-Putting-it-all-together" class="headerlink" title="Problem 3) Putting it all together"></a>Problem 3) Putting it all together</h2><p>As you may have realized, main() should do only 3 things:</p>
+<ol>
+<li>create and hold the pointer to your memory linked list. </li>
+<li>Call the parsing function in lc4_loader.c. </li>
+<li>Call the disassembling function in lc4_dissassembler.c.<br>One last thing to do in main() is to call a function to print the contents of<br>your linked list to the screen call the print_list() function In lc4_memory.c.<br>You will need to implement the printing helper function to display the<br>contents of your lc4’s memory list like this.<br>Notice that [address] and [contents] fields are displayed in hexadecimal with<br>leading zeroes.<br>Please remove all debugging print statements before submitting. Only the<br>memory list should be printed. If the contents of a node are 0, they should<br>display as 0.</li>
+<li>You can print (null) for label and assembly instructions when none exist, or leave them blank. </li>
+<li>There may be very long labels, so that the other entries in that row are pushed to the right. That is fine. </li>
+<li>You may find the formatting strings “%-20.04x” and “%-20s” useful in keeping your output aligned. This isn’t critical but it is definitely easier to read.<br>Several things to note: There can be multiple CODE&#x2F;DATA&#x2F;SYMBOL sections in one<br>.obj file. If there is more than one CODE section in a file, there is no<br>guarantee that they are in order in terms of the address. In the file shown<br>above, the CODE section starting at address 0000, came before the CODE section<br>starting at address: 0010; there is no guarantee that this will always happen,<br>your code must be able to handle that variation. Also, SYMBOL sections can<br>come before CODE sections! What all of this means is that before one<br>creates&#x2F;allocates memory for a new node in the memory list, one should<br>“search” the list to make certain it does not already exist. If it exists,<br>update it, if not, create it and add it to the list!</li>
+</ol>
+<h2 id="Checking-Memory-Leaks-with-valgrind"><a href="#Checking-Memory-Leaks-with-valgrind" class="headerlink" title="Checking Memory Leaks with valgrind"></a>Checking Memory Leaks with valgrind</h2><p>Prior to exiting your program, you must properly “free” any memory that you<br>allocated. We will be using a memory checking program known as valgrind to<br>ensure your code properly releases all memory allocated on the heap! Simply<br>run your program: lc4 as follows:<br>    valgrind –leak-check&#x3D;full .&#x2F;lc4 test1.obj<br>where test1.obj is the name of the .obj file you want to test with.<br>The following section is in bold and red for a reason. Please make sure you<br>fully understand it!</p>
+<ul>
+<li>Valgrind should report 0 errors AND there should be no memory leaks and no accessing uninitialized memory locations prior to submission. </li>
+<li>Note: we will run Valgrind on your submission, if it returns errors, you will lose points on this assignment. So watch the VIDEO “TA Demo: Debugging in C (Valgrind)”, learn how to use valgrind !! </li>
+<li>Also note: If your code doesn’t compile or even run, you will lose most of the points of this assignment ! </li>
+<li>Valgrind will find errors related to accessing uninitialized memory locations. This typically results from assuming that malloc() zeroes out the memory it returns. It does NOT. It can also happen when you access memory locations in an array or string beyond the end of the array or string. While your program may run correctly on your test cases when you have these errors, the results are unpredictable and may cause the test cases run by the autograder to fail.</li>
+</ul>
+<h2 id="TESTING-YOUR-CODE"><a href="#TESTING-YOUR-CODE" class="headerlink" title="TESTING YOUR CODE"></a>TESTING YOUR CODE</h2><p>When writing such a large program, it is a good strategy to “unit test.” This<br>means, as you create a small bit of working code, compile it and create a<br>simple test for it. As an example, once you create your very first function:<br>add_to_list(), write a simple “main()” and test it out. Call it, print out<br>your “test” list, see if this function even works. Run valgrind on the code,<br>see if it leaks memory or accesses uninitialized memory locations. Once you<br>are certain it works, and doesn’t leak memory, go on to the next function<br>search_address(), implement that, test it out.<br>DO NOT write the entire program, compile it, and then start testing it. You<br>will never resolve all of your errors this way. You need to unit test your<br>program as you go along or it will be impossible to debug.<br>Remember to use the Codio “Pre-submission tests” function before submitting<br>the assignment.</p>
+<h2 id="Where-to-get-input-files"><a href="#Where-to-get-input-files" class="headerlink" title="Where to get input files?"></a>Where to get input files?</h2><p>In the last assignment, you created a .obj file. Try loading that file into<br>Codio, and use your program on it. You know exactly how that program should<br>disassemble. To test further, bring up PennSim, write a simple program in it,<br>output a .obj from PennSim, then read into your program and see if you can<br>disassemble it. You can create a bunch of test cases very easily with PennSim.<br>You should test your lc4 program on a variety of .obj file, not just simple<br>examples. A selection of .obj files has been provided in the “obj files for<br>student testing” folder in codio.<br>Using gdb to debug your program is also HIGHLY recommended.</p>
+<h2 id="STRUCTURING-YOUR-CODE"><a href="#STRUCTURING-YOUR-CODE" class="headerlink" title="STRUCTURING YOUR CODE"></a>STRUCTURING YOUR CODE</h2><p>Preloaded in Codio, you’ll find the files named below that you must implement.</p>
+<ul>
+<li>lc4.c - must contain your main() function. </li>
+<li>lc4_memory.c - must contain your linked list helper functions. </li>
+<li>lc4_memory.h - must contain the declaration of your row_of_memory structure &amp; linked list helper functions </li>
+<li>lc4_loader.h - contains your loader function declarations. </li>
+<li>lc4_loader.c - must contain your .obj parsing function. </li>
+<li>lc4_disasembler.h - contains your disassembler function declarations. </li>
+<li>lc4_disasembler.c - must contain your disassembling function. </li>
+<li>Makefile - must contain the targets: <ul>
+<li>lc4_memory.o </li>
+<li>lc4_loader.o </li>
+<li>lc4_disassembler.o </li>
+<li>lc4 </li>
+<li>all, clean and clobber<br>You cannot alter any of the existing functions in the .h files.</li>
+</ul>
+</li>
+</ul>
+<h2 id="EXTRA-CREDIT-A-complete-reverse-assembler"><a href="#EXTRA-CREDIT-A-complete-reverse-assembler" class="headerlink" title="EXTRA CREDIT: A complete reverse assembler"></a>EXTRA CREDIT: A complete reverse assembler</h2><p>Finish the disassembler to translate any&#x2F;all instructions in the ISA:</p>
+<ul>
+<li>have your program print the linked list to the screen still, but also create a new output file: users_input.asm .<br>If it works, we should be able to assemble it in PennSim, load the .obj file<br>into PennSim and have the memory in PennSim look the same as when we load the<br>test case .obj file.</li>
+<li>Don’t forget to add in the directives (.CODE, .DATA) </li>
+<li>the ultimate test of your program will be getting it to assemble using PennSim and produce the same results as the provided .obj file.<br>If you do implement the extra credit:</li>
+<li>In print_list(), please make sure NOT to output assembly directives for opcodes other than opcode &#x3D; 0001. Instead, leave the assembly directive column blank or (null) for the other opcodes. Said another way, the print_list() output from your program should look like the example in problem 3. </li>
+<li>Nevertheless, the assembly directives for the extra credit opcodes should still appear in the .asm file you generate.<br>Notes:</li>
+<li>Don’t forget to add directives, labels etc. </li>
+<li>Partial Credit is possible as we will run the program against multiple .obj files. <ul>
+<li>No partial credit is available for just reverse assembling the instructions and NOT producing a .asm file. You MUST produce the .asm file to get any credit.</li>
+</ul>
+</li>
+<li>The different Registers in assembly instruction should be separate by comma <ul>
+<li>e.g. ADD R1, R2, R3</li>
+</ul>
+</li>
+<li>When creating the .asm file, you should change the last 3 characters of the filename ( argv[1]) from .obj to .asm. </li>
+<li>The EC is worth 15 points (out of 100) so the highest grade on the assignment is 115%</li>
+</ul>
+<h2 id="Extra-Credit-Testing-Tips"><a href="#Extra-Credit-Testing-Tips" class="headerlink" title="Extra Credit Testing Tips"></a>Extra Credit Testing Tips</h2><ul>
+<li>You should be able to assemble your .asm file with the PennSim ‘as’ command and then load it back to PennSim with the PennSim ‘ld’command. The PennSim memory should be the same as when loading the testing .obj file. </li>
+<li>Note that your .obj file does not need to be identical to the provided testing .obj file. The blocks can appear in a different order. As long as they both produce the same PennSim memory contents you will receive credit. </li>
+<li>Remember the ‘as’ command will overwrite the provided testing .obj file unless you give it a different name. You can always copy the original .obj file back to the submit forlder if you overwrite it by mistake. This is the main reason we put the test cases in a separate folder.</li>
+</ul>
+<h2 id="Key-Requirements"><a href="#Key-Requirements" class="headerlink" title="Key Requirements"></a>Key Requirements</h2><ul>
+<li>Your code must compile and run, Valgrind should report 0 errors and there should be no memory leaks prior to submission. </li>
+<li>lc4.c and lc4_memory.c <ul>
+<li>Function requirements explicitly laid out in starter code - implement everything specified by the comments as these are instructions as well. A copy of the starter functions is provided below in case of deletion</li>
+</ul>
+</li>
+<li>lc4_loader.c <ul>
+<li>open_file(): read in a string file_name; if the file exists, open it and return a pointer to the open file, otherwise return NULL </li>
+<li>parse_file(): <ul>
+<li>take in an open file src_file and your linked list memory </li>
+<li>in a loop, read in and parse the [directive], [address], and [n] to determine the type of header to appropriately allocate room for and populate a new row_of_memory, and add that node to your linked list using the functions in lc4_memory.c, ordering the memory by address<br>-once entire file is read, and you’ve created and added the corresponding nodes to your linked list in address order, close the file and return to main()</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>lc4_disassembler.c <ul>
+<li>reverse_assemble(): <ul>
+<li>take in your populated linked list memory </li>
+<li>Find every row_of_memory in your linked list with the OPCODE &#x3D; 0001 (ADD, MUL, SUB, DIV, ADD IMM), utilizing lc4_memory’s search_opcode() function </li>
+<li>For these nodes, translate the HEX instruction (contents) into its assembly equivalent and update the assembly field of the node </li>
+<li>Check the node’s address to make sure it belongs to the LC4’s CODE region</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Hints-from-earlier-semesters"><a href="#Hints-from-earlier-semesters" class="headerlink" title="Hints from earlier semesters"></a>Hints from earlier semesters</h2><ul>
+<li>Checking end of file. Have a look at: <a target="_blank" rel="noopener" href="https://faq.cprogramming.com/cgi-bin/smartfaq.cgi?id=1043284351&answer=1046476070"> https://faq.cprogramming.com/cgi-bin/smartfaq.cgi?id=1043284351&answer=1046476070 </a></li>
+<li>You can assume that the maximum length of an assembly instruction is 100, the maximum length of a label is 70 and the maximum length of a filename is 100. </li>
+<li>Helper Functions are fine. Do not change the headers of the predefined functions and remember to “#include  “ in your .h files if your helper functions require definitions from stdio.h </li>
+<li>Do not use externs or global variables. </li>
+<li>The “hexdump -C” command displays an .obj file one byte at a time rather than one word at a time. The first column displayed by hexdump is the byte offset. </li>
+<li>You do not have to check that the addresses in the .obj file are valid </li>
+<li>The order of the steps in the flow chart provide guidance to help you but you can opt for a different order, as long as your program works. </li>
+<li>There are several possible errors: the input file can’t be found, the input file isn’t validly formatted, malloc can’t find sufficient memory, etc. It is a best practice to print an error message and exit if any of those things happen but the autograder will not be testing those sort of edge cases. </li>
+<li>While we want your program to have no memory leaks, it is more important that your program actually runs. </li>
+<li>Make sure all of your loops that traverse the memory list look at the first and last element of the memory list. This is a VERY common mistake. </li>
+<li>Q: Do we need to be able to handle .obj that is both big and small endianness or will it be standardized? <ul>
+<li>A: You should handle the .obj files that PennSim produces</li>
+</ul>
+</li>
+<li>valgrind documentation available at <a target="_blank" rel="noopener" href="https://www.valgrind.org/docs/manual/quick-start.html#quick-start.interpret"> https://www.valgrind.org/docs/manual/quick-start.html#quick-start.interpret </a></li>
+<li>add_to_list() should keep the memory list in sorted order by address. CODE vs. DATA isn’t relevant. </li>
+<li>Q: Will memory locations in input files only be in user code and data space, or could they be in OS memory? <ul>
+<li>A: They could be in OS memory as you will see in some of the sample .obj files provided.</li>
+</ul>
+</li>
+<li>Q: i am wondering why is the int add_to_list() method has a double-pointer of “row_of_memory** head”? Can I delete one of the stars? <ul>
+<li>A: No, the double pointer is required. <ul>
+<li>It is because when we add nodes to our linked-list, we want to be able to change the head pointer. Because we pass in a double pointer, we can change what memory (in parse_file()) points to, thus allowing us to change the head pointer and add nodes to the beginning of our linked-list. Otherwise, we would just be creating a local copy of the new linked-list non-accessible by main().</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>you are allowed to use the standard library of string.h . </li>
+<li>in lc4_memory.c, the function add_to_list(): <ul>
+<li>This step is asking you to look through memory and see if the address is already there. If the address is already present in the memory list, replace the “contents” with the new “contents”. The alternative, which doesn’t make sense, would be to create a new entry in the memory list with the same address.</li>
+</ul>
+</li>
+<li>We will make sure that only files with .obj extensions are passed as arguments to .&#x2F;lc4 </li>
+<li>The x86 (the processor used by Codio) has a different endianness than the LC4. When doing fread()’s of 2 byte words, swapping occurs to adjust for this. That same swapping doesn’t occur with the fgetc() or fread()’s with size 1.</li>
+</ul>
+<h2 id="Segmentation-Faults-demystified"><a href="#Segmentation-Faults-demystified" class="headerlink" title="Segmentation Faults demystified"></a>Segmentation Faults demystified</h2><ul>
+<li>Segmentation faults are VERY common failures in C programs. They can be hard to pin down.<br>First we should understand why they happen:</li>
+<li>Segmentation faults are a common class of error in programs written in languages like C that provide low-level memory access. They arise primarily due to errors in use of pointers for memory addressing, particularly illegal access. There are two common cases: <ul>
+<li>Case 1: trying to dereference a NULL pointer. This often happens when calling a function that returns a pointer or NULL in case of error. If you don’t check the return value from the function and then proceed to dereference the pointer, you will get a segmentation fault. </li>
+<li>Case 2: an incorrect assumption that memory on the stack (and heap) is initialized to zero.<br>This is NOT the case. If you want the memory to be initialized to zero, you<br>need to do this explicitly, possibly using the memset() function. You might<br>have code that checks to see if the memory is 0 or NULL and then take some<br>action based on this. If the memory is not initialized to zero, it will have<br>random, unpredictable contents. This is often referred to as (X) or “don’t<br>care” in the lectures.</li>
+</ul>
+</li>
+<li>So, how do you figure out where the segmentation fault is occurring? The simplest way to find out is using GDB. After compiling using the “-g” clang switch and running the program, remembering the procedure for running a program in gdb that takes a command line arguments (the gdb commands “start” and “run” allow you to specify the command line arguments), you will get the segmentation fault. You can then use the gdb “where” command which will tell you the line number in your program where the failure occurs.<br>For example:<br>gdb .&#x2F;lc4 start test1.obj</li>
+<li>runs gdb on your lc4 program and starts it with argv <a target="_blank" rel="noopener" href="https://acg.cis.upenn.edu/milom/cse240-Fall06/pennsim/pennsim-guide.html" title="PennSim"> 1 </a> set to test1.obj</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/01/15/C%E4%BB%A3%E5%86%99%EF%BC%9ACIT5930MakingtheLC4Assembler/">http://saferman.github.io/2023/01/15/C%E4%BB%A3%E5%86%99%EF%BC%9ACIT5930MakingtheLC4Assembler/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/16/C++%E4%BB%A3%E5%86%99%EF%BC%9ACS635DigitalImageProcessing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="C++代写： CS635 Digital Image Processing">
+                        
+                        <span class="card-title">C++代写： CS635 Digital Image Processing</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-01-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/15/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSSE1001Dots&Co/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Python代写：CSSE1001 Dots &amp; Co">
+                        
+                        <span class="card-title">Python代写：CSSE1001 Dots &amp; Co</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

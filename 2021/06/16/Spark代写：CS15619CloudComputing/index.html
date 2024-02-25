@@ -1,0 +1,1039 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spark代写：CS15619 Cloud Computing, 留学生CS|辅导|代写">
+    <meta name="description" content="在AWS上学习用Spark，作业一共分为三个子Task，包括Social GraphDataset处理，PageRank计算，以及学习使用GraphX进行Graph计算。  
+General Suggestions
+Read the Sca">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Spark代写：CS15619 Cloud Computing | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Spark代写：CS15619 Cloud Computing</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Spark代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-16
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>在AWS上学习用Spark，作业一共分为三个子Task，包括Social Graph<br>Dataset处理，PageRank计算，以及学习使用GraphX进行Graph计算。  </p>
+<h2 id="General-Suggestions"><a href="#General-Suggestions" class="headerlink" title="General Suggestions"></a>General Suggestions</h2><ul>
+<li>Read the Scala and Spark primers before attempting this project. </li>
+<li>Spark programs can be written in Python, Scala and Java. However, we suggest you choose your language wisely in the project. Some facts you should consider: <ul>
+<li>Spark is written in Scala. Scala has the most comprehensive support and Spark programs written in Scala perfectly reects the Spark way of thinking. </li>
+<li>Python code is easy to deploy in Spark (you don’t need to worry much about dependencies, jar build, etc), but it can be too slow for you to get the bonus. </li>
+<li>GraphX (which you will be using in Task 3) only has Scala API for the time being.</li>
+</ul>
+</li>
+<li>Spark has a Web UI that you may nd useful for troubleshooting cluster problems and job failure. See Monitoring and Instrumentation: Web Interfaces ( <a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/monitoring.html#web-interfaces"> http://spark.apache.org/docs/latest/monitoring.html#web-interfaces </a> ) for details. </li>
+<li>Do not use one RDD action when it is not necessary. Once you call an action, a job is created. Spark will run a computation on your distributed dataset and return one value back to the driver. For example, many students from last semester who encountered out-of-memory problems were trying to copy a big RDD to the driver. someBigRdd.collect()<br>You may notice one container fails and then the rest fail one by one. Think of<br>the reason why this happens.</li>
+<li>You should realize that shue operations are expensive. Shue operations will add a burden to your disk I&#x2F;O, data serialization, network I&#x2F;O and memory pressure (from garbage collection)! For example, join is one of the most expensive operations. You will realize how long it takes in the webUI if you have it in your application. </li>
+<li>Wisely choose your transformation method. For example, if you want to sort an RDD by value, you can use sortBy , but not invert Key and Value first, then use sortByKey .<br>We strongly recommend you being becoming familiar with some basic operations<br>before writing any code.</li>
+<li>Use reduceByKey() instead of groupByKey() when possible. For a simple word count example, below are two approaches which will have a large dierence in performance. Try to nd out the reason. </li>
+<li>Do not cache your RDDs everywhere. Cache RDDs when necessary. </li>
+<li>Partitions are basic units of parallelism in Spark. Use repartition when it is necessary (one partition is created for each block of the file in HDFS). You should realize the number of partitions of your RDD. Having too many or too few partitions is a problem. </li>
+<li>If you are using some “static” or “global” data structure for some reason, try to broadcast that variable. Be careful, global variable that are big will also filead to OOM problems.</li>
+</ul>
+<h2 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h2><h3 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h3><p>You have built a successful search engine, but no one seems to be using it.<br>You try to spread the word by asking all your 2773 Facebook friends and 32<br>Twitter followers to use the Mellon Search Input Text Predictor (MSITP).<br>Unfortunately, this doesn’t work. After one week, only 7 people have used your<br>website. You realize that, for it to be a success, you need to showcase your<br>service to highly inuential people who are easily impressed - Twitter<br>celebrities!<br>You encounter a dataset and some research by Kwak [1], describing the analysis<br>of a network of Twitter users. Some further digging reveals the PageRank<br>algorithm for identifying inuential nodes in a network. You download the<br>dataset and decide to use your MapReduce skills to run PageRank and nd the<br>inuential nodes to target.<br>Unfortunately, many network analysis and machine filearning algorithms rely on<br>multiple iterations of execution. This is where MapReduce works poorly - after<br>each iteration of Map and Reduce, it spills all the data to disk and spends a<br>lot of time saving and loading the data.<br>Fortunately, the Cloud Computing course introduces you to Spark at exactly the<br>right time. Spark is optimized for iterative jobs, by enabling the capability<br>of storing intermediate results in memory. In this module, you will be<br>introduced to Spark through an increasingly harder set of tasks, and use it to<br>perform PageRank on the dataset of Twitter users to nd the inuencers.<br>Afterwards, you will implement a second degree centrality algorithm using<br>Spark’s GraphX.</p>
+<h2 id="Tasks-and-Instructions"><a href="#Tasks-and-Instructions" class="headerlink" title="Tasks and Instructions"></a>Tasks and Instructions</h2><p>We are going to use the Apache Spark framework to run a few graph computations<br>on the Twitter social graph. The dataset details are as follows:<br>Table 1: Dataset for this project</p>
+<table>
+<thead>
+<tr>
+<th>File Name</th>
+<th>Location</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Graph</td>
+<td>s3:&#x2F;&#x2F;cmucc-datasets&#x2F;p42&#x2F;Graph</td>
+<td>10.4GB</td>
+</tr>
+<tr>
+<td>Use aws s3 cp or wget to get our data and files from our S3 bucket.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>The graph is stored as an edge list format. This provides the list of source</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>and destination vertices for each edge of the graph. Each node represents a</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>user in the Twitter social network and an edge (u, v) means user u follows</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>user v in Twitter. For your convenience, the first 10 lines of the file are</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>listed below (Note elds are separated by \t ).</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<pre><code>5510    3430913
+5510    3506997
+5510    4289028
+5510    11752536
+5510    13433256
+5510    14380596
+5510    17413259
+5510    25643118
+5510    26929986
+5510    30403395
+</code></pre>
+<h2 id="Task-1-Getting-Started-with-Spark-and-the-Social-Graph-Dataset"><a href="#Task-1-Getting-Started-with-Spark-and-the-Social-Graph-Dataset" class="headerlink" title="Task 1: Getting Started with Spark and the Social Graph Dataset"></a>Task 1: Getting Started with Spark and the Social Graph Dataset</h2><p>The first task is for you to get familiar with Spark. We will ask you to nd<br>the number of edges and vertices in the Twitter social graph, as well as the<br>number of followers of each user. The edges in the graph are directed, so if<br>there are edges (u, v) and (v, u), you should count them as two edges.<br>We will explore two dierent ways of working with Spark: using Spark Shell, and<br>submitting Spark programs.</p>
+<h3 id="Spark-Shell"><a href="#Spark-Shell" class="headerlink" title="Spark Shell"></a>Spark Shell</h3><ul>
+<li>You should count the number of edges and vertices by running commands in the Spark Shell (either Scala sparkshell or Python pyspark). You will nd this interactive REPL way is very useful for iterative data processing. You need to put the result you get in a file called answer to get points.</li>
+</ul>
+<h3 id="Spark-programs"><a href="#Spark-programs" class="headerlink" title="Spark programs"></a>Spark programs</h3><p>You will need to achieve the same goal by using two dierent APIs, RDDs and<br>Dataframe. In your two spark programs, you need to count the number of<br>followers for each user, and sort by the number of followers. Note you will<br>need to run our submitter to run your Spark programs.<br>As mentioned in the Spark primer, dataframe uses Catalyst ( [ <a target="_blank" rel="noopener" href="https://spark-/">https://spark-</a><br>summit.org&#x2F;2016&#x2F;events&#x2F;deep-dive-intocatalyst-apache-spark-20s-optimizer&#x2F;<br>](<a target="_blank" rel="noopener" href="https://spark-summit.org/2016/events/deep-dive-intocatalyst-apache-">https://spark-summit.org/2016/events/deep-dive-intocatalyst-apache-</a><br>spark-20s-optimizer&#x2F;) ) to optimize code. Typically dataframe and dataset<br>programs with Catalyst will run faster than RDDs. But in this task, because<br>loading text file into a dataframe needs more time than RDDs, you may not see<br>a big dierence in performance when using these two APIs. From our testing<br>result, dataframe is 2-10 times faster than RDDs (without loading).<br>You can use System.nanotime to print out your program execution time to see<br>how fast dataframe is.</p>
+<h3 id="Building-your-project"><a href="#Building-your-project" class="headerlink" title="Building your project"></a>Building your project</h3><p>If you choose to use maven, you can nd the pom.xml file for this project here:<br>s3:&#x2F;&#x2F;cmuccpublic&#x2F;s17&#x2F;p42&#x2F;ScalaSparkMavenTemplate.zip .<br>If you choose to use sbt, you can nd the build.sbt file for this project here:<br>s3:&#x2F;&#x2F;cmucc-public&#x2F;s17&#x2F;p42&#x2F;build.sbt&#96;.</p>
+<h3 id="Steps-to-complete-this-task-and-submit"><a href="#Steps-to-complete-this-task-and-submit" class="headerlink" title="Steps to complete this task and submit"></a>Steps to complete this task and submit</h3><ol>
+<li>Make sure you use EMR 5.4.0 (check the Spark primer for details). There is no limitation on the instance type and number in this task. </li>
+<li>Download the submitter from s3:&#x2F;&#x2F;cmucc-public&#x2F;s17&#x2F;p42&#x2F;submitter1.tgz on the master node of your Spark cluster. </li>
+<li>Run the Spark commands in shell mode to complete counting vertices and edges. </li>
+<li>Enter the numbers you got from your shell run in the file answer . </li>
+<li>The RDD program should produce output in the following format for the entire Twitter social graph: [user_id]t[num_followers]<br>Only store the top 100 records in hdfs:&#x2F;&#x2F;&#x2F;followerRDD-output . Your code<br>should directly store your output into that path. Our submitter will look for<br>RDD output in this path.</li>
+<li>In the dataframe program, the final dataframe should be in this format( use show() ): </li>
+<li>If you write a Python script, please exactly name your RDD script followerRDD.py and dataframe script followerDF.py. If you implement in Java or Scala, name RDD and dataframe class as FollowerRDD and FollowerDF , compile as one jar package, name it exactly p42.jar. </li>
+<li>Our submitter will run the following command in the home directory to run your Spark program. Please make sure you can run it without errors before you run the submitter. For Python developers: spark-submit followerRDD.py spark-submit followerDF.py </li>
+<li>You should not merge your output files, our submitter will take care of that. </li>
+<li>Make sure to copy ALL the shell scripts and source code (.py, .java and .scala files) into the src folder. </li>
+<li>Modify the reference file and note down all the help you got from the Internet and from other students. </li>
+<li>Once you are condent about your code, you can first chmod +x submitter1 and run .&#x2F;submitter1 .</li>
+</ol>
+<h2 id="Task-2-Rank-Each-User-by-Inuence"><a href="#Task-2-Rank-Each-User-by-Inuence" class="headerlink" title="Task 2: Rank Each User by Inuence"></a>Task 2: Rank Each User by Inuence</h2><p>Let us now run an iterative computation on the Twitter social graph. For this<br>task, you will rank each user by their inuence. The problem is to nd the<br>inuential or important nodes. Given a graph, which node is more “important”?<br>We solve the problem by using the PageRank algorithm. PageRank is a type of a<br>random walk algorithm. Imagine there is an agent walking on a graph. The agent<br>can randomly jump from one node to another node over the edges in the graph.<br>The agent tirelessly walks the graph. At the end of the day, inuential nodes<br>are the ones that were frequently visited by the agent. Similarly, the<br>PageRank algorithm nds the score for each node iteratively. When the score of<br>every node does not change across iterations, we refer to it as the algorithm<br>converges . When it converges, the final score of each node represents the<br>probability of being visited by the agent. Therefore, the bigger the score is,<br>the more influential the node is. PageRank is a type of random walk algorithm.</p>
+<h3 id="PageRank-Implementation-Rules"><a href="#PageRank-Implementation-Rules" class="headerlink" title="PageRank Implementation Rules"></a>PageRank Implementation Rules</h3><ul>
+<li>Initial Rank Values. The initial value of the rank of each user should be 1&#x2F;n . This value needs to be assigned to every vertex, so it’s easy to think of this as being a map operation. </li>
+<li>Damping Factor. There are many possible values for the damping factor, and in this task we set it to 0.85 . </li>
+<li>Output Format. You must ensure that the output of your PageRank function matches the same syntax of the input, so that the algorithm can iteratively compute the ranks. </li>
+<li>Dangling Users. You need to handle the case of dangling nodes (nodes with zero out-degrees). The weight of the dangling users must be redistributed across all the users during each iteration (see Figure 2.2). Remember, the sum of all PageRank scores should always be 1 in each iteration.</li>
+</ul>
+<h3 id="Steps-to-complete-this-task-and-submit-1"><a href="#Steps-to-complete-this-task-and-submit-1" class="headerlink" title="Steps to complete this task and submit"></a>Steps to complete this task and submit</h3><ol>
+<li>Make sure you use EMR 5.4.0 . </li>
+<li>If you want to submit your code, you have to launch 5 r3.xlarge core instances. </li>
+<li>Download the submitter from s3:&#x2F;&#x2F;cmucc-public&#x2F;s17&#x2F;p42&#x2F;submitter2.tgz on the master node of your Spark cluster. </li>
+<li>Write a Spark program that computes the PageRank value for each node in the Twitter social graph. Your program should follow the implementation rules described above and produce the following output for the entire graph by running 10 iterations of the computation. [user_id]t[PageRank_value] </li>
+<li>If you write a Python script, please name your script exactly pagerank.py . If you implement in Java or Scala, name your jar package exactly p42.jar and the main class should be PageRank . </li>
+<li>Please make sure you can run it without errors before you run the submitter. </li>
+<li>Our submitter will look for output in hdfs:&#x2F;&#x2F;&#x2F;pagerank-output . </li>
+<li>Again, do not merge and sort your output files, our submitter will take care of that. </li>
+<li>Make sure to copy all the source code (.py, .java and .scala files) into the src folder. </li>
+<li>Modify the reference file and note down all the help you got from the Internet and from other students. </li>
+<li>Once you are condent about your code, you can run chmod +x submitter2 and run the submitter: .&#x2F;submitter2 .</li>
+</ol>
+<h2 id="Bonus-Task-Speed-up-Spark"><a href="#Bonus-Task-Speed-up-Spark" class="headerlink" title="Bonus Task: Speed up Spark!"></a>Bonus Task: Speed up Spark!</h2><p>Chances are that it might take hours to run the 10-iteration PageRank on<br>Spark. After you have passed the correctness check, it is time to speed it up!<br>We want you to look into advanced topics of Spark to shorten your execution<br>time of PageRank to filess than 30 minutes. Note that you can get the bonus<br>only if you got full marks in Task2.<br>Here are some suggestions you can try to improve the performance of your<br>program:</p>
+<ul>
+<li>Review our general suggestions above. </li>
+<li>Do some research about the programming languages in Spark. </li>
+<li>Improve your code. Develop a better understanding of RDD manipulations. Understand the “lazy” transformation in Spark. Think carefully of whether and when you should use operations of cache() , collect() , persist() and unpersist(). Check Spark Programming Guide: RDD Persistence ( <a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/programming-guide#rdd-persistence"> https://spark.apache.org/docs/latest/programming-guide#rdd-persistence </a> ) to filearn more. </li>
+<li>Monitor your instances to make sure they are fully utilized. You can enable detailed CloudWatch monitoring on each instance in your Spark cluster. Metrics of disk and network I&#x2F;O are captured, which can help you decide if you need more compute resources in your cluster. Alternatively, you could choose to use htop, and utilities like iotop and iostat. </li>
+<li>Spark is a tunable framework where there are many parameters that you can congure to make the best use of the resources you have. You might want to understand the meaning of parameters such as spark.driver.memory , spark.executor.memory , spark.executor.cores , and spark.python.worker.memory . Check Spark Conguration ( <a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/conguration.html"> http://spark.apache.org/docs/latest/conguration.html </a> ) to filearn more and congure your Spark cluster to achieve better performance. </li>
+<li>Notice that RDDs are read-only and your PageRank program iterates 10 times, so there can be many “orphan” intermediate RDDs or garbage. Thinking about garbage collection can contribute a lot to performance improvement. The parameters of spark.memory.fraction and spark.memory.storageFraction are closely related to this topic. For more references, check Tuning Spark: Garbage Collection Tuning ( <a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/tuning#garbage-collection-tuning"> https://spark.apache.org/docs/latest/tuning#garbage-collection-tuning </a> ). </li>
+<li>Using accumulators ( <a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/programming-guide.html#accumulators"> http://spark.apache.org/docs/latest/programming-guide.html#accumulators </a> ) is a good way to count or sum throughout dierent nodes. </li>
+<li>Be careful to use repartition on your RDD. It might improve your CPU utilization, but this transformation always shues all data over the network. This will increase the amount of work the Spark engine has to do. Another way is to set spark.default.parallelism to change the default partition number of an RDD. Don’t change the default number until you know what you are doing. filearn more about RDD partitioning, and choose the best strategy. You can use rdd.partitions.size (Scala) to check the partition number of an RDD.</li>
+</ul>
+<h3 id="How-to-submit-the-bonus-task"><a href="#How-to-submit-the-bonus-task" class="headerlink" title="How to submit the bonus task"></a>How to submit the bonus task</h3><p>Please use EMR 5.4.0 as you did in the previous tasks.<br>Please use the same submitter you used for the PageRank task. Download and run<br>the submitter on your master node. Follow the same instructions from last task<br>to run your application. Once your performance is better than 1800s (30 min),<br>you can get a bonus up to 10%! (If you simply get below 1800s (30 min) you<br>will earn a 10% bonus. Bonus only applies if you already got full points in<br>Task 2.)<br>Note: We are not done yet! Don’t forget to do the AssessMe and unlock Task 3.<br>It is worth 20% of this project. Moreover, the only choice for Task 3 is Scala<br>because that’s all GraphX supports for the time being. <a target="_blank" rel="noopener" href="https://theproject.zone/s17-15619/iterative-processing"><br>https://theproject.zone/s17-15619/iterative-processing
+</a></p>
+<h2 id="Task-3-Graph-Processing-using-GraphX"><a href="#Task-3-Graph-Processing-using-GraphX" class="headerlink" title="Task 3: Graph Processing using GraphX"></a>Task 3: Graph Processing using GraphX</h2><p>In the previous tasks, you gained some experience with using Spark to write an<br>iterative program. The PageRank algorithm you implemented performs several<br>iterations on the graph to analyze the links and compute the PageRank score of<br>each node. During each iteration, a node will need values from all the<br>neighbors. This nature of PageRank makes it perfectly t into the graph-<br>parallel model. In fact, there are graph processing frameworks that were<br>developed to help us do this kind of analytics. These frameworks include<br>GraphLab (developed at CMU) ,GraphX (a part of Apache Spark), and others.<br>In this task, you will use GraphX to do further analysis based on your<br>PageRank results. Don’t worry if you didn’t (yet) do well in Task 2. You are<br>allowed to use GraphX’s built-in pagerank() to calculate the PageRank result,<br>so that you can get full points in Task 3 regardless of your score in Task 2.<br>Be careful, if you use GraphX’s built-in pagerank() function for Task 2, you<br>will incur a 100% penalty.<br>By completing this task, you will gain experience in developing graph-parallel<br>programs and a deeper understanding of the advantage of adopting the graph-<br>parallel programming model to deal with iterative applications where the data<br>is highly dependent.</p>
+<h2 id="GraphX"><a href="#GraphX" class="headerlink" title="GraphX"></a>GraphX</h2><p>GraphX is a component in Spark for graphs and graph-parallel computation.<br>Spark users will nd it familiar and easy to get started in because in GraphX a<br>graph is constructed by two RDDs: edges and vertices. Also, properties of<br>arbitrary types can be attached to each edge and each vertex (for us to<br>analyze).<br>GraphX provides a set of basic graph operators, such as numVertices , numEdges<br>, degrees , subgraph , joinVertices , etc. A complete list of operators can be<br>found in GraphX Programming Guide ( [<br><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/graphxprogramming-guide#summary-list-of-">https://spark.apache.org/docs/latest/graphxprogramming-guide#summary-list-of-</a><br>operators ](<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/graphxprogramming-">https://spark.apache.org/docs/latest/graphxprogramming-</a><br>guide#summary-list-of-operators) ). Apart from the basic graph operations,<br>there are generalized and powerful operations like aggregateMessages and<br>pregel that you can use to build graph processing solutions for a variety of<br>problems ( pregel is an optimized variant of the Pregel ( <a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~pavlo/courses/fall2013/static/papers/p135-malewicz.pdf"><br>https://www.cs.cmu.edu/~pavlo&#x2F;courses&#x2F;fall2013&#x2F;static&#x2F;papers&#x2F;p135-malewicz.pdf
+</a><br>) API). In addition, GraphX includes a growing collection of specialized graph<br>algorithms and builders to simplify graph analytics tasks. As an example, you<br>will nd that there is a pagerank implementation in GraphX.</p>
+<h3 id="Task-Description"><a href="#Task-Description" class="headerlink" title="Task Description"></a>Task Description</h3><p>In this task, you will filearn how to use aggregateMessages to perform graph-<br>parallel analytics on a large dataset. We will continue to use the same<br>Twitter graph dataset. In addition, we are going to add properties to the<br>graph based on your PageRank result.<br>The 2nd-degree influential score calculates a type of centrality score for a<br>node, i.e. how influential is a node in the graph. PageRank score is a type of<br>centrality score which mainly considers the directional 1st-degree edges of a<br>node. For example, the following graph (though node 4 is not possible in the<br>Graph of this project) has 5 nodes, and what are their final PageRank scores?<br>The converged PageRank score for node 0 to 4 are [0.036, 0.4402, 0.451, 0.036,<br>0.036]. As expected Node 1 and 2 are the most important nodes. But node 4 has<br>the same score with node 0 and 3. Do you think it is reasonable? One might<br>argue that Node 0 seems to be more important than Node 4 because it has a few<br>connections to central nodes (Node 2 and Node 1). We can x the PageRank score<br>by considering the 2nd-degree influential score described in this section.<br>High-level instructions for you to approach this task are illustrated as in<br>Figure 3.2 and described as follows:</p>
+<ul>
+<li>Make sure you have the two input datasets (graph and properties). If you think your PageRank result is awed, feel free to use GraphX’s pagerank to generate the data. But remember, GraphX is not allowed in Task 2! Some may notice that GraphX doesn’t give the same values for each user, but that won’t aect your scores for this task. </li>
+<li>Create a graph by loading the graph edge list dataset. </li>
+<li>Attach the inuence values of each user to the corresponding vertex. This can be done by a graph join operation between the graph and the properties dataset. </li>
+<li>Now you should have a property graph that each node has its inuence value. To continue, for each user, nd the most inuential person he&#x2F;she follows. Hints: you may want use aggregateMessages here and attach (join) this intermediate result to the graph so that the next step can perform aggregateMessages again. This is called iterative processing! </li>
+<li>Now you should have a new property graph that each node knows its most inuential followee. Based on this result, for each user, nd the most inuential person his&#x2F;her followees follow. Save this result to an output file. O. Then A, B, C, and O will aggregate (reduce) the value they receive to nd the max (to be sent later). Note, for the vertices that do not receive values (like A1), the max value is 0. In the second round, A, B, C each sends its max value to O. Then O will aggregate (reduce) to nd the max.<br>In this task, we are going to use the formula below to calculate the new score<br>for one user. new_inuencial_score &#x3D; 0.5 <em>pagerank_score + 0.5</em><br>most_inuential_second_degree_user_score<br>For example, If the PageRank score of Node O in Figure 3.2 is 0.02, and the<br>maximum PageRank score of O’s 2nd-degree neighbors is 0.01, then O’s final<br>score is (0.02+0.01)&#x2F;2&#x3D;0.015.</li>
+</ul>
+<h2 id="Neighborhood-Aggregation"><a href="#Neighborhood-Aggregation" class="headerlink" title="Neighborhood Aggregation"></a>Neighborhood Aggregation</h2><p>Unlike most other graph operators in GraphX, aggregateMessages is a general<br>purpose mechanism to enable parallel computation on a property graph. You will<br>nd other operators in the GraphX source code ( <a target="_blank" rel="noopener" href="https://github.com/apache/spark/blob/master/graphx/src/main/scala/org/apache/spark/graphx/GraphOps.scala"><br>https://github.com/apache/spark/blob/master/graphx/src/main/scala/org/apache/spark/graphx/GraphOps.scala
+</a><br>) are actually implemented gracefully using aggregateMessages , such as<br>collectNeighborIds and degrees . Here is a short explanation of how it works:</p>
+<ol>
+<li>for each edge (or strictly speaking, triplet, using GraphX’s terminology),<br>send some sort of messages to one or both of its two ends - this step is like<br>a map ; 2) For each vertex, process all the messages it gets from its<br>connecting edges - this step is like a reduce . See the GraphX Programming<br>Guide: Neighborhood Aggregation ( [<br><a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/graphx-programming-guide#neighborhood-">https://spark.apache.org/docs/latest/graphx-programming-guide#neighborhood-</a><br>aggregation ](<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/graphx-programming-">https://spark.apache.org/docs/latest/graphx-programming-</a><br>guide#neighborhood-aggregation) ) for details.<br>As revealed in the signature, the function will return an RDD of Msg type,<br>which is a generic type and represents the type of the messages you send. To<br>help you understand how to send and aggregate messages, filet’s take a look at<br>the degree calculation of an undirected graph as an example.<br>The code is very succinct. Since this is an undirected graph, every edge<br>contributes 1 to the degree of both of its ends. So we send message 1 to both<br>vertices, and then sum the ones up on each vertex of the whole graph to get<br>the degree RDD.</li>
+</ol>
+<h3 id="Steps-to-complete-this-task-and-submit-2"><a href="#Steps-to-complete-this-task-and-submit-2" class="headerlink" title="Steps to complete this task and submit"></a>Steps to complete this task and submit</h3><ol>
+<li>Make sure you use EMR 5.4.0. No limitation on instance type and number in this task. </li>
+<li>Download the submitter from s3:&#x2F;&#x2F;cmucc-public&#x2F;s17&#x2F;p42&#x2F;submitter3.tgz on the master node of your Spark cluster. </li>
+<li>Write a Spark GraphX program to compute second degree centrality for each user in the Twitter social graph. Your program should follow the implementation rules described above and produce the following output for the entire graph. [user_id]t[most_inuential_second_degree_user_id]t[new_user_inuencial_score] ?<br>Note: If no user is found (e.g. I am not following anyone), assume a user with<br>id&#x3D;0 and inuence&#x3D;0.0 when you aggregate messages.</li>
+<li>Name your jar package exactly p42.jar with a main class called Task3 . </li>
+<li>Please make sure you can run it without errors before you run the submitter. </li>
+<li>Our submitter will look for output in hdfs:&#x2F;&#x2F;&#x2F;task3-output . </li>
+<li>Again, do not merge and sort your output files, our submitter will take care of that. </li>
+<li>Make sure to copy all of the source code (for this task, .scala files) into the src folder. </li>
+<li>Modify the reference file and note down all the help you got from the Internet and from other students. </li>
+<li>Once you are condent about your code, you can run chmod +x submitter3 and run the submitter: .&#x2F;submitter3 .</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/06/16/Spark%E4%BB%A3%E5%86%99%EF%BC%9ACS15619CloudComputing/">http://saferman.github.io/2021/06/16/Spark%E4%BB%A3%E5%86%99%EF%BC%9ACS15619CloudComputing/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Spark代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/16/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACMPT300Syscalls/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Operating System代写：CMPT300 Syscalls">
+                        
+                        <span class="card-title">Operating System代写：CMPT300 Syscalls</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/15/C++%E4%BB%A3%E5%86%99%EF%BC%9ACPSC441JumpingBozons/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="C++代写：CPSC441 Jumping Bozons">
+                        
+                        <span class="card-title">C++代写：CPSC441 Jumping Bozons</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C-%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C++代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

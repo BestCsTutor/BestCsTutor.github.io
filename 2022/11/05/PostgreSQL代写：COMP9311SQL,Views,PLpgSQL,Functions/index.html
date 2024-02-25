@@ -1,0 +1,1004 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="PostgreSQL代写：COMP9311 SQL, Views, PLpgSQL, Functions, 留学生CS|辅导|代写">
+    <meta name="description" content="为MyUNSW提供一个基于  PostgreSQL 的信息基础设施来管理事务。
+NOTEAssignment 2 is to be done individually.
+AimsThis assignment aims to give yo">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>PostgreSQL代写：COMP9311 SQL, Views, PLpgSQL, Functions | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">PostgreSQL代写：COMP9311 SQL, Views, PLpgSQL, Functions</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">PostgreSQL代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-11-05
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>为MyUNSW提供一个基于 <a target="_blank" rel="noopener" href="https://www.postgresql.org/" title="PostgreSQL"> PostgreSQL </a><br>的信息基础设施来管理事务。<br><img src="https://dbaplus.cn/uploadfile/2018/0821/20180821105420608.jpg" alt="PostgreSQL"></p>
+<h2 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h2><p>Assignment 2 is to be done individually.</p>
+<h2 id="Aims"><a href="#Aims" class="headerlink" title="Aims"></a>Aims</h2><p>This assignment aims to give you practice in</p>
+<ul>
+<li>reading and understanding a moderately large relational schema (MyMyUNSW) </li>
+<li>implementing SQL queries and views to satisfy requests for information </li>
+<li>implementing PLpgSQL functions to aid in satisfying requests for information<br>The goal is to build some useful data access operations on the MyMyUNSW<br>database. You will find some empty tables. It is OK as they are not necessary<br>for this assignment.<br>This database has been built over time by Dr. John Shepherd to capture the<br>data behind many student record management systems at UNSW. A theme of this<br>assignment is “dirty data”. As John was building the database, using a<br>collection of reports from UNSW’s information systems, he discovered that<br>there were some inconsistencies in parts of the data (e.g. students who were<br>mentioned in the student data, but had no enrolment records, and, worse,<br>enrolment records with marks and grades for students who did not exist in the<br>student data). He removed most of these problems as he discovered them, but no<br>doubt missed some. Some of the exercises below aim to uncover such anomalies;<br>please explore the database and see if you can find other anomalies.<br>Note also that, as the database was constructed, he made some small changes to<br>the schema, in order to deal with the data he had available. For example,<br>there was no starting time for some of the staff affiliations, and so I had to<br>remove the not null constraint on Affiliation.starting in order to load a<br>whole bunch of staff affiliation data. You should make sure that you check the<br>latest version of the schema and use that; if in doubt, check the meta-data in<br>the database itself (using psql’s \d command).<br>Obviously, for assignments and other learning exercises for the database<br>course, John has altered and anonymised the data completely. This means the<br>student IDs are not real and the transcript&#x2F;enrolment records are not real. If<br>you happen to find a student ID that exists, it will be an accidental match<br>and the matching records have no link to the real person. But we doubt that a<br>real ID exists in the database :-)</li>
+</ul>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Submission: Submit ass2.sql via WebCMS.<br>This assignment contributes 27.5% toward your total mark for this course.<br>The mark for each question indicates its level of difficulty.<br>The total marks for the questions sum to 27.5.</p>
+<h3 id="How-to-do-this-assignment"><a href="#How-to-do-this-assignment" class="headerlink" title="How to do this assignment"></a>How to do this assignment</h3><ul>
+<li>read this specification carefully and completely </li>
+<li>familiarise yourself with the database schema (description, SQL schema, summary) </li>
+<li>make a private directory for this assignment, and put a copy of the ass2.sql template there </li>
+<li>you must use the create statements in ass2.sql when defining your solutions </li>
+<li>look at the expected outputs in the expected_qX tables loaded as part of the check.sql file </li>
+<li>solve each of the problems below, and put your completed solutions into ass2.sql </li>
+<li>check that your solution is correct by verifying against the example outputs and by using the check_qX() functions </li>
+<li>test that your ass2.sql file will load without error into a database containing just the original MyMyUNSW data </li>
+<li>double-check that your ass2.sql file loads in a single pass into a database containing just the original MyMyUNSW data </li>
+<li>submit the assignment via WebCMS as described above</li>
+</ul>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>All Universities require a significant information infrastructure in order to<br>manage their affairs. This typically involves a large commercial DBMS<br>installation. UNSW’s student information system sits behind the MyUNSW web<br>site. MyUNSW provides an interface to a PeopleSoft enterprise management<br>system with an underlying Oracle database. This back-end system<br>(Peoplesoft&#x2F;Oracle) is often called NSS.<br>UNSW has spent a considerable amount of money on the MyUNSW&#x2F;NSS system, and it<br>handles much of the educational administration plausibly well. Most people<br>gripe about the quality of the MyUNSW interface, but the system does allow you<br>to carry out most basic enrolment tasks online.<br>NSS contains data about student, courses, classes, pre-requisites, quotas,<br>etc. but does not contain any representation of UNSW’s degree program<br>structures. So, in 2007 the COMP3311 class devised a data model that could<br>represent program requirements and rules for UNSW degrees. This was built on<br>top of an existing schema that represented all of the core NSS data (students,<br>staff, courses, classes, etc.). The enhanced data model was named the MyMyUNSW<br>schema.<br>The MyMyUNSW database includes information that encompasses the functionality<br>of NSS, the UNSW Online Handbook, and the CATS (room allocation) database. The<br>MyMyUNSW data model, schema and database are described in a separate document.</p>
+<h2 id="Setting-Up"><a href="#Setting-Up" class="headerlink" title="Setting Up"></a>Setting Up</h2><p>Note: if you are using your own machine, you can download this file instead.<br>But I will assume you are comfortable setting your own machine yourself …<br>To install the MyMyUNSW database under your CSE ‘d’ server, simply run the<br>following two commands:<br>    $ createdb ass2<br>    $ zcat &#x2F;home&#x2F;cs9311&#x2F;web&#x2F;22T3&#x2F;ass&#x2F;two&#x2F;mymyunsw.dump.gz | psql ass2<br>Note: the second command (zcat) unzips and reads the given file<br>‘mymyunsw.dump.gz’, the output of zcat is passed onto the psql command as<br>input. The mymyunsw.dump.gz file contains the database schema as well as the<br>data in a zipped format. At the end of the command, the ass2 database will be<br>populated with the content from mymyunsw.dump.gz.<br>If you’ve already set up PLpgSQL in your template1 database, you will get one<br>error message as the database starts to load:<br>    psql:mymyunsw.dump:NN: ERROR: language “plpgsql” already exists<br>You can ignore this error message, but any other occurrence of ERROR during<br>the load needs to be investigated.<br>If everything proceeds correctly, the load output should look something like:<br>    SET<br>    SET<br>    SET<br>    SET<br>    SET<br>    psql:mymyunsw.dump:NN: ERROR: language “plpgsql” already exists<br>    … if PLpgSQL is not already defined,<br>    … the above ERROR will be replaced by CREATE LANGUAGE<br>    SET<br>    SET<br>    SET<br>    CREATE TABLE<br>    CREATE TABLE<br>    … a whole bunch of these<br>    CREATE TABLE<br>    ALTER TABLE<br>    ALTER TABLE<br>    … a whole bunch of these<br>    ALTER TABLE<br>Apart from possible messages relating to plpgsql, you should get no error<br>messages. The database loading should take less than 40 seconds or so,<br>assuming that the d server is not under heavy load. (If you leave your<br>assignment until the last minute, loading the database on the server will be<br>considerably slower, thus delaying your work even more. The solution: at least<br>load the database Right Now, even if you don’t start using it for a while.)<br>(Note that the mymyunsw.dump file is 34MB in size; copying it under your home<br>directory or your &#x2F;localstorage&#x2F; directory is not a good idea - takes up too<br>much space).<br>If you have other large databases under your PostgreSQL server on the d server<br>or you have large files under your &#x2F;localstorage&#x2F;YOU&#x2F; directory, it is<br>possible that you will exhaust your disk quota.<br>A useful thing to do initially is to get a feeling for what data is actually<br>there. This may help you understand the schema better, and will make the<br>descriptions of the exercises easier to understand. Look at the schema. Ask<br>some queries. Do it now.<br>Examples …<br>    $ psql ass2<br>    … PostgreSQL welcome stuff …<br>    ass2&#x3D;# \d<br>    … look at the schema …<br>    ass2&#x3D;# select * from Students;<br>    … look at the Students table …<br>    ass2&#x3D;# select p.unswid,p.name from People p join Students s on (p.id&#x3D;s.id);<br>    … look at the names and UNSW ids of all students …<br>    ass2&#x3D;# select p.unswid,p.name,s.phone from People p join Staff s on (p.id&#x3D;s.id);<br>    … look at the names, staff ids, and phone #s of all staff …<br>    ass2&#x3D;# select count(*) from CourseEnrolments;<br>    … how many course enrolment records …<br>    ass2&#x3D;# select * from dbpop();<br>    … how many records in all tables …<br>    ass2&#x3D;# select * from transcript(3231850);<br>    … transcript for student with ID 3231850 …<br>    ass2&#x3D;# … etc. etc. etc.<br>    ass2&#x3D;# \q<br>You will find that some tables (e.g. Books, Requirements, etc.) are currently<br>unpopulated; their contents are not needed for this assignment. You will also<br>find that there are a number of views and functions defined in the database<br>(e.g. dbpop() and transcript() from above), which may or may not be useful in<br>this assignment.</p>
+<h3 id="Summary-on-Getting-Started"><a href="#Summary-on-Getting-Started" class="headerlink" title="Summary on Getting Started"></a>Summary on Getting Started</h3><p>To set up your database for this assignment, run the following commands in the<br>order supplied:<br>    $ createdb ass2<br>    $ zcat &#x2F;home&#x2F;cs9311&#x2F;web&#x2F;22T3&#x2F;ass&#x2F;two&#x2F;mymyunsw.dump.gz | psql ass2<br>    $ psql ass2<br>    … run some checks to make sure the database is ok<br>    $ mkdir Assignment2Directory<br>    … make a working directory for Assignment 2<br>    $ cp &#x2F;home&#x2F;cs9311&#x2F;web&#x2F;22T3&#x2F;ass&#x2F;two&#x2F;ass2.sql Assignment2Directory<br>The only error messages produced by these commands should be those noted<br>above. If you omit any of the steps, then things will not work as planned. If<br>you subsequently ask questions on the course forum, where it’s clear that you<br>have not done and checked the above steps, the questions will not be answered.</p>
+<h3 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h3><p>Read these before you start on the exercises:</p>
+<ul>
+<li>the marks reflect the relative difficulty&#x2F;length of each question </li>
+<li>use the supplied ass2.sql template file for your work </li>
+<li>you may define as many additional functions and views as you need, provided that (a) the definitions in ass2.sql are preserved, (b) you follow the requirements in each question on what you are allowed to define </li>
+<li>make sure that your queries would work on any instance of the MyMyUNSW schema; don’t customise them to work just on this database; we may test them on a different database instance </li>
+<li>do not assume that any query will return just a single result; even if if it phrased as “most” or “biggest”, there may be two or more equally “big” instances in the database </li>
+<li>you are not allowed to use limit in answering any of the queries in this assignment </li>
+<li>do not use values of id fields if you can refer to tuples symbolically; e.g. if a question asks about lecture classes, do not use the fact the id of the lecture class type is 1 and check for classtypes.id&#x3D;1; instead check for classtypes.name&#x3D;’Lecture’ </li>
+<li>when queries ask for people’s names, use the Person.name field; it’s there precisely to produce displayable names </li>
+<li>when queries ask for student ID, use the People.unswid field; the People.id field is an internal numeric key and of no interest to anyone outside the database </li>
+<li>unless specifically mentioned in the exercise, the order of tuples in the result does not matter; it can always be adjusted using order by </li>
+<li>the precise formatting of fields within a result tuple does matter; e.g. if you convert a number to a string using to_char it may no longer match a numeric field containing the same value, even though the two fields may look similar </li>
+<li>develop queries in stages; make sure that any sub-queries or sub-joins that you’re using actually work correctly before using them in the query for the final view&#x2F;function<br>Each question is presented with a brief description of what’s required. If you<br>want the full details of the expected output, take a look at the expected_qX<br>tables supplied in the checking script.</li>
+</ul>
+<h3 id="Utility-Function-termname-–-for-Term-ID-and-Year"><a href="#Utility-Function-termname-–-for-Term-ID-and-Year" class="headerlink" title="Utility Function termname() – for Term ID and Year"></a>Utility Function termname() – for Term ID and Year</h3><p>In writing the solutions for the assignment, you may find that dealing with<br>Terms.id values is not ideal when referring to semesters. CSE typically uses<br>shorthand symbolic names like “12s1” and “00s2” to refer to terms. We give you<br>the following SQL function termname() that takes as parameter a Terms.id value<br>and returns a symbolic term name, consisting of the last two digits of the<br>year, and the session code (with a lower-case letter).<br>The function is defined as follows:<br>    create or replace function<br>        termname(integer) returns text<br>    as<br>    $$<br>    select substr(year::text,3,2)||lower(sess)<br>    from Terms<br>    where id &#x3D; $1<br>    $$ language sql;<br>—|—<br>If the parameter value does not correspond to a known term, the the function<br>simply returns a NULL value. You are expected to use this function when you<br>are required to refer to term names.</p>
+<h2 id="Exercises"><a href="#Exercises" class="headerlink" title="Exercises"></a>Exercises</h2><h3 id="Q1-a"><a href="#Q1-a" class="headerlink" title="Q1_a"></a>Q1_a</h3><p>Define an SQL view Q1_a(name,school,starting) which gives details about all of<br>the current Heads of School in UNSW. The view should return the following<br>details about each Head:</p>
+<ul>
+<li>their name (use the name field from the People table) </li>
+<li>the school (use the longname field from the OrgUnits table) </li>
+<li>the date that they were appointed (use the starting date from the Affiliation table)<br>Since there is some dirty-looking data in the Affiliation table, you will need<br>to ensure that you return only legitimate Heads of School. Apply the following<br>filters:</li>
+<li>only choose people whose role is ‘Head of School’ </li>
+<li>only choose people who have not finished in the role only </li>
+<li>choose people for whom this is their primary role </li>
+<li>only choose organisational units whose type is actually ‘School’</li>
+</ul>
+<h3 id="Q1-b"><a href="#Q1-b" class="headerlink" title="Q1_b"></a>Q1_b</h3><p>Using the view from the previous question, write a new view<br>Q1_b(status,name,school,starting) which returns a table containing only the<br>longest-serving and most-recent current Heads of School. Each tuple in the<br>view result should contain the following:</p>
+<ul>
+<li>the status: either the string ‘Longest serving’ or the string ‘Most recent’ (cast to type text) </li>
+<li>the same three values (name, school, starting-date) for each Head of School<br>You should not assume that there is only one longest-serving or one most-<br>recent Head of School; several Heads may have started in the role on the same<br>day.<br>You must also ensure that no warning messages are generated during the loading<br>of your view.</li>
+</ul>
+<h3 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h3><p>Define a SQL view Q2(subject_code, use_rate), which gives the subjects that<br>used the Central Lecture Block the most from 2007 to 2009.</p>
+<ul>
+<li>subject_code should be taken from Subjects.code field; </li>
+<li>Return use_rate as integer; </li>
+<li>For each subject, the value use_rate is number of its classes using a room in Central Lecture Block; </li>
+<li>Count the use rate in three years.</li>
+</ul>
+<h3 id="Q3"><a href="#Q3" class="headerlink" title="Q3"></a>Q3</h3><p>Define a SQL view Q3(unsw_id, student_name). It gives the UNSW id and name of<br>all the students who has scored HD no less more than 30 times.</p>
+<ul>
+<li>unsw_id should be taken from people.unswid field; </li>
+<li>student_name should be taken from people.name field.</li>
+</ul>
+<h3 id="Q4"><a href="#Q4" class="headerlink" title="Q4"></a>Q4</h3><p>Find out which course had the maximum fail rate in 2007. Express this as an<br>SQL query in a view called Q4(course_id), which gives the corresponding course<br>id.</p>
+<ul>
+<li>The mark and course id should be taken from courseenrolments. </li>
+<li>Only count the students with valid marks. That is, the mark is not null. </li>
+<li>Only compute the fail rate of the course with valid marks larger than 50 </li>
+<li>Fail rate &#x3D; (number of students with valid mark less than 50) &#x2F; (number of students with valid mark).</li>
+</ul>
+<h3 id="Q5"><a href="#Q5" class="headerlink" title="Q5"></a>Q5</h3><p>For funding purposes, the University measures enrolments in terms of full-time<br>equivalent (FTE) students. A full-time enrolment is a student enrolled in<br>24UOC worth of courses. Thus, the FTE number for a given semester can be<br>computed by looking at the total UOC for enrolled courses in that semester and<br>dividing by 24.<br>Write a view Q5(term, nstudes, fte) that gives, for each main semester (S1 and<br>S2) from 2000 S1 to 2010 S2, the number of students enrolled and the FTE for<br>that semester. Each tuple in the view result should contain the following:</p>
+<ul>
+<li>the name of the term in the format 09s1, 09s2, 10s1, etc. </li>
+<li>the total number of distinct students enrolled in courses in that semester </li>
+<li>the FTE (total enrolled UOC &#x2F; 24) for that semester as numeric(6,1)<br>You should compute enrolment information from the CourseEnrolments table (i.e.<br>no need to consider ProgramEnrolments). Do the FTE calculation using floating<br>point values to achieve the highest precision.</li>
+</ul>
+<h3 id="Q6"><a href="#Q6" class="headerlink" title="Q6"></a>Q6</h3><p>Some of the data in this database is a little sparse; for example, most of the<br>courses have no CourseStaff specified. We want to find extreme examples where<br>a course has been offered very many times, but has never had any staff<br>allocated to it according to the database.<br>Write a view Q6(subject,nOfferings) that gives a list of subjects which have<br>been offered more than 30 times, but have never had any staff associated with<br>them (via the CourseStaff table). Each tuple in the view result should contain<br>the following:</p>
+<ul>
+<li>the subject code and title, in the fromat e.g. COMP3311 Database Systems </li>
+<li>the number of times that this subject has been offered as a Course</li>
+</ul>
+<h3 id="Q7"><a href="#Q7" class="headerlink" title="Q7"></a>Q7</h3><p>With the new UNSW timetabling system, the LIC of each course is required to<br>specify what facilities they require in their classrooms as one of the inputs<br>to the timetabling process. Write an SQL function to provide a list of rooms<br>that contain a given facility, that might be used as part of this process. The<br>function takes a parameter giving part of the name of a facility (e.g.<br>“Lectern microphone” or “lectern mic” or …) and returns the names of all Rooms<br>that have a facility matching the parameter and the name of the actual<br>facility. The function is defined as:<br>    create function Q7(text) returns setof FacilityRecord<br>    as $$ SQL statement $$ language sql;<br>—|—<br>Note that the FacilityRecord type is already included in the database as:<br>    create type FacilityRecord as (room text, facility text);<br>—|—<br>The room field of each tuple should be a Rooms.longname value, while the<br>facility filed should be a Facilities.description value.<br>To allow some of flexibility in search for facilities, the function parameter<br>should be treated like a pattern, and should match all facilities whose<br>description contains the string given as the parameter. For example, ‘lectern<br>mic’ would matche ‘Lectern microphone’, while ‘microph’ would match ‘Lectern<br>microphone’, ‘Neck microphone’ or ‘Radio microphone’. Matching should be case<br>insensitive.<br>Note that, according to the database, no rooms in UNSW have whiteboards. The<br>database reflects reality to some extent, but is clearly not a 100% accurate<br>and certainly not a 100% complete mapping of reality.</p>
+<h3 id="Q8"><a href="#Q8" class="headerlink" title="Q8"></a>Q8</h3><p>A function returning the current semester is useful in many contexts (e.g.<br>determining all currently enrolled students). We wish to write a<br>generalisation of this function: one that takes a date and tells us which<br>semester it falls in. This might seem simple enough, given that the Terms<br>table contains starting and ending dates for each semester. However, we want<br>to take a more liberal view of the extent of semesters. We will normally<br>consider that each semester effectively starts one week before the starting<br>date recorded in the Terms table. Also, we’ll consider that the previous<br>semester extends to the day before the effective starting date of the<br>following semester. If the ending date of semester t1 is less than one week<br>before the starting date of the next semester t2, then treat the starting date<br>of t2 as the day after the ending date of t1.<br>Some examples to clarify. Say T1 is followed by T2, and T2 is followed by T3.</p>
+<ol>
+<li>If T2.starting&#x3D;’2005-02-28’ and T1.ending&#x3D;’2005-01-31’, then the effective starting date for T2 is ‘2005-02-21’ and the effective ending date for T1 is ‘2005-02-20’ (the day before the effective start of T2). </li>
+<li>If T3.starting&#x3D;’2009-11-30’ and T2.ending&#x3D;’2009-11-24’, then the effective starting date for T3 is ‘2009-11-25’, and the effective ending date for T2 stays the same ‘2009-11-24’ (less than one week before the starting date of the next term).<br>Write a PLpgSQL function called Q8 to find which semester a particular date<br>falls in. Use the following function header:<br>create or replace function Q8(_day date) returns text<br>as $$ … PLpgSQL code … $$ language plpgsql;<br>—|—<br>The parameter is a date (e.g. ‘2005-12-25’). The function returns the term<br>name (e.g. 05s1) of the semester containing the specified date. If a date is<br>given that corresponds to no known term in the database (e.g. before the first<br>term in the database or after the last term in the database), then NULL is<br>returned.<br>Hint: A date value can be wound backwards by subtracting an interval value, or<br>moved forward by adding an interval value.</li>
+</ol>
+<h3 id="Q9"><a href="#Q9" class="headerlink" title="Q9"></a>Q9</h3><p>The transcript function supplied in the database assumes that the only way<br>that a student can get credit towards their degree is by enrolling in a<br>subject for which they have the pre-reqs and passing that subject. In fact,<br>students can obtain various other kinds of “credit” towards their study to<br>help them finish their degree:</p>
+<ul>
+<li>“advanced standing” gives students credit for some course at UNSW based on a similar course completed at another institution (or in an incomplete degree at UNSW); the student is allocated UOC for the UNSW subject, but it does not count towards their WAM; however, for purposes such as pre-requisites, it is as if the student took the UNSW course </li>
+<li>“substitution” allows a student to take one subject in place of a core subject in their program (e.g. if the original core subject is not available and it is the student’s final semester of study); the student is given the UOC for the course actually taken and the course taken counts in their WAM; however, the course taken may be used as a “stand-in” for the substituted course in determining whether they have met their degree requirements </li>
+<li>“exemption” is where a student is deemed to have completed a course at UNSW based on a similar course at another institution, but is not awarded any UOC for the UNSW course; however, they can use it as a pre-requisite for further study at UNSW<br>Information about such enrolment variations is stored in the two tables:<br>Variations(student, program, subject, vtype, intequiv, extequiv, …)<br>ExternalSubjects(id, extsubj, institution, yearoffered, equivto)<br>—|—</li>
+</ul>
+<p>where each Variations tuple shows a variation for one student for a given<br>subject towards a particular program. The vtype field indicates what kind of<br>variation it is (advstanding’, ‘substitution’, ‘eemption’). The intequiv field<br>references a UNSW subject if the variation is based on a UNSW subject. The<br>extequiv references a tuple in the ExternalSubjects table if the variation is<br>based on a subject studied at another institution. Only one of intequiv or<br>extequiv will be “not null”. You should examine the contents of these two<br>tables, as well as the file called “variations.sql” containing details of some<br>of the variations in the database.<br>A transcript function has already been loaded into the database, along with a<br>definition of the TranscriptRecord type. You can grab a copy of the<br>transcript() function definition using PostgreSQL’s \ef command (see the<br>PostgreSQL manual for details).<br>    create type TranscriptRecord as (<br>      code char(8), – e.g. ‘COMP3311’<br>      term char(4), – e.g. ‘12s1’<br>      name text, – e.g. ‘Database Systems’<br>      mark integer, – e.g. 75<br>      grade char(2), – e.g. ‘DN’<br>      uoc integer – e.g. 6<br>    );<br>    create function<br>      transcript(_sid integer) returns setof TranscriptRecord<br>    as $$<br>      … PLpgSQL code …<br>    $$ language plpgsql;<br>—|—<br>You should write a new version of the transcript() function called Q9() which<br>includes variations as well as regular course enrolments. You can use any or<br>all of the code from the supplied transcript() function in developing your<br>Q9() function. Any variations are displayed at the end of the transcript,<br>after the regular courses, but before the WAM calculation. It should still<br>produce the WAM and UOC count, like the original transcript function did, but<br>they will be computed slightly differently (see below). Note that the Q9()<br>function has exactly the same type signature as that noted above for the<br>transcript() function.<br>Each variation produces two TranscriptRecord tuples. The first tuple gives<br>details of which UNSW subject is being “varied”, while the second tuple gives<br>details of the equivalent subject that is used as the basis for the variation.<br>The details for what first TranscriptRecord tuple contains, for the different<br>types of variation is as follows:</p>
+<h3 id="advanced-standing"><a href="#advanced-standing" class="headerlink" title="advanced standing"></a>advanced standing</h3><p>first tuple: (CourseCode, null, ‘Advanced standing, based on …’, null, null,<br>UOC)</p>
+<ul>
+<li>CourseCode is the course code of the UNSW course for which advanced standing is being granted </li>
+<li>UOC is the UOC for that particular course<br>Note that the UOC value should be added into the total UOC displayed in the<br>last TranscriptRecord tuple, but should not be included in the WAM<br>calculation.</li>
+</ul>
+<h3 id="substitution"><a href="#substitution" class="headerlink" title="substitution"></a>substitution</h3><p>first tuple: (CourseCode, null, ‘Substitution, based on …’, null, null, null)</p>
+<ul>
+<li>CourseCode is the course code of the UNSW course for which advanced standing is being granted</li>
+</ul>
+<h3 id="exemption"><a href="#exemption" class="headerlink" title="exemption"></a>exemption</h3><p>first tuple: (CourseCode, null, ‘Exemption, based on …’, null, null, null)</p>
+<ul>
+<li>CourseCode is the course code of the UNSW course for which advanced standing is being granted<br>The second TranscriptRecord tuple for each variation will be different<br>depending on whether the substitution is based on an internal (UNSW) or<br>external subject (from another institution).<br>variation based on a UNSW subject (intequiv)<br>second tuple: (null, null, ‘studying CourseCode at UNSW’, null, null, null)</li>
+<li>CourseCode is code of the UNSW subject referenced by Variations.intequiv<br>variation based on an external subject (extequiv)<br>second tuple: (null, null, ‘study at Institution’, null, null, null)</li>
+<li>Institution is name of the institution in the ExternalSubjects tuple referenced by Variations.extequiv<br>For the purposes of this exercise, we’ll ignore whatever programs the student<br>was enrolled in when they completed the courses. Assume that all courses were<br>part of a single program.<br>Only a few students in the database have variations. Some example student IDs<br>for testing: 3169329, 3118617, 3270322. You can find more in the<br>“variations.sql” file.</li>
+</ul>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Submit ass2.sql via WebCMS.<br>The ass2.sql file should contain answers to all of the exercises for this<br>assignment. It should be completely self-contained and able to load in a<br>single pass, so that it can be auto-tested as follows:</p>
+<ul>
+<li>a fresh copy of the MyMyUNSW database will be created (using the schema from mymyunsw.dump) </li>
+<li>the data in this database may be different to the database that you’re using for testing </li>
+<li>a new check.sql file will be loaded (with expected results appropriate for the database) </li>
+<li>the contents of your ass2.sql file will be loaded </li>
+<li>each checking function will be executed and the results recorded<br>Before you submit your solution, you should check that it will load correctly<br>for testing by using something like the following operations:<br>$ dropdb ass2  … remove any existing DB<br>$ createdb ass2 … create an empty database<br>$ zcat &#x2F;home&#x2F;cs9311&#x2F;web&#x2F;22T3&#x2F;ass&#x2F;two&#x2F;mymyunsw.dump.gz | psql ass2 … load the MyMyUNSW schema and data<br>$ psql ass2 -f &#x2F;home&#x2F;cs9311&#x2F;web&#x2F;22T3&#x2F;ass&#x2F;two&#x2F;check.sql … load the checking code<br>$ psql ass2 -f ass2.sql … load your solution<br>Note: if your database contains any views or functions that are not available<br>in a file somewhere, you should put them into a file before you drop the<br>database.<br>If your code does not load without errors, fix it and repeat the above until<br>it does.<br>You must ensure that your ass2.sql file will load correctly (i.e. it has no<br>syntax errors and it contains all of your view definitions in the correct<br>order). If I need to manually fix problems with your ass2.sql file in order to<br>test it (e.g. change the order of some definitions), you will be automatically<br>fined via a 9-mark penalty (i.e., around 30% of the max assignment mark).<br>Let’s get started, Hele</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/11/05/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACOMP9311SQL,Views,PLpgSQL,Functions/">http://saferman.github.io/2022/11/05/PostgreSQL%E4%BB%A3%E5%86%99%EF%BC%9ACOMP9311SQL,Views,PLpgSQL,Functions/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/PostgreSQL%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">PostgreSQL代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/11/07/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP20003PythonLibraries/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Python代写：COMP20003 Python Libraries">
+                        
+                        <span class="card-title">Python代写：COMP20003 Python Libraries</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/11/03/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI4112048/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="AI代写：CSCI411 2048">
+                        
+                        <span class="card-title">AI代写：CSCI411 2048</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

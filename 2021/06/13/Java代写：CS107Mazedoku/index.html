@@ -1,0 +1,976 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：CS107 Mazedoku, 留学生CS|辅导|代写">
+    <meta name="description" content="用Java实现Maze类游戏，包括迷宫地图、玩家以及操作。  
+Task descriptionIn this assignment you will be designing a maze game. You will have a ma">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：CS107 Mazedoku | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：CS107 Mazedoku</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用Java实现Maze类游戏，包括迷宫地图、玩家以及操作。  </p>
+<h2 id="Task-description"><a href="#Task-description" class="headerlink" title="Task description"></a>Task description</h2><p>In this assignment you will be designing a maze game. You will have a maze<br>board and a player moving around the board. The player can step left, right,<br>up or down. However, you need to complete the maze within a given number of<br>steps. As in any maze, there are walls that you cannot move through. If you<br>try to move through a wall, you lose a life. There is also gold on the board<br>that you can collect if you move ontop of it.<br>The game can end in one of the following ways:</p>
+<ol>
+<li>The player has completed the maze. That is, they have reached the destination. </li>
+<li>The player has no lives. </li>
+<li>The player has no remaining steps.<br>Please implement the methods provided, as some of the marking is making sure<br>that these methods work as specified.<br>You are also allowed to write your own methods.<br>Please also read the entire specification - it is quite comprehensive.</li>
+</ol>
+<h2 id="Implementation-details"><a href="#Implementation-details" class="headerlink" title="Implementation details"></a>Implementation details</h2><h3 id="Command-line-arguments"><a href="#Command-line-arguments" class="headerlink" title="Command line arguments"></a>Command line arguments</h3><p>The MazeGame takes 1 command line argument.<br>This is the file that we are going to be reading in the game configuration<br>from.<br>For example:<br>    &gt; java MazeGame game_configuration.txt</p>
+<h3 id="The-game-configuration-file"><a href="#The-game-configuration-file" class="headerlink" title="The game configuration file"></a>The game configuration file</h3><p>The game configuration contains 5 pieces of information.</p>
+<ol>
+<li>The number of lives remaining. </li>
+<li>The number of steps remaining. </li>
+<li>The players starting amount of gold. </li>
+<li>The number of rows on the board. [ Must be at least 1. ] </li>
+<li>The maze board itself.<br>The layout of the game configuration file is as follows:<br><number of lives> <number of steps> <amount of gold> <number of rows on the board><br><BOARD></li>
+</ol>
+<h3 id="IMPORTANT"><a href="#IMPORTANT" class="headerlink" title="IMPORTANT"></a>IMPORTANT</h3><p>You may assume that if the configuration file exists, that it is in the format<br>given above.</p>
+<h3 id="Characters-on-the-maze-board"><a href="#Characters-on-the-maze-board" class="headerlink" title="Characters on the maze board"></a>Characters on the maze board</h3><ul>
+<li>a ‘ ‘ is a space in the board. </li>
+<li>a ‘#’ is a wall of the maze. </li>
+<li>a number 0-9 is the gold that you can collect on the board. </li>
+<li>a ‘.’ is a place the player has been. </li>
+<li>the ‘@’ is the destination that the player is trying to reach. Note: there is exactly one destination. </li>
+<li>the ‘&amp;’ is the person. Note: there is exactly one person.<br>You may assume that there are no invalid characters on the board.<br>Here are some sample game configuration files.<br>easy_board.txt<br>3 4 0 3<h6 id=""><a href="#" class="headerlink" title=""></a></h6>#@ &amp;2#<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2></li>
+</ul>
+<p>DEFAULT<br>    3 20 0 4<br>    #@ ##  &amp;4#<br>    ##  # ## #<br>    ###  3#<br>    #######  #<br>Please note: the board is a grid.<br>This means, it has the same number of columns on each row.</p>
+<h2 id="Running-the-program"><a href="#Running-the-program" class="headerlink" title="Running the program"></a>Running the program</h2><p>The program can be run in 2 ways.</p>
+<ul>
+<li>Running the program by reading in from an input game configuration file. <blockquote>
+<p>java MazeGame input_file_name.txt</p>
+</blockquote>
+</li>
+<li>Running the program by using the DEFAULT board provided above. <blockquote>
+<p>java MazeGame DEFAULT</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Error-handling"><a href="#Error-handling" class="headerlink" title="Error handling"></a>Error handling</h2><p>If there is an error initialising the board &#x2F; program, print out the<br>appropriate error message and exit the program.<br>If no arguments are given:<br>    &gt; java MazeGame<br>    Error: Too few arguments given. Expected 1 argument, found 0.<br>    Usage: MazeGame [<game configuration file>|DEFAULT]<br>If too many arguments are given:<br>    &gt; java MazeGame file1.txt file2.txt<br>    Error: Too many arguments given. Expected 1 argument, found 2.<br>    Usage: MazeGame [<game configuration file>|DEFAULT]<br>    &gt; java MazeGame file1.txt file2.txt file3.txt file4.txt<br>    Error: Too many arguments given. Expected 1 argument, found 4.<br>    Usage: MazeGame [<game configuration file>|DEFAULT]<br>The file could not be found, read, etc.<br>    &gt; java MazeGame invalid_file_here.txt<br>    Error: Could not load the game configuration from ‘invalid_file_here.txt’.</p>
+<h2 id="List-of-commands"><a href="#List-of-commands" class="headerlink" title="List of commands"></a>List of commands</h2><p>Once the board is loaded, you can use the following commands in your program.<br>You need to implement the functionality for all of them.</p>
+<ul>
+<li>help Print the help message. </li>
+<li>board Print the current board. </li>
+<li>status Print the current status. </li>
+<li>left Move the player 1 square to the left. </li>
+<li>right Move the player 1 square to the right. </li>
+<li>up Move the player 1 square up. </li>
+<li>down Move the player 1 square down. </li>
+<li>save <code>&lt;file&gt;</code> Save the current game configuration to the given file.</li>
+</ul>
+<h3 id="Reading-and-running-commands"><a href="#Reading-and-running-commands" class="headerlink" title="Reading and running commands"></a>Reading and running commands</h3><p>Reading in commands is case insensitive. If a line is entered and the line is<br>blank (i.e. only white space), do nothing.<br>That is the following, for example, are valid commands:</p>
+<ul>
+<li>help </li>
+<li>hElP </li>
+<li>SAVE file_name.txt </li>
+<li>UP </li>
+<li>board<br>The following commands are invalid as they have either have the wrong number<br>of arguments next to the command, or don’t match a given command:</li>
+<li>help up </li>
+<li>up blah 123 </li>
+<li>save file1.txt file2.txt </li>
+<li>chocolate </li>
+<li>h e l p </li>
+<li>save<br>Example with invalid command.<blockquote>
+<p>java MazeGame DEFAULT<br>help up<br>Error: Could not find command ‘help up’.<br>To find the list of valid commands, please type ‘help’.<br>up blah 123<br>Error: Could not find command ‘up blah 123’.<br>To find the list of valid commands, please type ‘help’.<br>Basic commands: Help, board and status</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Help-command"><a href="#Help-command" class="headerlink" title="Help command"></a>Help command</h3><p>Prints out the following help message. Example below<br>    &gt; java MazeGame DEFAULT<br>    help<br>    Usage: You can type one of the following commands.<br>    help         Print this help message.<br>    board        Print the current board.<br>    status       Print the current status.<br>    left         Move the player 1 square to the left.<br>    right        Move the player 1 square to the right.<br>    up           Move the player 1 square up.<br>    down         Move the player 1 square down.<br>    save <file>  Save the current game configuration to the given file.</p>
+<h3 id="Board-command"><a href="#Board-command" class="headerlink" title="Board command"></a>Board command</h3><p>Prints out the current board. Example below.<br>    &gt; java MazeGame DEFAULT<br>    board<br>    #@ ##  &amp;4#<br>    ##  # ## #<br>    ###  3#<br>    #######  #</p>
+<h3 id="Status-command"><a href="#Status-command" class="headerlink" title="Status command"></a>Status command</h3><p>Prints out the current status.<br>    &gt; java MazeGame DEFAULT<br>    status<br>    Number of live(s): 3<br>    Number of step(s) remaining: 20<br>    Amount of gold: 0</p>
+<h2 id="Board-Coordinates"><a href="#Board-Coordinates" class="headerlink" title="Board Coordinates"></a>Board Coordinates</h2><p>The x coordinate is the column number (starting from 0).<br>The y coordinate is the row number (starting from 0).<br>For the following file:<br>easy_board.txt<br>    3 4 0 3<br>    ######<br>    #@ &amp;2#<br>    ##  ##<br>The board coordinates for the easy board can be interpreted by the grid below.<br>                    x<br>          0   1   2   3   4   5<br>        ————————-<br>      0 | # | # | # | # | # | # |<br>        ————————-<br>    y 1 | # | @ |   | &amp; | 2 | # |<br>        ————————-<br>      2 | # | # |   |   | # | # |<br>        ————————-<br>Interpreting this:</p>
+<ul>
+<li>The player is at (3, 1). </li>
+<li>The destination is at (1, 1). </li>
+<li>There is gold at (4, 1). </li>
+<li>There are 3 spaces, they are at (2, 1), (2, 2), (3, 2).</li>
+</ul>
+<h2 id="Movement"><a href="#Movement" class="headerlink" title="Movement"></a>Movement</h2><p>There are 4 movement commands.<br>They are left, right, up and down.<br>Each movement counts as a step.<br>If the player moves to a valid square (a ‘ ‘, ‘.’ or a digit 0-9), the program<br>should print out “Moved to (x, y).” where x and y are the players new<br>coordinates on the board.<br>If the player moves to a square with gold, they get all the gold in that<br>square.<br>A message is printed out saying “Plus <code>&lt;number&gt;</code> gold.”<br>When they move away from the square, the square is changed to a ‘.’.<br>If the player trys to make an invalid move, that is either:</p>
+<ul>
+<li>move to a square that is a wall ‘#’, </li>
+<li>move out of the boundary of the board<br>The player to loses a life, and it still counts as a step.<br>It should also print out “Invalid move. One life lost.”<br>Example 1. Failed due to losing all their lives.<br>DEFAULT game configuration<br>3 20 0 4<br>#@ ##  &amp;4#<h2 id="-2"><a href="#-2" class="headerlink" title="# ##"></a># ##</h2><h3 id="3"><a href="#3" class="headerlink" title="3#"></a>3#</h3>#######  #<blockquote>
+<p>java MazeGame DEFAULT<br>board<br>#@ ##  &amp;4#</p>
+</blockquote>
+<h2 id="-3"><a href="#-3" class="headerlink" title="# ##"></a># ##</h2><h3 id="3-1"><a href="#3-1" class="headerlink" title="3#"></a>3#</h3>#######  #<br>status<br>Number of live(s): 3<br>Number of step(s) remaining: 20<br>Amount of gold: 0<br>up<br>Invalid move. One life lost.<br>status<br>Number of live(s): 2<br>Number of step(s) remaining: 19<br>Amount of gold: 0<br>down<br>Invalid move. One life lost.<br>status<br>Number of live(s): 1<br>Number of step(s) remaining: 18<br>Amount of gold: 0<br>right<br>Moved to (8, 0).<br>Plus 4 gold.<br>board<br>#@ ##  .&amp;#<h2 id="-4"><a href="#-4" class="headerlink" title="# ##"></a># ##</h2><h3 id="3-2"><a href="#3-2" class="headerlink" title="3#"></a>3#</h3>#######  #<br>left<br>Moved to (7, 0).<br>board<br>#@ ##  &amp;.#<h2 id="-5"><a href="#-5" class="headerlink" title="# ##"></a># ##</h2><h3 id="3-3"><a href="#3-3" class="headerlink" title="3#"></a>3#</h3>#######  #<br>status<br>Number of live(s): 1<br>Number of step(s) remaining: 16<br>Amount of gold: 4<br>down<br>Invalid move. One life lost.<br>Oh no! You have no lives left.<br>Better luck next time!<br>Example 2. Success.<br>easy_board.txt game configuration<br>3 4 0 3<h6 id="-6"><a href="#-6" class="headerlink" title=""></a></h6>#@ &amp;2#<h2 id="-7"><a href="#-7" class="headerlink" title=""></a></h2><blockquote>
+<p>java MazeGame easy_board.txt<br>right<br>Moved to (4, 1).<br>Plus 2 gold.<br>left<br>Moved to (3, 1).<br>left<br>Moved to (2, 1).<br>board<br>######<br>#@&amp;..#</p>
+</blockquote>
+<h2 id="-8"><a href="#-8" class="headerlink" title=""></a></h2>left<br>Moved to (1, 1).<br>Congratulations! You completed the maze!<br>Your final status is:<br>Number of live(s): 3<br>Number of step(s) remaining: 0<br>Amount of gold: 2<br>Example 3. Failed due to having no more steps.<br>easy_board.txt game configuration<br>3 4 0 3<h6 id="-9"><a href="#-9" class="headerlink" title=""></a></h6>#@ &amp;2#<h2 id="-10"><a href="#-10" class="headerlink" title=""></a></h2><blockquote>
+<p>java MazeGame easy_board.txt<br>right<br>Moved to (4, 1).<br>Plus 2 gold.<br>left<br>Moved to (3, 1).<br>down<br>Moved to (3, 2).<br>board<br>######<br>#@ ..#</p>
+</blockquote>
+<h2 id="-11"><a href="#-11" class="headerlink" title="&amp;##"></a>&amp;##</h2>status<br>Number of live(s): 3<br>Number of step(s) remaining: 1<br>Amount of gold: 2<br>left<br>Moved to (2, 2).<br>Oh no! You have no steps left.<br>Better luck next time!<br>Example 4. Failed due to having no more lives and no more steps.<br>easy_board.txt game configuration<br>3 4 0 3<h6 id="-12"><a href="#-12" class="headerlink" title=""></a></h6>#@ &amp;2#<h2 id="-13"><a href="#-13" class="headerlink" title=""></a></h2><blockquote>
+<p>java MazeGame easy_board.txt<br>down<br>Moved to (3, 2).<br>status<br>Number of live(s): 3<br>Number of step(s) remaining: 3<br>Amount of gold: 0<br>down<br>Invalid move. One life lost.<br>status<br>Number of live(s): 2<br>Number of step(s) remaining: 2<br>Amount of gold: 0<br>down<br>Invalid move. One life lost.<br>status<br>Number of live(s): 1<br>Number of step(s) remaining: 1<br>Amount of gold: 0<br>down<br>Invalid move. One life lost.<br>Oh no! You have no lives and no steps left.<br>Better luck next time!</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Saving-the-game"><a href="#Saving-the-game" class="headerlink" title="Saving the game"></a>Saving the game</h3><p>To save the game, we write out the current game configuration to a file.<br>If there is an error saving the game configuration to the given file, print<br>out the error message as shown below.<br>That is, if the file does not exist and it cannot be created, or if it is not<br>writable etc.<br>easy_board.txt game configuration<br>    3 4 0 3<br>    ######<br>    #@ &amp;2#<br>    ##  ##<br>    &gt; java MazeGame easy_board.txt<br>    right<br>    Moved to (4, 1).<br>    Plus 2 gold.<br>    status<br>    Number of live(s): 3<br>    Number of step(s) remaining: 3<br>    Amount of gold: 2<br>    board<br>    ######<br>    #@ .&amp;#<br>    ##  ##<br>    save current_board.txt<br>    Successfully saved the current game configuration to ‘current_board.txt’.<br>    left<br>    Moved to (3, 1).<br>    save .<br>    Error: Could not save the current game configuration to ‘.’.<br>    left<br>    Moved to (2, 1).<br>    left<br>    Moved to (1, 1).<br>    Congratulations! You completed the maze!<br>    Your final status is:<br>    Number of live(s): 3<br>    Number of step(s) remaining: 0<br>    Amount of gold: 2<br>The contents of current_board.txt after the above is:<br>    3 3 2 3<br>    ######<br>    #@ .&amp;#<br>    ##  ##<br>Ending the game without finishing &#x2F; losing.<br>If there is no more input from the user. That is, you reach EOF in System.in<br>and the game has not ended, print out “You did not complete the game.”<br>For example, if after starting, the user hit CTRL+D, the following would<br>happen:<br>    &gt; java MazeGame DEFAULT<br>    You did not complete the game.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2021/06/13/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS107Mazedoku/">http://saferman.github.io/2021/06/13/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS107Mazedoku/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/13/C%E4%BB%A3%E5%86%99%EF%BC%9ACIS2500Rogue-like/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="C代写：CIS2500 Rogue-like">
+                        
+                        <span class="card-title">C代写：CIS2500 Rogue-like</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/10/UI%E4%BB%A3%E5%86%99%EF%BC%9ACS422DevelopingUserInterfaces/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="UI代写：CS422 Developing User Interfaces">
+                        
+                        <span class="card-title">UI代写：CS422 Developing User Interfaces</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/UI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">UI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1015 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CSCI561 3D Mazes, 留学生CS|辅导|代写">
+    <meta name="description" content="分别使用  BFS  , UCS,A*算法搜索3D Maze.![BFS](https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Breadth-first-tree.svg&amp;#">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CSCI561 3D Mazes | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CSCI561 3D Mazes</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-09-14
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>分别使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Breadth-first_search" title="BFS"> BFS </a> , UCS,<br>A*算法搜索3D Maze.<br>![BFS](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Breadth-">https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Breadth-</a><br>first-tree.svg&#x2F;300px-Breadth-first-tree.svg.png)</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>This is a programming assignment in which you will apply AI search techniques<br>to solve some sophisticated 3D Mazes. As shown in Figure 1, each 3D maze is a<br>grid of points (not cells) with (x, y, z) locations in which your agent may<br>use one of the 18 elementary actions (see their definitions below), named X+,<br>X-, Y+, Y-, Z+, Z-; X+Y+, X-Y+, X+Y-, X-Y-, X+Z+, X+Z-, X-Z+, X-Z-, Y+Z+,<br>Y+Z-, Y-Z+, Y-Z-; to move to one of the 18 neighboring grid point locations.<br>At each grid point, your agent is given a list of actions that are available<br>for the current point your agent is at. Your agent can select and execute one<br>of these available actions to move inside the 3D maze. For example, in Figure<br>1, there is a “path” from (0,0,0) to (10,0,0) and to travel this path starting<br>from (0,0,0), your agent would make nine actions: X+, X+, X+, X+, X+, X+, X+,<br>X+, X+, and visit the following list of grid points: (0,0,0), (1,0,0),<br>(2,0,0), (3,0,0), (4,0,0), (5,0,0), (6,0,0), (7,0,0), (8,0,0), (9,0,0),<br>(10,0,0). At each grid point, your agent is given a list of available actions<br>to select and execute. For example, in Figure 1, at the grid point (60,45,30),<br>there are two actions for your agent: Z+ for going up, and y- for going<br>backwards. At the grid point (60,103,97), the available actions are X+ and Y-.<br>At (60,45,97), the three available actions are Y+, Z-, and X-Y+. If a grid<br>point has no actions available, then that means such a point has nowhere to<br>go. For example, the point (24,86,31) (not shown in Figure 1) has nowhere to<br>go and is not accessible.<br>The 18 actions are defined as follows. They are roughly divided as “straight-<br>move” and “diagonal-move” actions. As shown in Figure 2, the six straight-move<br>actions are X+, X-, Y+, Y-, Z+, Z-, and they allow your agent to move in a<br>straight-line to the next grid point. The diagonal-move actions are further<br>defined on xy, xz, and yz planes, respectively. For example, the actions X+Y+,<br>X+Y-, X-Y+, and X-Y-, are those moves diagonally on the xy plane. Similarly,<br>the actions X+Z+, X+Z-, X-Z+, and X-Z-, are those moves diagonally on the xz<br>plane. Finally, the actions Y+Z+, Y+Z-, Y-Z+, and Y-Z-, are those moves<br>diagonally on the yz plane. Notice that not all actions may be available for a<br>given grid location, and not all grid locations may have actions. For clear<br>format purpose, we name or encode these actions as follows:<br>Act  |  X+  |  X-  |  Y+  |  Y-  |  Z+  |  Z-  |  X+Y+  |  X+Y-  |  X-Y+  |</p>
+<p>X-Y-  |  X+Z+  |  X+Z-  |  X-Z+  |  X-Z-  |  Y+Z+  |  Y+Z-  |  Y-Z+  |  Y-Z-<br>—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—<br>Code  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  |  11  |<br>12  |  13  |  14  |  15  |  16  |  17  |  18<br>Your programming task is as follows. Given as inputs: (1) a list of grid<br>points with their available actions, (2) an entrance grid location, e.g.,<br>(0,0,0) in Figure 1, and (3) an exit grid location, e.g., (100,103,97) , your<br>program must search in the maze configuration and find the optimal shortest<br>path from the entrance to the exit, using a list of actions that are available<br>along the way. Conceptually, the specification of a grid location and its<br>associated actions is given as a grid location with a list of actions. For<br>example (Note: The exact input format will be given in section 5 and 6 below),<br>    INPUT LINE: (60 45 97), Y+, Z-, X-Y+<br>    INPUT LINE: (60 46 97), Y-, Y+<br>    INPUT LINE: (60 45 96), Z+, Z-,<br>    INPUT LINE: (59 46 97), X+Y-, X-Y+<br>is a specification, for Figure 1, that at the grid location (60,45,97), the<br>available actions are Y+, Z-, and X-Y+. At the grid (60,46,97), the available<br>actions are Y- and Y+, and at the grid (60,45,96), the available actions are<br>Z+ and Z-, and at the grid (59,46,97), the available actions are X+Y- and X-Y+<br>for moving diagonally on the xy plane.<br>Once your agent finds an optimal path from the entrance to the exit, your<br>agent should output a list of points that have been visited along the path.<br>For example, if the entrance and exit would be changed at (60,103,97) and<br>(64,103,97) respectively, then the correct output path would be:<br>    OUTPUT: (60,103,97), (61,103,97), (62,103,97), (63,103,97), (64,103,97).<br>To assist your programming, you will be provided some sample inputs and<br>outputs (see below). Please understand that the goal of these samples is to<br>check that you can correctly parse the problem definitions and generate a<br>correctly formatted output. The samples are very simple, and it should not be<br>assumed that if your program works on the samples it would definitely work on<br>all test cases for grading. There will be more complex test cases and it is<br>your task to make sure that your program will work correctly on any valid<br>input. You are encouraged to design and try your own test cases to check how<br>your program would behave in some complex special cases that you might think<br>of. Since each homework is checked via an automated A.I. script, your output<br>should match the specified format exactly. Failure to do so will most<br>certainly cost some points. The output format is simple, and examples are<br>provided. You should upload and test your code on vocareum.com at their<br>terminal window which is a Linux-like environment. Please make sure you test<br>your program at the terminal window at vocareum.com before you click the<br>submit button there. You can submit as many times as you like, and the last<br>submission before the due time will be used to grade your results. You may use<br>any of the following programming languages: C++, Java, Python, but Python may<br>be the preferred language to use in today’s large-scale AI program<br>applications.</p>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>Your code will be tested and graded as follows: Your program should not<br>require any command-line argument. It should read a text file called<br>“input.txt” in the current directory that contains a problem definition. It<br>should create and write a file “output.txt” with your solution in the same<br>current directory. Format for input.txt and output.txt are specified as in<br>section 5 below and will be supplemented with some details in section 6. End-<br>of-line character is LF (since vocareum is a Unix system and follows the Unix<br>convention).<br>The grading A.I. script will test your program for 40 test cases for grading<br>as follows:</p>
+<ul>
+<li>Create an input.txt file and delete any old output.txt file. </li>
+<li>Run your code to create your output.txt file. </li>
+<li>Check the correctness of your program’s output.txt file. </li>
+<li>If your outputs for all 40 test cases are correct, you get 100 points. </li>
+<li>The 40 test cases are divided into four classes: Class1 (easy), 10 cases; Class2 (medium), 10 cases; Class3 (hard), 10 cases; and Class4 (complex), 10 cases. </li>
+<li>For Class1, each test is worthy of 1 point. For Class 2, each test is 2 points. For Class 3, each test is 3 points, and for Class 4, each test is 4 points. </li>
+<li>The total points for each class are: Class1: 10x1&#x3D;10 points; Class2: 10x2&#x3D;20; Class3: 10x3&#x3D;30; and Class4: 10x4&#x3D;40. The total points for the whole homework is: Class1+Class2+Class3+Class4 &#x3D; 10+20+30+40 &#x3D; 100 points.<br>Note that if your code does not compile, or somehow fails to load and parse<br>input.txt, or writes an incorrectly formatted output.txt, or no output.txt at<br>all, or OuTpUt.TxT, you will get zero points. Anything you write to stdout or<br>stderr will be ignored and is ok to leave in the code you submit (but it will<br>likely slow you down). Please test your program on Vocareum’s terminal window<br>with the provided sample files to avoid any problems.</li>
+</ul>
+<h2 id="Project-Description"><a href="#Project-Description" class="headerlink" title="Project Description"></a>Project Description</h2><p>In this project, we twist the problem of path planning a little bit just to<br>give you the opportunity to deepen your understanding of search algorithms by<br>modifying search techniques to fit the criteria of a more realistic<br>application. To give you a realistic context for expanding your ideas about<br>search algorithms, we invite you to take part in a maze-solving mission in an<br>unknown world. The goal of this mission is to send your sophisticated and<br>intelligent agent from a specific entrance-location and travel as quickly as<br>possible to an exit location. You are invited to develop three algorithms to<br>find the optimal path and navigate through a complex 3D maze configuration<br>based on a particular objective.<br>The input of your program includes three elements: the maze configuration, an<br>entrance location, and an exit location, plus perhaps some other quantities<br>that control the quality of the solution. Each possible 3D maze world can be<br>imagined as a 3D grid of points in a 3-dimensional space. At each point inside<br>the maze, your agent can perform one of the 18 actions, and move to one of the<br>18 possible neighbor grid points (See Fig. 2). To simplify things, your<br>agent’s actions are assumed to be deterministic and error-free. If your<br>agent’s action is legal, then your agent will always end up at the intended<br>neighbor grid point. If your agent tries to move into a wall or outside a maze<br>world, the result will be nil and your agent will remain in its current point<br>location.</p>
+<h2 id="Search-for-the-Optimal-Paths"><a href="#Search-for-the-Optimal-Paths" class="headerlink" title="Search for the Optimal Paths"></a>Search for the Optimal Paths</h2><p>You will write a program that will take an input file that describes the maze<br>configuration, the initial entrance grid location, the exit grid location, and<br>characteristics of the agent. You should find the optimal path from the<br>initial entrance grid location to that exit grid location. A path is composed<br>of a sequence of legal moves. Each legal move consists of moving the agent<br>from a point to one of its 18 neighbor points, using one of the elementary<br>actions that are available at the current location.<br>Your agent must search through possible paths of movements and find the<br>optimal path to travel from the entrance to the exit, and then output the<br>results.<br>To find the solution you will use the following algorithms:</p>
+<ul>
+<li>Breadth-first search (BFS) </li>
+<li>Uniform-cost search (UCS) </li>
+<li>A* search (A*).<br>Your algorithm should return an optimal path, that is, with shortest possible<br>operational path length. Operational path length is further described below<br>and may not always be equal to geometric path length as per the specifications<br>given ahead. If an optimal path cannot be found, your algorithm should return<br>“FAIL” as further described below.<br>To help us distinguish between your three algorithm implementations, you must<br>follow the following conventions for computing operational path length:</li>
+</ul>
+<h3 id="Breadth-first-search-BFS"><a href="#Breadth-first-search-BFS" class="headerlink" title="Breadth-first search (BFS)"></a>Breadth-first search (BFS)</h3><p>In BFS, each move from one location to any of its neighbors counts for a unit<br>path cost of 1. You do not need to worry about the fact that moving diagonally<br>actually is a bit longer than moving along the North&#x2F;South, East&#x2F;West, and<br>Up&#x2F;Down directions. S o, any allowed move from one location to an adjacent<br>location costs 1.</p>
+<h3 id="Uniform-cost-search-UCS"><a href="#Uniform-cost-search-UCS" class="headerlink" title="Uniform-cost search (UCS)"></a>Uniform-cost search (UCS)</h3><p>When running UCS, you should compute unit path costs in any of the 2D plane<br>XY, XZ, YZ, on which you are moving. Let us assume that a grid location’s<br>center coordinates projected to a 2D plane are spaced by a 2D distance of 10<br>units on X and Z plane respectively. That is, on the XZ plane, move from a<br>grid location to one of its 4-connected straight neighbors incurs a unit path<br>cost of 10, while a diagonal move to a neighbor incurs a unit path cost of 14<br>as an approximation to 10 when running UCS.</p>
+<h3 id="A-search-A"><a href="#A-search-A" class="headerlink" title="A* search (A*)."></a>A* search (A*).</h3><p>When running A*, you should compute an approximate integer unit path cost of<br>each move as in the UCS case (unit cost of 10 when moving straight on a plane,<br>and unit cost of 14 when moving diagonally). Notice for A*, you need to design<br>an admissible heuristic for A* for this problem.<br>Input: The file input.txt in the current directory of your program will be<br>formatted as follows:</p>
+<ul>
+<li>First line: Instruction of which algorithm to use, as a string: BFS, UCS or A* </li>
+<li>Second line: Three strictly positive 32-bit integers separated by one space character, for the size of X, Y, and Z dimensions, respectively. </li>
+<li>Third line: Three non-negative 32-bit integers for the entrance grid location. </li>
+<li>Fourth line: Three non-negative 32-bit integers for the exit grid location. </li>
+<li>Fifth line: A strictly positive 32-bit integer N, indicating the number of grids in the maze where there are actions available. </li>
+<li>Next N lines: Three non-negative 32-bit integers separated by one space character, for the location of the grid, followed by a list of actions that are available at this grid. The grid location is guaranteed to be legal and within the maze.<br>For example:<br>A*<br>100 200 100<br>0 0 0<br>3 3 0<br>0 0 0 7<br>1 1 0 7 10<br>2 2 0 7 10<br>3 3 0 10<br>In this example, the 3D maze is of size 100 x 200 x 100 (specifically, points<br>range from (0,0,0) to (99,199,99)), the entrance grid location is at (0,0,0),<br>and the exit grid location is at (3,3,0). In this maze, there are 4 grid<br>locations that have actions and they are specified in the next four lines.<br>Namely, the grid (0,0,0) has one action X+Y+ (encoded as 7); the grid (1,1,0)<br>has two actions X+Y+ and X-Y- (encoded as 7 and 10); the grid (2,2,0) has two<br>actions X+Y+ and X-Y(encoded as 7 and 10); and the grid (3,3,0) has one action<br>X-Y- (encoded as 10).<br>Output: The file output.txt that your program creates in the current directory<br>should be formatted as follows:</li>
+<li>First line: A single integer C, indicating the total cost of your found solution. If no solution was found (the exit grid location is unreachable from the given entrance, then write the word “FAIL” (all capital) without any other lines following. </li>
+<li>Second line: A single integer N, indicating the total number of steps in your solution including the starting position. </li>
+<li>N lines: Report the steps in your solution travelling from the entrance grid location to the exit grid location as were given in the input.txt file. <ul>
+<li>Write out one line per step with cost. Each line should contain a tuple of four integers: X, Y, Z, Cost, separated by a space character, specifying the grid location with the single step cost to visit that grid location by your agent from its last grid during its traveling from the entrance to the exit.<br>For example, the following is a sample output of the corresponding input<br>above:<br>0 0 0 0<br>1 1 0 14<br>2 2 0 14<br>3 3 0 14<br>Notes and hints:</li>
+</ul>
+</li>
+<li>Please name your program “homework.xxx” where ‘xxx’ is the extension for the programming language you choose (“py” for python, “cpp” for C++, and “java” for Java). If you are using C++11, then the name of your file should be “homework11.cpp” and if you are using python3 then the name of your file should be “homework3.py”. Please use the programming languages mentioned above for this homework. </li>
+<li>Most likely (but no guarantee) we will create 13 BFS, 13 UCS, and 14 A* grading cases for grading your agents. These cases are called “Grading Cases” because they are reserved for the grading purposes only. During your development, there would be some “test cases” for you to use to test, debug, and improve your agents. But in general, you are responsible for testing your agents thoroughly using any test cases you would like. </li>
+<li>Your program will be killed after some time if it appears stuck on a given test case, to allow us to grade the whole class in a reasonable amount of time. We will make sure that the time limit for a given test or grading case (or class) is sufficient and long enough for solving the case for a correct algorithm implementation. These time limits are typically determined by a standard algorithm implementation that has been tested thoroughly in solving the given 3D mazes, and we ensure that these time limits are typically very generous. </li>
+<li>The time limit is the total combined CPU time as measured by the Unix time command. This command measures pure computation time used by your program, and discards time taken by the operating system, disk I&#x2F;O, program loading, etc. Beware that it cumulates time spent in any threads spawned by your agent (so if you run 4 threads and use 400% CPU for 10 seconds, this will count as using 40 seconds of allocated time). </li>
+<li>There is no limit on input size, number of grid points that have actions, etc., other than specified above (32-bit integers, etc). However, we will seriously consider the complexity of each test case. You should take care of the data structure used in your algorithms so that the program returns in a bounded time. Additional information may be posted on Piazza if necessary. Please keep your eyes on it. </li>
+<li>If several optimal solutions exist, then any of them will count as correct. </li>
+<li>You can submit your homework code (by clicking the “submit” button on Vocareum) as many times as you want. Only the latest submission will be considered for grading. </li>
+<li>Late penalty will be applied as 20% per day if your latest submission is later than the due time. </li>
+<li>Every time you click the “submit” button on Vocareum, your submitted agent will be run and tested by our AI script on a number of test cases and the results will be reported to you in the submission-report which you can read and exam. You may use these reports for debugging and improving your agent. Notice that these are “test cases”, and they are not the “grading cases”. The grading cases are reserved for grading purposes and may not be available to your agent before the grading process begins.</li>
+</ul>
+<h2 id="Sample-Inputs-and-Outputs"><a href="#Sample-Inputs-and-Outputs" class="headerlink" title="Sample Inputs and Outputs"></a>Sample Inputs and Outputs</h2><h3 id="Example-1-BFS"><a href="#Example-1-BFS" class="headerlink" title="Example 1 (BFS)"></a>Example 1 (BFS)</h3><pre><code>=======input.txt=============
+BFS
+10 10 10
+1 3 1
+5 3 4
+1 3 1 5
+1 3 2 1 11
+2 3 3 16
+2 4 2 11
+2 3 2 5 11
+3 3 3 17 18
+3 2 2 3
+3 3 2 5
+3 2 4 7
+4 3 4 1 11
+5 3 4 2
+5 3 5 6
+===========================
+=======output.txt============
+1 3 1 0
+1 3 2 1
+2 3 2 1
+3 3 3 1
+3 2 4 1
+4 3 4 1
+5 3 4 1
+============================
+</code></pre>
+<h3 id="Example-2-UCS"><a href="#Example-2-UCS" class="headerlink" title="Example 2 (UCS)"></a>Example 2 (UCS)</h3><pre><code>=======input.txt=============
+UCS
+10 10 10
+7 0 1
+5 2 3
+5 2 3 1
+5 1 3 3
+5 2 2 5 17
+6 1 2 9 3
+6 1 1 5 15
+7 1 1 9
+6 2 1 4
+8 0 1 9
+7 0 1 9 1
+===========================
+=======output.txt============
+7 0 1 0
+6 1 1 14
+6 1 2 10
+5 2 2 14
+5 2 3 10
+===========================
+</code></pre>
+<h3 id="Example-3-A"><a href="#Example-3-A" class="headerlink" title="Example 3 (A*):"></a>Example 3 (A*):</h3><pre><code>=======input.txt=============
+A*
+5 5 5
+1 0 4
+3 1 2
+1 0 1 2
+1 0 4 3 16
+1 1 4 6 12
+2 1 3 2
+1 1 3 3 12 16
+1 2 3 9
+2 1 2 1 12
+3 1 1 5
+===========================
+=======output.txt=============
+1 0 4 0
+1 1 3 14
+2 1 2 14
+3 1 2 10
+============================
+</code></pre>
+<h3 id="Example-4-BFS-with-no-solution"><a href="#Example-4-BFS-with-no-solution" class="headerlink" title="Example 4 (BFS with no solution):"></a>Example 4 (BFS with no solution):</h3><pre><code>=======input.txt=============
+BFS
+4 4 4
+0 0 0
+2 3 1
+0 0 0 7 11
+1 1 0 7
+1 0 1 7
+2 1 1 15
+2 2 0 5
+2 2 2 3
+===========================
+=======output.txt=============
+FAIL
+============================
+</code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/09/14/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI5613DMazes/">http://saferman.github.io/2023/09/14/AI%E4%BB%A3%E5%86%99%EF%BC%9ACSCI5613DMazes/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/09/15/Python%E4%BB%A3%E5%86%99%EF%BC%9ACS104NoughtsandCrosses/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Python代写：CS104 Noughts and Crosses">
+                        
+                        <span class="card-title">Python代写：CS104 Noughts and Crosses</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-09-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/09/10/Python%E4%BB%A3%E5%86%99%EF%BC%9ACOMP329DialogueSystem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Python代写：COMP329 Dialogue System">
+                        
+                        <span class="card-title">Python代写：COMP329 Dialogue System</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-09-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

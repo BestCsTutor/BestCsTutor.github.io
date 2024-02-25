@@ -1,0 +1,944 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Network代写：CS332 Bulletin Board Server, 留学生CS|辅导|代写">
+    <meta name="description" content="用  TCP 实现Server和Client，完成一款在线文件编辑器软件，自拟通信协议。![TCP](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_d">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Network代写：CS332 Bulletin Board Server | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Network代写：CS332 Bulletin Board Server</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Network%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Network代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol" title="TCP"> TCP </a><br>实现Server和Client，完成一款在线文件编辑器软件，自拟通信协议。<br>![TCP](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_diagram_fixed_new.svg/250px-">https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Tcp_state_diagram_fixed_new.svg/250px-</a><br>Tcp_state_diagram_fixed_new.svg.png)</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This challenge consists of two phases. In the first phase you will construct a<br>simple network server. The next phase will consists of convincing multiple<br>such servers to work together. Read the document completely before starting<br>any coding; everything in the document is part of the specification and it is<br>your responsibility to ensure that you have implemented the whole server as<br>specified.<br>The challenge is set up so that it gives you the opportunity to showcase your<br>skills at system programming in a POSIX environment. Indeed, you must<br>implement the server as a UNIX service (“daemon”) and you further must use the<br>POSIX API provided by the UNIX standard C library. Therefore your server must<br>be written in C or C++.<br>Throughout the handout we will refer to the following configuration<br>parameters. How these parameters are obtained will be described in Section<br>3.1.</p>
+<ul>
+<li>bp is the port number for client-server communication (positive integer), see Section 1; </li>
+<li>sp is the port number for inter-server communication (positive integer), see Section 2; </li>
+<li>bbfile is the name of the bulletin board file that will be manipulated throughout this project (string), see Section 1; </li>
+<li>Tmax is the number of preallocated threads (positive integer), see Section 1.4; </li>
+<li>peers the list of peers participating in synchronization (possibly empty list of pairs host name-port number), see Section 2; </li>
+<li>d is a Boolean flag controlling the startup of the server, see Section 1.5; </li>
+<li>D is a Boolean flag controlling debugging facilities, see Sections 1.3 (last paragraph) and 3.2.</li>
+</ul>
+<h2 id="Phase-1-A-Bulletin-Board-Server"><a href="#Phase-1-A-Bulletin-Board-Server" class="headerlink" title="Phase 1: A Bulletin Board Server"></a>Phase 1: A Bulletin Board Server</h2><p>Your first task is to construct a simple bulletin board server. The server<br>accepts one-line messages from multiple clients, stores them in a local file,<br>and serves them back on request. The name of the file is given by the<br>parameter bbfile. Messages are identified upon storage by an unique number<br>established by the server, and by the “sender” of the message (as provided by<br>the USER command explained below).<br>The clients connect to our server on port bp. We also assume a production<br>environment so that we implement concurrency control.</p>
+<h3 id="Application-Protocol"><a href="#Application-Protocol" class="headerlink" title="Application Protocol"></a>Application Protocol</h3><p>For reasons of interoperability a network application communicates using a<br>strict protocol (called the application protocol). The particular application<br>protocol used by your server is outlined in this section. Fixed-width font<br>represents text which is fixed for the given command or response, while<br>parameters that may vary are shown in italics.<br>Every command and response consists of a single line of text. The server<br>should handle any combination of the characters ‘\n’ and ‘\r’ as line<br>terminator and should send back responses terminated by a single ‘\n’. You<br>should be able to test your server using telnet as a client or indeed any<br>other client capable of sending and receiving plain text.<br>    Greeting<br>At the beginning of the interaction the server send the following text to the<br>client that just connected:<br>    0.0 greeting<br>where greeting is some (possibly empty) message intended for human<br>consumption. There is no particular format for the greeting text, but it is<br>strongly suggested for this text to summarize the commands available to<br>clients.<br>    USER name<br>This command establishes the user name of all the subsequent messages being<br>posted by the respective client. The argument name is a string not containing<br>the character &#x2F;. Future messages posted by the respective client will be<br>identified as posted by name. Normally, a client will send this command at the<br>beginning of the session, but the server should handle the case in which this<br>command is sent more than once during the interaction with a particular<br>client, as well as the case when a client does not send a USER command at all<br>(case in which the poster will be nobody).<br>The server response is the line<br>    1.0 HELLO name text<br>where text is some (possibly empty) message intended for human consumption.<br>Whenever the user name contains unacceptable characters (including but not<br>necessarily limited to<br>‘&#x2F;‘) or is otherwise incorrect the response of the server is:<br>    1.2 ERROR USER text<br>where text is once more intended for human consumption and explains the issue<br>encountered in processing the request.<br>    READ message-number<br>This command asks for the message number message-number. In the event that<br>this message exists on the bulletin-board, the server will send in response<br>one line of the form<br>    2.0 MESSAGE message-number poster&#x2F;message<br>where message represents the requested message, prefixed by its poster (as<br>identified by the USER command in effect at the time of posting).<br>If message message-number does not exist, then the server sends the line:<br>    2.1 UNKNOWN message-number text<br>where text is a message for human consumption. If the server encounters an<br>internal error while serving the request (e.g., the unavailability of the<br>bulletin board file), then the following response is sent back to the client:<br>    2.2 ERROR READ text<br>Again, text is an explanatory message with no particular structure.<br>    WRITE message<br>This command sends message to the server for storage. The server will store<br>the message into the bulletin board file as a line of the form:<br>    message-number&#x2F;poster&#x2F;message<br>where message-number is a unique number assigned by the server, and poster is<br>the poster of the message as specified by a previous USER command issued by<br>the respective client (nobody if no USER command has been issued by that<br>client). Upon successful storage, the server returns the following message to<br>the client:<br>    3.0 WROTE message-number<br>When an error occurs during the storage process, the server responds with this<br>message instead:<br>    3.2 ERROR WRITE text<br>The receipt of such a response must guarantee that no message has been written<br>to the bulletin board.<br>    REPLACE message-number&#x2F;message<br>This command asks the server to erase message number message-number and<br>replace it with message (which will be assigned the same message number as the<br>original). The poster is also changed to the current poster as identified by a<br>previous USER command (nobody if no such command has been issued).<br>The server response is identical to the response to a WRITE request, plus<br>    3.1 UNKNOWN message-number<br>when message number message-number does not exist in the bulletin board file<br>(case in which no message is added to the file).<br>    QUIT text<br>Signals the end of interaction. Upon receipt of this message the server sends<br>back the line<br>    4.0 BYE some-text<br>and closes the socket. The same response (including the socket close) is given<br>by the server to a client that just shuts down its connection. The server<br>always closes the socket in a civilized manner (by shutting down the socket<br>before closing it).</p>
+<h3 id="Performance-and-Other-Implementation-Requirements"><a href="#Performance-and-Other-Implementation-Requirements" class="headerlink" title="Performance and Other Implementation Requirements"></a>Performance and Other Implementation Requirements</h3><p>Your server must be robust, in the sense that no message shall be lost when<br>the server is terminated, except possibly a message that is currently being<br>written to disk. The bulletin board file should be considered too large to be<br>kept completely in memory.<br>Your server must also be efficient, in the sense that it must not rewrite the<br>whole bulletin board file upon the receipt of each and every message. It<br>should use the file system as little as possible (within the robustness<br>requirements above).<br>Now it is also the time to think about and implement a mechanism for rolling<br>back the most recent transaction (write or replace). This is going to be used<br>in the second part of the assignment.<br>You must build a concurrent server, which is able to serve many clients<br>simultaneously. You must provide an implementation based on POSIX threads,<br>using concurrency management and thread preallocation (as explained in Section<br>1.4).</p>
+<h3 id="The-Bulletin-Board-File"><a href="#The-Bulletin-Board-File" class="headerlink" title="The Bulletin Board File"></a>The Bulletin Board File</h3><p>The bulletin board file specified in the configuration file or on the command<br>line must be created if nonexistent and must be re-used as is otherwise<br>(rather than being overwritten). Message numbers are assigned by the server in<br>sequence, according to the order in which the WRITE requests have been<br>received. No two messages can have the same number in any bulletin board file.<br>In particular, if the server is started on an existing file it should inspect<br>the file on startup and make sure that any new message written to the file has<br>an associated number that does not conflict with existing message numbers.<br>The access control to the bulletin board file follows the readers&#x2F;writers<br>paradigm, a common scheme in operating systems. Simultaneous reads of the<br>bulletin board file by different threads of execution must be allowed.<br>However, no other operation (read or write) is allowed when a thread writes to<br>the bulletin board file. Of course, if a write request is issued while several<br>read operations are in progress, the write will have to wait until the current<br>reads complete. Note that this mechanism is slightly more complicated than the<br>normal file locking. You may want to use a structure (that records the number<br>of current read and write operations) protected by a critical region and also<br>a condition variable to enforce this restriction. Inefficient implementations<br>of this access control mechanism will be penalized. Do not use file locking<br>for implementing the access control since this method will not work as<br>expected.<br>Testing the fine access Obviously, testing the correct implementation of<br>access control is primarily your responsibility. No matter how you choose to<br>perform your tests however, the following method of testing must be available<br>in your submission: Whenever the parameter D is true: ( a) suitable messages<br>marking the beginning and the end of a read or write operation should be<br>provided to the standard output, and (b) each read and write operation should<br>be artificially lengthened by different amounts of time (recommended values: 3<br>seconds for read operations and 6 seconds for write operations) using suitable<br>sleep() statements inside the respective critical regions. I will let you<br>figure out by yourself how is this helpful in debugging access control.</p>
+<h3 id="Concurrency-Management"><a href="#Concurrency-Management" class="headerlink" title="Concurrency Management"></a>Concurrency Management</h3><p>The server must use preallocated threads. The number of threads to be<br>preallocated is is also a limit on concurrency. Tmax, so that Tmax</p>
+<h3 id="Startup-and-Reconfiguration"><a href="#Startup-and-Reconfiguration" class="headerlink" title="Startup and Reconfiguration"></a>Startup and Reconfiguration</h3><p>Whenever the configuration file and the command line (see Section 3.1) results<br>in a value of true for d the server performs the following startup sequence:</p>
+<ol>
+<li>Binds to the port numbers as specified and performs any necessary initialization of the data structures. </li>
+<li>Sets an appropriate umask. </li>
+<li>Installs appropriate signal handlers for all the signals. </li>
+<li>Leaves the current process group. </li>
+<li>Closes all file descriptors and re-opens them as appropriate. In particular console output is redirected to the file bbserv.log located in the current working directory. </li>
+<li>Detaches from the controlling tty. </li>
+<li>Puts itself into background. </li>
+<li>Check and writes into the PID file bbserv.pid located in the current working directory.<br>Whenever d is false the following steps above are not performed: 4, 5, 6, and</li>
+<li>The server reacts to the SIGQUIT and SIGUP signals as follows: It closes all<br>the master sockets, terminates all the preallocated threads immediately after<br>the current command (if any) is completed, and then closes all the connections<br>to all the clients. If the signal received is SIGQUIT then the server<br>terminates. If on the other hand SIGHUP is being handled, then the server re-<br>reads the configuration file, applies the changes (if any) and restart the<br>normal operation. However, any change of d is disregarded. Also note that as<br>opposed to the normal startup (see Section 3.1) this time the (new) parameters<br>re-read from the configuration file take precedence over the command line,<br>including the list of peers (which is set exclusively according to the new<br>configuration file).</li>
+</ol>
+<h2 id="Phase-2-Data-Replication"><a href="#Phase-2-Data-Replication" class="headerlink" title="Phase 2: Data Replication"></a>Phase 2: Data Replication</h2><p>We are now ready to implement a replicated database management system. Since<br>we have it already we will use the bulletin board file as our database. This<br>file is now kept replicated (and synchronized) on multiple servers.<br>Each server receive a list of the other servers that are participating in the<br>synchronization. This is the list peers as specified in the configuration file<br>and&#x2F;or on the command line (see Setion 3.1). Each element in the list consists<br>of a host name and a port number.<br>In addition, each server listens on port sp for incoming requests for<br>synchronization.</p>
+<h3 id="Synchronization"><a href="#Synchronization" class="headerlink" title="Synchronization"></a>Synchronization</h3><p>The fact that this is a replicated database is transparent to the clients. All<br>the peers are equally capable of serving clients as described in the previous<br>section. The only perceptible difference is a possible delay in the response<br>of a request to write or replace a message. Any USER, READ, or QUIT request is<br>served locally as before. The synchronization between servers is initiated by<br>the receipt of a WRITE or REPLACE command, and is accomplished using the two-<br>phase commit protocol. This protocol is widely used in applications where data<br>consistency is critical. Specifically, the protocol ensures as much as<br>possible that data stored at each replica server are identical, even if this<br>causes some data to be lost.<br>When using the two-phase commit algorithm, the server that received the WRITE<br>or REPLACE command becomes the master (or coordinator), and the others become<br>salves (or participants). In passing, note that the master becomes a client to<br>all of the slaves. As the name of the algorithm implies, it consists of two<br>phases:</p>
+<h3 id="Precommit-phase"><a href="#Precommit-phase" class="headerlink" title="Precommit phase"></a>Precommit phase</h3><p>The master broadcasts to all the peers (in the list peers) a “precommit”<br>message. The servers which are available for synchronization acknowledge<br>positively the message; the servers which are not ready (because of, e.g., a<br>system failure) will send back a negative acknowledgment.<br>The master blocks (within some timeout) until it receives all the<br>acknowledgments. A negative acknowledgment is assumed if no acknowledgment<br>comes until the master times out.<br>If there exists a negative acknowledgment, the master sends an “abort” message<br>to the slaves and aborts the writing altogether (sending a 3.2 ERROR message<br>to the respective client). The slaves will abandon the whole process if they<br>receive a negative acknowledgment.<br>If on the other hand all the acknowledgments are positive, the second phase of<br>the protocol is initiated.</p>
+<h3 id="Commit-phase"><a href="#Commit-phase" class="headerlink" title="Commit phase"></a>Commit phase</h3><p>In the second phase, the master sends a “commit” message to all the slaves,<br>followed by the data necessary for the current operation to proceed (namely<br>the operation to be performed and its arguments, which you can send in the<br>commit message itself or in a separate message).<br>Each slave then performs the corresponding operation. Each slave sends a<br>positive acknowledgment back to the master if the (local) operation completed<br>successfully, or a negative acknowledgment otherwise. The master performs the<br>requested operation if and only if it has received positive acknowledgments<br>from all the slaves. Upon the success of the local operation a “success”<br>message is sent to all the slaves.<br>If there has been a negative acknowledgment from at least one slave, or if the<br>master has been unsuccessful, then the master broadcasts a “not successful”<br>message. Upon receipt of such a message, a slave “undoes” the writing process,<br>in the sense that the effect of the writing is canceled.<br>If the process is successful then a suitable 3.0 WROTE message is sent to the<br>client, otherwise a 3.2 ERROR message is sent instead.<br>To summarize, the two-phase commit protocol can be represented by two finite<br>automata (one for the master and another for the slave), which are shown in<br>Figure 1 (the conditions that enable the corresponding transitions are written<br>in italics and in blue, while the actions associated to the transitions are<br>written in plain text).</p>
+<h3 id="Application-Protocol-1"><a href="#Application-Protocol-1" class="headerlink" title="Application Protocol"></a>Application Protocol</h3><p>You are responsible for designing the application protocol for the two-phase<br>commit algorithm. Give some thought to this design, preferably before starting<br>coding so that your protocol is robust and unambiguous. The protocol must be<br>fully described in a file named protocol2pc.txt included in your submission.<br>In addition, whenever D is true your server must print to the standard output<br>all the messages exchanged with its peers (sent and also received). Please<br>identify in such a printout what are the messages that have been sent and what<br>are the messages that have been received.</p>
+<h2 id="Implementation-and-Testing"><a href="#Implementation-and-Testing" class="headerlink" title="Implementation and Testing"></a>Implementation and Testing</h2><p>Most of the implementation requirements have already been outlined earlier.<br>The only major thing left to specify is how are the configuration parameters<br>obtained. We also include a short discussion on debugging considerations.</p>
+<h3 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h3><p>Upon startup, our server reads a configuration file. This file contains pairs<br>consisting of a variable name and a value for that variable, separated by an &#x3D;<br>character (with no blanks). The configuration file includes (in no particular<br>order) the following definitions:<br>    THMAX&#x3D;Tmax<br>    BBPORT&#x3D;bp<br>    SYNCPORT&#x3D;sp<br>    BBFILE&#x3D;bbfile<br>    PEERS&#x3D;peers<br>    DAEMON&#x3D;d<br>    DEBUG&#x3D;D<br>where Tmax, bp, and sp are strings representing positive numbers, bbfile is a<br>file name, D and d are Boolean values and can be specified using either the<br>numbers 0 and 1 or the strings false and true. The list of peers peers<br>consists of strings separated by blanks. Each such a string has the form<br>host:port, where host is a host name (DNS name or IP in dotted decimal<br>notation2 ) and port is a positive number. You can assume that the list of<br>peers does not include the current server. You do not need to validate the<br>peers on startup. Instead you only need to try to connect to the peers when a<br>synchronization is needed; any malformed peer will be handled by the<br>synchronization protocol in the precommit phase.<br>Most of the lines in the configuration file are optional; each missing line<br>causes the respective variable to take a default value, as follows: 20 for<br>Tmax, 9000 for bp, 10000 for sp, an empty list for peers, true for d, and<br>false for D. The only mandatory data is bbfile; if the server cannot obtain<br>the file name from either the configuration file or the command line (see<br>below) then it must refuse to start (with a suitable error message printed to<br>the standard output). The server never modifies the configuration file, even<br>if it is missing or incomplete.<br>The default configuration file is called bbserv.conf and resides in the<br>current directory. The name can be overridden by the command line option -c<br>whose argument specifies (using an absolute or relative path) the<br>configuration file to be used for the respective session.<br>All the options provided in the configuration file can be overridden using<br>command line switches as follows:</p>
+<ul>
+<li>-b overrides (or sets) the file name bbfile according to its argument </li>
+<li>-T overrides Tmax according to its argument </li>
+<li>-p overrides the port number bp according to its argument </li>
+<li>-s overrides the port number sp according to its argument </li>
+<li>-f (with no argument) forces d to false or 0 </li>
+<li>-d (with no argument) forces D to true or 1<br>Any non-switch argument is further interpreted as a peer specification (and so<br>must have the form host:port as explained above).<br>If some option is specified in both the configuration file and by a switch on<br>the command line then the command line version takes precedence. The non-<br>switch arguments on the other hand are additions to the peers specified in the<br>configuration file (meaning that they will be added to the list peers).<br>Command line switches must be ideally specified in any order and any<br>combination (ideally they will be parsed using getopt()). However, at a<br>minimum the following order must be supported: -b, -f, -d, -t, -T, -p, -s, -c,<br>followed by the non-switch arguments. Note that all the switches are optional<br>(meaning that any of them may be missing).</li>
+</ul>
+<h3 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h3><p>Most (if not all) real-life servers contain debugging facilities, which serve<br>two purposes. For one thing, concurrent applications are notoriously difficult<br>to debug, so debugging facilities must be provided to facilitate this process.<br>Secondly, if a server misbehaves in the wild the respective system<br>administrator will typically enable these debugging facilities to identify and<br>correct the problem if possible, or else provide meaningful data to the<br>developer if the problem cannot be resolved locally.<br>In our case the debugging facilities are controlled by the parameter D. The<br>only such facilities that are mandatory are the ones related to debugging the<br>concurrent access to the bulletin board file and exposing the peer-to-peer<br>communication (see Sections 1.3 and 2.2). Increasing the overall quantity of<br>the messages produced to the standard output in the presence of this flag is<br>highly recommended. I do not have actual suggestions what events to identify<br>this way, but I am sure that throughout the development you will find the need<br>to print out information in order to debug your server; these messages should<br>be suppressed during normal operation, but I suggest that you re-enable them<br>in the presence of the flag D.</p>
+<h3 id="Reference-and-Staging-Computing-Environments"><a href="#Reference-and-Staging-Computing-Environments" class="headerlink" title="Reference and Staging Computing Environments"></a>Reference and Staging Computing Environments</h3><p>Your server is expected to interact with the standard telnet client as well as<br>any other client that sends and receives text. You should therefore be able to<br>handle clients that terminate lines of text with the usual ‘\n’ but also with<br>the sequence “\r\n” (which is the case of telnet). Note that in fact according<br>to the protocol specification (see Section 1.1) you should be able to handle<br>any combination of ‘\n’ and ‘\r’ as line terminator.<br>The reference computing environment for this challenge is a Linux machine<br>which provides recent version of GCC (currently 11.2.0, subject to change) and<br>GNU make (currently 4.3).<br>This being said, a well written solution should build and run on any<br>reasonably current POSIX system with a standard C&#x2F;C++ compiler (including but<br>not necessarily limited to GCC and LLVM) and a nonancient version of make (GNU<br>or otherwise). You can easily set up such an environment using any current<br>Linux distribution (make sure that you install the development packages) or<br>Mac OS (with Xcode as well as the Xcode command line tools installed). Such an<br>environment can also be created in Windows, but I am not able to provide<br>advice on this matter since it exceeds my expertise.(just in case).<br>The machines are to be regarded as disposable, meaning that they can be reset<br>to their initial form at any time and without warning. While in principle they<br>will not be reset until the end of the term, this cannot be guaranteed, so<br>make sure that all your data is backed up elsewhere.<br>This all being said, note that the testing of your server does not need a<br>multi-machine environment. You can also run multiple replica servers on the<br>same machine but out of different directories and bound to different port<br>numbers. It is however a good idea to test your implementation on multiple<br>machines at least once in order to eliminate any possible bugs that do not<br>manifest themselves on a single-machine run.<br>Be aware that you will be working in a multi-user environment and so it is<br>reasonable to assume that each machine will run multiple instances of the<br>server. It is therefore a wise idea to choose unique port numbers. I recommend<br>that you use 8000 + your user ID as port number for service to clients, and<br>9000 + your user ID as port number for synchronization. The following two<br>shell commands will print out these numbers when run on linux.ubishops.ca or<br>any of the staging machines:<br>    echo $((8000+$(id -u)))<br>    echo $((9000+$(id -u)))<br>Even better, you can provide appropriate port numbers directly on the command<br>line of your server along the following line:<br>    .&#x2F;bbserv -p $((8000+$(id -u))) -s $((9000+$(id -u))) -b bbfile<br>Note that if you use the staging machines then you should restrict yourself to<br>port numbers between 9000 and 11000 since other port numbers are blocked at<br>the firewall level.</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>Submit the source code for your server plus appropriate documentation. Note<br>that a description of the application protocol for synchronization is a<br>compulsory part of the documentation.</p>
+<h3 id="Presentation"><a href="#Presentation" class="headerlink" title="Presentation"></a>Presentation</h3><p>Your submission must contain the following:</p>
+<ol>
+<li>Your working code. </li>
+<li>A suitable makefile. Building your code must produce an executable named bbserv in the root directory of your submission. The build process must complete successfully when using GNU make and GCC by simply typing make at the shell prompt in the root directory of your submission. I recommend that you build a simple makefile by hand, but generated makefiles are also fine (as log as they work in the reference environment).<br>Also provide the target clean that removes all the object, executable, log,<br>and any other unnecessary files, thus restoring the submission to its pristine<br>condition, ready to be built and run.</li>
+<li>Documentation is an integral part of your submission and should include:<br>* A brief “user guide” documenting any deviations from, or additions to the specified human interface or protocols (as the case may be). Do not repeat the specification, just document deviations and&#x2F;or additions. Also provide descriptions (or references thereof) to all the algorithms used by your code which were not given in the handout. Proper credit should be given to any code that you did not write and&#x2F;or that existed before you started coding for this challenge. Describe here any non-obvious implementation solution you came up with. If you did some smart coding by all means document your smartness (otherwise I might miss it).<br>* Suitable comments in the code, outlining the functionality of all the pieces of code and referencing the section on algorithms and functionality (above).<br>* The file protocol2pc.txt (see Section 2.2).<br>The documentation (except the content of protocol2pc.txt) can be included in<br>the README file (see below) if its size does not justify a separate document.<br>All the documentation should be provided in plain text; no other format is<br>acceptable.</li>
+<li>A README file. This file must be called README (all capitals and with no extension) and must be plain text. The first line must contain the name of all the collaborators separated by commas. The second line must contain a list of email addresses again separated by commas. Exactly all the email addresses on this line will be used for sending feedback on your submission; you can specify as many email addresses as you wish.<br>The remainder of the file is free form and contain any information you may<br>wish to convey. In particular I recommend to include here the documentation<br>(see above) instead of having it in a different file.</li>
+</ol>
+<h2 id="Grading"><a href="#Grading" class="headerlink" title="Grading"></a>Grading</h2><p>The marking process will assume a production server. Such a server should not<br>deviate from the application protocol and generally should behave as<br>specified. Most tests are automated and so silly mistakes may result in<br>substantial loss of marks (so do not make them).<br>Marking is based on semi-automated tests carried on a fresh build of your<br>code. Your code will receive only a cursory inspection to ensure that you have<br>observed the implementation limitations (if applicable), and to establish code<br>ownership. Bad programming practice and dirty code will not impact your grade<br>unless they impact the execution of the program, or are conspicuous enough to<br>be easily noticed in said cursory code inspection.<br>I will build and run your program on a couple of batches of standardized<br>testing scenarios. The first batch will run your server with an empty list<br>peers (thus testing Phase 1) and the second batch will run multiple instances<br>of the server (thus testing Phase 2). I will be using my own configuration<br>file copied over to your directory. All of this is mostly automated. It is<br>therefore crucial to follow the build process and command line to the letter.<br>Note in particular that the ideal handling of the command line switches is to<br>accept them in any order, but at the minimum they should be accepted in the<br>order in which they are specified in Section 3.1.<br>As a consequence of this marking scheme your program must build exactly as<br>specified and must accept input exactly as specified. Any deviation from the<br>build specification or run time input requirements (command line arguments,<br>files, etc) will result in the submission not being marked at all and so<br>receiving zero marks. I will not debug or fix during marking build errors or<br>run time errors caused by not observing the given specification; trivial<br>mistakes can be very costly so don’t make them. If in doubt ask for assistance<br>before submitting your work.<br>Penalties will be applied on all deviations from the specified behaviour,<br>including but not necessarily limited to incorrect implementation of the<br>application protocols, incorrect concurrent behaviour, busywaiting loops, and<br>deadlocks. Note in particular that in network applications any communication<br>should have an associated timeout (to eliminate the possibility of deadlocks<br>caused by unreliable communication).<br>In addition to all of the above be aware that identical or nearly identical<br>submissions by two (or more) teams will receive (all of them) an automatic<br>grade of 0. Further action according to the departmental and university<br>guidelines for academic dishonesty may be pursued.</p>
+<h3 id="Marking-scheme"><a href="#Marking-scheme" class="headerlink" title="Marking scheme"></a>Marking scheme</h3><p>The various aspects of your submission will have the following weight in the<br>final grade:</p>
+<ul>
+<li>Basic client-server communication: 30% </li>
+<li>Concurrent access to the bulletin board file: 20% </li>
+<li>Peer-to-peer synchronization: 30% </li>
+<li>Timeouts, busy loops (or rather lack thereof), deadlock avoidance, etc.: 10% </li>
+<li>Signal handling: 10%</li>
+</ul>
+<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><p>It is your responsibility to become familiar with POSIX and network<br>programming. The resources suggested below will probably accomplish this, but<br>I am sure that many more resources exist out there.<br>The UNIX implementation of the TCP&#x2F;IP network stack is Berkley sockets. This<br>course also offered a presentation of programming techniques for concurrent<br>and distributed applications. Sections of particular interest include the<br>lecture notes (overhead slides and also recorded video lectures) and the code<br>samples. The latter section contains in particular an archive with various TCP<br>utilities which you are welcome to use (and will most likely make your life<br>easier).<br>On top of this, a very useful resource is the manual pages. On any UNIX<br>machine with the developer tools installed you can type<br>    man function<br>for a detailed description of function (which could be a system or library<br>function but also some other programming construct). Sometimes a command like<br>the above can produce the wrong manual page. For example<br>    man getopt<br>will produce the manual page of the UNIX command getopt rather than the<br>library function with the same name. This happens because manual pages are<br>split into numbered sections and by default the first hit is returned. Given<br>that getopt is a shell command it has a manual page in Section 1, while the<br>manual pages for library function (which is presumably what you are looking<br>for) are described in Section 3. To obtain the correct manual page in such a<br>case you must specify the section number (3 in our example) explicitly as the<br>first argument. Therefore the command that will give you the manual page of<br>the function getopt is<br>    man 3 getopt<br>Note that shell commands are described in Section 1, system functions (OS API)<br>are described in Section 2, and standard C library functions in Section 3. It<br>is sometime difficult to realize right off the bat which function is a system<br>function and which is a library function; in such a case the only recourse<br>would be to try both sections. Occasionally you may need to go to Section 7<br>which is the rest of the Linux programmer’s manual. As an example signals are<br>described in the manual page signal residing in Section 7.<br>An excellent introduction into network and system programming in UNIX is<br>Internetworking with TCP&#x2F;IP, Vol. III: Client-Server Programming and<br>Applications, Linux&#x2F;Posix Sockets Version (by Douglas E. Comer and David L.<br>Stevens, Prentice Hall, 2001). This is actual the basis of the lectures<br>mentioned at the beginning of this section.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/07/22/Network%E4%BB%A3%E5%86%99%EF%BC%9ACS332BulletinBoardServer/">http://saferman.github.io/2023/07/22/Network%E4%BB%A3%E5%86%99%EF%BC%9ACS332BulletinBoardServer/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Network%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Network代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/24/Python%E4%BB%A3%E5%86%99%EF%BC%9ACSCA08Inheritance/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Python代写：CSCA08 Inheritance">
+                        
+                        <span class="card-title">Python代写：CSCA08 Inheritance</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/07/22/Python%E4%BB%A3%E5%86%99%EF%BC%9AINFO3012ForecastingofSales/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Python代写：INFO3012 Forecasting of Sales">
+                        
+                        <span class="card-title">Python代写：INFO3012 Forecasting of Sales</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Python代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

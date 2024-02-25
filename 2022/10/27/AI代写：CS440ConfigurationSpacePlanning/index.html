@@ -1,0 +1,961 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="AI代写：CS440 Configuration Space Planning, 留学生CS|辅导|代写">
+    <meta name="description" content="改进  A* 算法，将路径规划问题转换为更加通用的可配置的空间搜索路径问题。![A*](https://www.gatevidyalay.com/wp-content/uploads/2020/01/A-Algorithm-Problem-">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>AI代写：CS440 Configuration Space Planning | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">AI代写：CS440 Configuration Space Planning</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">AI代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-27
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>改进 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/A*_search_algorithm" title="A*"> A* </a><br>算法，将路径规划问题转换为更加通用的可配置的空间搜索路径问题。<br>![A*](<a target="_blank" rel="noopener" href="https://www.gatevidyalay.com/wp-content/uploads/2020/01/A-Algorithm-">https://www.gatevidyalay.com/wp-content/uploads/2020/01/A-Algorithm-</a><br>Problem-01-Solution-A-on-8-Puzzle-819x1024.png)</p>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>In this assignment you will write code that transforms a shapeshifting alien<br>path planning problem into a configuration space, and then search for a path<br>in that space. See the Robotics sections of the lectures for background<br>information.</p>
+<h2 id="General-guidelines"><a href="#General-guidelines" class="headerlink" title="General guidelines"></a>General guidelines</h2><p>Basic instructions are the same as in MP 1. Specifically, you should be using<br>Python 3.8 with pygame installed, and you will be submitting the code to<br>Gradescope. Your code may import modules that are part of the standard python<br>library, and also numpy and pygame.<br>For general instructions, see the main MP page and the syllabus.<br>You will need to adapt your A* code from MP 2.</p>
+<h2 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h2><p>Many animals can change their aspect ratio by extending or bunching up. This<br>allows animals like cats and rats to fit into small places and squeeze through<br>small holes.<br>You will be moving an alien robot based on this idea. Specifically, the robot<br>lives in 2D and has three degrees of freedom:</p>
+<ul>
+<li>It can move the (x,y) position of its center of mass. </li>
+<li>It can switch between three forms: a long horizontal form, a round form, and a long vertical form.<br>Notice that the robot cannot rotate. Also, to change from the long vertical<br>form to&#x2F;from the long horizontal form, the robot must go through the round<br>form, i.e., it cannot go from its vertical oblong shape to its horizontal<br>oblong shape directly.<br>The round form is a disk (or a filled circle). The horizontal or vertical long<br>form is a “sausage” shape, defined by a line segment and a distance “d”, i.e.,<br>any point within a given distance “d” of the LINE SEGMENT between the alien’s<br>head and tail is considered to be within the alien .<br>For each planning problem you will be given a 2D environment specified by:</li>
+<li>The size of the workspace. </li>
+<li>The widths of the long and round forms. </li>
+<li>The starting (x,y) center-of-mass position and shape of the alien. </li>
+<li>A list of goals, each of which is defined by disk described by an (x,y) position and a radius. </li>
+<li>A set of obstacles, each of which is a line segment.<br>You need to find a shortest path for the alien robot from its starting<br>position to ONE of the goal positions.<br>The tricky bit is that the alien may not pass through any of the obstacles.<br>Also, no part of the robot should go outside the workspace. So configurations<br>like the following are NOT allowed:<br>Also note that, since we are discretizing the state space, we want to add a<br>safety buffer equal to the half diagonal of a square whose side length is the<br>granularity we’re using to digitize our map. Specifically, if the granularity<br>is G, we want our alien to be at least G2 units way from any obstacles and the<br>same distance away from the edges of the workspace. This ensures that the<br>alien will not accidentally bump into an obstacle of go out of bounds while<br>executing its path in the real world. This is important for, configurations<br>like the one below, where the granularity is set to 10 pixels.<br>Note that it seems that the alien turned red despite not visibly colliding<br>with any wall. That is because at this coarse granularity, the safety buffer<br>is very large. Keep that in mind as you visually debug later (this effect<br>should be less perceptible at finer granularities).<br>We consider the maze solved once any part of the alien’s body has contacted<br>the goal position (i.e. if any part of any of the objectives is within the<br>alien area), as long as the alien is not violating any constraint (i.e., not<br>out of bounds or touching a wall). Here are some valid “solved” states.<br>Note that for reaching the goal, we DO NOT apply the collision buffer we use<br>for obstacles and out-of-bounds checking, as we want to guarantee that we<br>actually touch the goal.<br>To solve this MP3, you will go through three main steps:</li>
+<li>Adapt your MP2 State and A* code to be able to search in three dimensions. <ul>
+<li>This is primarily a housekeeping activity to ensure your code is not hardcoded to work for a specific type of search, but can handle generic search spaces.</li>
+</ul>
+</li>
+<li>Compute a configuration space (Maze) from the original alien motion space. This configuration space is 3D because the alien robot has three degrees of freedom (x,y centroid position and shape). </li>
+<li>Convert that configuration space into a 3D version of MP2’s map format and use your previously written 3D A* code to compute the shortest path in this configuration space map.<br>In order to represent the alien’s configuration space as a 3D maze, you will<br>digitize the alien’s current shape and 2D movement patterns. Each shape of the<br>alien (‘Vertical’, ‘Ball’, ‘Horizontal’) can be represented by a “level” in<br>the maze, while the walls in the maze are determined by the configurations<br>where the current shape collides with obstacles. It is important to remember<br>that the robot’s configuration is comprised of both its (x,y) centroid<br>position and its shape! In the mazes we want you to solve, the robot will have<br>to switch its shape to reach the goal.</li>
+</ul>
+<h2 id="Part-0-Understanding-Map-configuration"><a href="#Part-0-Understanding-Map-configuration" class="headerlink" title="Part 0: Understanding Map configuration"></a>Part 0: Understanding Map configuration</h2><p>Each scene (or problem) is defined in a settings file. The settings file must<br>specify the alien’s inital position, geometry of the alien in its different<br>configurations, the goals and their geometry and the edges of the workspace.<br>Here is a sample scene configuration.</p>
+<ul>
+<li>Window: The window size for the given example map is 300x200 pixels. Note that (0, 0) is the top-left corner and (300, 200) is the bottom-right corner . </li>
+<li>Lengths: The lengths of the robot are in the form [‘Horizontal Length’, ‘Ball length (always 0)’, ‘Vertical Length’]. The length of the robot is defined by the distance between its head and tail </li>
+<li>Widths: widths of the robot represent the radius of the circle that is added to the line segment “body” of the alien, i.e.. how far away from the line segment defining the body is still considered to be “inside” the robot. These are ordered in the same manner as the Lengths </li>
+<li>Obstacles: There are many walls in the maze which are represented by a list of endpoints for line segments in the format (startx, starty, endx, endy) </li>
+<li>A list of disk goals specified in the form (x,y,radius). In this particular maze, there is one goal at (110,40) that has radius 10 pixels. </li>
+<li>The alien is set to start at the position (30,120), in its default disk configuration </li>
+<li>The name of this map is Test1<br>Here is how the map from this configuration looks:<br>You can play with the maps (stored in config file “maps&#x2F;test_config.txt”) by<br>manually controlling the robot by executing the follwing command:<br>python3 mp3.py –human –map Test1 –config maps&#x2F;test_config.txt<br>Feel free to modify the config files to do more self tests by adding test maps<br>of your own.<br>Once the window pops up, you can manipulate the alien using the following<br>keys:</li>
+<li>w &#x2F; a &#x2F; s &#x2F; d: move the alien up &#x2F; left &#x2F; down&#x2F; right </li>
+<li>q &#x2F; e: switch between horizontal, ball, and vertical forms of the alien. “q” will cycle backwards (Vertical -] Ball -] Horizontal) and “e” will cycle forwards (Horizontal -] Ball -] Vertical<br>While implementing your geometry.py file, you can also use this mode to<br>manually verify your solution, as the alien should turn red when touching an<br>obstacle or out of bounds, and should turn green when validly completing the<br>course, as shown in the initial figures.</li>
+</ul>
+<h2 id="Part-1-Adapt-A"><a href="#Part-1-Adapt-A" class="headerlink" title="Part 1: Adapt A*"></a>Part 1: Adapt A*</h2><p>The first part of this MP is to extend your A <em>code from MP2 to handle 3D<br>mazes. Your A</em> code must be able to handle the possibility that there are<br>multiple goals. However, unlike MP 2, your code does not have to touch all the<br>goals. It should consider the maze “solved” when it reaches the first goal.<br>Your new A* code should be added to this file:</p>
+<h3 id="search-py"><a href="#search-py" class="headerlink" title="search.py"></a>search.py</h3><ul>
+<li>astar(maze): returns optimal path in a list of MazeState objects, which contains start and objectives. If no path found, return None. </li>
+<li>backtrack(visited_states, current_state): this should be similar to your MP 2 implementation.<br>To implement search, you will also need to finish the implementation of<br>MazeState in state.py. It might help to review some of the states you made in<br>the previous MP. Complete all of the TODOs to finish the implementation. Note<br>that unlike the previous MP, we do not include the MST in the heuristic,<br>because we only need to reach one goal. Given the new objective, our old<br>heuristic would not be consistent and admissible.<br>Run part 1 by using the following command<br>python3 part1.py mazes&#x2F;small-3d<br>You can control the agent with keyboard inputs as usual by using arrow keys to<br>navigate on the same level and ‘u’ and ‘d’ to move up&#x2F;down a level<br>python3 part1.py mazes&#x2F;small-3d –human<br>NOTE: unlike MP2, in this MP, the maze might not have a path! So be sure to<br>handle this case properly and return None! Also notice that the astar function<br>now takes an extra argument ispart1. You should pass this argument as it is<br>when you call getNeighbors() Don’t change it as it will mess up the tests.</li>
+</ul>
+<h2 id="Part-2-Geometry"><a href="#Part-2-Geometry" class="headerlink" title="Part 2: Geometry"></a>Part 2: Geometry</h2><p>The second part of this MP is to work out the geometrical details to build<br>your configuration space map.<br>The alien robot has two forms that are represented with geometric shapes:<br>Form 1 (Ball): A disk with a fixed radius. This entire disk is the alien’s<br>body.<br>Form 2 (Oblong): An oblong (sausage shape). This is represented as a line<br>segment with a fixed length and a radius. Any point within the specified<br>radius of the line segment belongs to the alien’s body, hence its sausage-like<br>appearance.<br>We provide a helper class to help you: Alien. Do not modify this class . To<br>solve MP3, you will likely find the following Alien methods to be useful:</p>
+<h3 id="alien-py"><a href="#alien-py" class="headerlink" title="alien.py"></a>alien.py</h3><ul>
+<li>get_centroid(): Returns the centroid position of the alien (x,y) </li>
+<li>get_head_and_tail(): Returns a list with the (x,y) coordinates of the alien’s head and tail [(x_head,y_head),(x_tail,y_tail)], which are coincidental if the alien is in its disk form. </li>
+<li>get_length(): Returns the length of the line segment of the current alien shape </li>
+<li>get_width(): Returns the radius of the current shape. In the ball form this is just simply the radius. In the oblong form, this is half of the width of the oblong, which defines the distance “d” for the sausage shape. </li>
+<li>is_circle(): Returns whether the alien is in circle or oblong form. True if alien is in circle form, False if oblong form. </li>
+<li>set_alien_pos(pos): Sets the alien’s centroid position to the specified pos argument </li>
+<li>set_alien_shape(shape): transforms the alien to the passed shape </li>
+<li>set_alien_configuration((x,y,shape)): Places the alien in that specified configuration, placing its centroid in position (x,y) and forcing its shape to be “shape”<br>The main geometry problem is then to check whether</li>
+<li>the alien touches the goal. </li>
+<li>the alien runs into obstacles </li>
+<li>all parts of the alien remain within the given window (bounds)<br>To do this, you need to implement the following functions:</li>
+</ul>
+<h3 id="geometry-py"><a href="#geometry-py" class="headerlink" title="geometry.py"></a>geometry.py</h3><ul>
+<li>does_alien_touch_walls(alien, walls, granularity): Determine whether any part of the alien touches the walls given a certain space granularity, returns True if it does and False otherwise. </li>
+<li>does_alien_touch_goals(alien, goals): Determine whether any part of the alien touches goals, returns True if it does and False otherwise. </li>
+<li>is_alien_within_window(alien, window, granularity): Determine whether the alien stays within the window given a certain space granularity, returns True if it does and False otherwise.<br>These functions are easier to implement if you know how to compute (1)<br>distances between a point and a line segment for these functions, as well as<br>(2) distances between two line segments. So you need to implement three<br>additional helper functions in geometry.py for computing these quantities (we<br>recommend they be implemented in the order below):</li>
+<li>point_segment_distance(point, segment): Compute the Euclidean distance from a point to a line segment, defined as the distance from the point to the closest point on the segment (not a line!). </li>
+<li>do_segments_intersect(segment1, segment2): Determine whether two line segments intersect. </li>
+<li>segment_distance(segment1, segment2): Compute the Euclidean distance between two line segments, defined as the shortest distance between any pair of points on the two segments.<br>Lecture note “geometry cheat sheet” should be helpful, as well as drawing down<br>and considering some examples. Be sure to use numpy.isclose at places where<br>appropriate; your code should not complain the likes of “RuntimeWarning:<br>invalid value encountered in double_scalars.”<br>Remember again that we want our alien to be at least Granularity2 away from<br>any obstacles and from being out of bounds. Also note that. when checking for<br>equalities using floating point numbers, you can get inconsistent values for<br>the least significant bits due to machine precision. Using np.isclose(x,y) IS<br>NECESSARY TO ENSURE CONSISTENCY in your results<br>In addition, in robotics, it is commonplace to err on the side of caution -<br>Therefore, If the alien is found to be TANGENT to either the WALLS or the<br>BOUNDARIES it should be considered as AN INVALID configuration - i.e. should<br>return True in the collision checking. We have built in some assertions at the<br>bottom of geometry.py to help with basic debugging, which can be executed by:<br>python3 geometry.py<br>As mentioned before, once this class is properly implemented, you can also<br>perform visual validation by running:<br>python3 mp3.py –human –map [MapName] –config maps&#x2F;test_config.txt<br>The file maps&#x2F;test_config.txt contains several maps. MapName is the name of<br>the one you’d like to run. That is, MapName should be Test1, Test2, Test3,<br>Test4, or NoSolutionMap.</li>
+</ul>
+<h2 id="Part-3-Transformation-to-Maze"><a href="#Part-3-Transformation-to-Maze" class="headerlink" title="Part 3: Transformation to Maze"></a>Part 3: Transformation to Maze</h2><p>The third part of this MP is to transform the movement and transformation<br>space of the alien into a 3D maze. As mentioned before, the alien has three<br>degrees of freedom: x,y, and shape. You can find more details about these<br>shapes in alien.py<br>In each shape, the alien’s centroid position is limited to a different<br>movement space due to new constraints imposed by the new shape. This is the<br>key to this part of the MP.<br>Your main task for part 3 of this MP is to use the geometry functions defined<br>in the previous section to construct an MP2-style maze to be transversed by<br>the alien during its motion. This maze will have three levels, one for each<br>body shape. Specifically:</p>
+<ul>
+<li>‘Horizontal’ is level 0 </li>
+<li>‘Ball’ is level 1 </li>
+<li>‘Vertical’ is level 2<br>Within each level, the rows and columns in the maze match to the robot’s (x,y)<br>centroid position. The number of rows and columns of the maze is defined by<br>the dimensions of the workspace as well as the chosen granularity. The number<br>of positions in the row or column. For this MP, minposition is always zero.<br>In order to ensure uniformity in the shapes of the mazes, we provide you with<br>two helper functions in utils.py, configToIdx and idxToConfig. These functions<br>will give you the correct correspondence between a robot configuration and a<br>maze index. YOU MUST USE THEM TO ENSURE CONSISTENCY FOR THE AUTOGRADER and to<br>make your lives easier.<br>In order to perform this task, you will define the function<br>transformToMaze(alien,goals,walls,window, granularity) in transform.py</li>
+<li>transformToMaze(alien, goals, walls, window,granularity): This function takes in an alien instance, list of goals, list of line segments representing walls, and a window size and a granularity. It then returns a maze instance based on these arguments. </li>
+<li>The granularity parameter determines how many cells will be contained in a given interval. </li>
+<li>The maze class can be found in maze.py. </li>
+<li>We then generate a maze instance by calling the maze constructor from maze.py and passing in the path to the ASCII file.<br>The maze file is defined by an ASCII file with the following conventions:</li>
+<li>wall: % </li>
+<li>start: P </li>
+<li>waypoint: . </li>
+<li>level separator&#x2F;end of file marker: #<br>Your generated maze must abide by the ASCII conventions above before you can<br>instantiate a Maze object and save it to a file by calling<br>maze.saveToFile(FILENAME).<br>Here is an example of a maze representation from small-3d.<br>To fill in the maze positions for each level, you will use the geometry<br>functions you implemented in part 2 to evaluate collision, goal, and out of<br>bound states for centroid positions. This will define your movement space for<br>each level. The bruteforce solution is to check all centroid positions for<br>collisions with different maze options. However, there may be more efficient<br>ways to do this using shortcuts to bypass unnecessary checking. We have<br>provided you with the ground truth mazes for all the test maps calculated at<br>2,5 and 10 pixels of granularity. If you wish to validate your solution, you<br>can run<br>python3 transform.py<br>While initially debugging, you might wish to change the list of granularities<br>and maps you are building the maps for in the <strong>main</strong> section of transform.py<br>so you can get quicker feedback. By default, it will generate the maps for all<br>example maps at 2,5 and 10 pixels of granularity and compare those to the<br>ground truth mazes. If it identifies discrepancies between your map and the<br>ground truth, it will highlight those as shown below:</li>
+</ul>
+<h2 id="Part-4-Searching-the-path-in-Maze"><a href="#Part-4-Searching-the-path-in-Maze" class="headerlink" title="Part 4: Searching the path in Maze"></a>Part 4: Searching the path in Maze</h2><p>In this section, you put all of the ingredients together! You will receive a<br>given map, discretize it using your Part 3 code, and use your A* search<br>algorithm to find the shortest path to any of the goals. You can test all of<br>the components together with:<br>    python3 mp3.py –map [MapName] –config maps&#x2F;test_config.txt –save-maze [MazeDestinaton].txt<br>Where MapName is in [Test1,Test2,Test3,Test4,NoSolutionMap]. If all your parts<br>are implemented correctly, you should see two outputs. The first of them is an<br>animation of the solution you just found playing in the main screen (you can<br>press escape to kill it).<br>The second of them is the maze version of the map you just solved, which can<br>be found in the file you specified as MazeDestination. Below is an example of<br>the maze generated for Test1 with granularity 6. Notice that these digitized<br>mazes can get large if you select a finer granularity or a map that’s more<br>complex.</p>
+<h2 id="Provided-Code-Skeleton-and-Deliverables"><a href="#Provided-Code-Skeleton-and-Deliverables" class="headerlink" title="Provided Code Skeleton and Deliverables"></a>Provided Code Skeleton and Deliverables</h2><p>The code you need to get started is in this zip file. You will only have to<br>modify and submit following files:</p>
+<ul>
+<li>geometry.py </li>
+<li>transform.py </li>
+<li>search.py </li>
+<li>state.py<br>Do not modify other provided code. It will make your code not runnable.<br>You can get additional help on the parameters for the main MP program by<br>typing python3 mp3.py -h into your terminal.<br>Please upload search.py, state.py, transform.py, and geometry.py (all<br>together) to gradescope.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2022/10/27/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS440ConfigurationSpacePlanning/">http://saferman.github.io/2022/10/27/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS440ConfigurationSpacePlanning/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">AI代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/29/Spark%E4%BB%A3%E5%86%99%EF%BC%9ADSCI553FoundationsandApplicationsofDataMining/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Spark代写：DSCI553 Foundations and Applications of Data Mining">
+                        
+                        <span class="card-title">Spark代写：DSCI553 Foundations and Applications of Data Mining</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spark%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Spark代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/26/OperatingSystem%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2560DevicesasFiles/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Operating System代写：COMP2560 Devices as Files">
+                        
+                        <span class="card-title">Operating System代写：COMP2560 Devices as Files</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Operating-System%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Operating System代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

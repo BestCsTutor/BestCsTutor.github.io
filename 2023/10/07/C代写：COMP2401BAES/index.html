@@ -1,0 +1,960 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：COMP2401B AES, 留学生CS|辅导|代写">
+    <meta name="description" content="实现一个简易版的  AES  加密算法。![AES](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/AES-SubBytes.svg&amp;#x2F;220px-AES-Sub">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：COMP2401B AES | 留学生CS|辅导|代写</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">留学生CS|辅导|代写</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例集合</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">留学生CS|辅导|代写</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例集合
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：COMP2401B AES</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-10-07
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个简易版的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard" title="AES"> AES </a> 加密算法。<br>![AES](<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/AES-">https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/AES-</a><br>SubBytes.svg&#x2F;220px-AES-SubBytes.svg.png)</p>
+<h2 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h2><p>For this assignment, you will write a program in C, in the Ubuntu Linux<br>environment, to provide the end user with the ability to encrypt and decrypt<br>messages, using a secret key. In order to prevent your enemies from easily<br>cracking your encrypted messages, the algorithm that you implement will use an<br>incrementing counter to encrypt each character in a slightly dierent way,<br>similar to (but much simpler than) the Counter (CTR) mode of the Advanced<br>Encryption Standard (AES) symmetric encryption algorithm. Your program will<br>output the result (either the ciphertext or the plaintext) to the screen.</p>
+<h2 id="Learning-Outcomes"><a href="#Learning-Outcomes" class="headerlink" title="Learning Outcomes"></a>Learning Outcomes</h2><p>With this assignment, you will:</p>
+<ul>
+<li>get familiar with the Linux programming environment </li>
+<li>write a small program in C that is modular, and correctly designed and documented </li>
+<li>use bit masks and bitwise operators to manipulate values at the bit level</li>
+</ul>
+<h2 id="Instructions"><a href="#Instructions" class="headerlink" title="Instructions"></a>Instructions</h2><p>Your program will prompt the user to indicate whether they wish to encrypt a<br>readable message (the plaintext), or decrypt an already encrypted sequence of<br>numbers (the ciphertext) back to its readable form. You will implement the<br>encryption and decryption algorithm described below.<br>Your program must follow the programming conventions that we saw in the course<br>lectures, including but not restricted to the correct separation of code into<br>modular functions, basic error checking, and the documentation of each<br>function. A more comprehensive list of constraints can be found in the<br>Constraints section below.</p>
+<h3 id="Understand-the-encryption-decryption-algorithm"><a href="#Understand-the-encryption-decryption-algorithm" class="headerlink" title="Understand the encryption&#x2F;decryption algorithm"></a>Understand the encryption&#x2F;decryption algorithm</h3><p>The encryption and decryption algorithm that you implement will process each<br>source byte, one at a time. Because the exact same algorithm will be used for<br>both encryption and decryption, we use the term source byte to indicate each<br>byte of input to the algorithm. For encryption, each source byte will be<br>plaintext, and for decryption, each source byte will be ciphertext.<br>The algorithm will process each source byte with a key and a counter that are<br>initialized at the beginning of the program. It’s important that the initial<br>key and counter values be identical for both the encryption and the decryption<br>processes. If we encrypt a message with specific key and counter values, we<br>must use the same key and counter values for decryption. If we use dierent key<br>and counter values for decryption, we will get garbage instead of plaintext<br>when we decrypt the ciphertext.<br>The initial key value will be 0b10110010, and the initial counter value will<br>be 0b00101000. Both values will be updated as the algorithm processes each<br>byte.<br>The Algorithm:<br>For every source byte (plaintext or ciphertext):</p>
+<ul>
+<li>(1) process the counter value, using the key value, as follows: <ul>
+<li>(a) make a copy of the counter value into a temp counter </li>
+<li>(b) for every bit position, starting at bit position 7: </li>
+<li>(i) compute two bit positions (position 1 and position 2) that you will use to perform an xor between two of the temp counter bits: position 1 is set to the current bit position, and position<br>2 is computed as follows:<ul>
+<li>(1) if the key bit at the current bit position is 1, then position 2 is set to one bit position to the left of the current bit position, assuming we circle back to the least significant bits (for example, we consider bit 0 to be to the left of bit 7) </li>
+<li>(2) if the key bit at the current bit position is 0, then position 2 is set to two bit positions to the left of the current bit position, assuming we circle back</li>
+</ul>
+</li>
+<li>(ii) xor the two temp counter bits found at positions 1 and 2 </li>
+<li>(iii) set the temp counter bit at the current bit position to the result of the xor operation </li>
+<li>(iv) return the temp counter value as the updated counter value</li>
+</ul>
+</li>
+<li>(2) increment the updated counter value by 1 </li>
+<li>(3) increment the key value by 1 </li>
+<li>(4) process the source byte, using the counter value, as follows: <ul>
+<li>(a) make a copy of the source byte into a temp value </li>
+<li>(b) compute the counter value modulo 9 </li>
+<li>(c) if the result is less than 3: <ul>
+<li>(i) loop over the bits, starting at bit position 0 </li>
+<li>(ii) at every other bit position, compute the xor of the source bit and the counter bit, and set the temp value bit to the result of the xor operation</li>
+</ul>
+</li>
+<li>(d) if the result is between 3 and 5 inclusively: <ul>
+<li>(i) loop over the bits, starting at bit position 1 </li>
+<li>(ii) at every other bit position, compute the xor of the source bit and the counter bit, and set the temp value bit to the result of the xor operation</li>
+</ul>
+</li>
+<li>(e) if the result is greater than 5: <ul>
+<li>(i) loop over the bits, starting at bit position 0 </li>
+<li>(ii) at every bit position, compute the xor of the source bit and the counter bit, and set the temp value bit to the result of the xor operation</li>
+</ul>
+</li>
+<li>(f) return the resulting temp value as the result of the processing; if the source byte was plaintext, then this temp value will be the corresponding ciphertext; if it was ciphertext, the temp value will be the plaintext</li>
+</ul>
+</li>
+<li>(5) the result of processing the source byte is the output (ciphertext or plaintext) for that source byte</li>
+</ul>
+<h3 id="Design-your-program"><a href="#Design-your-program" class="headerlink" title="Design your program"></a>Design your program</h3><p>You will begin by designing the modular functions that you will use for<br>implementing the algorithm described above. Your functions must be single-<br>purpose and reusable, and they must have a clear interface with parameters<br>that are identified as either input, output, or input-output parameters.<br>In addition to the getBit(), setBit(), and clearBit() functions that we<br>covered in class, you must have a minimum of three (3) additional functions,<br>excluding main().</p>
+<h3 id="Write-the-code"><a href="#Write-the-code" class="headerlink" title="Write the code"></a>Write the code</h3><ol>
+<li>You will begin with the a1-posted.c file that is posted in cuLearn. You must rename this file to an appropriate name for Assignment #1. </li>
+<li>You will implement the getBit(), setBit(), and clearBit() functions, exactly as we saw in class.<br>Your program must use these functions to access and make all changes to the<br>bits inside each value.</li>
+<li>You will implement the functions that you designed in the Design step above. </li>
+<li>You will implement the main() function to first prompt the user for whether they want to encrypt a string, or decrypt a sequence of numbers. </li>
+<li>If the user chooses to encrypt a string, your program will do the following:<br>* (a) read a plaintext string from the command line; because this string will contain multiple spacedelimited words, you cannot use the scanf() library function for this; use fgets() instead, as shown in the provided code<br>* (b) encrypt the plaintext entered by the user, as described in the algorithm<br>* (c) print out to the screen the space-separated numeric sequence of ciphertext bytes </li>
+<li>If the user chooses to decrypt an encrypted sequence, your program will do the following:<br>* (a) read a sequence of numbers from the command line, up to a sentinel value of -1<br>* (b) decrypt the sequence entered by the user, as described in the algorithm<br>* (c) print out to the screen the resulting plaintext as characters<br>NOTE: The user should be able to decrypt any ciphertext that was produced by<br>the algorithm, and produce the original string as plaintext.</li>
+</ol>
+<h3 id="Packaging"><a href="#Packaging" class="headerlink" title="Packaging"></a>Packaging</h3><p>Every assignment in this course must to follow the conventional packaging<br>rules for Unix-based systems:</p>
+<ol>
+<li>Your code must be archived into a tar or zip file. No other formats will be accepted. </li>
+<li>You must provide a README file that contains a preamble (program author, purpose, list of source, header, and data files if applicable), as well as compiling and launching instructions. </li>
+<li>Do not submit any additional files, including object files, executables, or any supplementary files or directories (macOS users must remove their additional hidden directories).</li>
+</ol>
+<h3 id="Test-the-program"><a href="#Test-the-program" class="headerlink" title="Test the program"></a>Test the program</h3><p>You must test your program thoroughly. If your algorithm is correctly<br>implemented, you will be able to decrypt the following sequence to its correct<br>plaintext, using the initial key and counter values described in the algorithm<br>(bragging rights go to the first student who emails me the correct decrypted<br>message!):<br>    71 73 227 33 2 32 150 11 175 158 79 77 162 101 197 247 116 219 37 18 76 0 254 120 210<br>    32 146 13 58 32 73 226 195 226 102 109 115 129 170 192 19 50 30 162 124 46 33 73 76<br>    187 245 46 62 122 138 36 80 109 176 91 113 224 109 222 219 11 175 49 97 43 61 4 53 113<br>    99 69 77 231 43 123 121 125 143 79 224 40 105 79 84 117 248 55 197 62 42 159 225 204<br>    14 162 213 24 164 -1<br>NOTE: You must try dierent initial values for the key and the counter. As long<br>as you use the same values for both encryption and decryption, the algorithm<br>should work.</p>
+<h2 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints"></a>Constraints</h2><p>Your program must comply with all the rules of correct software engineering<br>that we have learned during the lectures, including but not restricted to:</p>
+<ol>
+<li>The code must be written using the default C standard that is supported by the course VM, and it must compile and execute in that environment. It must not require the installation of libraries or packages or any software not already provided in the VM provided. </li>
+<li>Your program must be correctly designed, and it must be separated into modular, reusable functions. </li>
+<li>Your program must reuse the functions that you implemented, everywhere possible. </li>
+<li>Your program must perform all basic error checking. </li>
+<li>Do not use any global variables. </li>
+<li>All functions must be documented, as indicated in the course material, section 1.2.</li>
+</ol>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><ol>
+<li>You will submit in cuLearn, before the due date and time, the following:<br>* One tar or zip file that includes: (a) all source and header files (b) a README file that includes: (i) a preamble (program author, purpose, list of source and header files) (ii) compilation and launching instructions<br>NOTE: Do not include object files, executables, hidden files, or duplicate<br>files or directories in your submission.</li>
+<li>Late submissions will be subject to the late penalty described in the course outline. No exceptions will be made, including for technical and&#x2F;or connectivity issues. Do not wait until the last day to submit. </li>
+<li>Only files uploaded into cuLearn will be graded. Submissions that contain incorrect, corrupt, or missing files will receive a grade of zero. Corrections to submissions will not be accepted after the due date and time, for any reason.</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://saferman.github.io/2023/10/07/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2401BAES/">http://saferman.github.io/2023/10/07/C%E4%BB%A3%E5%86%99%EF%BC%9ACOMP2401BAES/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/10/07/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS203StableMarriageProblem/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Java代写：CS203 Stable Marriage Problem">
+                        
+                        <span class="card-title">Java代写：CS203 Stable Marriage Problem</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-10-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/10/06/Java%E4%BB%A3%E5%86%99%EF%BC%9ACSE8ALet'sMakeaClass/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Java代写：CSE8A Let&#39;s Make a Class">
+                        
+                        <span class="card-title">Java代写：CSE8A Let&#39;s Make a Class</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-10-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:hhh@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
