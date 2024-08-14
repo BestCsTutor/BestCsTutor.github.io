@@ -1,0 +1,926 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java代写：SER222ImplementingAnAbstractDataType, cs辅导|cs代写|计算机辅导|AI辅导|网络安全">
+    <meta name="description" content="实现一个矩阵的抽象数据类型，能实现矩阵的算术方法。  
+SummaryUsing immutability, we will construct a reliable class for handling matrices.We will ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java代写：SER222ImplementingAnAbstractDataType | cs辅导|cs代写|计算机辅导|AI辅导|网络安全</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">cs辅导|cs代写|计算机辅导|AI辅导|网络安全</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/team" class="waves-effect waves-light">
+      
+      <i class="fa-solid fa-people-group" style="zoom: 0.6;"></i>
+      
+      <span>团队</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">cs辅导|cs代写|计算机辅导|AI辅导|网络安全</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/team" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fa-solid fa-people-group"></i>
+			
+			团队
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java代写：SER222ImplementingAnAbstractDataType</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">Java代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-01-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>实现一个矩阵的抽象数据类型，能实现矩阵的算术方法。  </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Using immutability, we will construct a reliable class for handling matrices.<br>We will also discuss a basic suite of tests for this new class.</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Our goal will be to implement an “immutable matrix ADT”. Although some of that<br>terminology should be familiar, some may not be. There is an optional appendix<br>later in this document, that discusses mutability in a bit more detail than<br>the textbook. The class we will construct will support computing basic matrix<br>operations like addition and subtraction.<br>At first, a class for handling matrices might seem a little boring. However,<br>matrices are an extremely valuable mathematical tool. Many algorithms in<br>mathematics and scientific computing are built in terms of matrix operations.<br>Matrices serve as a common language in which many mathematical problems many<br>be expressed. The idea being if we have many problems that can be solved in<br>the same way (i.e., a bunch of matrix operations), then we need only devise a<br>single program (one that processes matrices) in order to solve all problems<br>that are stated in that way… This is nice because we can optimize the piece of<br>software that works with matrices, and see speedups for every problem that is<br>expressed as matrices. Anyway, matrices are very common - computing matrix<br>operations is pretty much all supercomputers do. Thus, implementing a matrix<br>is useful - in fact, libraries that provide linear algebra operations (e.g.,<br>LINPACK) are among the most widely used in scientific and engineering<br>research. Finding the fastest algorithms to compute matrix operations is very<br>active area of research. People have built entire careers out of designing<br>fast matrix processing algorithms!<br>This document is separated into four sections: Background, Requirements,<br>Testing, and Submission. You have almost finished reading the Background<br>section already. In Requirements, we will discuss what is expected of you in<br>this homework. In Testing, we give some sample testing code for the matrix<br>class, discuss how it works, and give some general pointers on how tests<br>should be designed. Lastly, Submission discusses how your source code should<br>be submitted on BlackBoard. At the very end of the document, there is an<br>Appendix with optional reading on mutability. If you are confident with<br>mutability, you may skip it.</p>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><p>For this assignment, you will implement the provided matrix interface (see<br>Matrix.java). This interface file defines not only which methods you must<br>implement, but gives documentation that describes how they should work.<br>Already provided for you is a base file to modify. The base contains an<br>currently empty matrix class as well as some simple testing code. In order for<br>it to be a reliable type, we will implement it as an immutable type. Creating<br>this ADT will involve creating 9 methods:</p>
+<ul>
+<li>MyMatrix(int[][] matrix) - a constructor. [4 points] </li>
+<li>public int getElement(int y, int x) - see interface. [2 points] </li>
+<li>public int getRows() - see interface. [2 points] </li>
+<li>public int getColumns() - see interface. [2 points] </li>
+<li>public MyMatrix scale(int scalar) - see interface. [5 points] </li>
+<li>public MyMatrix plus(Matrix other) - see interface. [5 points] </li>
+<li>public MyMatrix minus(Matrix other) - see interface. [5 points] </li>
+<li>boolean equals(Object other) - see interface. [5 points] (Hint: see Point2D from earlier.) </li>
+<li>String toString() - see interface. [5 points].<br>Be aware that some of the methods throw exceptions - this should be<br>implemented.</li>
+</ul>
+<h2 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h2><p>Whenever you build a piece of software, you want to have some level of<br>certitude that that piece of software does what you expect. This means<br>testing! For this initial homework, you are provided with a set of simple<br>tests to check if your program is functioning correctly. In the future, you<br>may need to create your own tests. The following code is included in base<br>file:<br>    int [][] data1 &#x3D; new int[0][0];<br>    int [][] data2 &#x3D; <em>two big parantheses_1, 2, 3}, {4, 5, 6}, {7, 8, 9_two big parantheses</em>;<br>    int [][] data3 &#x3D; <em>two big parantheses_1, 4, 7}, {2, 5, 8}, {3, 6, 9_two big parantheses</em>;<br>    Matrix m1 &#x3D; new base(data1);<br>    Matrix m2 &#x3D; new base(data2);<br>    Matrix n3 &#x3D; new base(data3);<br>    System.out.println(“m1 –&gt; Rows: “ + m1.getRows() + “ Cols: “ + m1.getColumns());<br>    System.out.println(“m2 –&gt; Rows: “ + m2.getRows() + “ Cols: “ + m2.getColumns());<br>    System.out.println(“m3 –&gt; Rows: “ + m3.getRows() + “ Cols: “ + m3.getColumns());<br>    &#x2F;&#x2F; check for reference issues<br>    System.out.println(“m2 –&gt; \n” + m2);<br>    data2[1][1] &#x3D; 101;<br>    System.out.println(“m2 –&gt; \n” + m2);<br>    &#x2F;&#x2F; test equals<br>    System.out.println(“m2 &#x3D;&#x3D; null: “ + m2.equals(null));<br>    System.out.println(“m3 &#x3D;&#x3D; &quot;MATRIX&quot;: “ + m2.equals(“MATRIX”));<br>    System.out.println(“m2 &#x3D;&#x3D; m1: “ + m2.equals(m1));<br>    System.out.println(“m2 &#x3D;&#x3D; m2: “ + m2.equals(m2));<br>    System.out.println(“m2 &#x3D;&#x3D; m3: “ + m2.equals(m3));<br>—|—<br>Let’s consider this code and its output. The first few lines of the code just<br>create matrix data using 2D arrays. These are just setting up for our new<br>class, we aren’t actually using it yet. The next step sees us creating a<br>Matrix object for each array (m1, m2, m3). Next, we get to the actual testing.<br>First, we display the size (rows and columns) for each matrix. The values we<br>get should match the dimension of the 2D arrays that were created (0x0, 3x3,<br>3x3).<br>The next check is to see if we have correctly implemented our matrix as an<br>immutable class. We display the contents of m2, make change in data2 (that was<br>used to create m2), and then display the contents of m2 again. Recall that an<br>object that is immutable should not change state - good thing that’s what we<br>see in the output. The middle value does not change from 5 to 101. If it was<br>not an immutable object, then changing the value inside of data2 would have<br>the (potentially unintended) side effect of changing what is stored in m2.<br>(Remember that arrays, like data2, are passed as references.)<br>Next, we check if equals has been implemented properly. Based on what’s being<br>compared, equals should return true or false. If we compare a matrix to a null<br>variable, a string, or a matrix containing different values, then it should<br>return false. If we compare it to itself, or a matrix containing the same<br>data, then it should return true.<br>Having verified that the class is immutable and supports comparison, we check<br>if it supports the operations that should be implemented. For this homework,<br>you are being given the output of these operations, and so can check you<br>result versus ours. In the future, this might not be the case. You may have to<br>run an algorithm by hand to determine what output should be expected. Note<br>that the process of running it by hand will help you to understand the data<br>structure (or algorithm) and may make it easier to implement. In addition to<br>testing matrix operations that should work, we should also test operations<br>that do not work. In this class, that would be when trying to add or subtract<br>matrix with different size. For now, this code is commented, since running it<br>should throw an exception.<br>Some basic principles: 1) test every method that is implemented. This gives us<br>a basic level of code coverage (the amount of code used by tests) over a<br>significant fraction of the code base. It would be even better if we had test<br>cases that used each possible line of code in our program but that can become<br>very difficult. 2) Test “edge cases”. That is, potentially special values that<br>may invoke uncommon parts of the code base. For example, one of the first<br>tests is to create a 0x0 matrix. While this matrix might not be practical, its<br>parameters are unique and may cause issues. Typically one aims to test where<br>an input changes significantly. For example, if the input was an integer, we<br>might test some large position number, 1, 0, -1, and some large negative<br>number. Note that we don’t really need to test several large numbers. Chances<br>are, if one works, then the others will as well. We want to minimize our<br>testing work by looking inputs as their character changes (e.g., goes from<br>positive to negative in this example).</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>The submission for this programming assignment has only one part: source code<br>submission.<br>Writeup: For this assignment, no write up is required.<br>Source Code:<br>Please rename and submit your code as “LastNameMatrix.java” The class inside<br>of your file will also need to be renamed from base. There is no need to turn<br>in the interface file (Matrix.java).</p>
+<h2 id="Appendix-Reference-Types-and-Mutability"><a href="#Appendix-Reference-Types-and-Mutability" class="headerlink" title="Appendix: Reference Types and Mutability"></a>Appendix: Reference Types and Mutability</h2><p>In this appendix, we review the idea of reference types in Java, and how<br>mutability is impacted by it. Recall the Point2D example from our discussion<br>of abstract data types. Consider what would happen if we ran the following<br>code that used Point2D:<br>    public class PointTester {<br>      public static void doSomething(Point2D p) {<br>        p.scale(5);<br>      }<br>      public static void main(String[] args) {<br>        Point2D point &#x3D; new Point2D(10, 10);<br>        System.out.println(point.toString());<br>        doSomething(point);<br>        System.out.println(point.toString());<br>      }<br>    }<br>—|—<br>If we were to run this, we would get:<br>    X: 10 Y : 10<br>    X: 50 Y : 50<br>As you probably suspected, even though the call to scale happens inside of the<br>doSomething() method instead of in the main, when main prints out the contents<br>of the point for the second time, the x and y values have changed. This<br>happens because classes are what is called a<br>reference typ e. For primitive types, such as int or double, when variables<br>are passed around as parameters, their value is copied. Changing a int<br>parameter in a method won’t change it’s value in the original caller. However,<br>objects are not copied. Instead, Java passes a copy of the address where the<br>object is stored in system memory. Since an address is passed, the method will<br>know here to go and access the information (the state) that defines the class.<br>In our example, when doSomething() is called , it is passed (via a parameter)<br>the address of the Point2D that the main created. When the call to scale() is<br>made on p inside of doSomething(), it changes the x and y values inside of the<br>Point2D object that main created. Thus, when doSomething() completes and main<br>displays the x&#x2F;y values, it shows them as being five times larger. (Note that<br>in addition to objects, arrays are also treated as reference types.) Thus we<br>can see that the Point2D class is<br>can change. The opposite of this is an immutable class. At first, having a<br>mutable class seems completely reasonable - how else would implement something<br>like scaling the point? Why would you even want to?<br>Let’s start with the second question: Say we’re using the Point2D class in a<br>game, and doSomething() is a method that displays a zoomed in version of the<br>screen. If we’re implementing zoom, so everything appears larger, it makes<br>sense it would scale the point to be larger. What happens if we run<br>doSomething() to zoom in, but doSomething() lacks the code (e.g.,<br>p.scale(1&#x2F;5)) to undo the zoom operation? Well, in that case doSomething()<br>would finish without any issue, but then over in main, we would be left with<br>the enlarged point. Not good! This happened because main allowed doSomething()<br>to “mess around” with the information inside the point. Consider another<br>potential issue, this time in a scientific calculation. If you have a massive<br>matrix storing the simulation data for the analysis of a cancerous protein,<br>you don’t want to<br>accidentally change the data while analyzing it - that would ruin the results!<br>Our goal should be to design reliable a data type (class) that does not allow<br>that to occur… an immutable one.<br>The basic idea of a immutable class isn’t that complicated: a class without<br>any mutators, or shared references. But then how do we implement scale?<br>Instead of having methods like void scale(double factor) that change the<br>contents of the object, we will have methods like Point2D scale(double factor)<br>that return a new copy of the point. Now, it is true that using immutable<br>types can make your code must more safe (less error prone), but should<br>remember that it will typically be slower than mutable implementation. (FYI,<br>if you go on to study programming languages, you will encounter a programming<br>language called LISP where all data is immutable.) It can be relatively<br>straightforward to write an immutable type, the following needs to happen:</p>
+<ul>
+<li>Mutators: These must be removed - there should be no way for someone to change the values inside of the class after it has been created. (When you go to complete the homework, you will find this has already been set up for you in the interface file.) </li>
+<li>Constructors: We must make sure that no “reference types” (e.g., another object, or an array) leak into the object via the constructor. If this happens, our class will contain as instance data, some other object which is not immutable AND which may be accessible by another part of the program. Then, our object as a whole won’t be immutable either. The solution is to manually make a copy of any objects or arrays that are passed into the class we are building. The copy will then be unique to us, and will be effectively immutable (assuming we also make sure to leave it alone).<br>Consider the task making Point2D immutable. There are three methods we would<br>need to change: setX, setY, and scale. These are only methods that can change<br>the state of the point. Previously setX(int X) would change the value of the x<br>member variable. When refactoring this object to immutable, we rewrite setX()<br>so it returns a Point2D (instead of void), where the new point is built from<br>the new x value being set and the existing y value. The same thing happens for<br>setY(). scale() is a little different. There, we must change it to return a<br>new point, but both x and y will change since they are both scaled.</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://bestcstutor.github.io/2018/01/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ASER222ImplementingAnAbstractDataType/">https://bestcstutor.github.io/2018/01/21/Java%E4%BB%A3%E5%86%99%EF%BC%9ASER222ImplementingAnAbstractDataType/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">Java代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/01/22/AI%E4%BB%A3%E5%86%99%EF%BC%9ACISC352BooleanSatisfiability/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="AI代写：CISC352BooleanSatisfiability">
+                        
+                        <span class="card-title">AI代写：CISC352BooleanSatisfiability</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-01-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/01/16/Java%E4%BB%A3%E5%86%99%EF%BC%9ACS3110EXPRChecker/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Java代写：CS3110EXPRChecker">
+                        
+                        <span class="card-title">Java代写：CS3110EXPRChecker</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-01-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">Java代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:s4ferm4n@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

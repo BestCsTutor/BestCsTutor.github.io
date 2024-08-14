@@ -1,0 +1,963 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="C代写：CS162Image, cs辅导|cs代写|计算机辅导|AI辅导|网络安全">
+    <meta name="description" content="用libpng处理PNG图像，实现Union Find算法，以及一系列的像素级的运算操作。  
+IntroductionIn this assignment, you will learn to implement UNION FIND a">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>C代写：CS162Image | cs辅导|cs代写|计算机辅导|AI辅导|网络安全</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">cs辅导|cs代写|计算机辅导|AI辅导|网络安全</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/team" class="waves-effect waves-light">
+      
+      <i class="fa-solid fa-people-group" style="zoom: 0.6;"></i>
+      
+      <span>团队</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>辅导案例</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/comment" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>用户评价</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>联系我</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">cs辅导|cs代写|计算机辅导|AI辅导|网络安全</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/team" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fa-solid fa-people-group"></i>
+			
+			团队
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			辅导案例
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/comment" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			用户评价
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			联系我
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/banner/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">C代写：CS162Image</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                <span class="chip bg-color">C代写</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-02-20
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>用libpng处理PNG图像，实现Union Find算法，以及一系列的像素级的运算操作。  </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In this assignment, you will learn to implement UNION FIND algorithm for image<br>processing. Work individually. Follow the guidelines in the syllabus for any<br>discussions with others. You may work in pairs on extra credit contests, but<br>then the extra credit will be divided among the two of you. Extra credit<br>entries must be bug-free to be eligible and turned in on time (no late days).</p>
+<h2 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h2><p>After downloading the assignment tarball from the course website, extract the<br>files by running:<br>    tar -xvf lab4-handout.tgz<br>from a terminal window. Some of the files worth looking at are listed below.<br>Files you won’t necessarily modify:<br>    Makefile<br>    img&#x2F;<br>    lib&#x2F;<em>.h<br>    lib&#x2F;</em>.c<br>    libpng_check.c<br>Files you should modify (and the files denoted by * will be submitted for<br>grading):<br>    * pixel.c<br>    * graph.c<br>    * unionfind.c<br>    unionfind_test.c<br>    * segment.c<br>    segment_test.c<br>Additionally, you should create a file called:<br>    written.pdf<br>which contains the answers to the written parts of the assignment. For your<br>convenience, we’ve provided a LATEX template (written.tex).</p>
+<h2 id="Submission"><a href="#Submission" class="headerlink" title="Submission"></a>Submission</h2><p>To submit your programming assignment, first generate a handin archive<br>lab4-handin.tgz with the command<br>    make clean &amp;&amp; make package<br>then submit your lab4-handin.tgz file to your Subversion repository (svn) for<br>the class. Once you’ve completed all problems, you should also submit your<br>written.pdf to Gradescope.<br>Note that your code will not be graded until after the due date. It is your<br>responsibility to test your code on the CSIL machines and proofread your<br>writeup thoroughly before submitting. Code that does not compile will not<br>receive any points.</p>
+<h2 id="Image-Processing"><a href="#Image-Processing" class="headerlink" title="Image Processing"></a>Image Processing</h2><p>In this assignment, we will learn to process PNG images. Why PNG you ask?<br>Well, it is a very common (and arguably the best) lossless image compression<br>file format.</p>
+<h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><p>More specifically, we will be using the libpng library to process PNG images<br>using C. In order to compile your code, you will need a library called libpng<br>installed on your system.<br>You can check if the library has been properly installed on your system by<br>running the command we wrote for you:<br>    $ make checklib<br>    $ .&#x2F;checklib<br>You may ignore the “unused parameter” warnings during this checking. If the<br>two commands above successfully generate the file img&#x2F;uchicago.html that<br>contains the uchicago shield logo, then you may skip this section and start<br>enjoying the fun lab!<br>However, if the library has not been installed, you have the following<br>options:<br>If you are running MacOS which has Homebrew installed you can run:<br>    brew install libpng<br>If you have root access on Linux or Bash for Windows, you can run this:<br>    sudo apt install libpng-dev<br>If you are running Cygwin, it might be a bit harder, but I suggest installing<br>apt-cyg running:<br>    apt-cyg install libpng-devel<br>If you are having trouble setting up the environment, it is suggested that you<br>SSH into the CS department machines, which already have this library<br>installed.</p>
+<h3 id="Image-util"><a href="#Image-util" class="headerlink" title="Image_util"></a>Image_util</h3><p>We have also provided you with a set of functions that read and write PNG<br>files. Please check out lib&#x2F;image_util.h and lib&#x2F;image_util.c. You can simply<br>invoke these functions in your code without trying to understand how they<br>work. However, the functions are designed to only read certain types of PNG<br>files for this assignment. So, here are some of the points worth noting</p>
+<ul>
+<li>The maximum size of the image is 1000 pixels in terms of width and height, which we defined as ROWS, COLS. </li>
+<li>The color space of the PNG file should be ARGB.</li>
+</ul>
+<h2 id="Strict-Pixel-Graph"><a href="#Strict-Pixel-Graph" class="headerlink" title="Strict Pixel Graph"></a>Strict Pixel Graph</h2><p>In this assignment, we will explore the applications of UNION-FIND technique<br>on processing images represented by strict pixel graphs. One application is<br>determining and labeling the connected components of a spatial data structure.<br>The other is segmenting the pixels of an image into regions, called<br>“segmentation”.</p>
+<h3 id="Pixels"><a href="#Pixels" class="headerlink" title="Pixels"></a>Pixels</h3><p>To capture the contents of a single pixel, we need to know two things: how<br>opaque or transparent it is, and what color it is. As mentioned above, one<br>common way to do this is called ARGB.<br>The transparency is stored as an integer in the range [0, 256), where 0 is<br>completely transparent and 255 is completely opaque. This is called the alpha<br>(A) value. The color is stored as three other integers, each also in the range<br>[0, 256), which respectively describe the intensity of the red (R), green (G),<br>and blue (B) color in the pixel.<br>So a pixel is described by four integers between 0 (inclusive) and 256<br>(exclusive). One way to represent the four integers that make up a pixel is by<br>packing them inside a 32-bit integer, breaking that integer up into 4<br>components with 8 bits each:<br>    a0 a1 a2 a3 a4 a5 a6 a7 r0 r1 r2 r3 r4 r5 r6 r7 g0 g1 g2 g3 g4 g5 g6 g7 b0 b1 b2 b3 b4 b5 b6 b7 where:</p>
+<ul>
+<li>a0 a1 a2 a3 a4 a5 a6 a7 : represents the alpha value (how opaque the pixel is). </li>
+<li>r0 r1 r2 r3 r4 r5 r6 r7 : represents the intensity of the red component of the pixel </li>
+<li>g0 g1 g2 g3 g4 g5 g6 g7 : represents the intensity of the green component of the pixel </li>
+<li>b0 b1 b2 b3 b4 b5 b6 b7 : represents the intensity of the blue component of the pixel<br>Each 8-bit component can range between a minimum of 0 (binary 00000000 or hex<br>0x00) to a maximum of 255 (binary 11111111 or hex 0xFF).<br>We have implemented a set of library functions that deals with the pixel<br>representation above. It is recommended that you inspect the get_red,<br>get_green, get_blue, get_alpha, and make_pixel functions provided in pixel.c.</li>
+</ul>
+<h3 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h3><p>An image will be stored in a two-dimensional array of pixels, denoted pixels.<br>Thus, the pixel value of the point with x-coordinate as x and y-coordinate as<br>y in the image would be stored at pixels[y][x].<br>Consider the simple digital image below, in which each pixel’s color is<br>represented by just a single letter for simplicity. Here we can imagine N &#x3D;<br>brown, G &#x3D; gray, W &#x3D; white, B &#x3D; blue. Therefore,<br>    pixels &#x3D; <em>two big parantheses_B,N,N,G}, {B,W,W,W}, {G,G,W,G}, {N,N,N,G_two big parantheses</em><br>For convenience, we will also keep an one-dimensional array pixels’ of pixels<br>to represent the image. Pixels are stored in the array row by row, left to<br>right starting at the bottom left of the image.<br>For example, for the same image below, we have<br>    pixels &#x3D; {B,N,N,G,B,W,W,W,G,G,W,G,N,N,N,G}</p>
+<h3 id="Task-5-1"><a href="#Task-5-1" class="headerlink" title="Task 5.1"></a>Task 5.1</h3><p>In pixel.c, implement the function:<br>    pixelID get_pixel_id(unsigned int x, unsigned int y, unsigned int w);<br>—|—<br>that returns its index to the 1-D pixel array, given the coords of the input<br>pixel and the width of the image.</p>
+<h3 id="Task-5-2"><a href="#Task-5-2" class="headerlink" title="Task 5.2"></a>Task 5.2</h3><p>In pixel.c, implement the function:<br>    unsigned int get_x_coord(pixelID idx, unsigned int w);<br>—|—<br>that returns the x coordinate value of the pixel, given its index and the<br>width of the image.</p>
+<h3 id="Task-5-3"><a href="#Task-5-3" class="headerlink" title="Task 5.3"></a>Task 5.3</h3><p>In pixel.c, implement the function:<br>    unsigned int get_y_coord(pixelID idx, unsigned int w);<br>—|—<br>that returns the y coordinate value of the pixel, given its index and the<br>width of the image.</p>
+<h2 id="Graphs"><a href="#Graphs" class="headerlink" title="Graphs"></a>Graphs</h2><p>Now we define the strict pixel graph of an image to be the pair <code>G = (V, E)</code><br>, where V is the set of pixels, like those shown above in the diagram for the<br>previous exercise. Then E is the set of edges, where an edge e connects <code>v0 = (x0, y0)</code> with <code>v1 = (x1, y1)</code> provided <code>|x0 - x1| + |y0 - y1| = 1</code> and<br>the colors of the two pixels are the same. The strict pixel graph is<br>undirected.</p>
+<h3 id="Task-5-4"><a href="#Task-5-4" class="headerlink" title="Task 5.4"></a>Task 5.4</h3><p>In graph.c, implement the function:<br>    graph pixel_graph_new(unsigned int img_width,<br>                          unsigned int img_height,<br>                          pixel pixels[ROWS][COLS]);<br>—|—<br>that allocate enough space for the graph, and initialize its required fields<br>(see below for more details).</p>
+<h3 id="Task-5-5"><a href="#Task-5-5" class="headerlink" title="Task 5.5"></a>Task 5.5</h3><p>In graph.c, implement the function:<br>    void pixel_graph_free(graph G);<br>—|—<br>that free up the memory used by graph G.<br>Before you implement the two functions above, you might want to first think<br>about what data you want to store for the graph <code>G = (V, E)</code> , and then fill<br>them in the <code>struct pixel_graph_header</code> . For instance, you are free to<br>design any data structure for representing the edge set E of the graph, etc.<br>Furthermore optionally, depending on your design, you might want to define<br>helper functions for testing your graph implementation, such as:</p>
+<ul>
+<li>bool is_vertex(graph G, pixelID v); </li>
+<li>bool is_pixel_graph(struct pixel_graph_header *G); </li>
+<li>bool pixel_graph_isedge(graph G, pixelID v, pixelID w); </li>
+<li>Et cetera.</li>
+</ul>
+<h2 id="UNION-FIND"><a href="#UNION-FIND" class="headerlink" title="UNION-FIND"></a>UNION-FIND</h2><h3 id="Finding-Connected-Components"><a href="#Finding-Connected-Components" class="headerlink" title="Finding Connected Components"></a>Finding Connected Components</h3><p>As seen from lecture, the UNION-FIND method can be implemented by using a two-<br>dimensional int array of pixelID values, named parentID, to build a forest of<br>up-trees for the current image. Each element of parentID will either be the<br>pixelID value of the parent of the up-tree node, or 1 if the node itself is<br>the root of an up-tree. Initially, before any of the UNION operations, each<br>element of the array should be 1, since every pixel is in its own subset.</p>
+<h3 id="Task-6-1"><a href="#Task-6-1" class="headerlink" title="Task 6.1"></a>Task 6.1</h3><p>In unionfind.c, implement the function:<br>    void up_trees_new(graph G, pixelID parentID[ROWS][COLS]);<br>—|—<br>that stores the forest of up-trees in the array parentID, given the graph G.<br>Notice that we have implemented functions for converting pixel indices from&#x2F;to<br>coordinates in<br>Section 5. So it will be possible to follow the path from any pixel to the<br>root of its up-tree by repeatedly getting the parent node’s pixelID from the<br>parentID array, and then from the pixelID getting the x and y coordinates of<br>the parent, and then getting the its parent’s pixelID, etc., until the root of<br>the up-tree is reached.</p>
+<h3 id="Task-6-2"><a href="#Task-6-2" class="headerlink" title="Task 6.2"></a>Task 6.2</h3><p>In unionfind.c, implement the function:<br>    pixelID up_trees_find(pixelID parentID[ROWS][COLS], unsigned int w, pixelID idx);<br>—|—<br>that finds and returns the index of the root of the pixel with pixelID idx in<br>the up-tree.</p>
+<h3 id="Task-6-3"><a href="#Task-6-3" class="headerlink" title="Task 6.3"></a>Task 6.3</h3><p>In unionfind.c, implement the function:<br>    void up_trees_union(pixelID parentID[ROWS][COLS], unsigned int w, pixelID p1, pixelID p2);<br>—|—<br>that merges the two groups (up-trees) to which pixel p1 and pixel p2 belong,<br>and it should make the one having the smaller pixelID value be the parent of<br>the other.<br>Now apply your UNION-FIND implementation to the problem of analyzing an image.<br>Your code will merge groups of pixels so that, at the end, each connected<br>component of the strict pixel graph will be represented by one up-tree. To do<br>this, your code should scan the image considering all the pixel pairs for<br>which edges exist (according to the definition of G). Perform FIND-UNION on<br>all such pairs. Starting at <code>(x, y) = (0, 0)</code> , check to see if G contains<br>an edge to <code>(x + 1, y) = (1, 0)</code> and&#x2F;or to (x, y + 1) &#x3D; (0, 1). If it does,<br>perform the FIND operations (up_trees_find) on the endpoints of this edge, and<br>if the results are different, then UNION (up_trees_union) the two subsets.<br>After processing this pixel, go on to the next (incrementing x). When the<br>first row of pixels is complete, do the same for the second row, etc., until<br>all rows of pixels have been processed.</p>
+<h3 id="Task-6-4"><a href="#Task-6-4" class="headerlink" title="Task 6.4"></a>Task 6.4</h3><p>In unionfind.c, implement the function:<br>    void run_union_find(graph G, pixelID parentID[ROWS][COLS], bool count);<br>—|—<br>that does the operations described above, and when count is set to true, print<br>out the number of times UNION is called. For example, if we counted to 42,<br>then the output to stdout should look like:<br>    The number of times that the method UNION was called for this image is: 42.</p>
+<h3 id="Counting-Connected-Components"><a href="#Counting-Connected-Components" class="headerlink" title="Counting Connected Components"></a>Counting Connected Components</h3><p>Next, set an integer variable, count, to zero, and do another scan of the<br>parentID array. Each time a root of an up-tree is encountered, increment<br>count.</p>
+<h3 id="Task-6-5"><a href="#Task-6-5" class="headerlink" title="Task 6.5"></a>Task 6.5</h3><p>In segment.c, implement the function:<br>    int count_connected_components(graph G, pixelID parentID[ROWS][COLS]);<br>—|—<br>that does the operations described above and returns the count. At the end of<br>the scan, print out the value of count with explanatory text as follows (e.g.<br>if counted 42 components):<br>    The number of connected components in this image is: 42.<br>Note that the number of times UNION was called, plus the number of connected<br>components found should add up to the number of pixels in the image, so you<br>can use this fact in debugging your code.</p>
+<h3 id="Labeling-Connected-Components"><a href="#Labeling-Connected-Components" class="headerlink" title="Labeling Connected Components"></a>Labeling Connected Components</h3><p>Now modify your code (that does the scanning and counting above) so that each<br>time an up-tree root is encountered, not only is the count incremented, but<br>that root is associated with the count in a hash table. Feel free to use what<br>you learned from last lab on hash tables, and apply it here. As some hints,<br>the keys of your hash table could be integers representing the roots’ pixelID<br>values, and the values would also be integers representing the counts, i.e.,<br>the connected component numbers.<br>Write code for another scan of the image, this time doing the following for<br>each pixel:</p>
+<ul>
+<li>FINDing the root of the pixel’s up-tree; </li>
+<li>Looking up the count value for that root in the hash table. (Then convert the Integer to an int.) Let’s call the resulting int k. </li>
+<li>Determine the k th color by calling the provided function get_color(k) in lib&#x2F;colors.h. </li>
+<li>Reassign the pixel with the new color. </li>
+<li>Write the new image to a PNG file.</li>
+</ul>
+<h3 id="Task-6-6"><a href="#Task-6-6" class="headerlink" title="Task 6.6"></a>Task 6.6</h3><p>In segment.c, implement the function:<br>    void label_connected_components(graph G, pixelID parentID[ROWS][COLS]);<br>—|—<br>that does the operations described above.</p>
+<h3 id="Task-6-7"><a href="#Task-6-7" class="headerlink" title="Task 6.7"></a>Task 6.7</h3><p>As seen from lectures, there are several optimizations we can do to improve<br>the union and find operation. In unionfind.c, use the “union-by-size” and<br>“pathcompression” techniques to improve union and find, respectively. You<br>might want to keep track of the size of the subtree rooted at each node, which<br>would be updated each time union was called.<br>Please email your submission to Yongshan.</p>
+<h2 id="Trees"><a href="#Trees" class="headerlink" title="Trees"></a>Trees</h2><p>So far in the lectures, we have seen three binary tree structures, namely<br>binary heaps, binary search trees, and AVL trees.</p>
+<h3 id="Task-7-1"><a href="#Task-7-1" class="headerlink" title="Task 7.1"></a>Task 7.1</h3><p>For this question, you will consider the structure of a binary tree as shown<br>below.<br>You may assume there are specification functions is_bst and is_ordtree that<br>checks if input is a binary search tree, and that the ordering invariant was<br>preserved, respectively:<br>    typedef struct tree_node tree;<br>    struct tree_node {<br>      elem data;<br>      tree* left;<br>      tree* right;<br>    };<br>    struct bst_header {<br>      tree* root;<br>    };<br>    typedef struct bst_header* bst;<br>    bool is_bst(struct bst_header* B);<br>    bool is_ordtree(struct tree_node* T);<br>—|—<br>Complete the function bst_in_order that prints the elements in a binary search<br>tree B in increasing order according to their keys (Hint: Recursion). You may<br>assume there is a function print_node(T) that takes a non-NULL T of type tree*<br>and prints the contents of that node. You should NOT need to examine the keys<br>in the tree nodes.<br>    void bst_in_order(bst B)<br>    &#x2F;&#x2F;precondition: is_bst(B);<br>    {<br>      tree_in_order(B→root);<br>    }<br>    tree_in_order(tree* T)<br>    &#x2F;&#x2F;precondition: is_ordtree(T);<br>    {<br>      if (T &#x3D;&#x3D; NULL) return;<br>      ___________________________;<br>      ___________________________;<br>      ___________________________;<br>      return;<br>    }<br>—|—  </p>
+<h3 id="Task-7-4"><a href="#Task-7-4" class="headerlink" title="Task 7.4"></a>Task 7.4</h3><p>Complete the following function that returns the number of possible binary<br>search trees that can be constructed with exactly n unique keys. (Hint:<br>Recursion.)<br>    int num_trees(int n)<br>    &#x2F;&#x2F;precondition: n &gt;&#x3D; 0<br>    {<br>      if (n &#x3D;&#x3D; 0) return _____________;<br>      int total &#x3D; 0;<br>      for (int i &#x3D; 0; i &lt; n; i++) {<br>        total +&#x3D; __________________;<br>      }<br>      return total;<br>    }<br>—|—  </p>
+<h3 id="Task-7-5"><a href="#Task-7-5" class="headerlink" title="Task 7.5"></a>Task 7.5</h3><p>Suppose A is an AVL tree, and we wish to insert an element x into the tree.<br>Notice that we first traverse down the binary tree, and then check for<br>balancing. Suppose during the rebalance step, we observe that the difference<br>in the height of the left and right subtrees is 2. We have the following<br>options:</p>
+<ol>
+<li>Perform a rotate left operation on A. </li>
+<li>Perform a rotate right operation on A. </li>
+<li>Perform a rotate left operation on the left child of A followed by a rotate right on A. </li>
+<li>Perform a rotate right operation on the right child of A followed by a rotate left on A.<br>If x is less than the element at the root of the left subtree, what do we do?<br>What if x is greater than the element at the root of the left subtree?</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">SafePoker</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://bestcstutor.github.io/2019/02/20/C%E4%BB%A3%E5%86%99%EF%BC%9ACS162Image/">https://bestcstutor.github.io/2019/02/20/C%E4%BB%A3%E5%86%99%EF%BC%9ACS162Image/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">SafePoker</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                                    <span class="chip bg-color">C代写</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s12 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="wechat">
+                        <img src="/medias/newqrcode.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/02/20/AI%E4%BB%A3%E5%86%99%EF%BC%9ACS213Tie-Tac-Toe/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="AI代写：CS213Tie-Tac-Toe">
+                        
+                        <span class="card-title">AI代写：CS213Tie-Tac-Toe</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-02-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AI%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">AI代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/02/19/C%E4%BB%A3%E5%86%99%EF%BC%9ACS162Crypto/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="C代写：CS162Crypto">
+                        
+                        <span class="card-title">C代写：CS162Crypto</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-02-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            SafePoker
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C%E4%BB%A3%E5%86%99/">
+                        <span class="chip bg-color">C代写</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2018-2024</span>
+            
+            <a href="/contact" target="_blank">SafePoker</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:s4ferm4n@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
